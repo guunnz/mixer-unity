@@ -5,7 +5,7 @@ using AxieCore.AxieMixer;
 using Newtonsoft.Json.Linq;
 using Spine.Unity;
 using UnityEngine;
-
+using System;
 namespace AxieMixer.Unity
 {
     public static class Mixer
@@ -42,6 +42,10 @@ namespace AxieMixer.Unity
 
         public static void SpawnSkeletonAnimation(SkeletonAnimation skeletonAnimation, string axieId, string genesStr, float scale = 0.0016f)
         {
+            Debug.Log(builder == null);
+            Debug.Log(initialized);
+            if (builder == null)
+                Init();
             var result = Builder.BuildSpineFromGene(axieId, genesStr, scale);
             skeletonAnimation.skeletonDataAsset = result.skeletonDataAsset;
             skeletonAnimation.Initialize(true);
@@ -96,6 +100,7 @@ namespace AxieMixer.Unity
             axieMixerMaterials.InstallStuff(AxieFormType.Normal, singleAtlasAsset, null, genesStuff, axieMixerStuff, baseMaterials);
 
             builder = new Axie2dBuilder();
+            Debug.Log("Builder LOAD: " + builder == null);
             builder.Init(axieMixerMaterials);
         }
 
@@ -110,10 +115,23 @@ namespace AxieMixer.Unity
             {
                 Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
                 var atlasAsset = Resources.Load<TextAsset>($"{StuffName}/{quality}/axie-2d-v3-stuff");
-                string[] lines = atlasAsset.text.Split('\n').Where(x => x.Contains(".png")).Select(x => x.Replace(".png", "")).ToArray();
+                Debug.Log("ATLAS: " + atlasAsset == null);
+                
+                // Handle both Unix and Windows line endings
+                string[] lines = atlasAsset.text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
+                                                .Where(x => x.Contains(".png"))
+                                                .Select(x => x.Replace(".png", ""))
+                                                .ToArray();
+
                 foreach (var texName in lines)
                 {
                     var colorTexture = Resources.Load<Texture2D>($"{StuffName}/{quality}/{texName}_color");
+                    if (colorTexture == null)
+                    {
+                        Debug.Log("axie-2d-v3-stuff_color" == $"{texName}_color");
+                        colorTexture = Resources.Load<Texture2D>($"{StuffName}/{quality}/axie-2d-v3-stuff_color");
+                        Debug.Log($"{StuffName}/{quality}/{texName}_color");
+                    }
                     colorTexture.name = texName;
                     var lineTexture = Resources.Load<Texture2D>($"{StuffName}/{quality}/{texName}_line");
                     var splat0Texture = Resources.Load<Texture2D>($"{StuffName}/{quality}/{texName}_splat0");

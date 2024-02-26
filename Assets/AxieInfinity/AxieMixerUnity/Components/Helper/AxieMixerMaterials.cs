@@ -2,6 +2,7 @@
 using System.Linq;
 using AxieCore.AxieMixer;
 using Spine.Unity;
+using System;
 using UnityEngine;
 
 namespace AxieMixer.Unity {
@@ -108,7 +109,13 @@ namespace AxieMixer.Unity {
         static List<Material> LoadMaterials(SplatAtlasStuff atlasStuff, Material baseMaterial)
         {
             List<Material> materials = new List<Material>();
-            string[] texList = atlasStuff.atlasAssetText.Split('\n').Where(x => x.Contains(".png")).Select(x => x.Replace(".png", "")).ToArray();
+
+            // Handle both Unix and Windows line endings
+            string[] texList = atlasStuff.atlasAssetText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
+                                                        .Where(x => x.Contains(".png"))
+                                                        .Select(x => x.Replace(".png", ""))
+                                                        .ToArray();
+
             foreach (var texName in texList)
             {
                 var material = new Material(baseMaterial);
@@ -118,7 +125,6 @@ namespace AxieMixer.Unity {
                     material.SetTexture(texKey, p.Value);
                 }
                 materials.Add(material);
-
             }
             return materials;
         }
