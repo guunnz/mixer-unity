@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: aquatic-tail-06-bubble_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 45337187b031b7e4884d2ca0a20974cf, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: f8be79e9620326946885612c4bfe34b3, type: 3}
   isUpgradingBlendModeMaterials: 0

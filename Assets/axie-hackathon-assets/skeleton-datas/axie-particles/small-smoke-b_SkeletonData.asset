@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: small-smoke-b_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 57d74749c9adf974db25d7e8413f93ef, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 8be24df2392e2e2479713abf8415340d, type: 3}
   isUpgradingBlendModeMaterials: 0

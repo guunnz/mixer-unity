@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: tail-whip_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: dbc44bdc5f10a744baa4b2e125f6a58b, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: e9edf5ea05f1f884785db058382747f4, type: 3}
   isUpgradingBlendModeMaterials: 0

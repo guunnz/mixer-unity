@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: reptile-back-04-spike-throw_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 18bef4f3f10c78842b11be7507e5ba69, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: d1eaa95f0fa56224a8ecbbdc5864edc5, type: 3}
   isUpgradingBlendModeMaterials: 0

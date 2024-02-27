@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: impact-addition-white_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 536f62c9c1aa45943a2bb527abefb811, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 11c56cdd5e5c7634889c62b723525f21, type: 3}
   isUpgradingBlendModeMaterials: 0

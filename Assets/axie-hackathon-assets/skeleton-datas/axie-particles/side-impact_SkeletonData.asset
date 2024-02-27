@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: side-impact_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 85c7b142c2d6a2246b53786b524e8c7d, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: c511b894f507f7e4fa99ef98fc4e0754, type: 3}
   isUpgradingBlendModeMaterials: 0

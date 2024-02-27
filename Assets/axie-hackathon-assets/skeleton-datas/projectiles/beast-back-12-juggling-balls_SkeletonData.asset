@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: beast-back-12-juggling-balls_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 63e8469fb72fd5a44ad41df59d73382c, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: c411511bfb983a6499f4b746c5b6191e, type: 3}
   isUpgradingBlendModeMaterials: 0

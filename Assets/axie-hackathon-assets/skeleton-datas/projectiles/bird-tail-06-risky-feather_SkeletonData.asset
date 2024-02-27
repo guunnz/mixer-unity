@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bird-tail-06-risky-feather_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: d46ea2f43a85a284da0298bf92bbb545, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 9806a6dd14575844fa42af1a1dcd7026, type: 3}
   isUpgradingBlendModeMaterials: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bird-horn-04-hennery-bolt_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 420965a46fa945243b0cd6253526ca6b, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: f459f98152574d5499d0f25b91f6cd71, type: 3}
   isUpgradingBlendModeMaterials: 0

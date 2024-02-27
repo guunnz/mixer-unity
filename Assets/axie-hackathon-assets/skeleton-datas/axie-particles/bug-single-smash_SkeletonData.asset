@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bug-single-smash_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 96cba7af03c5a384881a2516fc7e9368, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: da366c71a627cd74f8fc0763795c7f06, type: 3}
   isUpgradingBlendModeMaterials: 0

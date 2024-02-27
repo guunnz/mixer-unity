@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bug-tail-04-twin-needle_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 7ac0f2dff6742e946b6b44cd82f76e35, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 9ea7852414785ca40b48533e2a417e00, type: 3}
   isUpgradingBlendModeMaterials: 0

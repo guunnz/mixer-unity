@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bite_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: 67f8c0cbe7344da4c8ab27491299862e, type: 2}
+  - {fileID: 11400000, guid: 1211c2ec42900e642a209c88eaa6fd02, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 56190a3f2625bbe42ae311952d7a7960, type: 3}
   isUpgradingBlendModeMaterials: 0

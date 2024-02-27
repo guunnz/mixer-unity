@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: aquatic-back-04-scale-dart_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 3ab143f0a373da64da76afc7fbd42de7, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: ce40169646e671c418ef32a83979d8e9, type: 3}
   isUpgradingBlendModeMaterials: 0

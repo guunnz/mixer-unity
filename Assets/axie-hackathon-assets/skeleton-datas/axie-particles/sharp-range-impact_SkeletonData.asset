@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: sharp-range-impact_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 986e233984a7cc247bd2e9a433083a71, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 457fee6e479c5aa488704585d19963de, type: 3}
   isUpgradingBlendModeMaterials: 0

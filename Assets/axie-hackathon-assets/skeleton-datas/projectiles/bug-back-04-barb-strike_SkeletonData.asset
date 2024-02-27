@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bug-back-04-barb-strike_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: f7f0a64fb3583c945b915e495a83d5ac, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 97bfef055bfd3e14ca12d1d4a23b3f86, type: 3}
   isUpgradingBlendModeMaterials: 0

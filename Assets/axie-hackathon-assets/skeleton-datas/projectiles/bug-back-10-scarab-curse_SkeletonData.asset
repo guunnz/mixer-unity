@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bug-back-10-scarab-curse_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 7d6ff7403e0ac4448a6a847677aa1aa9, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 6656be8a0217b8e479508b6355f5c604, type: 3}
   isUpgradingBlendModeMaterials: 0

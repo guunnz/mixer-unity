@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: reptile-tail-04-scale-dart_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: e8b0c95f43578084db46b30c1cce6dc5, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: ba1eda4d7cda4894bb47800eef7a6c6b, type: 3}
   isUpgradingBlendModeMaterials: 0
