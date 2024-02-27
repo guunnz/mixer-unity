@@ -54,7 +54,7 @@ namespace finished3
                 SkeletonAnim.AnimationName = "action/idle/random-01";
                 SkeletonAnim.loop = true;
             }
-            else if (state.isMoving == false)
+            else if (state.isMoving == false && CurrentTarget == null)
             {
                 if (SkeletonAnim.AnimationName == "action/idle/normal")
                     return;
