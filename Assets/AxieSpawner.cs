@@ -7,7 +7,18 @@ using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
 using CharacterInfo = finished3.CharacterInfo;
-
+public enum AxieClass
+{
+    Beast,
+    Bug,
+    Bird,
+    Reptile,
+    Plant,
+    Aquatic,
+    Mech,
+    Dawn,
+    Dusk
+}
 namespace Game
 {
     public class AxieSpawner : MonoBehaviour
