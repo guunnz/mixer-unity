@@ -1,3 +1,4 @@
+using Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace finished3
         public Vector3Int gridLocation;
         public Vector2Int grid2DLocation {get { return new Vector2Int(gridLocation.x, gridLocation.z); } }
 
-        private SpriteRenderer spriteRenderer;
+        private Rectangle spriteRenderer;
 
         public bool beingHovered;
         public bool occupied;
@@ -26,7 +27,7 @@ namespace finished3
 
         private void Start()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<Shapes.Rectangle>();
             charactersManager = FindObjectOfType<MouseController>();
         }
         private void OnMouseOver()
@@ -58,15 +59,22 @@ namespace finished3
         {
             if (occupied)
             {
-                spriteRenderer.color = Color.blue;
+                spriteRenderer.Type = Rectangle.RectangleType.RoundedSolid;
+                spriteRenderer.Dashed = false;
+                spriteRenderer.Color = new Vector4 (0.231f, 0.871f,0.835f,0.1f);
             }
             else if (beingHovered)
             {
-                spriteRenderer.color = Color.green;
+                spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.7f);
+                spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
+                spriteRenderer.Dashed = true;
+                spriteRenderer.DashOffset += 1 * Time.deltaTime;
             }
             else
             {
-                spriteRenderer.color = Color.white;
+                spriteRenderer.Type = Rectangle.RectangleType.RoundedSolid;
+                spriteRenderer.Dashed = false;
+                spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.5f);
             }
         }
         
