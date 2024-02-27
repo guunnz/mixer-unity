@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +13,13 @@ public class DragAndDropCharacter : MonoBehaviour
     private Vector3 originalPosition;
     private OverlayTile originalTile;
     private List<OverlayTile> allOverlayTiles;
+    private MouseController mouseController;
 
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
         allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
+        mouseController = FindObjectOfType<MouseController>(); // Get the MouseController instance
     }
 
     void Update()
@@ -31,6 +35,8 @@ public class DragAndDropCharacter : MonoBehaviour
                 if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
                 {
                     selectedCharacter = hit.collider.gameObject;
+
+                    selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = true;
                     originalPosition = selectedCharacter.transform.position;
                     originalTile = selectedCharacter.GetComponent<finished3.CharacterInfo>().standingOnTile;
                     originalTile.isBlocked = false; // Free the original tile
@@ -42,33 +48,30 @@ public class DragAndDropCharacter : MonoBehaviour
         // Move character with mouse
         if (selectedCharacter != null && Input.GetMouseButton(0))
         {
+            selectedCharacter.GetComponent<BoxCollider>().enabled = false;
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                 mainCamera.WorldToScreenPoint(selectedCharacter.transform.position).z);
             Vector3 newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
             selectedCharacter.transform.position = newPosition;
         }
 
-        // Release character and place on the closest tile
+        // Release character and attempt to place on the closest tile
         if (selectedCharacter != null && Input.GetMouseButtonUp(0))
         {
+            selectedCharacter.GetComponent<BoxCollider>().enabled = true;
+            selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = false;
             OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
 
-            if (closestTile != null && !closestTile.isBlocked)
+            if (closestTile == null)
             {
-                selectedCharacter.transform.position = closestTile.transform.position; // Move to the new tile
-                closestTile.isBlocked = true; // Block the new tile
-                selectedCharacter.GetComponent<CharacterInfo>().standingOnTile = closestTile; // Update standingOnTile
+                selectedCharacter.GetComponent<BoxCollider>().enabled = true;
+                selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = false;
+                MoveCharacterToTile(selectedCharacter.GetComponent<finished3.CharacterInfo>(),
+                    selectedCharacter.GetComponent<finished3.CharacterInfo>().standingOnTile);
+                return;
+            }
 
-                // Set scale based on grid X position
-                float initialScaleX = closestTile.grid2DLocation.x < 4 ? -0.2f : 0.2f;
-                selectedCharacter.transform.localScale = new Vector3(initialScaleX,
-                    selectedCharacter.transform.localScale.y, selectedCharacter.transform.localScale.z);
-            }
-            else
-            {
-                selectedCharacter.transform.position = originalPosition; // Return to original position
-                originalTile.isBlocked = true; // Re-block the original tile
-            }
+            TryPlaceCharacterOnTile(selectedCharacter, closestTile);
 
             selectedCharacter.transform.SetParent(null); // Unparent the character
             selectedCharacter = null; // Reset the selected character
@@ -85,16 +88,112 @@ public class DragAndDropCharacter : MonoBehaviour
             allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
         }
 
-        foreach (var tile in allOverlayTiles)
+        OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
+        if (tile == null)
         {
-            float distance = Vector3.Distance(position, tile.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closestTile = tile;
-            }
+            tile = mouseController.GetCharacters().FirstOrDefault(x => x.beingHovered)?.standingOnTile;
         }
 
-        return closestTile;
+        return tile;
+    }
+
+    private void TryPlaceCharacterOnTile(GameObject character, OverlayTile targetTile)
+    {
+        CharacterInfo selectedCharacterInfo = character.GetComponent<CharacterInfo>();
+
+        if (targetTile.isBlocked)
+        {
+            var allCharacters = mouseController.GetCharacters();
+            CharacterInfo occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
+
+            if (occupyingCharacter != null)
+            {
+                SwapCharacters(selectedCharacterInfo, occupyingCharacter);
+            }
+            else
+            {
+                MoveCharacterToTile(selectedCharacterInfo, targetTile);
+            }
+        }
+        else
+        {
+            MoveCharacterToTile(selectedCharacterInfo, targetTile);
+        }
+    }
+
+    private void SwapCharacters(CharacterInfo characterA, CharacterInfo characterB)
+    {
+        OverlayTile tileA = characterA.standingOnTile;
+        OverlayTile tileB = characterB.standingOnTile;
+
+        // Set the target positions
+        Vector3 targetPositionA = tileB.transform.position;
+        Vector3 targetPositionB = tileA.transform.position;
+
+        StartCoroutine(MoveCharacter(characterA, targetPositionA));
+        StartCoroutine(MoveCharacter(characterB, targetPositionB));
+
+        // Swap the 'standingOnTile' properties of the characters
+        characterA.standingOnTile = tileB;
+        characterB.standingOnTile = tileA;
+
+        if (characterA.standingOnTile.grid2DLocation.x >= 4)
+        {
+            characterA.transform.localScale =
+                new Vector3(0.2f, characterA.transform.localScale.y, characterA.transform.localScale.z);
+        }
+        else
+        {
+            characterA.transform.localScale = new Vector3(-0.2f, characterA.transform.localScale.y,
+                characterA.transform.localScale.z);
+        }
+
+        if (characterB.standingOnTile.grid2DLocation.x >= 4)
+        {
+            characterB.transform.localScale =
+                new Vector3(0.2f, characterB.transform.localScale.y, characterB.transform.localScale.z);
+        }
+        else
+        {
+            characterB.transform.localScale = new Vector3(-0.2f, characterB.transform.localScale.y,
+                characterB.transform.localScale.z);
+        }
+    }
+
+    IEnumerator MoveCharacter(CharacterInfo character, Vector3 targetPosition)
+    {
+        while (character.transform.position != targetPosition)
+        {
+            character.transform.position =
+                Vector3.MoveTowards(character.transform.position, targetPosition, Time.deltaTime * 10);
+            yield return null;
+        }
+
+        // Update the 'isBlocked' state of the tile when the character reaches the target
+        character.standingOnTile.isBlocked = true;
+    }
+
+    private void MoveCharacterToTile(CharacterInfo character, OverlayTile targetTile)
+    {
+        if (character.standingOnTile != null)
+        {
+            character.standingOnTile.isBlocked = false;
+        }
+
+        character.transform.position = targetTile.transform.position;
+        targetTile.isBlocked = true;
+        character.standingOnTile = targetTile;
+
+        // Adjust local scale based on grid X value
+        if (targetTile.grid2DLocation.x >= 4)
+        {
+            character.transform.localScale =
+                new Vector3(0.2f, character.transform.localScale.y, character.transform.localScale.z);
+        }
+        else
+        {
+            character.transform.localScale =
+                new Vector3(-0.2f, character.transform.localScale.y, character.transform.localScale.z);
+        }
     }
 }

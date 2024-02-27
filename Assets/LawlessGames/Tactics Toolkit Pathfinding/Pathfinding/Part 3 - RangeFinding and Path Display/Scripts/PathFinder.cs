@@ -11,9 +11,12 @@ namespace finished3
         public List<OverlayTile> FindPath(OverlayTile start, OverlayTile end, List<OverlayTile> inRangeTiles)
         {
             searchableTiles = new Dictionary<Vector2Int, OverlayTile>();
-
             List<OverlayTile> openList = new List<OverlayTile>();
             HashSet<OverlayTile> closedList = new HashSet<OverlayTile>();
+
+            // Track the closest reachable tile to the end
+            OverlayTile closestTile = start;
+            int closestDistance = GetManhattanDistance(start, end);
 
             if (inRangeTiles.Count > 0)
             {
@@ -48,11 +51,18 @@ namespace finished3
                         continue;
                     }
 
-                    tile.G = GetManhattenDistance(start, tile);
-                    tile.H = GetManhattenDistance(end, tile);
+                    tile.G = GetManhattanDistance(start, tile);
+                    tile.H = GetManhattanDistance(end, tile);
+
+                    // Check if this tile is a new closest tile to the end
+                    int distanceToEnd = GetManhattanDistance(tile, end);
+                    if (distanceToEnd < closestDistance)
+                    {
+                        closestDistance = distanceToEnd;
+                        closestTile = tile;
+                    }
 
                     tile.Previous = currentOverlayTile;
-
 
                     if (!openList.Contains(tile))
                     {
@@ -61,8 +71,16 @@ namespace finished3
                 }
             }
 
-            return new List<OverlayTile>();
+            // If end is unreachable, return the path to the closest reachable tile
+            return closestTile == start ? new List<OverlayTile>() : GetFinishedList(start, closestTile);
         }
+
+        private int GetManhattanDistance(OverlayTile tile1, OverlayTile tile2)
+        {
+            return Mathf.Abs(tile1.gridLocation.x - tile2.gridLocation.x) +
+                   Mathf.Abs(tile1.gridLocation.z - tile2.gridLocation.z);
+        }
+
 
         private List<OverlayTile> GetFinishedList(OverlayTile start, OverlayTile end)
         {
@@ -78,11 +96,6 @@ namespace finished3
             finishedList.Reverse();
 
             return finishedList;
-        }
-
-        private int GetManhattenDistance(OverlayTile start, OverlayTile tile)
-        {
-            return Mathf.Abs(start.gridLocation.x - tile.gridLocation.x) + Mathf.Abs(start.gridLocation.z - tile.gridLocation.z);
         }
 
         private List<OverlayTile> GetNeightbourOverlayTiles(OverlayTile currentOverlayTile)
@@ -137,7 +150,5 @@ namespace finished3
 
             return neighbours;
         }
-
-      
     }
 }

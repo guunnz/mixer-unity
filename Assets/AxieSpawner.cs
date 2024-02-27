@@ -82,11 +82,11 @@ namespace Game
             }
             else
             {
-                SpawnSkeletonAnimation(builderResult);
+                SpawnSkeletonAnimation(builderResult, axieId);
             }
         }
 
-        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult)
+        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId)
         {
   
             GameObject go = new GameObject("Axie");
@@ -98,6 +98,7 @@ namespace Game
             go.AddComponent<BoxCollider>();
             go.GetComponent<BoxCollider>().size = new Vector3(4.5f, 4, 1);
             go.GetComponent<BoxCollider>().center = new Vector3(0, 2, 0);
+            go.GetComponent<CharacterInfo>().axieId = axieId;
             overlay.AddCharacter(go.GetComponent<CharacterInfo>());
             SkeletonAnimation runtimeSkeletonAnimation =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
