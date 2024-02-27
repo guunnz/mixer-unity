@@ -61,7 +61,7 @@ namespace finished3
             {
                 spriteRenderer.Type = Rectangle.RectangleType.RoundedSolid;
                 spriteRenderer.Dashed = false;
-                spriteRenderer.Color = new Vector4 (0.231f, 0.871f,0.835f,0.1f);
+                spriteRenderer.Color = new Vector4 (.9f, 0.9f,0.9f,0.1f);
             }
             else if (beingHovered)
             {
