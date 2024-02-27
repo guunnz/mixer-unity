@@ -1,0 +1,63 @@
+{
+"skeleton": {
+	"hash": "xy4dQyrM2/lPByfaXGcTeM+OJYs",
+	"spine": "3.8.79",
+	"x": -14.65,
+	"y": -103.99,
+	"width": 302,
+	"height": 104,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "long-slash-1", "parent": "root" }
+],
+"slots": [
+	{ "name": "long-slash-1", "bone": "long-slash-1", "attachment": "long-slash-1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"long-slash-1": {
+				"long-slash-1": { "x": 136.35, "y": -51.99, "width": 302, "height": 104 },
+				"long-slash-2": { "x": 224.37, "y": -51.45, "width": 540, "height": 226 },
+				"long-slash-3": { "x": 251.28, "y": -63.85, "width": 588, "height": 195 },
+				"long-slash-4": { "x": 203.41, "y": -78.29, "width": 510, "height": 177 },
+				"long-slash-5": { "x": 233.02, "y": -75.17, "width": 539, "height": 189 },
+				"long-slash-6": { "x": 137.01, "y": -28.03, "width": 706, "height": 316 },
+				"long-slash-7": { "x": 161.07, "y": -2.4, "width": 621, "height": 349 },
+				"long-slash-8": { "x": 165.87, "y": 74.46, "width": 604, "height": 317 },
+				"long-slash-9": { "x": 178.18, "y": 65.45, "width": 574, "height": 279 },
+				"long-slash-10": { "x": 163.09, "y": 45.63, "width": 533, "height": 239 },
+				"long-slash-11": { "x": 163.37, "y": 47.08, "width": 445, "height": 208 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"long-slash-1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "long-slash-1" },
+					{ "time": 0.0667, "name": "long-slash-2" },
+					{ "time": 0.1, "name": "long-slash-3" },
+					{ "time": 0.1333, "name": "long-slash-4" },
+					{ "time": 0.1667, "name": "long-slash-5" },
+					{ "time": 0.2, "name": "long-slash-6" },
+					{ "time": 0.2333, "name": "long-slash-7" },
+					{ "time": 0.2667, "name": "long-slash-8" },
+					{ "time": 0.3, "name": "long-slash-9" },
+					{ "time": 0.3333, "name": "long-slash-10" },
+					{ "time": 0.3667, "name": "long-slash-11" },
+					{ "time": 0.4, "name": null },
+					{ "time": 0.4333, "name": null }
+				]
+			}
+		}
+	}
+}
+}

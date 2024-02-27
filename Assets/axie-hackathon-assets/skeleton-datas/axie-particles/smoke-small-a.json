@@ -1,0 +1,52 @@
+{
+"skeleton": {
+	"hash": "4HUMnZfZJZrmqyvRFGMbQNpmYgk",
+	"spine": "3.8.79",
+	"x": 1.63,
+	"y": 0.96,
+	"width": 166,
+	"height": 89,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "smoke-small-a-1", "bone": "root", "attachment": "smoke-small-a-1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"smoke-small-a-1": {
+				"smoke-small-a-1": { "x": 84.63, "y": 45.46, "width": 166, "height": 89 },
+				"smoke-small-a-2": { "x": 101.48, "y": 72.27, "width": 199, "height": 142 },
+				"smoke-small-a-3": { "x": 145.67, "y": 96.2, "width": 231, "height": 189 },
+				"smoke-small-a-4": { "x": 211.45, "y": 106.59, "width": 197, "height": 120 },
+				"smoke-small-a-5": { "x": 239.69, "y": 129.56, "width": 216, "height": 146 },
+				"smoke-small-a-6": { "x": 262.97, "y": 150.82, "width": 227, "height": 186 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"smoke-small-a-1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "smoke-small-a-1" },
+					{ "time": 0.0667, "name": "smoke-small-a-2" },
+					{ "time": 0.1, "name": "smoke-small-a-3" },
+					{ "time": 0.1333, "name": "smoke-small-a-4" },
+					{ "time": 0.1667, "name": "smoke-small-a-5" },
+					{ "time": 0.2, "name": "smoke-small-a-6" },
+					{ "time": 0.2333, "name": null },
+					{ "time": 0.2667, "name": null }
+				]
+			}
+		}
+	}
+}
+}

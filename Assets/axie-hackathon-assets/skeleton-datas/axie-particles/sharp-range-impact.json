@@ -1,0 +1,103 @@
+{
+"skeleton": {
+	"hash": "gfcmvofBNdorfa4RA/DVx+Q7pzw",
+	"spine": "3.8.79",
+	"x": -8.37,
+	"y": 0.77,
+	"width": 146,
+	"height": 301,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root", "y": -95.55 },
+	{ "name": "bug-sharp-range-1", "parent": "root", "y": 95.55 }
+],
+"slots": [
+	{ "name": "bug-sharp-range-1", "bone": "bug-sharp-range-1", "attachment": "sharp-range-impact-2" }
+],
+"skins": [
+	{
+		"name": "aqua-sharp-range",
+		"attachments": {
+			"bug-sharp-range-1": {
+				"sharp-range-impact-1": { "name": "aqua-sharp-range-1", "x": 19.3, "y": 40.83, "width": 184, "height": 470 },
+				"sharp-range-impact-2": { "name": "aqua-sharp-range-2", "x": 64.63, "y": 151.27, "width": 145, "height": 300 },
+				"sharp-range-impact-3": { "name": "aqua-sharp-range-3", "x": 109.49, "y": 260.25, "width": 132, "height": 208 },
+				"sharp-range-impact-4": { "name": "aqua-sharp-range-4", "x": 129.02, "y": 309.23, "width": 133, "height": 163 }
+			}
+		}
+	},
+	{
+		"name": "beast-sharp-range",
+		"attachments": {
+			"bug-sharp-range-1": {
+				"sharp-range-impact-1": { "name": "beast-sharp-range-1", "x": 19.3, "y": 40.83, "width": 184, "height": 470 },
+				"sharp-range-impact-2": { "name": "beast-sharp-range-2", "x": 64.63, "y": 151.27, "width": 146, "height": 301 },
+				"sharp-range-impact-3": { "name": "beast-sharp-range-3", "x": 109.49, "y": 260.25, "width": 132, "height": 207 },
+				"sharp-range-impact-4": { "name": "beast-sharp-range-4", "x": 129.02, "y": 309.23, "width": 132, "height": 163 }
+			}
+		}
+	},
+	{
+		"name": "bird-sharp-range",
+		"attachments": {
+			"bug-sharp-range-1": {
+				"sharp-range-impact-1": { "name": "bird-sharp-range-1", "x": 19.3, "y": 40.83, "width": 184, "height": 470 },
+				"sharp-range-impact-2": { "name": "bird-sharp-range-2", "x": 64.63, "y": 151.27, "width": 146, "height": 301 },
+				"sharp-range-impact-3": { "name": "bird-sharp-range-3", "x": 109.49, "y": 260.25, "width": 132, "height": 208 },
+				"sharp-range-impact-4": { "name": "bird-sharp-range-4", "x": 129.02, "y": 309.23, "width": 132, "height": 162 }
+			}
+		}
+	},
+	{
+		"name": "bug-sharp-range",
+		"attachments": {
+			"bug-sharp-range-1": {
+				"sharp-range-impact-1": { "name": "bug-sharp-range-1", "x": 19.3, "y": 40.83, "width": 185, "height": 470 },
+				"sharp-range-impact-2": { "name": "bug-sharp-range-2", "x": 64.63, "y": 151.27, "width": 146, "height": 300 },
+				"sharp-range-impact-3": { "name": "bug-sharp-range-3", "x": 109.49, "y": 260.25, "width": 132, "height": 208 },
+				"sharp-range-impact-4": { "name": "bug-sharp-range-4", "x": 129.02, "y": 309.23, "width": 132, "height": 162 }
+			}
+		}
+	},
+	{
+		"name": "plant-sharp-range",
+		"attachments": {
+			"bug-sharp-range-1": {
+				"sharp-range-impact-1": { "name": "plant-sharp-range-1", "x": 19.3, "y": 40.83, "width": 184, "height": 470 },
+				"sharp-range-impact-2": { "name": "plant-sharp-range-2", "width": 146, "height": 301 },
+				"sharp-range-impact-3": { "name": "plant-sharp-range-3", "x": 109.49, "y": 260.25, "width": 132, "height": 208 },
+				"sharp-range-impact-4": { "name": "plant-sharp-range-4", "x": 129.02, "y": 309.23, "width": 132, "height": 162 }
+			}
+		}
+	},
+	{
+		"name": "reptile-sharp-range",
+		"attachments": {
+			"bug-sharp-range-1": {
+				"sharp-range-impact-1": { "name": "reptile-sharp-range-1", "x": 19.3, "y": 40.83, "width": 184, "height": 470 },
+				"sharp-range-impact-2": { "name": "reptile-sharp-range-2", "x": 64.63, "y": 151.27, "width": 146, "height": 301 },
+				"sharp-range-impact-3": { "name": "reptile-sharp-range-3", "x": 109.49, "y": 260.25, "width": 132, "height": 207 },
+				"sharp-range-impact-4": { "name": "reptile-sharp-range-4", "x": 129.02, "y": 309.23, "width": 132, "height": 163 }
+			}
+		}
+	}
+],
+"animations": {
+	"impact-sharp-range": {
+		"slots": {
+			"bug-sharp-range-1": {
+				"attachment": [
+					{ "name": "sharp-range-impact-1" },
+					{ "time": 0.0667, "name": "sharp-range-impact-2" },
+					{ "time": 0.1333, "name": "sharp-range-impact-3" },
+					{ "time": 0.1667, "name": "sharp-range-impact-4" },
+					{ "time": 0.2, "name": null },
+					{ "time": 0.6667, "name": null }
+				]
+			}
+		}
+	}
+}
+}

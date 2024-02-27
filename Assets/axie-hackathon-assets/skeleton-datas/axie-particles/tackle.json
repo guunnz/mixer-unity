@@ -1,0 +1,106 @@
+{
+"skeleton": {
+	"hash": "SGY0XmkhMK5fs9oiRyfjh9meCIc",
+	"spine": "3.8.79",
+	"x": -180.22,
+	"y": -200.06,
+	"width": 489,
+	"height": 484,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root", "y": -126.11 },
+	{ "name": "tackle-1", "parent": "root", "y": 126.11 }
+],
+"slots": [
+	{ "name": "tackle-1", "bone": "tackle-1", "attachment": "single-tackle-1" }
+],
+"skins": [
+	{
+		"name": "aqua",
+		"attachments": {
+			"tackle-1": {
+				"single-tackle-1": { "name": "aqua-tackle-1", "width": 489, "height": 484 },
+				"single-tackle-2": { "name": "aqua-tackle-2", "x": 75, "y": 64.64, "width": 555, "height": 562 },
+				"single-tackle-3": { "name": "aqua-tackle-3", "x": 196.61, "y": 58.74, "width": 520, "height": 612 },
+				"single-tackle-4": { "name": "aqua-tackle-4", "x": 281.81, "y": 64.74, "width": 490, "height": 593 }
+			}
+		}
+	},
+	{
+		"name": "beast",
+		"attachments": {
+			"tackle-1": {
+				"single-tackle-1": { "name": "beast-tackle-1", "x": 64.28, "y": 41.94, "width": 489, "height": 484 },
+				"single-tackle-2": { "name": "beast-tackle-2", "x": 75, "y": 64.64, "width": 555, "height": 563 },
+				"single-tackle-3": { "name": "beast-tackle-3", "x": 196.61, "y": 58.74, "width": 519, "height": 613 },
+				"single-tackle-4": { "name": "beast-tackle-4", "x": 281.81, "y": 64.74, "width": 490, "height": 593 }
+			}
+		}
+	},
+	{
+		"name": "bird",
+		"attachments": {
+			"tackle-1": {
+				"single-tackle-1": { "name": "bird-tackle-1", "x": 64.28, "y": 41.94, "width": 488, "height": 485 },
+				"single-tackle-2": { "name": "bird-tackle-2", "x": 75, "y": 64.64, "width": 554, "height": 562 },
+				"single-tackle-3": { "name": "bird-tackle-3", "x": 196.61, "y": 58.74, "width": 520, "height": 612 },
+				"single-tackle-4": { "name": "bird-tackle-4", "x": 281.81, "y": 64.74, "width": 489, "height": 594 }
+			}
+		}
+	},
+	{
+		"name": "bug",
+		"attachments": {
+			"tackle-1": {
+				"single-tackle-1": { "name": "tackle-1", "x": 64.28, "y": 41.94, "width": 488, "height": 485 },
+				"single-tackle-2": { "name": "tackle-2", "x": 75, "y": 64.64, "width": 554, "height": 562 },
+				"single-tackle-3": { "name": "tackle-3", "x": 196.61, "y": 58.74, "width": 519, "height": 612 },
+				"single-tackle-4": { "name": "tackle-4", "x": 281.81, "y": 64.74, "width": 489, "height": 594 }
+			}
+		}
+	},
+	{
+		"name": "plant",
+		"attachments": {
+			"tackle-1": {
+				"single-tackle-1": { "name": "plant-tackle-1", "x": 64.28, "y": 41.94, "width": 488, "height": 485 },
+				"single-tackle-2": { "name": "plant-tackle-2", "x": 75, "y": 64.64, "width": 554, "height": 562 },
+				"single-tackle-3": { "name": "plant-tackle-3", "x": 196.61, "y": 58.74, "width": 520, "height": 612 },
+				"single-tackle-4": { "name": "plant-tackle-4", "x": 281.81, "y": 64.74, "width": 489, "height": 594 }
+			}
+		}
+	},
+	{
+		"name": "reptile",
+		"attachments": {
+			"tackle-1": {
+				"single-tackle-1": { "name": "reptile-tackle-1", "x": 64.28, "y": 41.94, "width": 489, "height": 484 },
+				"single-tackle-2": { "name": "reptile-tackle-2", "x": 75, "y": 64.64, "width": 555, "height": 562 },
+				"single-tackle-3": { "name": "reptile-tackle-3", "x": 196.61, "y": 58.74, "width": 519, "height": 613 },
+				"single-tackle-4": { "name": "reptile-tackle-4", "x": 281.81, "y": 64.74, "width": 490, "height": 594 }
+			}
+		}
+	}
+],
+"animations": {
+	"pop": {
+		"slots": {
+			"tackle-1": {
+				"color": [
+					{ "time": 0.2667, "color": "ffffffff" },
+					{ "time": 0.3333, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "name": "single-tackle-1" },
+					{ "time": 0.1, "name": "single-tackle-2" },
+					{ "time": 0.2, "name": "single-tackle-3" },
+					{ "time": 0.2667, "name": "single-tackle-4" },
+					{ "time": 0.3333, "name": null }
+				]
+			}
+		}
+	}
+}
+}

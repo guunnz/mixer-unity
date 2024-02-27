@@ -1,0 +1,62 @@
+
+smoke-b.png
+size: 365,1077
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+smoke-b-1
+  rotate: false
+  xy: 176, 284
+  size: 156, 107
+  orig: 156, 107
+  offset: 0, 0
+  index: -1
+smoke-b-2
+  rotate: true
+  xy: 2, 206
+  size: 307, 172
+  orig: 307, 172
+  offset: 0, 0
+  index: -1
+smoke-b-3
+  rotate: false
+  xy: 2, 868
+  size: 344, 207
+  orig: 344, 207
+  offset: 0, 0
+  index: -1
+smoke-b-4
+  rotate: true
+  xy: 2, 515
+  size: 351, 174
+  orig: 351, 174
+  offset: 0, 0
+  index: -1
+smoke-b-5
+  rotate: true
+  xy: 193, 44
+  size: 238, 153
+  orig: 238, 153
+  offset: 0, 0
+  index: -1
+smoke-b-6
+  rotate: true
+  xy: 178, 627
+  size: 239, 170
+  orig: 239, 170
+  offset: 0, 0
+  index: -1
+smoke-b-7
+  rotate: true
+  xy: 178, 393
+  size: 232, 185
+  orig: 234, 185
+  offset: 0, 0
+  index: -1
+smoke-b-8
+  rotate: true
+  xy: 2, 2
+  size: 202, 189
+  orig: 202, 189
+  offset: 0, 0
+  index: -1

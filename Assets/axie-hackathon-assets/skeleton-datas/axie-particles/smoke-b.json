@@ -1,0 +1,56 @@
+{
+"skeleton": {
+	"hash": "TZdq/pj7sRGwcaVrKTpAqopxkJs",
+	"spine": "3.8.79",
+	"x": 1.32,
+	"y": -7.02,
+	"width": 312,
+	"height": 214,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "smoke-b-1", "bone": "root", "attachment": "smoke-b-1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"smoke-b-1": {
+				"smoke-b-1": { "x": 157.32, "y": 99.98, "width": 312, "height": 214 },
+				"smoke-b-2": { "x": 307.71, "y": 171.91, "width": 613, "height": 343 },
+				"smoke-b-3": { "x": 345.31, "y": 200.17, "width": 688, "height": 414 },
+				"smoke-b-4": { "x": 351.46, "y": 164.37, "width": 701, "height": 347 },
+				"smoke-b-5": { "x": 419.6, "y": 137.25, "width": 475, "height": 306 },
+				"smoke-b-6": { "x": 479.01, "y": 167.04, "width": 478, "height": 339 },
+				"smoke-b-7": { "x": 550.18, "y": 219.03, "width": 467, "height": 370 },
+				"smoke-b-8": { "x": 552.85, "y": 267.02, "width": 404, "height": 377 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"smoke-b-1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "smoke-b-1" },
+					{ "time": 0.0667, "name": "smoke-b-2" },
+					{ "time": 0.1, "name": "smoke-b-3" },
+					{ "time": 0.1333, "name": "smoke-b-4" },
+					{ "time": 0.1667, "name": "smoke-b-5" },
+					{ "time": 0.2, "name": "smoke-b-6" },
+					{ "time": 0.2333, "name": "smoke-b-7" },
+					{ "time": 0.2667, "name": "smoke-b-8" },
+					{ "time": 0.3, "name": null },
+					{ "time": 0.3333, "name": null }
+				]
+			}
+		}
+	}
+}
+}

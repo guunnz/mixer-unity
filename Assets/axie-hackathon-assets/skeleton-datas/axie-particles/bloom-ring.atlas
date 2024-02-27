@@ -1,0 +1,62 @@
+
+bloom-ring.png
+size: 913,230
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bloom-ring-1
+  rotate: false
+  xy: 53, 194
+  size: 93, 34
+  orig: 127, 68
+  offset: 17, 17
+  index: -1
+bloom-ring-2
+  rotate: false
+  xy: 148, 165
+  size: 183, 63
+  orig: 217, 98
+  offset: 17, 17
+  index: -1
+bloom-ring-3
+  rotate: false
+  xy: 333, 133
+  size: 273, 95
+  orig: 307, 129
+  offset: 17, 17
+  index: -1
+bloom-ring-4
+  rotate: false
+  xy: 570, 2
+  size: 341, 119
+  orig: 377, 154
+  offset: 18, 18
+  index: -1
+bloom-ring-5
+  rotate: false
+  xy: 608, 123
+  size: 303, 105
+  orig: 338, 140
+  offset: 18, 17
+  index: -1
+bloom-ring-6
+  rotate: false
+  xy: 2, 42
+  size: 316, 121
+  orig: 350, 155
+  offset: 17, 17
+  index: -1
+bloom-ring-7
+  rotate: false
+  xy: 320, 3
+  size: 248, 128
+  orig: 284, 162
+  offset: 19, 17
+  index: -1
+bloom-ring-8
+  rotate: true
+  xy: 2, 199
+  size: 29, 49
+  orig: 64, 85
+  offset: 18, 18
+  index: -1

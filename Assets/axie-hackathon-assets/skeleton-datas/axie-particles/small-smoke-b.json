@@ -1,0 +1,54 @@
+{
+"skeleton": {
+	"hash": "BbHR+uid5VVcn2kT0mtlj0OZbko",
+	"spine": "3.8.79",
+	"x": 200.82,
+	"y": 105.16,
+	"width": 119,
+	"height": 106,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "small-smoke-b-1", "bone": "root", "attachment": "small-smoke-b-7" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"small-smoke-b-1": {
+				"small-smoke-b-1": { "x": 83.31, "y": 55.12, "width": 167, "height": 120 },
+				"small-smoke-b-2": { "x": 150.61, "y": 86.92, "width": 237, "height": 168 },
+				"small-smoke-b-3": { "x": 202.85, "y": 124.42, "width": 301, "height": 220 },
+				"small-smoke-b-4": { "x": 258.78, "y": 124.68, "width": 253, "height": 163 },
+				"small-smoke-b-5": { "x": 308.76, "y": 161.7, "width": 270, "height": 178 },
+				"small-smoke-b-6": { "x": 243.62, "y": 149.9, "width": 115, "height": 116 },
+				"small-smoke-b-7": { "x": 260.32, "y": 158.16, "width": 119, "height": 106 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"small-smoke-b-1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "small-smoke-b-1" },
+					{ "time": 0.0667, "name": "small-smoke-b-2" },
+					{ "time": 0.1, "name": "small-smoke-b-3" },
+					{ "time": 0.1333, "name": "small-smoke-b-4" },
+					{ "time": 0.1667, "name": "small-smoke-b-5" },
+					{ "time": 0.2, "name": "small-smoke-b-6" },
+					{ "time": 0.2333, "name": "small-smoke-b-7" },
+					{ "time": 0.2667, "name": null },
+					{ "time": 0.3, "name": null }
+				]
+			}
+		}
+	}
+}
+}

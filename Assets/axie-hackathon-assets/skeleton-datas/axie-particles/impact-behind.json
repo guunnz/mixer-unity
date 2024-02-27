@@ -1,0 +1,48 @@
+{
+"skeleton": {
+	"hash": "drROS6TkKanYgK0K9EYKxmE81L0",
+	"spine": "3.8.79",
+	"x": -128.37,
+	"y": -162.22,
+	"width": 562,
+	"height": 333,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "impact-behind-1", "bone": "root", "attachment": "impact-behind-3" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"impact-behind-1": {
+				"impact-behind-1": { "x": 52.74, "y": 12.49, "width": 440, "height": 260 },
+				"impact-behind-2": { "x": 94.78, "y": 40.61, "width": 501, "height": 378 },
+				"impact-behind-3": { "x": 152.63, "y": 4.28, "width": 562, "height": 333 },
+				"impact-behind-4": { "x": 215.04, "y": 18.45, "width": 644, "height": 335 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"impact-behind-1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "impact-behind-1" },
+					{ "time": 0.0667, "name": "impact-behind-2" },
+					{ "time": 0.1, "name": "impact-behind-3" },
+					{ "time": 0.1333, "name": "impact-behind-4" },
+					{ "time": 0.1667, "name": null },
+					{ "time": 0.2, "name": null }
+				]
+			}
+		}
+	}
+}
+}

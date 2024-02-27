@@ -1,0 +1,102 @@
+{
+"skeleton": {
+	"hash": "TnYIeFwx8yPrsPLrI/kcXI2RO4E",
+	"spine": "3.8.79",
+	"x": -155.63,
+	"y": -11.23,
+	"width": 309,
+	"height": 210,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root", "y": -95.63 },
+	{ "name": "side-impact", "parent": "root", "y": 95.63 }
+],
+"slots": [
+	{ "name": "side-impact", "bone": "side-impact", "attachment": "side-impact-1" }
+],
+"skins": [
+	{
+		"name": "aquatic",
+		"attachments": {
+			"side-impact": {
+				"side-impact-1": { "name": "aqua-side-impact-1", "x": -1.13, "y": 93.77, "width": 309, "height": 210 },
+				"side-impact-2": { "name": "aqua-side-impact-2", "x": -0.68, "y": 110.65, "width": 328, "height": 234 },
+				"side-impact-3": { "name": "aqua-side-impact-3", "x": 11.24, "y": 141.59, "width": 349, "height": 199 },
+				"side-impact-4": { "name": "aqua-side-impact-4", "x": 10.64, "y": 162.82, "width": 360, "height": 176 }
+			}
+		}
+	},
+	{
+		"name": "beast",
+		"attachments": {
+			"side-impact": {
+				"side-impact-1": { "name": "beast-side-impact-1", "x": -1.13, "y": 93.77, "width": 309, "height": 210 },
+				"side-impact-2": { "name": "beast-side-impact-2", "x": -0.68, "y": 110.65, "width": 328, "height": 234 },
+				"side-impact-3": { "name": "beast-side-impact-3", "x": 11.24, "y": 141.59, "width": 348, "height": 199 },
+				"side-impact-4": { "name": "beast-side-impact-4", "x": 10.64, "y": 162.82, "width": 360, "height": 176 }
+			}
+		}
+	},
+	{
+		"name": "bird",
+		"attachments": {
+			"side-impact": {
+				"side-impact-1": { "name": "bird-side-impact-1", "x": -1.13, "y": 93.77, "width": 309, "height": 209 },
+				"side-impact-2": { "name": "bird-side-impact-2", "x": -0.68, "y": 110.65, "width": 328, "height": 235 },
+				"side-impact-3": { "name": "bird-side-impact-3", "x": 11.24, "y": 141.59, "width": 348, "height": 199 },
+				"side-impact-4": { "name": "bird-side-impact-4", "x": 10.64, "y": 162.82, "width": 359, "height": 177 }
+			}
+		}
+	},
+	{
+		"name": "bug",
+		"attachments": {
+			"side-impact": {
+				"side-impact-1": { "name": "bug-side-impact-1", "x": -1.13, "y": 93.77, "width": 309, "height": 209 },
+				"side-impact-2": { "name": "bug-side-impact-2", "x": -0.68, "y": 110.65, "width": 328, "height": 235 },
+				"side-impact-3": { "name": "bug-side-impact-3", "x": 11.24, "y": 141.59, "width": 348, "height": 199 },
+				"side-impact-4": { "name": "bug-side-impact-4", "x": 10.64, "y": 162.82, "width": 360, "height": 177 }
+			}
+		}
+	},
+	{
+		"name": "plant",
+		"attachments": {
+			"side-impact": {
+				"side-impact-1": { "name": "plant-side-impact-1", "x": -1.13, "y": 93.77, "width": 309, "height": 209 },
+				"side-impact-2": { "name": "plant-side-impact-2", "x": -0.68, "y": 110.65, "width": 328, "height": 235 },
+				"side-impact-3": { "name": "plant-side-impact-3", "x": 11.24, "y": 141.59, "width": 348, "height": 199 },
+				"side-impact-4": { "name": "plant-side-impact-4", "x": 10.64, "y": 162.82, "width": 359, "height": 177 }
+			}
+		}
+	},
+	{
+		"name": "reptile",
+		"attachments": {
+			"side-impact": {
+				"side-impact-1": { "name": "reptile-side-impact-1", "x": -1.13, "y": 93.77, "width": 309, "height": 210 },
+				"side-impact-2": { "name": "reptile-side-impact-2", "x": -0.68, "y": 110.65, "width": 328, "height": 234 },
+				"side-impact-3": { "name": "reptile-side-impact-3", "x": 11.24, "y": 141.59, "width": 348, "height": 200 },
+				"side-impact-4": { "name": "reptile-side-impact-4", "x": 10.64, "y": 162.82, "width": 360, "height": 177 }
+			}
+		}
+	}
+],
+"animations": {
+	"pop": {
+		"slots": {
+			"side-impact": {
+				"attachment": [
+					{ "name": "side-impact-1" },
+					{ "time": 0.0667, "name": "side-impact-2" },
+					{ "time": 0.1333, "name": "side-impact-3" },
+					{ "time": 0.1667, "name": "side-impact-4" },
+					{ "time": 0.2, "name": null }
+				]
+			}
+		}
+	}
+}
+}

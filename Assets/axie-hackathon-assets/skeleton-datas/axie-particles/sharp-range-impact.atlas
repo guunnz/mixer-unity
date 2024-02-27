@@ -1,0 +1,174 @@
+
+sharp-range-impact.png
+size: 1721,172
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+aqua-sharp-range-1
+  rotate: true
+  xy: 239, 78
+  size: 92, 235
+  orig: 92, 235
+  offset: 0, 0
+  index: -1
+aqua-sharp-range-2
+  rotate: true
+  xy: 614, 3
+  size: 73, 150
+  orig: 73, 150
+  offset: 0, 0
+  index: -1
+aqua-sharp-range-3
+  rotate: true
+  xy: 918, 10
+  size: 66, 104
+  orig: 66, 104
+  offset: 0, 0
+  index: -1
+aqua-sharp-range-4
+  rotate: false
+  xy: 1448, 20
+  size: 67, 82
+  orig: 67, 82
+  offset: 0, 0
+  index: -1
+beast-sharp-range-1
+  rotate: true
+  xy: 476, 78
+  size: 92, 235
+  orig: 92, 235
+  offset: 0, 0
+  index: -1
+beast-sharp-range-2
+  rotate: true
+  xy: 155, 2
+  size: 73, 151
+  orig: 73, 151
+  offset: 0, 0
+  index: -1
+beast-sharp-range-3
+  rotate: true
+  xy: 1024, 10
+  size: 66, 104
+  orig: 66, 104
+  offset: 0, 0
+  index: -1
+beast-sharp-range-4
+  rotate: false
+  xy: 1517, 20
+  size: 66, 82
+  orig: 66, 82
+  offset: 0, 0
+  index: -1
+bird-sharp-range-1
+  rotate: true
+  xy: 713, 78
+  size: 92, 235
+  orig: 92, 235
+  offset: 0, 0
+  index: -1
+bird-sharp-range-2
+  rotate: true
+  xy: 308, 3
+  size: 73, 151
+  orig: 73, 151
+  offset: 0, 0
+  index: -1
+bird-sharp-range-3
+  rotate: true
+  xy: 1130, 10
+  size: 66, 104
+  orig: 66, 104
+  offset: 0, 0
+  index: -1
+bird-sharp-range-4
+  rotate: false
+  xy: 1585, 21
+  size: 66, 81
+  orig: 66, 81
+  offset: 0, 0
+  index: -1
+bug-sharp-range-1
+  rotate: true
+  xy: 2, 77
+  size: 93, 235
+  orig: 93, 235
+  offset: 0, 0
+  index: -1
+bug-sharp-range-2
+  rotate: true
+  xy: 766, 3
+  size: 73, 150
+  orig: 73, 150
+  offset: 0, 0
+  index: -1
+bug-sharp-range-3
+  rotate: true
+  xy: 1236, 10
+  size: 66, 104
+  orig: 66, 104
+  offset: 0, 0
+  index: -1
+bug-sharp-range-4
+  rotate: true
+  xy: 1614, 104
+  size: 66, 81
+  orig: 66, 81
+  offset: 0, 0
+  index: -1
+plant-sharp-range-1
+  rotate: true
+  xy: 1187, 78
+  size: 92, 235
+  orig: 92, 235
+  offset: 0, 0
+  index: -1
+plant-sharp-range-2
+  rotate: true
+  xy: 2, 2
+  size: 73, 151
+  orig: 73, 151
+  offset: 0, 0
+  index: -1
+plant-sharp-range-3
+  rotate: true
+  xy: 1424, 104
+  size: 66, 104
+  orig: 66, 104
+  offset: 0, 0
+  index: -1
+plant-sharp-range-4
+  rotate: false
+  xy: 1653, 21
+  size: 66, 81
+  orig: 66, 81
+  offset: 0, 0
+  index: -1
+reptile-sharp-range-1
+  rotate: true
+  xy: 950, 78
+  size: 92, 235
+  orig: 92, 235
+  offset: 0, 0
+  index: -1
+reptile-sharp-range-2
+  rotate: true
+  xy: 461, 3
+  size: 73, 151
+  orig: 73, 151
+  offset: 0, 0
+  index: -1
+reptile-sharp-range-3
+  rotate: true
+  xy: 1342, 10
+  size: 66, 104
+  orig: 66, 104
+  offset: 0, 0
+  index: -1
+reptile-sharp-range-4
+  rotate: true
+  xy: 1530, 104
+  size: 66, 82
+  orig: 66, 82
+  offset: 0, 0
+  index: -1
