@@ -48,7 +48,7 @@ namespace finished3
                 SkeletonAnim.AnimationName = "action/idle/random-03";
                 SkeletonAnim.loop = true;
             }
-            else if (beingHovered)
+            else if (beingHovered && CurrentTarget == null)
             {
                 if (SkeletonAnim.AnimationName == "action/idle/random-01")
                     return;
