@@ -10,7 +10,7 @@ public class GetAxiesExample : MonoBehaviour
     private string address = "0x5506e7c52163d07d9a42ce9514aecdb694d674e3";
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7"; // Replace with your actual API key
     public AxieSpawner axieSpawner;
-
+    public int spawnCountMax = 0;
     void Start()
     {
         graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
@@ -59,7 +59,10 @@ public class GetAxiesExample : MonoBehaviour
             string responseString = task.Result;
             var axiesData = JsonUtility.FromJson<AxiesData>(responseString);
             foreach (var axiesResult in axiesData.data.axies.results)
-            {
+            {          
+                if (spawnCountMax >= 7)
+                    break;
+                spawnCountMax++;
                axieSpawner.SpawnAxieById(axiesResult.id);
             }
         }

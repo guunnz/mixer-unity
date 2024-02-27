@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using AxieMixer.Unity;
+using finished3;
 using Newtonsoft.Json.Linq;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
+using CharacterInfo = finished3.CharacterInfo;
 
 namespace Game
 {
@@ -13,6 +15,10 @@ namespace Game
         [SerializeField] RectTransform rootTF; // Assign this in the inspector
         private Axie2dBuilder builder => Mixer.Builder;
         const bool USE_GRAPHIC = false;
+
+        public MouseController overlay;
+
+        private int spawnCountMax = 6;
 
         private void Start()
         {
@@ -23,7 +29,9 @@ namespace Game
         {
             StartCoroutine(GetAxiesGenesAndSpawn(axieId));
         }
+
         bool isFetchingGenes = false;
+
         private IEnumerator GetAxiesGenesAndSpawn(string axieId)
         {
             isFetchingGenes = true;
@@ -50,10 +58,11 @@ namespace Game
                     ProcessMixer(axieId, genesStr, USE_GRAPHIC);
                 }
             }
+
             isFetchingGenes = false;
         }
 
-        
+
         private void ProcessMixer(string axieId, string genesStr, bool isGraphic)
         {
             if (string.IsNullOrEmpty(genesStr))
@@ -61,6 +70,7 @@ namespace Game
                 Debug.LogError($"[{axieId}] genes not found!!!");
                 return;
             }
+
             float scale = 0.007f;
             var meta = new Dictionary<string, string>();
 
@@ -78,18 +88,27 @@ namespace Game
 
         private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult)
         {
-            GameObject go = new GameObject("DemoAxie");
+  
+            GameObject go = new GameObject("Axie");
             go.transform.SetParent(rootTF, false);
-            go.transform.localScale = Vector3.one;
-
-            SkeletonAnimation runtimeSkeletonAnimation = SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
+            go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            go.transform.eulerAngles = new Vector3(55.26f, go.transform.eulerAngles.y, go.transform.eulerAngles.z);
+            go.AddComponent<CharacterInfo>();
+            go.tag = "Character";
+            go.AddComponent<BoxCollider>();
+            go.GetComponent<BoxCollider>().size = new Vector3(4.5f, 4, 1);
+            go.GetComponent<BoxCollider>().center = new Vector3(0, 2, 0);
+            overlay.AddCharacter(go.GetComponent<CharacterInfo>());
+            SkeletonAnimation runtimeSkeletonAnimation =
+                SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
             runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
         }
 
         private void SpawnSkeletonGraphic(Axie2dBuilderResult builderResult)
         {
-            var skeletonGraphic = SkeletonGraphic.NewSkeletonGraphicGameObject(builderResult.skeletonDataAsset, rootTF, builderResult.sharedGraphicMaterial);
+            var skeletonGraphic = SkeletonGraphic.NewSkeletonGraphicGameObject(builderResult.skeletonDataAsset, rootTF,
+                builderResult.sharedGraphicMaterial);
             skeletonGraphic.Initialize(true);
             skeletonGraphic.AnimationState.SetAnimation(0, "action/idle/normal", true);
         }
