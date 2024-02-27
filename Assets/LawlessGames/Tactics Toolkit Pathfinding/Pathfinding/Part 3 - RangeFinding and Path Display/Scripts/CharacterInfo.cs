@@ -42,6 +42,7 @@ namespace finished3
         {
             if (Grabbed)
             {
+                CurrentTarget = null;
                 if (SkeletonAnim.AnimationName == "action/idle/random-03")
                     return;
                 SkeletonAnim.AnimationName = "action/idle/random-03";
