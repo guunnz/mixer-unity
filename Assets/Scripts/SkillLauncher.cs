@@ -16,6 +16,19 @@ public class SkillLauncher : MonoBehaviour
             ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
                 FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[0].transform,
                 FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
+                
+            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[2].transform,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
+            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[3].transform,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
+            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[4].transform,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
+            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[5].transform,
+                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
         }
     }
 

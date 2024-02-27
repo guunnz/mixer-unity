@@ -29,6 +29,12 @@ namespace finished3
         {
             spriteRenderer = GetComponent<Shapes.Rectangle>();
             charactersManager = FindObjectOfType<MouseController>();
+
+            if (this.grid2DLocation.x >= 4)
+            {
+                spriteRenderer.enabled = false;
+                Destroy(this.GetComponent<BoxCollider>());
+            }
         }
         private void OnMouseOver()
         {
