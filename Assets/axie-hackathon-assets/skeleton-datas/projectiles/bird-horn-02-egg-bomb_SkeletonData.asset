@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bird-horn-02-egg-bomb_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: e451064b55a216e4da22977a7762d966, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: bf6a36f6cbf2d7b41a6a7ab6a04a75c9, type: 3}
   isUpgradingBlendModeMaterials: 0

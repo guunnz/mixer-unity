@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: plant-back-08-aquastock_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 060adf6566807c54eb0657ab03c64e54, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 44c420ca581653d41af99f9e39e38f4a, type: 3}
   isUpgradingBlendModeMaterials: 0

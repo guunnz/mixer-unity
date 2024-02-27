@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: plant-horn-12-seed-bullet_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 7ceba5126688b0f41b9fae280437fb52, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: d49c122706fa639489ef89d1654367fc, type: 3}
   isUpgradingBlendModeMaterials: 0

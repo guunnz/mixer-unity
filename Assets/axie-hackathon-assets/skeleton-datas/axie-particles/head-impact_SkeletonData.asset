@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: head-impact_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 9e3e36f2a4c48034da39e3846e12e6ce, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: be1a3bee5a7f2f44a9cc77cd3ab8d62d, type: 3}
   isUpgradingBlendModeMaterials: 0

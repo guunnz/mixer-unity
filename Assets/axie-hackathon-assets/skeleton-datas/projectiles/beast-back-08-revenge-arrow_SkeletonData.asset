@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: beast-back-08-revenge-arrow_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: c09e44c70e5af6b4e8eaf1ed78782481, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 0a9293e0b60751a4f9bf0e3153237c46, type: 3}
   isUpgradingBlendModeMaterials: 0

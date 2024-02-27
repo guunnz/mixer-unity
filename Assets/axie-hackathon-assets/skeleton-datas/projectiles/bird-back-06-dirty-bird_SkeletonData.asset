@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bird-back-06-dirty-bird_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 137ba9d4ec0e4994eb0e5ca06cfc2751, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 82b098f10c588b84c9362b834d85c25b, type: 3}
   isUpgradingBlendModeMaterials: 0

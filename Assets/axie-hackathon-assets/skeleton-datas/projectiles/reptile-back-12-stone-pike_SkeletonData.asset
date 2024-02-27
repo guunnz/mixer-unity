@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: reptile-back-12-stone-pike_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: fa8319ca07c9a784ba31cc1ea879199c, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 19984703d3cb01d46a678fa9f8babefc, type: 3}
   isUpgradingBlendModeMaterials: 0

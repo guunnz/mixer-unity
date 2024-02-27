@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: reptile-horn-02-poo-fling_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 93ae8970715a1b948bcb884771249b40, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 9967d086e6cf04d49b34f3f93acbca0a, type: 3}
   isUpgradingBlendModeMaterials: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: reptile-tail-08-fragile-shield_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: be2fb04e37f4c374aabd77a87dc20154, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 0188c43d9159bab4199cdbb6eb6c9cbc, type: 3}
   isUpgradingBlendModeMaterials: 0

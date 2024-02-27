@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: aquatic-horn-12-star-shuriken_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 600bf725b59eea44db98689882a2e885, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: dd3ba248d9bb6324fbac98f3f31810b3, type: 3}
   isUpgradingBlendModeMaterials: 0

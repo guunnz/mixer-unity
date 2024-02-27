@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bug-tail-08-numbing-lecretion_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: a2a0319d5aa281548b98a8ace71bf712, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 080a8ecf80ebc7649ba5f63c0d9f414e, type: 3}
   isUpgradingBlendModeMaterials: 0

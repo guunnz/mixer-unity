@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b3b4b945939a54ea0b23d3396115fb, type: 3}
   m_Name: bird-tail-02-earlybird_SkeletonData
   m_EditorClassIdentifier: 
-  atlasAssets: []
+  atlasAssets:
+  - {fileID: 11400000, guid: 97ac3eaf2ee80d3439ac68fce37e0c48, type: 2}
   scale: 0.01
   skeletonJSON: {fileID: 4900000, guid: 18adfbaf08a71004aa37f5a7ab7f7401, type: 3}
   isUpgradingBlendModeMaterials: 0
