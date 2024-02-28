@@ -15,15 +15,25 @@ namespace finished3
 
         public bool beingHovered;
 
-        public MouseController movementController;
+        public MyTeam movementController;
+        public EnemyTeam movementController2;
 
-        private MouseController.CharacterState state;
+        private MyTeam.CharacterState state;
 
         private void Start()
         {
-            movementController = FindObjectOfType<MouseController>();
+            if (this.standingOnTile.grid2DLocation.x >= 4)
+            {
+                movementController2 = FindObjectOfType<EnemyTeam>();
+                state = movementController2.GetCharacterState(axieId);
+            }
+            else
+            {
+                movementController = FindObjectOfType<MyTeam>();
+                state = movementController.GetCharacterState(axieId);
+            }
+
             SkeletonAnim = transform.GetChild(0).GetComponent<SkeletonAnimation>();
-            state = movementController.GetCharacterState(axieId);
         }
 
         private void OnMouseOver()
@@ -40,44 +50,47 @@ namespace finished3
 
         private void Update()
         {
+            if (state == null)
+                return;
+
             if (Grabbed)
             {
                 CurrentTarget = null;
-                if (SkeletonAnim.AnimationName == "action/idle/random-03")
-                    return;
                 SkeletonAnim.AnimationName = "action/idle/random-03";
                 SkeletonAnim.loop = true;
+                return;
             }
             else if (beingHovered && CurrentTarget == null)
             {
-                if (SkeletonAnim.AnimationName == "action/idle/random-01")
-                    return;
                 SkeletonAnim.AnimationName = "action/idle/random-01";
                 SkeletonAnim.loop = true;
+                return;
             }
             else if (state.isMoving == false && CurrentTarget == null)
             {
-                if (SkeletonAnim.AnimationName == "action/idle/normal")
-                    return;
                 SkeletonAnim.AnimationName = "action/idle/normal";
                 SkeletonAnim.loop = true;
+                return;
             }
 
-            if (CurrentTarget != null && state.isMoving == false)
+            if (CurrentTarget != null && state.isMoving == false &&
+                Math.Round(Vector2.Distance(CurrentTarget.standingOnTile.grid2DLocation,
+                    standingOnTile.grid2DLocation)) <= (Range + 0.3f))
             {
-                if (SkeletonAnim.AnimationName == "attack/melee/tail-roll")
-                    return;
                 SkeletonAnim.AnimationName = "attack/melee/tail-roll";
                 SkeletonAnim.loop = true;
                 return;
             }
             else if (state.isMoving)
             {
-                if (SkeletonAnim.AnimationName == "action/run")
-                    return;
                 SkeletonAnim.AnimationName = "action/run";
                 SkeletonAnim.loop = true;
                 return;
+            }
+            else
+            {
+                SkeletonAnim.AnimationName = "action/idle/normal";
+                SkeletonAnim.loop = true;
             }
         }
     }

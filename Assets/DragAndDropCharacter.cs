@@ -13,13 +13,13 @@ public class DragAndDropCharacter : MonoBehaviour
     private Vector3 originalPosition;
     private OverlayTile originalTile;
     private List<OverlayTile> allOverlayTiles;
-    private MouseController mouseController;
+    private MyTeam myTeam;
 
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
         allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
-        mouseController = FindObjectOfType<MouseController>(); // Get the MouseController instance
+        myTeam = FindObjectOfType<MyTeam>(); // Get the MouseController instance
     }
 
     void Update()
@@ -39,7 +39,6 @@ public class DragAndDropCharacter : MonoBehaviour
                     selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = true;
                     originalPosition = selectedCharacter.transform.position;
                     originalTile = selectedCharacter.GetComponent<finished3.CharacterInfo>().standingOnTile;
-                    originalTile.isBlocked = false; // Free the original tile
                     selectedCharacter.transform.SetParent(mainCamera.transform);
                 }
             }
@@ -91,7 +90,7 @@ public class DragAndDropCharacter : MonoBehaviour
         OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
         if (tile == null)
         {
-            tile = mouseController.GetCharacters().FirstOrDefault(x => x.beingHovered)?.standingOnTile;
+            tile = myTeam.GetCharacters().FirstOrDefault(x => x.beingHovered)?.standingOnTile;
         }
 
         return tile;
@@ -101,9 +100,9 @@ public class DragAndDropCharacter : MonoBehaviour
     {
         CharacterInfo selectedCharacterInfo = character.GetComponent<CharacterInfo>();
 
-        if (targetTile.isBlocked)
+        if (targetTile.occupied)
         {
-            var allCharacters = mouseController.GetCharacters();
+            var allCharacters = myTeam.GetCharacters();
             CharacterInfo occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
             if (occupyingCharacter != null)
@@ -168,20 +167,11 @@ public class DragAndDropCharacter : MonoBehaviour
                 Vector3.MoveTowards(character.transform.position, targetPosition, Time.deltaTime * 10);
             yield return null;
         }
-
-        // Update the 'isBlocked' state of the tile when the character reaches the target
-        character.standingOnTile.isBlocked = true;
     }
 
     private void MoveCharacterToTile(CharacterInfo character, OverlayTile targetTile)
     {
-        if (character.standingOnTile != null)
-        {
-            character.standingOnTile.isBlocked = false;
-        }
-
         character.transform.position = targetTile.transform.position;
-        targetTile.isBlocked = true;
         character.standingOnTile = targetTile;
 
         // Adjust local scale based on grid X value

@@ -27,7 +27,8 @@ namespace Game
         private Axie2dBuilder builder => Mixer.Builder;
         const bool USE_GRAPHIC = false;
 
-        public MouseController overlay;
+        public MyTeam overlay;
+        public EnemyTeam enemyOverlay;
 
         private int spawnCountMax = 6;
 
@@ -99,7 +100,6 @@ namespace Game
 
         private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId)
         {
-  
             GameObject go = new GameObject("Axie");
             go.transform.SetParent(rootTF, false);
             go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
@@ -115,6 +115,20 @@ namespace Game
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
             runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
+            ///////////////////////////////////////////////////////////////////////////////////////////////////
+            GameObject go2 = new GameObject("Axie");
+            go2.transform.SetParent(rootTF, false);
+            go2.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            go2.transform.eulerAngles = new Vector3(55.26f, go2.transform.eulerAngles.y, go2.transform.eulerAngles.z);
+            go2.AddComponent<CharacterInfo>();
+            go2.tag = "Character";
+            go2.GetComponent<CharacterInfo>().axieId = axieId;
+            enemyOverlay.AddCharacter(go2.GetComponent<CharacterInfo>());
+            
+            SkeletonAnimation runtimeSkeletonAnimation2 =
+                SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
+            runtimeSkeletonAnimation2.transform.SetParent(go2.transform, false);
+            runtimeSkeletonAnimation2.state.SetAnimation(0, "action/idle/normal", true);
         }
 
         private void SpawnSkeletonGraphic(Axie2dBuilderResult builderResult)
