@@ -1,3 +1,4 @@
+using finished3;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -29,7 +30,7 @@ public class MaterialTipColorChanger : MonoBehaviour
     public Vector3 mysticColorMax;
     public Vector3 genesisColorMin;
     public Vector3 genesisColorMax;
-
+    public OverlayTile tile;
     public bool colorAlreadySet = false;
 
     void Awake()
@@ -75,6 +76,14 @@ public class MaterialTipColorChanger : MonoBehaviour
         }
 
         SetTipColor();
+
+        if (tile.beingHovered)
+        {
+            float a = Mathf.Sin(Time.time*4) * 0.0012f;
+            Debug.Log(a);
+            Color colorChange = new Color(a, a, a);
+            color += colorChange;
+        }
     }
 
     // Call this function to change the "_TipColor" property
