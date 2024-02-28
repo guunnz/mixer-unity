@@ -80,7 +80,6 @@ public class MaterialTipColorChanger : MonoBehaviour
         if (tile.beingHovered)
         {
             float a = Mathf.Sin(Time.time*4) * 0.0012f;
-            Debug.Log(a);
             Color colorChange = new Color(a, a, a);
             color += colorChange;
         }
