@@ -891,6 +891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootTF: {fileID: 0}
   overlay: {fileID: 1898098267}
+  enemyOverlay: {fileID: 1898098269}
 --- !u!1 &1473476110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,6 +1207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1898098268}
   - component: {fileID: 1898098267}
+  - component: {fileID: 1898098269}
   m_Layer: 0
   m_Name: MouseController
   m_TagString: Untagged
@@ -1225,8 +1227,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b378b776784c4114eb9ec528d4591bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 3
   movementRange: 30
+  enemyTeam: {fileID: 1898098269}
 --- !u!4 &1898098268
 Transform:
   m_ObjectHideFlags: 0
@@ -1242,6 +1245,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1898098269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898098266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbaa81b599a2866459996db48c81c225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  movementRange: 30
+  enemyTeam: {fileID: 1898098267}
 --- !u!1 &2054786203
 GameObject:
   m_ObjectHideFlags: 0
