@@ -439,14 +439,14 @@ MonoBehaviour:
   landType: 0
   savannahColorMin: {x: 0.8, y: 0.6, z: 0}
   savannahColorMax: {x: 1, y: 0.82, z: 0.4}
-  forestColorMin: {x: 0, y: 0, z: 0}
-  forestColorMax: {x: 0, y: 0, z: 0}
-  arcticColorMin: {x: 0, y: 0, z: 0}
-  arcticColorMax: {x: 0, y: 0, z: 0}
-  mysticColorMin: {x: 0, y: 0, z: 0}
-  mysticColorMax: {x: 0, y: 0, z: 0}
-  genesisColorMin: {x: 0, y: 0, z: 0}
-  genesisColorMax: {x: 0, y: 0, z: 0}
+  forestColorMin: {x: 0.37, y: 0.7, z: 0}
+  forestColorMax: {x: 0.7, y: 1, z: 0.5}
+  arcticColorMin: {x: 0.5, y: 0.75, z: 0.8}
+  arcticColorMax: {x: 0.95, y: 0.95, z: 0.95}
+  mysticColorMin: {x: 0.25, y: 0, z: 0.75}
+  mysticColorMax: {x: 0.6, y: 0.5, z: 1}
+  genesisColorMin: {x: 0.5, y: 0, z: 0.3}
+  genesisColorMax: {x: 1, y: 0.2, z: 0.5}
   tile: {fileID: -4654960145692519100}
   colorAlreadySet: 0
   floorMoveAmount: 0.1
