@@ -65,7 +65,7 @@ namespace finished3
         {
             if (occupied)
             {
-                spriteRenderer.Type = Rectangle.RectangleType.RoundedSolid;
+                spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
                 spriteRenderer.Dashed = false;
                 spriteRenderer.Color = new Vector4 (.9f, 0.9f,0.9f,0.1f);
             }
@@ -78,9 +78,9 @@ namespace finished3
             }
             else
             {
-                spriteRenderer.Type = Rectangle.RectangleType.RoundedSolid;
+                spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
                 spriteRenderer.Dashed = false;
-                spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.5f);
+                spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.3f);
             }
         }
         
