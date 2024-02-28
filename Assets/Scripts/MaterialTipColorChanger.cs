@@ -2,6 +2,7 @@ using finished3;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 public enum LandType
 {
@@ -32,6 +33,9 @@ public class MaterialTipColorChanger : MonoBehaviour
     public Vector3 genesisColorMax;
     public OverlayTile tile;
     public bool colorAlreadySet = false;
+    private bool floorUp;
+    public float floorMoveAmount = 0.1f;
+    private float startYPosition;
 
     void Awake()
     {
@@ -39,6 +43,16 @@ public class MaterialTipColorChanger : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _propBlock = new MaterialPropertyBlock();
     }
+
+    private void Start()
+    {
+        this.transform.position = new Vector3(this.transform.position.x,
+            this.transform.position.y + Random.Range(-0.1f, 0.1f),
+            this.transform.position.z);
+
+        startYPosition = this.transform.position.y;
+    }
+
 
     private void Update()
     {
@@ -79,10 +93,20 @@ public class MaterialTipColorChanger : MonoBehaviour
 
         if (tile.beingHovered)
         {
-            float a = Mathf.Sin(Time.time*4) * 0.0012f;
+            float a = Mathf.Sin(Time.time * 4) * 0.0012f;
             Debug.Log(a);
             Color colorChange = new Color(a, a, a);
             color += colorChange;
+            if (!floorUp)
+            {
+                floorUp = true;
+                transform.DOMoveY(startYPosition + floorMoveAmount, 0.5f);
+            }
+        }
+        else if (floorUp)
+        {
+            floorUp = false;
+            transform.DOMoveY(startYPosition + -floorMoveAmount, 0.5f);
         }
     }
 

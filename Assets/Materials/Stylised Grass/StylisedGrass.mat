@@ -94,14 +94,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _BendDelta: 0.581
-    - _BladeBendCurve: 1.28
+    - _BendDelta: 0.272
+    - _BladeBendCurve: 2.79
     - _BladeBendDistance: 0.01
-    - _BladeHeightMax: 1.03
-    - _BladeHeightMin: 0.78
+    - _BladeHeightMax: 3.51
+    - _BladeHeightMin: 3.32
     - _BladeSegments: 2.56
-    - _BladeWidthMax: 0.1
-    - _BladeWidthMin: 0.1
+    - _BladeWidthMax: 0.84
+    - _BladeWidthMin: 0.77
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -127,7 +127,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _TesselationFactor: 9.7
+    - _TesselationFactor: 3.7
     - _WindFrequency: 0.007
     - _WorkflowMode: 1
     - _ZWrite: 1
@@ -137,7 +137,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TipColor: {r: 0.27, g: 0.6037736, b: 0.253471, a: 1}
-    - _WindVelocity: {r: 0.3, g: 0.24, b: 0.51, a: 0.05}
+    - _WindVelocity: {r: 0.2, g: 0, b: 0, a: 0.05}
   m_BuildTextureStacks: []
 --- !u!114 &6269746813273267319
 MonoBehaviour:
