@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 31
   bodyPart: 2
-  prefab: {fileID: 0}
+  prefab: {fileID: 8593578658295523109, guid: 18041e17ccf3b9c47b62742b06420fb0, type: 3}

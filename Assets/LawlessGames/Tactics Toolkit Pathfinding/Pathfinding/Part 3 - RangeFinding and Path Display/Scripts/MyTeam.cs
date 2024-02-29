@@ -206,6 +206,25 @@ namespace finished3
 
         private void MoveAlongPath(CharacterInfo character, CharacterState state)
         {
+            CharacterInfo closestCharacter = FindClosestCharacter(character);
+            if (closestCharacter != null)
+            {
+                OverlayTile targetTile = closestCharacter.standingOnTile;
+                state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
+                int distanceToClosestCharacterGrid =
+                    GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
+
+                character.CurrentTarget = closestCharacter;
+                if (character.Range > 1)
+                {
+                    if (distanceToClosestCharacterGrid <= (int)character.Range)
+                    {
+                        state.isMoving = false;
+                        return;
+                    }
+                }
+            }
+
             var step = speed * Time.deltaTime;
             if (state.path.Count == 0)
             {
@@ -217,7 +236,7 @@ namespace finished3
 
 
             var targetPosition = state.path[0].transform.position;
-            
+
             character.transform.position = Vector3.MoveTowards(character.transform.position, targetPosition, step);
 
             if (Vector3.Distance(character.transform.position, targetPosition) < 0.1f)

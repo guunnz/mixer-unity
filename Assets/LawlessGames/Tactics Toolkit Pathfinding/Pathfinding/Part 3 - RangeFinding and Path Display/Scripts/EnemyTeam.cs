@@ -44,6 +44,8 @@ namespace finished3
             {
                 foreach (var character in characters)
                 {
+                    if (character.Key == null)
+                        continue;
                     if (character.Value.isMoving && character.Value.path.Count > 0)
                     {
                         // Check if next tile in path is occupied
@@ -175,8 +177,13 @@ namespace finished3
                     Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
                 // Check if the path is reachable
-                var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile, GetInRangeTiles(character));
-                if (path == null) continue; // Skip if no path is found
+                if ((int)character.Range == 1)
+                {
+                    var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
+                        GetInRangeTiles(character));
+                    if (path == null) continue; // Skip if no path is found
+                }
+          
 
                 if (manhattanDistance < minManhattanDistance)
                 {
@@ -199,9 +206,26 @@ namespace finished3
         }
 
 
-
         private void MoveAlongPath(CharacterInfo character, MyTeam.CharacterState state)
         {
+            CharacterInfo closestCharacter = FindClosestCharacter(character);
+            if (closestCharacter != null)
+            {
+                OverlayTile targetTile = closestCharacter.standingOnTile;
+                state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
+                int distanceToClosestCharacterGrid =
+                    GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
+
+                character.CurrentTarget = closestCharacter;
+                if (character.Range > 1)
+                {
+                    if (distanceToClosestCharacterGrid <= (int)character.Range)
+                    {
+                        state.isMoving = false;
+                        return;
+                    }
+                }
+            }
             var step = speed * Time.deltaTime;
             if (state.path.Count == 0)
             {

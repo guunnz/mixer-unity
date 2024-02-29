@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Spine;
+using Spine.Unity;
 using UnityEngine;
 using CharacterInfo = finished3.CharacterInfo;
 
@@ -9,34 +11,30 @@ public class SkillLauncher : MonoBehaviour
 {
     public AxieBodyPartsManager skillList;
 
-    public void Update()
+    static public SkillLauncher Instance;
+
+    private void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Instance != null)
         {
-            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[0].transform,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
-                
-            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[2].transform,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
-            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[3].transform,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
-            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[4].transform,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
-            ThrowSkill(SkillName.Anemone, AxieClass.Aquatic, BodyPart.Horn,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[5].transform,
-                FindObjectsByType<CharacterInfo>(FindObjectsSortMode.None)[1].transform);
+            Destroy(this.gameObject);
+            return;
         }
+
+        Instance = this;
     }
 
-    public void ThrowSkill(SkillName skillName, AxieClass axieClass, BodyPart axiebodyPart, Transform target,
-        Transform origin)
+    public float ThrowSkill(SkillName skillName, AxieClass axieClass, BodyPart axiebodyPart, Transform target,
+        Transform origin, SkeletonAnimation skeletonAnimation,CharacterInfo opponent)
     {
-        AxieBodyPart part = skillList.axieBodyParts.Single(x => x.skillName == skillName && x.bodyPart == axiebodyPart);
+        AxieBodyPart part =
+            skillList.axieBodyParts.FirstOrDefault(x => x.skillName == skillName && x.bodyPart == axiebodyPart);
 
+        if (part == null || part.prefab == null)
+        {
+            Debug.Log(skillName + " " + axiebodyPart);
+            return 0.5f;
+        }
 
         Skill skill = Instantiate(part.prefab).GetComponent<Skill>();
 
@@ -44,5 +42,9 @@ public class SkillLauncher : MonoBehaviour
         skill.target = target;
         skill.origin = origin;
         skill.@class = axieClass;
+        skill.skeletonAnimation = skeletonAnimation;
+        skill.opponent = opponent;
+
+        return skill.totalDuration;
     }
 }

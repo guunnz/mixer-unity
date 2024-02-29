@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Spine.Unity;
 using UnityEngine;
 
@@ -25,6 +27,17 @@ namespace finished3
         private CharacterInfo[] allCharacters;
 
         private bool imGood;
+        public bool CastingSpell;
+
+        public float Mana = 0;
+        private float MaxManaAux = 50;
+        internal float MinManaAux = 0;
+
+        public SkillName skillName;
+        public AxieClass axieClass;
+        public BodyPart bodyPart;
+
+        public float HP = 100;
 
         private void Start()
         {
@@ -39,6 +52,9 @@ namespace finished3
                 movementController = FindObjectOfType<MyTeam>();
                 state = movementController.GetCharacterState(axieId);
             }
+
+            if (this.axieClass == AxieClass.Bird)
+                Range = 4;
 
             SkeletonAnim = transform.GetChild(0).GetComponent<SkeletonAnimation>();
             SetAllCharacters();
@@ -61,10 +77,30 @@ namespace finished3
             beingHovered = false;
         }
 
+        public void CastSpell()
+        {
+            CastingSpell = true;
+            SkeletonAnim.loop = false;
+            StartCoroutine(ICastSpell());
+        }
+
+        IEnumerator ICastSpell()
+        {
+            float timeToWait = SkillLauncher.Instance.ThrowSkill(skillName, axieClass, bodyPart,
+                CurrentTarget.transform, this.transform, SkeletonAnim, CurrentTarget);
+            yield return new WaitForSeconds(timeToWait + timeToWait / 2);
+            CastingSpell = false;
+            Mana = MinManaAux;
+            SkeletonAnim.loop = true;
+        }
+
         private void Update()
         {
             if (Killed)
                 this.gameObject.SetActive(false);
+
+            if (CastingSpell)
+                return;
 
             if (state == null)
                 return;
@@ -77,8 +113,15 @@ namespace finished3
                 return;
             }
 
-     
-            
+            Mana += Time.deltaTime;
+
+            if (Mana >= MaxManaAux)
+            {
+                CastSpell();
+                Mana = 0;
+                return;
+            }
+
             if (Grabbed)
             {
                 CurrentTarget = null;
@@ -115,12 +158,34 @@ namespace finished3
                 }
                 else
                 {
-                    transform.localScale = new Vector3(CurrentTarget.transform.position.x > this.transform.position.x ? -0.2f : 0.2f, transform.localScale.y, transform.localScale.z);
+                    transform.localScale =
+                        new Vector3(CurrentTarget.transform.position.x > this.transform.position.x ? -0.2f : 0.2f,
+                            transform.localScale.y, transform.localScale.z);
                 }
 
 
                 fighting = true;
-                SkeletonAnim.AnimationName = "attack/melee/tail-roll";
+                if (axieClass == AxieClass.Bird)
+                {
+                    SkeletonAnim.AnimationName = "attack/ranged/cast-multi";
+                }
+                else if (axieClass == AxieClass.Aquatic)
+                {
+                    SkeletonAnim.AnimationName = "attack/melee/horn-gore";
+                }
+                else if (axieClass == AxieClass.Beast)
+                {
+                    SkeletonAnim.AnimationName = "attack/melee/tail-roll";
+                }
+                else if (axieClass == AxieClass.Plant)
+                {
+                    SkeletonAnim.AnimationName = "attack/melee/mouth-bite";
+                }
+                else
+                {
+                    SkeletonAnim.AnimationName = "attack/melee/normal-attack";
+                }
+
                 SkeletonAnim.loop = true;
                 return;
             }

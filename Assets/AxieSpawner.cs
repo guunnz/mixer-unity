@@ -7,6 +7,7 @@ using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
 using CharacterInfo = finished3.CharacterInfo;
+
 public enum AxieClass
 {
     Beast,
@@ -19,6 +20,7 @@ public enum AxieClass
     Dawn,
     Dusk
 }
+
 namespace Game
 {
     public class AxieSpawner : MonoBehaviour
@@ -37,14 +39,15 @@ namespace Game
             Mixer.Init();
         }
 
-        public void SpawnAxieById(string axieId)
+        public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class, GetAxiesExample.Stats stats)
         {
-            StartCoroutine(GetAxiesGenesAndSpawn(axieId));
+            StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats));
         }
 
         bool isFetchingGenes = false;
 
-        private IEnumerator GetAxiesGenesAndSpawn(string axieId)
+        private IEnumerator GetAxiesGenesAndSpawn(string axieId, BodyPart bodyPart, SkillName skillName,
+            AxieClass @class, GetAxiesExample.Stats stats)
         {
             isFetchingGenes = true;
             string searchString = "{ axie (axieId: \"" + axieId + "\") { id, genes, newGenes}}";
@@ -67,7 +70,7 @@ namespace Game
                     JObject jResult = JObject.Parse(result);
                     string genesStr = (string)jResult["data"]["axie"]["newGenes"];
                     Debug.Log(genesStr);
-                    ProcessMixer(axieId, genesStr, USE_GRAPHIC);
+                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, bodyPart, skillName, @class,stats);
                 }
             }
 
@@ -75,7 +78,9 @@ namespace Game
         }
 
 
-        private void ProcessMixer(string axieId, string genesStr, bool isGraphic)
+        private void ProcessMixer(string axieId, string genesStr, bool isGraphic, BodyPart bodyPart,
+            SkillName skillName,
+            AxieClass @class,GetAxiesExample.Stats stats)
         {
             if (string.IsNullOrEmpty(genesStr))
             {
@@ -94,11 +99,15 @@ namespace Game
             }
             else
             {
-                SpawnSkeletonAnimation(builderResult, axieId);
+                SpawnSkeletonAnimation(builderResult, axieId, bodyPart,
+                    skillName,
+                    @class,stats);
             }
         }
 
-        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId)
+        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId, BodyPart bodyPart,
+            SkillName skillName,
+            AxieClass @class,GetAxiesExample.Stats stats)
         {
             GameObject go = new GameObject("Axie");
             go.transform.SetParent(rootTF, false);
@@ -109,8 +118,15 @@ namespace Game
             go.AddComponent<BoxCollider>();
             go.GetComponent<BoxCollider>().size = new Vector3(4.5f, 4, 1);
             go.GetComponent<BoxCollider>().center = new Vector3(0, 2, 0);
-            go.GetComponent<CharacterInfo>().axieId = axieId;
-            overlay.AddCharacter(go.GetComponent<CharacterInfo>());
+
+            CharacterInfo info = go.GetComponent<CharacterInfo>();
+            info.axieId = axieId;
+            info.skillName = skillName;
+            info.axieClass = @class;
+            info.bodyPart = bodyPart;
+            info.MinManaAux = stats.skill;
+            info.Mana = stats.skill;
+            overlay.AddCharacter(info);
             SkeletonAnimation runtimeSkeletonAnimation =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
@@ -121,10 +137,16 @@ namespace Game
             go2.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             go2.transform.eulerAngles = new Vector3(55.26f, go2.transform.eulerAngles.y, go2.transform.eulerAngles.z);
             go2.AddComponent<CharacterInfo>();
+            CharacterInfo info2 = go2.GetComponent<CharacterInfo>();
+            info2.axieId = axieId;
+            info2.skillName = skillName;
+            info2.axieClass = @class;
+            info2.bodyPart = bodyPart;
+            info2.MinManaAux = stats.skill;
+            info2.Mana = stats.skill;
             go2.tag = "Character";
-            go2.GetComponent<CharacterInfo>().axieId = axieId;
-            enemyOverlay.AddCharacter(go2.GetComponent<CharacterInfo>());
-            
+            enemyOverlay.AddCharacter(info2);
+
             SkeletonAnimation runtimeSkeletonAnimation2 =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation2.transform.SetParent(go2.transform, false);

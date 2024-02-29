@@ -55,4 +55,5 @@ MonoBehaviour:
       type: 3}
     SkillDuration: 0.167
     StartFromOrigin: 0
+  animationToPlay: 3
   totalDuration: 0.567

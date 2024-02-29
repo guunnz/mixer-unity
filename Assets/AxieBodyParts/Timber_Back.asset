@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
   m_Name: Timber_Back
   m_EditorClassIdentifier: 
-  skillName: 56
+  skillName: 57
   bodyPart: 4
   prefab: {fileID: 0}

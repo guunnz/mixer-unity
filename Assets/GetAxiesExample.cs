@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using SimpleGraphQL;
 using System.Collections.Generic;
+using System.Linq;
 using Game;
 
 public class GetAxiesExample : MonoBehaviour
@@ -11,21 +12,44 @@ public class GetAxiesExample : MonoBehaviour
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7"; // Replace with your actual API key
     public AxieSpawner axieSpawner;
     public int spawnCountMax = 0;
+
     void Start()
     {
         graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
         string query = @"
-        query MyQuery {
-          axies(owner: """ + address + @""") {
-            results {
-              genes
+    query MyQuery {
+      axies(owner: """ + address + @""") {
+        results {
+          birthDate
+          name
+          genes
+          id
+          class
+          parts {
+            class
+            id
+            name
+            type
+            abilities {
+              attack
+              attackType
+              name
               id
-              image
-              owner
-              class
+              effectIconUrl
+              defense
+              backgroundUrl
             }
           }
-        }";
+          stats {
+            speed
+            skill
+            morale
+            hp
+          }
+          bodyShape
+        }
+      }
+    }";
         StartCoroutine(RequestGraphQL(query));
     }
 
@@ -58,13 +82,27 @@ public class GetAxiesExample : MonoBehaviour
         {
             string responseString = task.Result;
             var axiesData = JsonUtility.FromJson<AxiesData>(responseString);
-            foreach (var axiesResult in axiesData.data.axies.results)
-            {          
-                if (spawnCountMax >= 5)
-                    break;
-                spawnCountMax++;
-               axieSpawner.SpawnAxieById(axiesResult.id);
-            }
+            var axiesResults = axiesData.data.axies.results;
+            // for (int i = axiesResults.Length - 9; i >= 0; i--)
+            // {
+            //     if (spawnCountMax >= 3)
+            //         break;
+            //     spawnCountMax++;
+            //     axieSpawner.SpawnAxieById(axiesResults[i].id);
+            // }
+
+            Axie bird = axiesResults.FirstOrDefault(x => x.@class.Contains("Bird"));
+            Axie beast = axiesResults.FirstOrDefault(x => x.@class.Contains("Beast"));
+            Axie dusk = axiesResults.FirstOrDefault(x => x.@class.Contains("Dusk"));
+            Axie plant = axiesResults
+                .Where(x => x.@class.Contains("Plant") && x.parts.Any(y => y.name.ToLower() == "rose bud")).ToList()[0];
+            Axie aqua = axiesResults.FirstOrDefault(x => x.@class.Contains("Aqua"));
+
+            axieSpawner.SpawnAxieById(bird.id, BodyPart.Tail, SkillName.RiskyFeather, AxieClass.Bird, bird.stats);
+            axieSpawner.SpawnAxieById(beast.id, BodyPart.Back, SkillName.Ronin, AxieClass.Beast, beast.stats);
+            axieSpawner.SpawnAxieById(dusk.id, BodyPart.Mouth, SkillName.RiskyFish, AxieClass.Dusk, dusk.stats);
+            axieSpawner.SpawnAxieById(plant.id, BodyPart.Horn, SkillName.Rosebud, AxieClass.Plant, plant.stats);
+            axieSpawner.SpawnAxieById(aqua.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Aquatic, aqua.stats);
         }
         catch (System.Exception ex)
         {
@@ -98,10 +136,44 @@ public class GetAxiesExample : MonoBehaviour
     [System.Serializable]
     public class Axie
     {
+        public long birthDate;
+        public string name;
         public string genes;
         public string id;
-        public string image;
-        public string owner;
         public string @class;
+        public Part[] parts;
+        public Stats stats;
+        public string bodyShape;
+    }
+
+    [System.Serializable]
+    public class Part
+    {
+        public string @class;
+        public string id;
+        public string name;
+        public string type;
+        public Ability[] abilities;
+    }
+
+    [System.Serializable]
+    public class Ability
+    {
+        public int attack;
+        public string attackType;
+        public string name;
+        public string id;
+        public string effectIconUrl;
+        public int defense;
+        public string backgroundUrl;
+    }
+
+    [System.Serializable]
+    public class Stats
+    {
+        public int speed;
+        public int skill;
+        public int morale;
+        public int hp;
     }
 }

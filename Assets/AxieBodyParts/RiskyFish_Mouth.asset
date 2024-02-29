@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
   m_Name: RiskyFish_Mouth
   m_EditorClassIdentifier: 
-  skillName: 46
+  skillName: 47
   bodyPart: 3
-  prefab: {fileID: 0}
+  prefab: {fileID: 3133670662096343493, guid: f991069a19957414397db2dfb5b78d94, type: 3}

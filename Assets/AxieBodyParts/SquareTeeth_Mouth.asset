@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
   m_Name: SquareTeeth_Mouth
   m_EditorClassIdentifier: 
-  skillName: 41
+  skillName: 42
   bodyPart: 3
   prefab: {fileID: 0}

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Serialization;
+using CharacterInfo = finished3.CharacterInfo;
 
 [System.Serializable]
 public class SkillVFX
@@ -69,6 +70,7 @@ public enum SkillName
     Pocky,
     Kestrel,
     Anemone,
+    HerosBane,
 
     // Mouths
     Confident,
@@ -97,6 +99,7 @@ public enum SkillName
     GarishWorm,
     SnailShell,
     Bunny,
+    Ronin,
 
     // Tails
     GranmasFan,
@@ -110,7 +113,8 @@ public enum SkillName
     Brush,
     Cattail,
     Cucumber,
-    Furball
+    Furball,
+    RiskyFeather
 }
 
 
@@ -120,7 +124,11 @@ public class Skill : MonoBehaviour
     internal Transform target;
     internal Transform origin;
     internal AxieClass @class;
+    public float Damage;
+    public AxieAnimation animationToPlay;
+    internal SkeletonAnimation skeletonAnimation;
     internal BodyPart bodyPart;
+    internal CharacterInfo opponent;
     public float totalDuration;
 
     private void Start()
@@ -131,6 +139,21 @@ public class Skill : MonoBehaviour
     private IEnumerator LaunchSkill()
     {
         Destroy(this.gameObject, totalDuration);
+
+        string animationName = animationToPlay.ToString();
+
+// Find the last underscore and replace it with a hyphen
+        int lastUnderscoreIndex = animationName.LastIndexOf('_');
+        if (lastUnderscoreIndex != -1)
+        {
+            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
+                            animationName.Substring(lastUnderscoreIndex + 1);
+        }
+
+// Replace the remaining underscores with slashes
+        animationName = animationName.Replace("_", "/");
+
+        skeletonAnimation.AnimationName = animationName;
 
         foreach (SkillVFX skill in vfxToThrow)
         {
@@ -148,11 +171,16 @@ public class Skill : MonoBehaviour
 
             if (skill.StartFromOrigin)
             {
-                vfxSpawned.GetComponent<ProjectileMover>().MoveToTarget(this.target, skill.SkillDuration);
+                ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                if (projectileMover != null)
+                    projectileMover.MoveToTarget(this.target, skill.SkillDuration);
             }
 
-            StartCoroutine(Destroy(vfxSpawned, skill.SkillDuration));
+            StartCoroutine(Destroy(vfxSpawned.gameObject, skill.SkillDuration));
         }
+
+        opponent.HP -= this.Damage;
     }
 
     private IEnumerator Destroy(GameObject obj, float timing)
