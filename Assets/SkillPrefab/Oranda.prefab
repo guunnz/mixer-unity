@@ -55,5 +55,6 @@ MonoBehaviour:
       type: 3}
     SkillDuration: 0.167
     StartFromOrigin: 0
+  Damage: 30
   animationToPlay: 2
   totalDuration: 1.733

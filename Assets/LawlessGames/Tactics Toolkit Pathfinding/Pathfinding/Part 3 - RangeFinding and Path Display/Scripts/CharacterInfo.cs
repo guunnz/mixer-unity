@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Spine.Unity;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace finished3
 {
@@ -17,8 +19,12 @@ namespace finished3
 
         public bool beingHovered;
 
-        public MyTeam movementController;
-        public EnemyTeam movementController2;
+        [FormerlySerializedAs("movementController")]
+        public MyTeam goodTeam;
+
+        [FormerlySerializedAs("movementController2")]
+        public EnemyTeam badTeam;
+
         public bool Killed;
 
         private MyTeam.CharacterState state;
@@ -38,19 +44,23 @@ namespace finished3
         public BodyPart bodyPart;
 
         public float HP = 100;
+        private float attackSpeedTime = 0;
+        private float attackSpeedDuration = 1f;
 
         private void Start()
         {
             if (this.standingOnTile.grid2DLocation.x >= 4)
             {
-                movementController2 = FindObjectOfType<EnemyTeam>();
-                state = movementController2.GetCharacterState(axieId);
+                badTeam = FindObjectOfType<EnemyTeam>();
+                goodTeam = FindObjectOfType<MyTeam>();
+                state = badTeam.GetCharacterState(axieId);
             }
             else
             {
                 imGood = true;
-                movementController = FindObjectOfType<MyTeam>();
-                state = movementController.GetCharacterState(axieId);
+                badTeam = FindObjectOfType<EnemyTeam>();
+                goodTeam = FindObjectOfType<MyTeam>();
+                state = goodTeam.GetCharacterState(axieId);
             }
 
             if (this.axieClass == AxieClass.Bird)
@@ -58,6 +68,10 @@ namespace finished3
 
             SkeletonAnim = transform.GetChild(0).GetComponent<SkeletonAnimation>();
             SetAllCharacters();
+            if (imGood)
+            {
+                SkeletonAnim.GetComponent<Renderer>().sortingOrder = 50;
+            }
         }
 
         public void SetAllCharacters()
@@ -87,8 +101,9 @@ namespace finished3
         IEnumerator ICastSpell()
         {
             float timeToWait = SkillLauncher.Instance.ThrowSkill(skillName, axieClass, bodyPart,
-                CurrentTarget.transform, this.transform, SkeletonAnim, CurrentTarget);
-            yield return new WaitForSeconds(timeToWait + timeToWait / 2);
+                CurrentTarget.transform, this.transform, SkeletonAnim,
+                skillName == SkillName.Rosebud ? this : CurrentTarget);
+            yield return new WaitForSeconds(timeToWait);
             CastingSpell = false;
             Mana = MinManaAux;
             SkeletonAnim.loop = true;
@@ -96,6 +111,20 @@ namespace finished3
 
         private void Update()
         {
+            if (imGood && badTeam.GetCharacters().All(x => !x.gameObject.activeSelf) ||
+                !imGood && goodTeam.GetCharacters().All(x => !x.gameObject.activeSelf))
+            {
+                fighting = false;
+                SkeletonAnim.AnimationName = "activity/victory-pose-back-flip";
+                SkeletonAnim.loop = true;
+                return;
+            }
+
+            if (HP <= 0)
+            {
+                Killed = true;
+            }
+
             if (Killed)
                 this.gameObject.SetActive(false);
 
@@ -165,6 +194,20 @@ namespace finished3
 
 
                 fighting = true;
+
+                attackSpeedTime += Time.deltaTime;
+
+                if (attackSpeedTime >= attackSpeedDuration)
+                {
+                    if (axieClass == AxieClass.Bird)
+                    {
+                        AutoAttackMaNAGER.instance.SpawnProjectileBird(CurrentTarget.transform, this.transform);
+                    }
+
+                    CurrentTarget.HP -= 5;
+                    attackSpeedTime = 0;
+                }
+
                 if (axieClass == AxieClass.Bird)
                 {
                     SkeletonAnim.AnimationName = "attack/ranged/cast-multi";
