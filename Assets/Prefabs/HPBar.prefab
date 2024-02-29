@@ -65,7 +65,7 @@ MonoBehaviour:
   height: 0.2
   type: 1
   cornerRadiusMode: 1
-  cornerRadii: {x: 0, y: 0, z: 0, w: 1}
+  cornerRadii: {x: 0, y: 0, z: 0, w: 0}
   thickness: 0.1
   thicknessSpace: 0
   matchDashSpacingToSize: 1
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 1294207702427286364}
   - component: {fileID: 8214618162558295966}
   m_Layer: 0
-  m_Name: mini-aquatic
+  m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,8 +164,8 @@ Transform:
   m_GameObject: {fileID: 793524399203984922}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.64, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalPosition: {x: -0.6533688, y: 0.060699463, z: 0}
+  m_LocalScale: {x: 0.46364003, y: 0.46364003, z: 1.1591}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8256826729767453342}
@@ -250,8 +250,8 @@ Transform:
   m_GameObject: {fileID: 2953819419641393153}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: -0.21, z: 0}
-  m_LocalScale: {x: 1.27, y: 1, z: 1}
+  m_LocalPosition: {x: -0.48, y: -0.097000554, z: 0}
+  m_LocalScale: {x: 1.27, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6369905309610843708}
@@ -288,7 +288,7 @@ MonoBehaviour:
   height: 0.2
   type: 1
   cornerRadiusMode: 1
-  cornerRadii: {x: 0, y: 0, z: 0, w: 1}
+  cornerRadii: {x: 0, y: 0, z: 0, w: 0}
   thickness: 0.1
   thicknessSpace: 0
   matchDashSpacingToSize: 1
@@ -389,7 +389,7 @@ Transform:
   m_GameObject: {fileID: 4032303739672547441}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 0.013, z: 0}
+  m_LocalPosition: {x: -0.48, y: 0.013, z: 0}
   m_LocalScale: {x: 1.27, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -528,7 +528,7 @@ Transform:
   m_GameObject: {fileID: 6129120978485451438}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.012168765, y: 0.057699203, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -561,11 +561,11 @@ MonoBehaviour:
   stencilReadMask: 255
   stencilWriteMask: 255
   pivot: 1
-  width: 1.79
-  height: 0.47
+  width: 1.63
+  height: 0.33
   type: 1
-  cornerRadiusMode: 0
-  cornerRadii: {x: 0.12, y: 0.12, z: 0.12, w: 0.12}
+  cornerRadiusMode: 1
+  cornerRadii: {x: 1.88, y: 0.51, z: 0.12, w: 0}
   thickness: 0.1
   thicknessSpace: 0
   matchDashSpacingToSize: 1
