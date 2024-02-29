@@ -174,6 +174,10 @@ namespace finished3
                     Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                     Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
+                // Check if the path is reachable
+                var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile, GetInRangeTiles(character));
+                if (path == null) continue; // Skip if no path is found
+
                 if (manhattanDistance < minManhattanDistance)
                 {
                     minManhattanDistance = manhattanDistance;
@@ -193,6 +197,7 @@ namespace finished3
 
             return closestCharacter;
         }
+
 
 
         private void MoveAlongPath(CharacterInfo character, MyTeam.CharacterState state)

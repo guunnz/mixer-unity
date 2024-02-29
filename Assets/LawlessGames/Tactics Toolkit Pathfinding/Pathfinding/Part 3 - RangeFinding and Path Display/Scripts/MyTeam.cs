@@ -79,6 +79,11 @@ namespace finished3
                     {
                         MoveTowardsClosestCharacter(character.Key);
                     }
+                    else
+                    {
+                        var state = characters[character.Key];
+                        state.isMoving = false;
+                    }
                 }
             }
         }
@@ -124,7 +129,7 @@ namespace finished3
                 state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
                 int distanceToClosestCharacterGrid =
                     GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
-                
+
                 character.CurrentTarget = closestCharacter;
                 if (character.Range > 1)
                 {
@@ -134,7 +139,7 @@ namespace finished3
                         return;
                     }
                 }
-              
+
 
                 // Check if the closest character is already at the minimum allowed distance
                 float distanceToClosestCharacterX =
@@ -173,6 +178,11 @@ namespace finished3
                     Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                     Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
+                // Check if the path is reachable
+                var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
+                    GetInRangeTiles(character));
+                if (path == null) continue; // Skip if no path is found
+
                 if (manhattanDistance < minManhattanDistance)
                 {
                     minManhattanDistance = manhattanDistance;
@@ -207,7 +217,7 @@ namespace finished3
 
 
             var targetPosition = state.path[0].transform.position;
-
+            
             character.transform.position = Vector3.MoveTowards(character.transform.position, targetPosition, step);
 
             if (Vector3.Distance(character.transform.position, targetPosition) < 0.1f)
@@ -227,7 +237,12 @@ namespace finished3
                 {
                     state.isMoving = false; // Stop moving if next tile is occupied
                     RecalculatePath(character, state);
+                    return;
                 }
+            }
+            else
+            {
+                state.isMoving = true;
             }
         }
 

@@ -68,14 +68,6 @@ namespace finished3
 
             if (state == null)
                 return;
-            
-            if (state.isMoving)
-            {
-                fighting = false;
-                SkeletonAnim.AnimationName = "action/run";
-                SkeletonAnim.loop = true;
-                return;
-            }
 
             if (CurrentTarget == null)
             {

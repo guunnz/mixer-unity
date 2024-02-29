@@ -23,7 +23,7 @@ MonoBehaviour:
     additiveMaterials: []
     multiplyMaterials:
     - pageName: bear-dad.png
-      material: {fileID: 2100000, guid: d2df5236551637a45b3d151d6832b181, type: 2}
+      material: {fileID: 2100000, guid: 7453c055e75efd94f8ff4e76392597f8, type: 2}
     screenMaterials: []
   skeletonDataModifiers: []
   fromAnimation: []

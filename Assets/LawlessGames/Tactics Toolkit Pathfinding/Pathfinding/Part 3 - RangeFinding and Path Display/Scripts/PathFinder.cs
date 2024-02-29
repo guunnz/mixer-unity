@@ -14,7 +14,6 @@ namespace finished3
             List<OverlayTile> openList = new List<OverlayTile>();
             HashSet<OverlayTile> closedList = new HashSet<OverlayTile>();
 
-            // Track the closest reachable tile to the end
             OverlayTile closestTile = start;
             int closestDistance = GetManhattanDistance(start, end);
 
@@ -54,7 +53,6 @@ namespace finished3
                     tile.G = GetManhattanDistance(start, tile);
                     tile.H = GetManhattanDistance(end, tile);
 
-                    // Check if this tile is a new closest tile to the end
                     int distanceToEnd = GetManhattanDistance(tile, end);
                     if (distanceToEnd < closestDistance)
                     {
@@ -71,9 +69,10 @@ namespace finished3
                 }
             }
 
-            // If end is unreachable, return the path to the closest reachable tile
-            return closestTile == start ? new List<OverlayTile>() : GetFinishedList(start, closestTile);
+            // Return null if the closest tile is more than one step away from the target
+            return closestDistance <= 1 ? GetFinishedList(start, closestTile) : null;
         }
+
 
         private int GetManhattanDistance(OverlayTile tile1, OverlayTile tile2)
         {
