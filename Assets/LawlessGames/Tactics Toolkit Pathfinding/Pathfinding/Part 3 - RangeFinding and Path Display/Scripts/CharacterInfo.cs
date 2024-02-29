@@ -133,8 +133,21 @@ namespace finished3
 
             if (state == null)
                 return;
-
-            if (CurrentTarget == null)
+            
+            if (Grabbed)
+            {
+                CurrentTarget = null;
+                SkeletonAnim.AnimationName = "action/idle/random-03";
+                SkeletonAnim.loop = true;
+                return;
+            }
+            else if (beingHovered && CurrentTarget == null)
+            {
+                SkeletonAnim.AnimationName = "action/idle/random-01";
+                SkeletonAnim.loop = true;
+                return;
+            }
+            else if (state.isMoving == false && CurrentTarget == null)
             {
                 fighting = false;
                 SkeletonAnim.AnimationName = "action/idle/normal";
@@ -151,25 +164,7 @@ namespace finished3
                 return;
             }
 
-            if (Grabbed)
-            {
-                CurrentTarget = null;
-                SkeletonAnim.AnimationName = "action/idle/random-03";
-                SkeletonAnim.loop = true;
-                return;
-            }
-            else if (beingHovered && CurrentTarget == null)
-            {
-                SkeletonAnim.AnimationName = "action/idle/random-01";
-                SkeletonAnim.loop = true;
-                return;
-            }
-            else if (state.isMoving == false && CurrentTarget == null)
-            {
-                SkeletonAnim.AnimationName = "action/idle/normal";
-                SkeletonAnim.loop = true;
-                return;
-            }
+
 
             if (CurrentTarget != null && state.isMoving == false &&
                 GetManhattanDistancePlayer(this.transform.position, CurrentTarget.transform.position) <= Range)

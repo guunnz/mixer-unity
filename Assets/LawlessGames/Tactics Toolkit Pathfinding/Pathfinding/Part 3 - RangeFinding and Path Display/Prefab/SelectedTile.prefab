@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d70d430c760444b90383c86417ad34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  landType: 1
+  landType: 4
   savannahColorMin: {x: 0.8, y: 0.6, z: 0}
   savannahColorMax: {x: 1, y: 0.82, z: 0.4}
   forestColorMin: {x: 0.37, y: 0.7, z: 0}
