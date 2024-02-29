@@ -22,7 +22,7 @@ namespace finished3
 
         public List<CharacterInfo> GetCharacters()
         {
-            return new List<CharacterInfo>(characters.Keys);
+            return new List<CharacterInfo>(characters.Keys).Where(x => !x.Killed).ToList();
         }
 
         public MyTeam.CharacterState GetCharacterState(string axieId)
@@ -30,10 +30,17 @@ namespace finished3
             return characters[GetCharacters().Single(x => x.axieId == axieId)];
         }
 
+        private bool battleStarted = false;
 
         void Update()
         {
             if (Input.GetKey(KeyCode.H)) // Move all characters
+            {
+                battleStarted = true;
+            }
+
+
+            if (battleStarted)
             {
                 foreach (var character in characters)
                 {
@@ -115,16 +122,28 @@ namespace finished3
             {
                 OverlayTile targetTile = closestCharacter.standingOnTile;
                 state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
-
                 character.CurrentTarget = closestCharacter;
-
-                // Check if the closest character is already at the minimum allowed distance
-                float distanceToClosestCharacter =
-                    Vector3.Distance(character.transform.position, closestCharacter.transform.position);
                 int distanceToClosestCharacterGrid =
                     GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
-                if (distanceToClosestCharacter > 0.9f && distanceToClosestCharacterGrid >= 1 &&
-                    distanceToClosestCharacterGrid > character.Range)
+                if (character.Range > 1)
+                {
+                    if (distanceToClosestCharacterGrid <= (int)character.Range)
+                    {
+                        state.isMoving = false;
+                        return;
+                    }
+                }
+
+
+                // Check if the closest character is already at the minimum allowed distance
+                float distanceToClosestCharacterX =
+                    Mathf.Abs(character.transform.position.x - closestCharacter.transform.position.x);
+
+
+                if (distanceToClosestCharacterGrid > character.Range + 1 || distanceToClosestCharacterGrid >= 1 &&
+                    (character.standingOnTile.grid2DLocation.y == closestCharacter.standingOnTile.grid2DLocation.y
+                        ? distanceToClosestCharacterX > character.Range
+                        : distanceToClosestCharacterX > 0.1f || distanceToClosestCharacterGrid <= character.Range + 1))
                 {
                     MoveAlongPath(character, state);
                 }
@@ -146,19 +165,29 @@ namespace finished3
         private CharacterInfo FindClosestCharacter(CharacterInfo character)
         {
             CharacterInfo closestCharacter = null;
-            int minPathLength = int.MaxValue;
+            int minManhattanDistance = int.MaxValue;
+            float minTransformDistance = float.MaxValue;
 
             foreach (var other in enemyTeam.GetCharacters())
             {
-                if (other == character) continue; // Skip the same character
+                int manhattanDistance =
+                    Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
+                    Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
-                List<OverlayTile> pathToCharacter = pathFinder.FindPath(character.standingOnTile, other.standingOnTile, GetInRangeTiles(character));
-
-                // Check path length
-                if (pathToCharacter.Count > 0 && pathToCharacter.Count < minPathLength)
+                if (manhattanDistance < minManhattanDistance)
                 {
-                    minPathLength = pathToCharacter.Count;
+                    minManhattanDistance = manhattanDistance;
+                    minTransformDistance = Vector3.Distance(character.transform.position, other.transform.position);
                     closestCharacter = other;
+                }
+                else if (manhattanDistance == minManhattanDistance)
+                {
+                    float transformDistance = Vector3.Distance(character.transform.position, other.transform.position);
+                    if (transformDistance < minTransformDistance)
+                    {
+                        minTransformDistance = transformDistance;
+                        closestCharacter = other;
+                    }
                 }
             }
 
@@ -171,6 +200,8 @@ namespace finished3
             var step = speed * Time.deltaTime;
             if (state.path.Count == 0)
             {
+                character.transform.position = Vector3.MoveTowards(character.transform.position,
+                    character.standingOnTile.transform.position, step);
                 state.isMoving = false;
                 return;
             }

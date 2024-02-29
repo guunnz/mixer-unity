@@ -12,6 +12,9 @@ namespace finished3
         private PathFinder pathFinder;
         public EnemyTeam enemyTeam;
 
+
+        private bool battleStarted = false;
+
         private void Start()
         {
             pathFinder = new PathFinder();
@@ -19,7 +22,7 @@ namespace finished3
 
         public List<CharacterInfo> GetCharacters()
         {
-            return new List<CharacterInfo>(characters.Keys);
+            return new List<CharacterInfo>(characters.Keys).Where(x => !x.Killed).ToList();
         }
 
         public CharacterState GetCharacterState(string axieId)
@@ -44,13 +47,21 @@ namespace finished3
             }
         }
 
-  
+
         void Update()
         {
             if (Input.GetKey(KeyCode.H)) // Move all characters
             {
+                battleStarted = true;
+            }
+
+
+            if (battleStarted)
+            {
                 foreach (var character in characters)
                 {
+                    if (character.Key == null)
+                        continue;
                     if (character.Value.isMoving && character.Value.path.Count > 0)
                     {
                         // Check if next tile in path is occupied
@@ -91,7 +102,8 @@ namespace finished3
             }
 
             PositionCharacterOnTile(character, startingTile);
-            character.transform.localScale = new Vector3(gridLocation.Value.x < 4 ? -0.2f : 0.2f, character.transform.localScale.y, character.transform.localScale.z);
+            character.transform.localScale = new Vector3(gridLocation.Value.x < 4 ? -0.2f : 0.2f,
+                character.transform.localScale.y, character.transform.localScale.z);
 
             characters[character] = new CharacterState
             {
@@ -110,13 +122,27 @@ namespace finished3
             {
                 OverlayTile targetTile = closestCharacter.standingOnTile;
                 state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
-
+                int distanceToClosestCharacterGrid =
+                    GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
+                
                 character.CurrentTarget = closestCharacter;
+                if (character.Range > 1)
+                {
+                    if (distanceToClosestCharacterGrid <= (int)character.Range)
+                    {
+                        state.isMoving = false;
+                        return;
+                    }
+                }
+              
 
                 // Check if the closest character is already at the minimum allowed distance
-                float distanceToClosestCharacter = Vector3.Distance(character.transform.position, closestCharacter.transform.position);
-                int distanceToClosestCharacterGrid = GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
-                if (distanceToClosestCharacter > 0.9f && distanceToClosestCharacterGrid >= 1 && distanceToClosestCharacterGrid > character.Range)
+                float distanceToClosestCharacterX =
+                    Mathf.Abs(character.transform.position.x - closestCharacter.transform.position.x);
+                if (distanceToClosestCharacterGrid > character.Range + 1 || distanceToClosestCharacterGrid >= 1 &&
+                    (character.standingOnTile.grid2DLocation.y == closestCharacter.standingOnTile.grid2DLocation.y
+                        ? distanceToClosestCharacterX > character.Range
+                        : distanceToClosestCharacterX > 0.1f || distanceToClosestCharacterGrid <= character.Range + 1))
                 {
                     MoveAlongPath(character, state);
                 }
@@ -131,27 +157,36 @@ namespace finished3
 
         private int GetManhattanDistance(OverlayTile tile1, OverlayTile tile2)
         {
-            return Mathf.Abs(tile1.gridLocation.x - tile2.gridLocation.x) + Mathf.Abs(tile1.gridLocation.z - tile2.gridLocation.z);
+            return Mathf.Abs(tile1.gridLocation.x - tile2.gridLocation.x) +
+                   Mathf.Abs(tile1.gridLocation.z - tile2.gridLocation.z);
         }
-
-
 
         private CharacterInfo FindClosestCharacter(CharacterInfo character)
         {
             CharacterInfo closestCharacter = null;
-            int minPathLength = int.MaxValue;
+            int minManhattanDistance = int.MaxValue;
+            float minTransformDistance = float.MaxValue;
 
             foreach (var other in enemyTeam.GetCharacters())
             {
-                if (other == character) continue; // Skip the same character
+                int manhattanDistance =
+                    Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
+                    Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
-                List<OverlayTile> pathToCharacter = pathFinder.FindPath(character.standingOnTile, other.standingOnTile, GetInRangeTiles(character));
-
-                // Check path length
-                if (pathToCharacter.Count > 0 && pathToCharacter.Count < minPathLength)
+                if (manhattanDistance < minManhattanDistance)
                 {
-                    minPathLength = pathToCharacter.Count;
+                    minManhattanDistance = manhattanDistance;
+                    minTransformDistance = Vector3.Distance(character.transform.position, other.transform.position);
                     closestCharacter = other;
+                }
+                else if (manhattanDistance == minManhattanDistance)
+                {
+                    float transformDistance = Vector3.Distance(character.transform.position, other.transform.position);
+                    if (transformDistance < minTransformDistance)
+                    {
+                        minTransformDistance = transformDistance;
+                        closestCharacter = other;
+                    }
                 }
             }
 
@@ -160,12 +195,17 @@ namespace finished3
 
 
         private void MoveAlongPath(CharacterInfo character, CharacterState state)
-        { if (state.path.Count == 0)
+        {
+            var step = speed * Time.deltaTime;
+            if (state.path.Count == 0)
             {
+                character.transform.position = Vector3.MoveTowards(character.transform.position,
+                    character.standingOnTile.transform.position, step);
                 state.isMoving = false;
                 return;
             }
-            var step = speed * Time.deltaTime;
+
+
             var targetPosition = state.path[0].transform.position;
 
             character.transform.position = Vector3.MoveTowards(character.transform.position, targetPosition, step);
@@ -177,6 +217,7 @@ namespace finished3
                     state.isMoving = false;
                     return;
                 }
+
                 if (!state.path[0].occupied)
                 {
                     PositionCharacterOnTile(character, state.path[0]);
@@ -199,12 +240,14 @@ namespace finished3
                 character.standingOnTile = tile;
             }
         }
+
         private List<OverlayTile> GetInRangeTiles(CharacterInfo character)
         {
-            return FindObjectsOfType<OverlayTile>().Where(t => 
-                    !t.occupied && 
-                    Vector2Int.Distance(new Vector2Int(t.gridLocation.x, t.gridLocation.z), 
-                        new Vector2Int(character.standingOnTile.gridLocation.x, character.standingOnTile.gridLocation.z)) <= movementRange)
+            return FindObjectsOfType<OverlayTile>().Where(t =>
+                    !t.occupied &&
+                    Vector2Int.Distance(new Vector2Int(t.gridLocation.x, t.gridLocation.z),
+                        new Vector2Int(character.standingOnTile.gridLocation.x,
+                            character.standingOnTile.gridLocation.z)) <= movementRange)
                 .ToList();
         }
 

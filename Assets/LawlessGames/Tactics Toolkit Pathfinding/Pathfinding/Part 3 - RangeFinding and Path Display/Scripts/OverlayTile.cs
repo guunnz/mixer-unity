@@ -71,7 +71,7 @@ namespace finished3
             if (!occupied)
             {
                 var allCharacters2 = charactersManager2.GetCharacters();
-                occupied = allCharacters2.Any(character => character.standingOnTile == this);
+                occupied = allCharacters2.Any(character => character.standingOnTile == this && !character.Killed);
             }
         }
 

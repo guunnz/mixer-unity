@@ -60,7 +60,7 @@ public class GetAxiesExample : MonoBehaviour
             var axiesData = JsonUtility.FromJson<AxiesData>(responseString);
             foreach (var axiesResult in axiesData.data.axies.results)
             {          
-                if (spawnCountMax >= 6)
+                if (spawnCountMax >= 5)
                     break;
                 spawnCountMax++;
                axieSpawner.SpawnAxieById(axiesResult.id);
