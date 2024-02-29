@@ -142,7 +142,7 @@ namespace finished3
                 return;
             }
 
-            Mana += Time.deltaTime;
+            Mana += Time.deltaTime * 3;
 
             if (Mana >= MaxManaAux)
             {
