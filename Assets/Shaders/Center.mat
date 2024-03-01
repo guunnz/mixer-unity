@@ -7,26 +7,27 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fluffy
-  m_Shader: {fileID: -6465566751694194690, guid: 9476929889e887e448e6df2751df9bef,
+  m_Name: Center
+  m_Shader: {fileID: -6465566751694194690, guid: 9b39dfd6beffbc04b9c42112f6c0d2a8,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _SURFACE_TYPE_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
-  disabledShaderPasses:
-  - DepthOnly
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -41,31 +42,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Additional_Power: 40
-    - _AlphaClip: 0
-    - _AlphaToMask: 0
-    - _Blend: 0
-    - _CastShadows: 1
-    - _Cull: 2
-    - _DstBlend: 10
-    - _FresnelPower: 3
-    - _Metallic: 0
-    - _NoiseScale: 10
-    - _Pushout: 1.2
-    - _QueueControl: 1
+    - _QueueControl: 0
     - _QueueOffset: 0
-    - _ScrollSpeed: 0.05
-    - _Smoothness: 0
-    - _SrcBlend: 5
-    - _Surface: 1
-    - _ZTest: 4
-    - _ZWrite: 0
-    - _ZWriteControl: 0
     m_Colors:
-    - _PrimaryColor: {r: 0.9450981, g: 0.50980395, b: 0.54509807, a: 1}
-    - _SecondaryColor: {r: 0.9450981, g: 0.50980395, b: 0.54509807, a: 1}
+    - _Color: {r: 121.96226, g: 37.643974, b: 4.027058, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &2240355884928282279
+--- !u!114 &2295168142744884291
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

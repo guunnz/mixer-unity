@@ -108,13 +108,13 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FresnelPower: 5
-    - _GlitterOffset: 0.5
+    - _FresnelPower: 0
+    - _GlitterOffset: 0.68
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _NoiseRotation: 0
+    - _NoiseRotation: 81.74
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -134,13 +134,13 @@ Material:
     - Color_961116aa0aa244c08eaded602db5cb8b: {r: 0.12345677, g: 0, b: 1, a: 1}
     - Vector2_c83df04f699a40a98932cd8306029fa4: {r: 4, g: 4, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor1: {r: 0, g: 0, b: 0, a: 1}
-    - _BaseColor2: {r: 0.4845996, g: 0, b: 1, a: 1}
+    - _BaseColor1: {r: 0.4056604, g: 0, b: 0, a: 0.98039216}
+    - _BaseColor2: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 0.19965369, g: 0, b: 2.1185474, a: 1}
-    - _GlitterColor: {r: 1.258188, g: 0, b: 5.3403134, a: 1}
-    - _NoiseScale: {r: 3, g: 3, b: 0, a: 0}
+    - _FresnelColor: {r: 0.23202689, g: 0.17565599, b: 0.7738149, a: 0}
+    - _GlitterColor: {r: 0.3679245, g: 0.03297436, b: 0.046363406, a: 1}
+    - _NoiseScale: {r: 20, g: 20, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &5906663174605030448
