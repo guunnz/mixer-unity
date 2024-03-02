@@ -16,7 +16,7 @@ namespace finished3
         public CharacterInfo CurrentTarget;
         public SkeletonAnimation SkeletonAnim;
         public bool Grabbed = false;
-        public HPManager hpManager;
+        [FormerlySerializedAs("hpManager")] public StatsManager statsManager;
 
         public bool beingHovered;
 
@@ -38,13 +38,14 @@ namespace finished3
 
         public float Mana = 0;
         private float MaxManaAux = 50;
+        private float MaxHPAux = 50;
         internal float MinManaAux = 0;
 
         public SkillName skillName;
         public AxieClass axieClass;
         public BodyPart bodyPart;
 
-        public float HP = 100;
+        internal float HP;
         private float attackSpeedTime = 0;
         private float attackSpeedDuration = 1f;
 
@@ -67,7 +68,8 @@ namespace finished3
             if (this.axieClass == AxieClass.Bird)
                 Range = 4;
 
-            SkeletonAnim = transform.GetChild(0).GetComponent<SkeletonAnimation>();
+
+            MaxHPAux = HP;
             SetAllCharacters();
             if (imGood)
             {
@@ -121,9 +123,19 @@ namespace finished3
                 return;
             }
 
+            if (HP > MaxHPAux)
+            {
+                HP = MaxHPAux;
+            }
+
             if (HP <= 0)
             {
                 Killed = true;
+            }
+            else
+            {
+                statsManager.SetMana(Mana / MaxManaAux);
+                statsManager.SetHP(HP / MaxHPAux);
             }
 
             if (Killed)
@@ -134,7 +146,7 @@ namespace finished3
 
             if (state == null)
                 return;
-            
+
             if (Grabbed)
             {
                 CurrentTarget = null;
@@ -164,7 +176,6 @@ namespace finished3
                 Mana = 0;
                 return;
             }
-
 
 
             if (CurrentTarget != null && state.isMoving == false &&

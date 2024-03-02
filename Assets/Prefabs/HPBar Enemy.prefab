@@ -134,9 +134,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingLayerID: -1059255441
+  m_SortingLayer: 1
+  m_SortingOrder: -3
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &793524399203984922
 GameObject:
@@ -208,9 +208,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1059255441
+  m_SortingLayer: 1
+  m_SortingOrder: 183
   m_Sprite: {fileID: 21300000, guid: 185ed848395009f4eb08f5b2a875b752, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -357,9 +357,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1059255441
+  m_SortingLayer: 1
+  m_SortingOrder: -2
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &4032303739672547441
 GameObject:
@@ -496,9 +496,9 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1059255441
+  m_SortingLayer: 1
+  m_SortingOrder: -2
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6129120978485451438
 GameObject:
@@ -647,6 +647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8256826729767453342}
+  - component: {fileID: 8929763563721505831}
   m_Layer: 0
   m_Name: HPBar Enemy
   m_TagString: Untagged
@@ -673,6 +674,21 @@ Transform:
   - {fileID: 1294207702427286364}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8929763563721505831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511453744880959042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b49f48d81e7989e4da3c7810f5283236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPRectangle: {fileID: 2918352880173704642}
+  ManaRectangle: {fileID: 7928166842132157509}
+  sr: {fileID: 8214618162558295966}
 --- !u!1 &8140292802998670059
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +823,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingLayerID: -1059255441
+  m_SortingLayer: 1
+  m_SortingOrder: -3
   m_AdditionalVertexStreams: {fileID: 0}

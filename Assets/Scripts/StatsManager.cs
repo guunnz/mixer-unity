@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using Shapes;
 using UnityEngine;
 
-public class HPManager : MonoBehaviour
+public class StatsManager : MonoBehaviour
 {
     public Rectangle HPRectangle;
     public Rectangle ManaRectangle;
+    public SpriteRenderer sr;
+
+    public void SetSR(Sprite sprite)
+    {
+        sr.sprite = sprite;
+    }
     
     public void SetMana(float mana)
     {

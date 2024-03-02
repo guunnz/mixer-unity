@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AxieMixer.Unity;
 using finished3;
 using Newtonsoft.Json.Linq;
@@ -20,6 +21,12 @@ public enum AxieClass
     Dawn,
     Dusk
 }
+[System.Serializable]
+public class AxieClassObject
+{
+    public Sprite classSprite;
+    public AxieClass axieClass;
+}
 
 namespace Game
 {
@@ -37,12 +44,16 @@ namespace Game
         public GameObject goodTeamHP;
         public GameObject badTeamHP;
 
+
+        public AxieClassObject[] axieClassObjects = new AxieClassObject[] { };
+
         private void Start()
         {
             Mixer.Init();
         }
 
-        public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class, GetAxiesExample.Stats stats)
+        public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class,
+            GetAxiesExample.Stats stats)
         {
             StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats));
         }
@@ -73,7 +84,7 @@ namespace Game
                     JObject jResult = JObject.Parse(result);
                     string genesStr = (string)jResult["data"]["axie"]["newGenes"];
                     Debug.Log(genesStr);
-                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, bodyPart, skillName, @class,stats);
+                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, bodyPart, skillName, @class, stats);
                 }
             }
 
@@ -83,7 +94,7 @@ namespace Game
 
         private void ProcessMixer(string axieId, string genesStr, bool isGraphic, BodyPart bodyPart,
             SkillName skillName,
-            AxieClass @class,GetAxiesExample.Stats stats)
+            AxieClass @class, GetAxiesExample.Stats stats)
         {
             if (string.IsNullOrEmpty(genesStr))
             {
@@ -104,13 +115,13 @@ namespace Game
             {
                 SpawnSkeletonAnimation(builderResult, axieId, bodyPart,
                     skillName,
-                    @class,stats);
+                    @class, stats);
             }
         }
 
         private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId, BodyPart bodyPart,
             SkillName skillName,
-            AxieClass @class,GetAxiesExample.Stats stats)
+            AxieClass @class, GetAxiesExample.Stats stats)
         {
             GameObject go = new GameObject("Axie");
             go.transform.SetParent(rootTF, false);
@@ -128,14 +139,17 @@ namespace Game
             info.axieClass = @class;
             info.bodyPart = bodyPart;
             info.MinManaAux = stats.skill;
+            info.HP = stats.hp * 2;
             info.Mana = stats.skill;
-            Instantiate(badTeamHP, info.SkeletonAnim.transform);
             overlay.AddCharacter(info);
-            info.hpManager = Instantiate(goodTeamHP, info.SkeletonAnim.transform).GetComponent<HPManager>();
+   
             SkeletonAnimation runtimeSkeletonAnimation =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
             runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
+            info.SkeletonAnim = runtimeSkeletonAnimation;
+            info.statsManager = Instantiate(goodTeamHP, info.SkeletonAnim.transform).GetComponent<StatsManager>();
+            info.statsManager.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
             ///////////////////////////////////////////////////////////////////////////////////////////////////
             GameObject go2 = new GameObject("Axie");
             go2.transform.SetParent(rootTF, false);
@@ -143,8 +157,8 @@ namespace Game
             go2.transform.eulerAngles = new Vector3(55.26f, go2.transform.eulerAngles.y, go2.transform.eulerAngles.z);
             go2.AddComponent<CharacterInfo>();
             CharacterInfo info2 = go2.GetComponent<CharacterInfo>();
-            info2.hpManager = Instantiate(badTeamHP, info2.SkeletonAnim.transform).GetComponent<HPManager>();
             info2.axieId = axieId;
+            info2.HP = stats.hp * 2;
             info2.skillName = skillName;
             info2.axieClass = @class;
             info2.bodyPart = bodyPart;
@@ -152,11 +166,13 @@ namespace Game
             info2.Mana = stats.skill;
             go2.tag = "Character";
             enemyOverlay.AddCharacter(info2);
-
             SkeletonAnimation runtimeSkeletonAnimation2 =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation2.transform.SetParent(go2.transform, false);
             runtimeSkeletonAnimation2.state.SetAnimation(0, "action/idle/normal", true);
+            info2.SkeletonAnim = runtimeSkeletonAnimation2;
+            info2.statsManager = Instantiate(badTeamHP, runtimeSkeletonAnimation2.transform).GetComponent<StatsManager>();
+            info2.statsManager.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
         }
 
         private void SpawnSkeletonGraphic(Axie2dBuilderResult builderResult)

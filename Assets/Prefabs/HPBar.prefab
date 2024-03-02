@@ -164,8 +164,8 @@ Transform:
   m_GameObject: {fileID: 793524399203984922}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6533688, y: 0.060699463, z: 0}
-  m_LocalScale: {x: 0.46364003, y: 0.46364003, z: 1.1591}
+  m_LocalPosition: {x: 0.6533688, y: 0.060699463, z: 0}
+  m_LocalScale: {x: -0.46364, y: 0.46364003, z: 1.1591}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8256826729767453342}
@@ -208,9 +208,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1059255441
+  m_SortingLayer: 1
+  m_SortingOrder: 162
   m_Sprite: {fileID: 21300000, guid: 185ed848395009f4eb08f5b2a875b752, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -250,8 +250,8 @@ Transform:
   m_GameObject: {fileID: 2953819419641393153}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.48, y: -0.097000554, z: 0}
-  m_LocalScale: {x: 1.27, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0.47396877, y: -0.097000554, z: 0}
+  m_LocalScale: {x: -1.27, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6369905309610843708}
@@ -389,8 +389,8 @@ Transform:
   m_GameObject: {fileID: 4032303739672547441}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.48, y: 0.013, z: 0}
-  m_LocalScale: {x: 1.27, y: 1, z: 1}
+  m_LocalPosition: {x: 0.4739688, y: 0.013, z: 0}
+  m_LocalScale: {x: -1.27, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 453271157387732181}
@@ -528,8 +528,8 @@ Transform:
   m_GameObject: {fileID: 6129120978485451438}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.012168765, y: 0.057699203, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.0128, y: 0.057699203, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8256826729767453342}
@@ -688,6 +688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HPRectangle: {fileID: 2918352880173704642}
   ManaRectangle: {fileID: 7928166842132157509}
+  sr: {fileID: 8214618162558295966}
 --- !u!1 &8140292802998670059
 GameObject:
   m_ObjectHideFlags: 0
