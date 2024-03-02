@@ -177,11 +177,14 @@ namespace finished3
                 int manhattanDistance =
                     Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                     Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
-
-                // Check if the path is reachable
-                var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
-                    GetInRangeTiles(character));
-                if (path == null) continue; // Skip if no path is found
+                
+                if ((int)character.Range == 1)
+                {
+                    // Check if the path is reachable
+                    var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
+                        GetInRangeTiles(character));
+                    if (path == null) continue; // Skip if no path is found
+                }
 
                 if (manhattanDistance < minManhattanDistance)
                 {
@@ -225,6 +228,12 @@ namespace finished3
                 }
             }
 
+            if (state.path == null)
+            {
+                state.isMoving = false;
+                return;
+            }
+            
             var step = speed * Time.deltaTime;
             if (state.path.Count == 0)
             {

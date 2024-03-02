@@ -227,6 +227,13 @@ namespace finished3
                 }
             }
             var step = speed * Time.deltaTime;
+            
+            if (state.path == null)
+            {
+                state.isMoving = false;
+                return;
+            }
+            
             if (state.path.Count == 0)
             {
                 character.transform.position = Vector3.MoveTowards(character.transform.position,
