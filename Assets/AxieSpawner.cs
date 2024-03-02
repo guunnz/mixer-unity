@@ -34,6 +34,9 @@ namespace Game
 
         private int spawnCountMax = 6;
 
+        public GameObject goodTeamHP;
+        public GameObject badTeamHP;
+
         private void Start()
         {
             Mixer.Init();
@@ -126,7 +129,9 @@ namespace Game
             info.bodyPart = bodyPart;
             info.MinManaAux = stats.skill;
             info.Mana = stats.skill;
+            Instantiate(badTeamHP, info.SkeletonAnim.transform);
             overlay.AddCharacter(info);
+            info.hpManager = Instantiate(goodTeamHP, info.SkeletonAnim.transform).GetComponent<HPManager>();
             SkeletonAnimation runtimeSkeletonAnimation =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
@@ -138,6 +143,7 @@ namespace Game
             go2.transform.eulerAngles = new Vector3(55.26f, go2.transform.eulerAngles.y, go2.transform.eulerAngles.z);
             go2.AddComponent<CharacterInfo>();
             CharacterInfo info2 = go2.GetComponent<CharacterInfo>();
+            info2.hpManager = Instantiate(badTeamHP, info2.SkeletonAnim.transform).GetComponent<HPManager>();
             info2.axieId = axieId;
             info2.skillName = skillName;
             info2.axieClass = @class;

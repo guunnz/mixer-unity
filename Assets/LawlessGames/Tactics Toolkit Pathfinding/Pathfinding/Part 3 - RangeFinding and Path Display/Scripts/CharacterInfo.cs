@@ -16,6 +16,7 @@ namespace finished3
         public CharacterInfo CurrentTarget;
         public SkeletonAnimation SkeletonAnim;
         public bool Grabbed = false;
+        public HPManager hpManager;
 
         public bool beingHovered;
 
