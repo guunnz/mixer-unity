@@ -46,6 +46,9 @@ namespace finished3
                 {
                     if (character.Key == null)
                         continue;
+                    if (character.Key.shrimping)
+                        continue;
+
                     if (character.Value.isMoving && character.Value.path.Count > 0)
                     {
                         // Check if next tile in path is occupied

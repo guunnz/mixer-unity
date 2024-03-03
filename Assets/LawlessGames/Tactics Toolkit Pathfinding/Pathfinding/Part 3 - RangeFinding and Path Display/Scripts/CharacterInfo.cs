@@ -49,6 +49,7 @@ namespace finished3
         private float attackSpeedTime = 0;
         private float attackSpeedDuration = 1f;
 
+        public bool shrimping = false;
         private void Start()
         {
             if (this.standingOnTile.grid2DLocation.x >= 4)
@@ -75,8 +76,53 @@ namespace finished3
             {
                 SkeletonAnim.GetComponent<Renderer>().sortingOrder = 50;
             }
+
+
+        }
+        
+        public IEnumerator GoBackdoor()
+        {
+            shrimping = true;
+            SkeletonAnim.AnimationName = "attack/melee/shrimp";
+            
+            yield return new WaitForSeconds(SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd/2);
+            SkeletonAnim.GetComponent<Renderer>().enabled = false;
+            Vector3 positionToMove = Vector3.zero;
+            List<OverlayTile> possibleTiles = goodTeam.GetInRangeTiles(this);
+
+            List<OverlayTile> jumpToTiles = possibleTiles.Where(x => x.grid2DLocation.x == (imGood ? 7 : 0)).ToList();
+
+
+
+            OverlayTile overlayTile = jumpToTiles.FirstOrDefault(x => x.grid2DLocation.y == this.standingOnTile.grid2DLocation.y);
+            if (jumpToTiles.Count == 0 || overlayTile == null)
+            {
+                jumpToTiles = possibleTiles.Where(x => x.grid2DLocation.x == (imGood ? 6 : 1)).ToList();
+            }
+            
+            overlayTile = jumpToTiles.FirstOrDefault(x => x.grid2DLocation.y == this.standingOnTile.grid2DLocation.y);
+
+            
+            
+            if (overlayTile != null)
+            {
+                positionToMove = overlayTile.transform.position;
+            }
+
+            this.standingOnTile = overlayTile;
+            this.transform.position = positionToMove;
+            
+            yield return new WaitForSeconds(0.1f);
+            SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            yield return new WaitForSeconds(SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd/2 - 0.1f);
+
+            this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
+                this.transform.localScale.z);
+            shrimping = false;
         }
 
+        
+        
         public void SetAllCharacters()
         {
             allCharacters = FindObjectsOfType<CharacterInfo>();
@@ -114,6 +160,16 @@ namespace finished3
 
         private void Update()
         {
+            if (shrimping)
+                return;
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                if (axieClass == AxieClass.Aquatic)
+                {
+                    StartCoroutine(GoBackdoor());
+                    return;
+                }
+            }
             if (imGood && badTeam.GetCharacters().All(x => !x.gameObject.activeSelf) ||
                 !imGood && goodTeam.GetCharacters().All(x => !x.gameObject.activeSelf))
             {
