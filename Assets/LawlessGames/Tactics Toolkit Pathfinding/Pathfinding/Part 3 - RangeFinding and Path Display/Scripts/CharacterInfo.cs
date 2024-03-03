@@ -300,6 +300,9 @@ namespace finished3
                 fighting = false;
                 SkeletonAnim.AnimationName = "action/run";
                 SkeletonAnim.loop = true;
+                transform.localScale =
+                        new Vector3(CurrentTarget.transform.position.x > this.transform.position.x ? -0.2f : 0.2f,
+                            transform.localScale.y, transform.localScale.z);
                 return;
             }
             else
