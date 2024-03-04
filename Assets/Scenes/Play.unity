@@ -969,6 +969,7 @@ GameObject:
   - component: {fileID: 1133128480}
   - component: {fileID: 1133128481}
   - component: {fileID: 1133128482}
+  - component: {fileID: 1133128483}
   m_Layer: 0
   m_Name: AxieSpawner
   m_TagString: Untagged
@@ -1017,6 +1018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   axieSpawner: {fileID: 1133128482}
   spawnCountMax: 0
+  teamToJson: {fileID: 1133128483}
 --- !u!114 &1133128482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,6 +1057,18 @@ MonoBehaviour:
     axieClass: 7
   - classSprite: {fileID: 21300000, guid: f25ce14852ace77468c2ee803adca2cc, type: 3}
     axieClass: 8
+--- !u!114 &1133128483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133128478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1b9b65161db4f60aabd4ed78448d8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1187839066
 PrefabInstance:
   m_ObjectHideFlags: 0

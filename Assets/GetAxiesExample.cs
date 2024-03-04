@@ -12,7 +12,7 @@ public class GetAxiesExample : MonoBehaviour
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7"; // Replace with your actual API key
     public AxieSpawner axieSpawner;
     public int spawnCountMax = 0;
-
+    public TeamToJSON teamToJson;
     void Start()
     {
         graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
@@ -97,6 +97,16 @@ public class GetAxiesExample : MonoBehaviour
             Axie plant = axiesResults
                 .Where(x => x.@class.Contains("Plant") && x.parts.Any(y => y.name.ToLower() == "rose bud")).ToList()[0];
             Axie aqua = axiesResults.FirstOrDefault(x => x.@class.Contains("Aqua"));
+
+            List<string> axieIds = new List<string>();
+            
+            axieIds.Add(bird.id);
+            axieIds.Add(beast.id);
+            axieIds.Add(dusk.id);
+            axieIds.Add(plant.id);
+            axieIds.Add(aqua.id);
+            
+            Debug.Log(teamToJson.JsonConstructor(axieIds.ToArray()));
 
             axieSpawner.SpawnAxieById(bird.id, BodyPart.Tail, SkillName.RiskyFeather, AxieClass.Bird, bird.stats);
             axieSpawner.SpawnAxieById(beast.id, BodyPart.Back, SkillName.Ronin, AxieClass.Beast, beast.stats);
