@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using finished3;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Serialization;
-using CharacterInfo = finished3.CharacterInfo;
 
 [System.Serializable]
 public class SkillVFX
@@ -128,7 +128,7 @@ public class Skill : MonoBehaviour
     public AxieAnimation animationToPlay;
     internal SkeletonAnimation skeletonAnimation;
     internal BodyPart bodyPart;
-    internal CharacterInfo opponent;
+    internal AxieController opponent;
     public float totalDuration;
 
     private void Start()
@@ -180,7 +180,7 @@ public class Skill : MonoBehaviour
             StartCoroutine(Destroy(vfxSpawned.gameObject, skill.SkillDuration));
         }
 
-        opponent.HP -= this.Damage;
+        opponent.spawnedAxie.currentHP -= this.Damage;
     }
 
     private IEnumerator Destroy(GameObject obj, float timing)

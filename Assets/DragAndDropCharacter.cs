@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using finished3;
-using CharacterInfo = finished3.CharacterInfo;
 
 public class DragAndDropCharacter : MonoBehaviour
 {
@@ -13,13 +12,14 @@ public class DragAndDropCharacter : MonoBehaviour
     private Vector3 originalPosition;
     private OverlayTile originalTile;
     private List<OverlayTile> allOverlayTiles;
-    private MyTeam myTeam;
+    private Team team;
 
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
         allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
-        myTeam = FindObjectOfType<MyTeam>(); // Get the MouseController instance
+        team = FindObjectsByType<Team>(FindObjectsSortMode.None)
+            .Single(x => x.isGoodTeam); // Get the MouseController instance
     }
 
     void Update()
@@ -36,9 +36,9 @@ public class DragAndDropCharacter : MonoBehaviour
                 {
                     selectedCharacter = hit.collider.gameObject;
 
-                    selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = true;
+                    selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.Grabbed);
                     originalPosition = selectedCharacter.transform.position;
-                    originalTile = selectedCharacter.GetComponent<finished3.CharacterInfo>().standingOnTile;
+                    originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
                     selectedCharacter.transform.SetParent(mainCamera.transform);
                 }
             }
@@ -58,15 +58,15 @@ public class DragAndDropCharacter : MonoBehaviour
         if (selectedCharacter != null && Input.GetMouseButtonUp(0))
         {
             selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-            selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = false;
+            selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
             OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
 
             if (closestTile == null)
             {
                 selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-                selectedCharacter.GetComponent<finished3.CharacterInfo>().Grabbed = false;
-                MoveCharacterToTile(selectedCharacter.GetComponent<finished3.CharacterInfo>(),
-                    selectedCharacter.GetComponent<finished3.CharacterInfo>().standingOnTile);
+                selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
+                MoveCharacterToTile(selectedCharacter.GetComponent<AxieController>(),
+                    selectedCharacter.GetComponent<AxieController>().standingOnTile);
                 return;
             }
 
@@ -90,7 +90,7 @@ public class DragAndDropCharacter : MonoBehaviour
         OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
         if (tile == null)
         {
-            tile = myTeam.GetCharacters().FirstOrDefault(x => x.beingHovered)?.standingOnTile;
+            tile = team.GetCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)?.standingOnTile;
         }
 
         return tile;
@@ -98,29 +98,29 @@ public class DragAndDropCharacter : MonoBehaviour
 
     private void TryPlaceCharacterOnTile(GameObject character, OverlayTile targetTile)
     {
-        CharacterInfo selectedCharacterInfo = character.GetComponent<CharacterInfo>();
+        AxieController selectedAxieController = character.GetComponent<AxieController>();
 
         if (targetTile.occupied)
         {
-            var allCharacters = myTeam.GetCharacters();
-            CharacterInfo occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
+            var allCharacters = team.GetCharacters();
+            AxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
             if (occupyingCharacter != null)
             {
-                SwapCharacters(selectedCharacterInfo, occupyingCharacter);
+                SwapCharacters(selectedAxieController, occupyingCharacter);
             }
             else
             {
-                MoveCharacterToTile(selectedCharacterInfo, targetTile);
+                MoveCharacterToTile(selectedAxieController, targetTile);
             }
         }
         else
         {
-            MoveCharacterToTile(selectedCharacterInfo, targetTile);
+            MoveCharacterToTile(selectedAxieController, targetTile);
         }
     }
 
-    private void SwapCharacters(CharacterInfo characterA, CharacterInfo characterB)
+    private void SwapCharacters(AxieController characterA, AxieController characterB)
     {
         OverlayTile tileA = characterA.standingOnTile;
         OverlayTile tileB = characterB.standingOnTile;
@@ -159,7 +159,7 @@ public class DragAndDropCharacter : MonoBehaviour
         }
     }
 
-    IEnumerator MoveCharacter(CharacterInfo character, Vector3 targetPosition)
+    IEnumerator MoveCharacter(AxieController character, Vector3 targetPosition)
     {
         while (character.transform.position != targetPosition)
         {
@@ -169,7 +169,7 @@ public class DragAndDropCharacter : MonoBehaviour
         }
     }
 
-    private void MoveCharacterToTile(CharacterInfo character, OverlayTile targetTile)
+    private void MoveCharacterToTile(AxieController character, OverlayTile targetTile)
     {
         character.transform.position = targetTile.transform.position;
         character.standingOnTile = targetTile;

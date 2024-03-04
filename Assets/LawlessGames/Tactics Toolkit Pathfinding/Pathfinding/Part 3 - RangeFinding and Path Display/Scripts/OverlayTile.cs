@@ -1,101 +1,103 @@
-using Shapes;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using Shapes;
 using UnityEngine;
-using static finished3.ArrowTranslator;
 
-namespace finished3
+public class OverlayTile : MonoBehaviour
 {
-    public class OverlayTile : MonoBehaviour
+    public int G;
+    public int H;
+
+    public int F
     {
-        public int G;
-        public int H;
+        get { return G + H; }
+    }
 
-        public int F
+    public OverlayTile Previous;
+    public Vector3Int gridLocation;
+
+    public Vector2Int grid2DLocation
+    {
+        get { return new Vector2Int(gridLocation.x, gridLocation.z); }
+    }
+
+    private Rectangle spriteRenderer;
+
+    public bool beingHovered;
+    public bool occupied;
+    private Team goodTeam;
+    private Team badTeam;
+    public Rectangle rectangle;
+
+    private void Start()
+    {
+        spriteRenderer = GetComponent<Shapes.Rectangle>();
+        goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
+        badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
+        rectangle = GetComponent<Rectangle>();
+        if (this.grid2DLocation.x >= 4)
         {
-            get { return G + H; }
+            spriteRenderer.enabled = false;
+            Destroy(this.GetComponent<BoxCollider>());
         }
+    }
 
-        public OverlayTile Previous;
-        public Vector3Int gridLocation;
+    public void ToggleRectangle(bool enabled = false)
+    {
+        if (rectangle != null)
+            rectangle.enabled = enabled;
+    }
 
-        public Vector2Int grid2DLocation
+    private void OnMouseOver()
+    {
+        // This method is called when the mouse is over the collider of this GameObject
+        beingHovered = true;
+    }
+
+    private void OnMouseExit()
+    {
+        // This method is called when the mouse leaves the collider
+        beingHovered = false;
+    }
+
+    private void Update()
+    {
+        CheckOccupied();
+        UpdateTileColor();
+    }
+
+    private void CheckOccupied()
+    {
+        // Assuming you have a static method to get all characters and their current tiles
+        var allCharacters = goodTeam.GetCharacters();
+        occupied = allCharacters.Any(character => character.standingOnTile == this);
+        if (!occupied)
         {
-            get { return new Vector2Int(gridLocation.x, gridLocation.z); }
+            var allCharacters2 = badTeam.GetCharacters();
+            occupied = allCharacters2.Any(character =>
+                character.standingOnTile == this && character.axieBehavior.axieState != AxieState.Killed);
         }
+    }
 
-        private Rectangle spriteRenderer;
-
-        public bool beingHovered;
-        public bool occupied;
-        private MyTeam charactersManager;
-        private EnemyTeam charactersManager2;
-
-        private void Start()
+    private void UpdateTileColor()
+    {
+        if (occupied)
         {
-            spriteRenderer = GetComponent<Shapes.Rectangle>();
-            charactersManager = FindObjectOfType<MyTeam>();
-            charactersManager2 = FindObjectOfType<EnemyTeam>();
-
-            if (this.grid2DLocation.x >= 4)
-            {
-                spriteRenderer.enabled = false;
-                Destroy(this.GetComponent<BoxCollider>());
-            }
+            spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
+            spriteRenderer.Dashed = false;
+            spriteRenderer.Color = new Vector4(.9f, 0.9f, 0.9f, 0.1f);
         }
-
-        private void OnMouseOver()
+        else if (beingHovered)
         {
-            // This method is called when the mouse is over the collider of this GameObject
-            beingHovered = true;
+            spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.7f);
+            spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
+            spriteRenderer.Dashed = true;
+            spriteRenderer.DashOffset += 1 * Time.deltaTime;
         }
-
-        private void OnMouseExit()
+        else
         {
-            // This method is called when the mouse leaves the collider
-            beingHovered = false;
-        }
-
-        private void Update()
-        {
-            CheckOccupied();
-            UpdateTileColor();
-        }
-
-        private void CheckOccupied()
-        {
-            // Assuming you have a static method to get all characters and their current tiles
-            var allCharacters = charactersManager.GetCharacters();
-            occupied = allCharacters.Any(character => character.standingOnTile == this);
-            if (!occupied)
-            {
-                var allCharacters2 = charactersManager2.GetCharacters();
-                occupied = allCharacters2.Any(character => character.standingOnTile == this && !character.Killed);
-            }
-        }
-
-        private void UpdateTileColor()
-        {
-            if (occupied)
-            {
-                spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
-                spriteRenderer.Dashed = false;
-                spriteRenderer.Color = new Vector4(.9f, 0.9f, 0.9f, 0.1f);
-            }
-            else if (beingHovered)
-            {
-                spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.7f);
-                spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
-                spriteRenderer.Dashed = true;
-                spriteRenderer.DashOffset += 1 * Time.deltaTime;
-            }
-            else
-            {
-                spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
-                spriteRenderer.Dashed = false;
-                spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.3f);
-            }
+            spriteRenderer.Type = Rectangle.RectangleType.RoundedBorder;
+            spriteRenderer.Dashed = false;
+            spriteRenderer.Color = new Vector4(.9f, .9f, .9f, 0.3f);
         }
     }
 }

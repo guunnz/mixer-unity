@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using Newtonsoft.Json.Linq;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
-using CharacterInfo = finished3.CharacterInfo;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public enum AxieClass
 {
@@ -21,6 +23,7 @@ public enum AxieClass
     Dawn,
     Dusk
 }
+
 [System.Serializable]
 public class AxieClassObject
 {
@@ -36,8 +39,8 @@ namespace Game
         private Axie2dBuilder builder => Mixer.Builder;
         const bool USE_GRAPHIC = false;
 
-        public MyTeam overlay;
-        public EnemyTeam enemyOverlay;
+        public Team goodTeam;
+        public Team enemyTeam;
 
         private int spawnCountMax = 6;
 
@@ -50,6 +53,14 @@ namespace Game
         private void Start()
         {
             Mixer.Init();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
         }
 
         public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class,
@@ -124,55 +135,62 @@ namespace Game
             AxieClass @class, GetAxiesExample.Stats stats)
         {
             GameObject go = new GameObject("Axie");
+            CreateAxie(go, builderResult, axieId, bodyPart,
+                skillName,
+                @class, stats);
+            ///////////////////////////////////////////////////////////////////////////////////////////////////
+            GameObject go2 = new GameObject("Axie evil");
+            CreateAxie(go2, builderResult, axieId, bodyPart,
+                skillName,
+                @class, stats, true);
+        }
+
+
+        private void CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId, BodyPart bodyPart,
+            SkillName skillName,
+            AxieClass @class, GetAxiesExample.Stats stats, bool isEnemy = false)
+        {
             go.transform.SetParent(rootTF, false);
             go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             go.transform.eulerAngles = new Vector3(55.26f, go.transform.eulerAngles.y, go.transform.eulerAngles.z);
-            go.AddComponent<CharacterInfo>();
-            go.tag = "Character";
-            go.AddComponent<BoxCollider>();
-            go.GetComponent<BoxCollider>().size = new Vector3(4.5f, 4, 1);
-            go.GetComponent<BoxCollider>().center = new Vector3(0, 2, 0);
+            go.AddComponent<AxieController>();
+            AxieController controller = go.GetComponent<AxieController>();
+            controller.axieBehavior = go.AddComponent<AxieBehavior>();
+            controller.spawnedAxie = new SpawnedAxie();
+            controller.spawnedAxie.axieId = axieId;
+            controller.spawnedAxie.HP = stats.hp * 2;
+            controller.spawnedAxie.skillName = skillName;
+            controller.spawnedAxie.axieClass = @class;
+            controller.spawnedAxie.bodyPartMain = bodyPart;
+            controller.spawnedAxie.MinMana = stats.skill;
+            controller.spawnedAxie.MaxMana = 100;
+            controller.spawnedAxie.currentHP = stats.skill;
+            controller.stats = stats;
+            if (isEnemy)
+            {
+                enemyTeam.AddCharacter(controller);
+            }
+            else
+            {
+                go.AddComponent<BoxCollider>().isTrigger = true;
+                go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
+                go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
+                goodTeam.AddCharacter(controller);
+            }
 
-            CharacterInfo info = go.GetComponent<CharacterInfo>();
-            info.axieId = axieId;
-            info.skillName = skillName;
-            info.axieClass = @class;
-            info.bodyPart = bodyPart;
-            info.MinManaAux = stats.skill;
-            info.HP = stats.hp * 2;
-            info.Mana = stats.skill;
-            overlay.AddCharacter(info);
-   
+            go.tag = "Character";
+
             SkeletonAnimation runtimeSkeletonAnimation =
                 SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
+
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
+
             runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
-            info.SkeletonAnim = runtimeSkeletonAnimation;
-            info.statsManager = Instantiate(goodTeamHP, info.SkeletonAnim.transform).GetComponent<StatsManager>();
-            info.statsManager.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
-            ///////////////////////////////////////////////////////////////////////////////////////////////////
-            GameObject go2 = new GameObject("Axie");
-            go2.transform.SetParent(rootTF, false);
-            go2.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-            go2.transform.eulerAngles = new Vector3(55.26f, go2.transform.eulerAngles.y, go2.transform.eulerAngles.z);
-            go2.AddComponent<CharacterInfo>();
-            CharacterInfo info2 = go2.GetComponent<CharacterInfo>();
-            info2.axieId = axieId;
-            info2.HP = stats.hp * 2;
-            info2.skillName = skillName;
-            info2.axieClass = @class;
-            info2.bodyPart = bodyPart;
-            info2.MinManaAux = stats.skill;
-            info2.Mana = stats.skill;
-            go2.tag = "Character";
-            enemyOverlay.AddCharacter(info2);
-            SkeletonAnimation runtimeSkeletonAnimation2 =
-                SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
-            runtimeSkeletonAnimation2.transform.SetParent(go2.transform, false);
-            runtimeSkeletonAnimation2.state.SetAnimation(0, "action/idle/normal", true);
-            info2.SkeletonAnim = runtimeSkeletonAnimation2;
-            info2.statsManager = Instantiate(badTeamHP, runtimeSkeletonAnimation2.transform).GetComponent<StatsManager>();
-            info2.statsManager.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
+
+            controller.SkeletonAnim = runtimeSkeletonAnimation;
+            controller.statsManagerUI =
+                Instantiate(badTeamHP, runtimeSkeletonAnimation.transform).GetComponent<StatsManager>();
+            controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
         }
 
         private void SpawnSkeletonGraphic(Axie2dBuilderResult builderResult)

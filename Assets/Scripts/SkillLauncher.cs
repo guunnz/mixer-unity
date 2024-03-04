@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using finished3;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
-using CharacterInfo = finished3.CharacterInfo;
 
 public class SkillLauncher : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class SkillLauncher : MonoBehaviour
     }
 
     public float ThrowSkill(SkillName skillName, AxieClass axieClass, BodyPart axiebodyPart, Transform target,
-        Transform origin, SkeletonAnimation skeletonAnimation,CharacterInfo opponent)
+        Transform origin, SkeletonAnimation skeletonAnimation,AxieController opponent)
     {
         AxieBodyPart part =
             skillList.axieBodyParts.FirstOrDefault(x => x.skillName == skillName && x.bodyPart == axiebodyPart);

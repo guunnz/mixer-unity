@@ -340,6 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 561270035}
   - component: {fileID: 561270034}
+  - component: {fileID: 561270036}
   m_Layer: 0
   m_Name: PostProcessing
   m_TagString: Untagged
@@ -379,6 +380,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &561270036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561270033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9259ddbc1d35ca429d6f8e5670153f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &607280473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,8 +1045,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rootTF: {fileID: 0}
-  overlay: {fileID: 1898098267}
-  enemyOverlay: {fileID: 1898098269}
+  goodTeam: {fileID: 1898098267}
+  enemyTeam: {fileID: 1898098269}
   goodTeamHP: {fileID: 6511453744880959042, guid: 2fcc5ca37876df748a293a4bb64f6a89,
     type: 3}
   badTeamHP: {fileID: 6511453744880959042, guid: 22dcf1814e5dedd4db07399955de6305,
@@ -1777,6 +1790,7 @@ MonoBehaviour:
   speed: 3
   movementRange: 30
   enemyTeam: {fileID: 1898098269}
+  isGoodTeam: 1
 --- !u!4 &1898098268
 Transform:
   m_ObjectHideFlags: 0
@@ -1801,12 +1815,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1898098266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbaa81b599a2866459996db48c81c225, type: 3}
+  m_Script: {fileID: 11500000, guid: b378b776784c4114eb9ec528d4591bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
   movementRange: 30
   enemyTeam: {fileID: 1898098267}
+  isGoodTeam: 0
 --- !u!1001 &2029850176
 PrefabInstance:
   m_ObjectHideFlags: 0
