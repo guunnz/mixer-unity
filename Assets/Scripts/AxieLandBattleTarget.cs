@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class AxieTeamIdsWrapper
 {
     public int score;
-    public List<string> axieList;
+    public List<string> axieids;
 }
 
 public class AxieLandBattleTarget : MonoBehaviour
@@ -22,7 +22,7 @@ public class AxieLandBattleTarget : MonoBehaviour
         AxieTeamIdsWrapper wrapper = new AxieTeamIdsWrapper
         {
             score = score,
-            axieList = axies.Select(x => x.axieId).ToList()
+            axieids = axies.Select(x => x.axieId).ToList()
         };
 
         PostScore(JsonUtility.ToJson(wrapper));
