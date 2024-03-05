@@ -9,7 +9,9 @@ public class Team : MonoBehaviour
     private Dictionary<AxieController, CharacterState> characters = new Dictionary<AxieController, CharacterState>();
     private PathFinder pathFinder;
     public Team enemyTeam;
-    private bool battleStarted = false;
+    public bool battleStarted = false;
+
+    public AxieLandBattleTarget target;
 
     // Boolean flag to differentiate between good and bad teams
     public bool isGoodTeam;
@@ -29,6 +31,7 @@ public class Team : MonoBehaviour
     {
         return characters[GetCharacters().Single(x => x.spawnedAxie.axieId == axieId)];
     }
+
 
     private void RecalculatePath(AxieController character, CharacterState state)
     {
@@ -56,6 +59,11 @@ public class Team : MonoBehaviour
             {
                 inRangeTile.ToggleRectangle(false);
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.L)) // Move all characters
+        {
+            target.PostTeam(1, characters.Select(x => x.Key.spawnedAxie).ToList());
         }
 
         if (battleStarted)

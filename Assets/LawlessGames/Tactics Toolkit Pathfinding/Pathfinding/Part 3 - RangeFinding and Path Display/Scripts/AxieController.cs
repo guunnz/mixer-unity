@@ -92,7 +92,7 @@ public class AxieController : MonoBehaviour
 
     private void Update()
     {
-        if (axieBehavior.axieState == AxieState.Shrimping)
+        if (axieBehavior.axieState == AxieState.Shrimping || !goodTeam.battleStarted)
             return;
 
         if (Input.GetKeyDown(KeyCode.H))

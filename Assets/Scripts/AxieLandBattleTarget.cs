@@ -1,55 +1,105 @@
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace AxieLandBattleTarget
+public class AxieTeamIdsWrapper
 {
-    public enum Method
+    public int score;
+    public List<string> axieList;
+}
+
+public class AxieLandBattleTarget : MonoBehaviour
+{
+    private string postUrl = "https://axie-team-api-xicj.onrender.com/api/team";
+    private string getUrl = "https://axie-team-api-xicj.onrender.com/api/team/:score";
+    private int maxRetries = 5;
+
+    public void PostTeam(int score, List<SpawnedAxie> axies)
     {
-        Get,
-        Patch,
-        Post,
-        Put,
-        Delete,
-        MultipartPost
+        AxieTeamIdsWrapper wrapper = new AxieTeamIdsWrapper
+        {
+            score = score,
+            axieList = axies.Select(x => x.axieId).ToList()
+        };
+
+        PostScore(JsonUtility.ToJson(wrapper));
     }
 
-    public abstract class HyperTarget
+    // Method to post data
+    public void PostScore(string jsonData)
     {
-        public virtual string baseURL => "APIURL";
-        public abstract string path { get; }
+        StartCoroutine(PostRequest(postUrl, jsonData, maxRetries));
+    }
 
-        public abstract Method method { get; }
+    IEnumerator PostRequest(string url, string jsonData, int retries)
+    {
+        UnityWebRequest webRequest = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
+        webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
 
-        public virtual List<IMultipartFormSection> formData { get; }
-        public abstract Dictionary<string, object> param { get; }
-        
-        public virtual string body => JsonConvert.SerializeObject(param);
+        yield return webRequest.SendWebRequest();
 
-        public virtual string query
+        if (webRequest.isNetworkError || webRequest.isHttpError)
         {
-            get
+            Debug.LogError(webRequest.error);
+            if (retries > 0)
             {
-                if (param == null)
-                    return "";
-                List<string> queries = new();
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(PostRequest(url, jsonData, retries - 1));
+            }
+        }
+        else
+        {
+            Debug.Log("Post request complete! " + webRequest.downloadHandler.text);
+        }
+    }
 
-                foreach (var (key, value) in param)
+    // Method to get data as an async Task
+    public async Task<string> GetScoreAsync(string score)
+    {
+        string url = getUrl.Replace(":score", score);
+        Debug.Log("requested " + url);
+        return await GetRequestAsync(url, maxRetries);
+    }
+
+    private async Task<string> GetRequestAsync(string url, int retries)
+    {
+        Debug.Log("requested 2 " + url);
+        while (retries > 0)
+        {
+            using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+            {
+                await webRequest.SendWebRequestAsync();
+
+                if (webRequest.isNetworkError || webRequest.isHttpError)
                 {
-                    string keyString = UnityWebRequest.EscapeURL(key);
-                    string valueString = UnityWebRequest.EscapeURL($"{value}");
-                    queries.Add($"{keyString}={valueString}");
+                    Debug.LogError(webRequest.error);
+                    retries--;
+                    if (retries == 0) return null;
                 }
-
-                return string.Join("&", queries);
+                else
+                {
+                    Debug.Log("Get request complete! " + webRequest.downloadHandler.text);
+                    return webRequest.downloadHandler.text;
+                }
             }
         }
 
-        public string contentType = "application/json;charset=utf-8";
-        public abstract bool requiresAuth { get; }
+        return null;
+    }
+}
 
-        public string url => string.IsNullOrEmpty(path) ? $"{baseURL}" : $"{baseURL}/{path}";
+public static class UnityWebRequestExtensions
+{
+    public static Task<UnityWebRequest> SendWebRequestAsync(this UnityWebRequest webRequest)
+    {
+        var completionSource = new TaskCompletionSource<UnityWebRequest>();
+        webRequest.SendWebRequest().completed += operation => { completionSource.SetResult(webRequest); };
+        return completionSource.Task;
     }
 }

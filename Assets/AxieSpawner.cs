@@ -47,6 +47,8 @@ namespace Game
         public GameObject goodTeamHP;
         public GameObject badTeamHP;
 
+        public AxieLandBattleTarget landBattleTarget;
+
 
         public AxieClassObject[] axieClassObjects = new AxieClassObject[] { };
 
@@ -60,19 +62,20 @@ namespace Game
             if (Input.GetKeyDown(KeyCode.R))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            }  
         }
 
+
         public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class,
-            GetAxiesExample.Stats stats)
+            GetAxiesExample.Stats stats, bool isOpponent = false)
         {
-            StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats));
+            StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats,isOpponent));
         }
 
         bool isFetchingGenes = false;
 
         private IEnumerator GetAxiesGenesAndSpawn(string axieId, BodyPart bodyPart, SkillName skillName,
-            AxieClass @class, GetAxiesExample.Stats stats)
+            AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
         {
             isFetchingGenes = true;
             string searchString = "{ axie (axieId: \"" + axieId + "\") { id, genes, newGenes}}";
@@ -95,7 +98,7 @@ namespace Game
                     JObject jResult = JObject.Parse(result);
                     string genesStr = (string)jResult["data"]["axie"]["newGenes"];
                     Debug.Log(genesStr);
-                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, bodyPart, skillName, @class, stats);
+                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, bodyPart, skillName, @class, stats, isOpponent);
                 }
             }
 
@@ -105,7 +108,7 @@ namespace Game
 
         private void ProcessMixer(string axieId, string genesStr, bool isGraphic, BodyPart bodyPart,
             SkillName skillName,
-            AxieClass @class, GetAxiesExample.Stats stats)
+            AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
         {
             if (string.IsNullOrEmpty(genesStr))
             {
@@ -126,23 +129,18 @@ namespace Game
             {
                 SpawnSkeletonAnimation(builderResult, axieId, bodyPart,
                     skillName,
-                    @class, stats);
+                    @class, stats, isOpponent);
             }
         }
 
         private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId, BodyPart bodyPart,
             SkillName skillName,
-            AxieClass @class, GetAxiesExample.Stats stats)
+            AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
         {
             GameObject go = new GameObject("Axie");
             CreateAxie(go, builderResult, axieId, bodyPart,
                 skillName,
-                @class, stats);
-            ///////////////////////////////////////////////////////////////////////////////////////////////////
-            GameObject go2 = new GameObject("Axie evil");
-            CreateAxie(go2, builderResult, axieId, bodyPart,
-                skillName,
-                @class, stats, true);
+                @class, stats,isOpponent);
         }
 
 
