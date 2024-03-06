@@ -56,4 +56,9 @@ public class AxieBodyPart : ScriptableObject
     public SkillName skillName;
     public BodyPart bodyPart;
     public GameObject prefab; // Prefab can be assigned in the editor if needed
+    public AxieClass bodyPartClass;
+    public float damage;
+    public float shield;
+    public float energy;
+    public string description;
 }
