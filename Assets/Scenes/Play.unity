@@ -123,30 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &113790889 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6382746243822445601, guid: 8830286e1eca0de489a1d8502063e25a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1243969933}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &113790890 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6380612673632328518, guid: 8830286e1eca0de489a1d8502063e25a,
     type: 3}
   m_PrefabInstance: {fileID: 1243969933}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &113790891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113790889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c056b2a83a5a3274894d2b225a516af6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &157132379
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,11 +1342,7 @@ PrefabInstance:
         type: 3}
       insertIndex: 7
       addedObject: {fileID: 432084294}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6382746243822445601, guid: 8830286e1eca0de489a1d8502063e25a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 113790891}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8830286e1eca0de489a1d8502063e25a, type: 3}
 --- !u!1 &1384063688
 GameObject:
@@ -1924,6 +1902,7 @@ MonoBehaviour:
   speed: 3
   movementRange: 30
   enemyTeam: {fileID: 1898098269}
+  battleStarted: 0
   target: {fileID: 1898098270}
   isGoodTeam: 1
 --- !u!4 &1898098268
@@ -1956,6 +1935,7 @@ MonoBehaviour:
   speed: 3
   movementRange: 30
   enemyTeam: {fileID: 1898098267}
+  battleStarted: 0
   target: {fileID: 1898098270}
   isGoodTeam: 0
 --- !u!114 &1898098270
