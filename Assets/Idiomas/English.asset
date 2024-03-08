@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dee2c442e4c70c4a887c9f6e4f3ede2, type: 3}
+  m_Name: English
+  m_EditorClassIdentifier: Assembly-CSharp::LocalizedTexts
+  languageName: English
+  menuTexts:
+  - New Game
+  - Continue
+  - Leaderboard
+  - Quit
+  newGameTexts:
+  - Tutorial
+  - Learn the basics!
+  - Back
+  - to the menu :(
+  - Lunacia Run
+  - 'Win battles to climb at the leaderboard  and earn SLP!  '
+  - Land Battle Run
+  - Win battles to climb at the leaderboard!
+  optionsMenuTexts:
+  - Resolution
+  - Lenguage
+  - FullScreen
+  - Music
+  - Sound Effects
+  - Back to Main Menu
+  ingText:
+  - Fight
+  - Team
