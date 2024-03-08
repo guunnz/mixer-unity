@@ -36,10 +36,6 @@ public class UITextController : MonoBehaviour
     public TextMeshProUGUI ingFight;
     
     
-    void Start()
-    {
-        SetUITexts();
-    }
     void Awake()
     {
         // Configura la instancia estática
@@ -51,6 +47,11 @@ public class UITextController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    void Start()
+    {
+        SetUITexts();
     }
 
     public void SetUITexts()

@@ -5281,6 +5281,7 @@ GameObject:
   - component: {fileID: 393208449551198429}
   - component: {fileID: 3219066011153113434}
   - component: {fileID: 6800462776061072371}
+  - component: {fileID: 3231143254747106431}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -5429,6 +5430,22 @@ MonoBehaviour:
   InGameMenu: {fileID: 98303638684335494}
   optionsButton: {fileID: 4513604233865489541}
   fullscreenMode: 1
+--- !u!114 &3231143254747106431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2722088891408535845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e53986ce6ee2a34d8cacd0f4231c416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  languageDropdown: {fileID: 6185484279002149835}
+  localizedTexts:
+  - {fileID: 11400000, guid: c97522a99e2d9e04db2c51534495cc6e, type: 2}
+  - {fileID: 11400000, guid: cc6d791169d4a594ab68e46f1fbacaa3, type: 2}
 --- !u!1 &2886091710135330106
 GameObject:
   m_ObjectHideFlags: 0
@@ -11669,7 +11686,6 @@ GameObject:
   - component: {fileID: 1142575527884200164}
   - component: {fileID: 4176823796690931469}
   - component: {fileID: 6185484279002149835}
-  - component: {fileID: 1273242238300904184}
   m_Layer: 5
   m_Name: Lenguage
   m_TagString: Untagged
@@ -11791,7 +11807,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1273242238300904184}
+      - m_Target: {fileID: 3231143254747106431}
         m_TargetAssemblyTypeName: LanguageManager, Assembly-CSharp
         m_MethodName: SetLanguage
         m_Mode: 0
@@ -11804,22 +11820,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_AlphaFadeSpeed: 0.15
---- !u!114 &1273242238300904184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8106587094884225036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e53986ce6ee2a34d8cacd0f4231c416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  languageDropdown: {fileID: 6185484279002149835}
-  localizedTexts:
-  - {fileID: 11400000, guid: c97522a99e2d9e04db2c51534495cc6e, type: 2}
-  - {fileID: 11400000, guid: cc6d791169d4a594ab68e46f1fbacaa3, type: 2}
 --- !u!1 &8171005538047395235
 GameObject:
   m_ObjectHideFlags: 0

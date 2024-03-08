@@ -16,7 +16,7 @@ public class LanguageManager : MonoBehaviour
 		languageDropdown.ClearOptions();
 		languageDropdown.AddOptions(new System.Collections.Generic.List<string>(languageNames));
         
-		int defaultLanguageIndex = PlayerPrefs.GetInt("Language", 0); // Por ejemplo, si el idioma predeterminado es el primero en tu lista de idiomas
+		int defaultLanguageIndex = PlayerPrefs.GetInt("Language",1); // Por ejemplo, si el idioma predeterminado es el primero en tu lista de idiomas
     
 		// Establece el idioma inicial
 		SetLanguage(defaultLanguageIndex); // Cambia esto al índice del idioma inicial que desees
