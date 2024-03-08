@@ -103,6 +103,7 @@ public class Team : MonoBehaviour
     {
         OverlayTile startingTile = null;
 
+        int index = 0;
         while (startingTile == null || startingTile.occupied)
         {
             if (gridLocation == null)
@@ -116,6 +117,7 @@ public class Team : MonoBehaviour
             if (startingTile.occupied)
             {
                 gridLocation = null;
+                index++;
             }
         }
 
@@ -166,8 +168,13 @@ public class Team : MonoBehaviour
             }
             else
             {
+                if (state.path == null)
+                {
+                    state.isMoving = false;
+                    return;
+                }
+
                 state.path.Clear();
-                state.isMoving = false;
             }
         }
     }
@@ -288,6 +295,7 @@ public class Team : MonoBehaviour
         {
             character.transform.position = tile.transform.position;
             tile.occupied = true;
+            tile.currentOccupier = character;
             character.standingOnTile = tile;
         }
     }

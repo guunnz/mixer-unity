@@ -13,5 +13,35 @@ MonoBehaviour:
   m_Name: Anemone_Horn
   m_EditorClassIdentifier: 
   skillName: 37
+  statusEffects:
+  - statusEffect: 0
+    statusApplyType: 0
+    skillTriggerType: 0
+    StunDuration: 0
+    FearDuration: 0
+    SleepDuration: 0
+    JinxDuration: 0
+    ChillDuration: 0
+    AromaDuration: 0
+    StenchDuration: 0
+    FragileDuration: 0
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 0
+    StealEnergyPercentage: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    MeleeReflectDuration: 0
+    RangedReflectDuration: 0
+    OnlyCanDamageShield: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 10
+    ShieldOnStart: 0
+    StunOnShieldBreak: 0
+    Lethal: 0
+    Merry: 0
+    Gecko: 0
+    extraDamageAgainsts: []
   bodyPart: 2
   prefab: {fileID: 0}

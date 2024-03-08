@@ -56,6 +56,29 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public List<OverlayTile> GetAdjacentTiles(OverlayTile originTile)
+    {
+        var surroundingTiles = new List<OverlayTile>();
+
+        // Check surrounding tiles
+        List<Vector2Int> offsets = new List<Vector2Int>
+        {
+            new Vector2Int(0, 1),
+            new Vector2Int(0, -1)
+        };
+
+        foreach (var offset in offsets)
+        {
+            Vector2Int tileToCheck = originTile.grid2DLocation + offset;
+            if (map.ContainsKey(tileToCheck))
+            {
+                surroundingTiles.Add(map[tileToCheck]);
+            }
+        }
+
+        return surroundingTiles;
+    }
+
     public List<OverlayTile> GetSurroundingTiles(Vector2Int originTile)
     {
         var surroundingTiles = new List<OverlayTile>();

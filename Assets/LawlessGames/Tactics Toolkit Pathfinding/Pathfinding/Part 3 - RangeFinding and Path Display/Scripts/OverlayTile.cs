@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Shapes;
 using UnityEngine;
@@ -26,7 +27,13 @@ public class OverlayTile : MonoBehaviour
     public bool occupied;
     private Team goodTeam;
     private Team badTeam;
+    internal AxieController currentOccupier;
     public Rectangle rectangle;
+    
+    public static AxieController GetCurrentOccupierByY(int yValue, List<OverlayTile> allTiles)
+    {
+        return allTiles.FirstOrDefault(tile => tile.grid2DLocation.y == yValue)?.currentOccupier;
+    }
 
     private void Start()
     {

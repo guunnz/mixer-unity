@@ -13,5 +13,21 @@ MonoBehaviour:
   m_Name: RiskyFeather_Tail
   m_EditorClassIdentifier: 
   skillName: 76
+  statusEffects:
+  - statusEffect: 10
+    statusApplyType: 0
+    StunDuration: 0
+    FearDuration: 0
+    SleepDuration: 0
+    JinxDuration: 0
+    ChillDuration: 0
+    AromaDuration: 0
+    StenchDuration: 0
+    FragileDuration: 0
+    PoisonStack: 0
+    Attack: -1
+    Speed: 0
+    Morale: 1
+    Lethal: 1
   bodyPart: 5
   prefab: {fileID: 2407781631212507186, guid: 55bb36ad399c4c441a62235c42950ad1, type: 3}

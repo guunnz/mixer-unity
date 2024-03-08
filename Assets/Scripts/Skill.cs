@@ -117,6 +117,33 @@ public enum SkillName
     RiskyFeather
 }
 
+public enum SkillTriggerType
+{
+    Active,
+    Battlecry,
+    PassivePermanent,
+    PassiveOnDamageTaken,
+    PassiveOnAttack,
+}
+
+public enum StatusEffectEnum
+{
+    None,
+    Stun,
+    Fear,
+    Sleep,
+    Jinx,
+    Chill,
+    Aroma,
+    Stench,
+    Fragile,
+    Lethal,
+    Poison,
+    Attack,
+    Speed,
+    Morale,
+}
+
 
 public class Skill : MonoBehaviour
 {
@@ -127,9 +154,11 @@ public class Skill : MonoBehaviour
     public float Damage;
     public AxieAnimation animationToPlay;
     internal SkeletonAnimation skeletonAnimation;
-    internal BodyPart bodyPart;
+    internal AxieBodyPart axieBodyPart;
+    internal AxieController self;
     internal AxieController opponent;
     public float totalDuration;
+    public float statusEffectsTiming;
 
     private void Start()
     {
@@ -138,19 +167,20 @@ public class Skill : MonoBehaviour
 
     private IEnumerator LaunchSkill()
     {
-        Destroy(this.gameObject, totalDuration);
+        Invoke("SetStatusEffects", statusEffectsTiming == 0 ? totalDuration : statusEffectsTiming);
 
         string animationName = animationToPlay.ToString();
 
-// Find the last underscore and replace it with a hyphen
+        // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
+
         if (lastUnderscoreIndex != -1)
         {
             animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
                             animationName.Substring(lastUnderscoreIndex + 1);
         }
 
-// Replace the remaining underscores with slashes
+        // Replace the remaining underscores with slashes
         animationName = animationName.Replace("_", "/");
 
         skeletonAnimation.AnimationName = animationName;
@@ -181,6 +211,14 @@ public class Skill : MonoBehaviour
         }
 
         opponent.spawnedAxie.currentHP -= this.Damage;
+    }
+
+    private void SetStatusEffects()
+    {
+        foreach (var skillEffect in axieBodyPart.statusEffects)
+        {
+            StatusManager.Instance.SetStatus(skillEffect, self, opponent);
+        }
     }
 
     private IEnumerator Destroy(GameObject obj, float timing)
