@@ -139,9 +139,18 @@ public enum StatusEffectEnum
     Fragile,
     Lethal,
     Poison,
-    Attack,
-    Speed,
-    Morale,
+    AttackPositive,
+    SpeedPositive,
+    MoralePositive,
+    AttackNegative,
+    SpeedNegative,
+    MoraleNegative,
+    Merry,
+    Gecko,
+    Lunge,
+    Trump,
+    Feather,
+    Untargetable
 }
 
 
@@ -167,7 +176,7 @@ public class Skill : MonoBehaviour
 
     private IEnumerator LaunchSkill()
     {
-        Invoke("SetStatusEffects", statusEffectsTiming == 0 ? totalDuration : statusEffectsTiming);
+        Invoke("SetStatusEffects", statusEffectsTiming == 0 ? totalDuration - 0.1f : statusEffectsTiming);
 
         string animationName = animationToPlay.ToString();
 
@@ -215,6 +224,9 @@ public class Skill : MonoBehaviour
 
     private void SetStatusEffects()
     {
+        if (axieBodyPart.statusEffects == null)
+            return;
+        
         foreach (var skillEffect in axieBodyPart.statusEffects)
         {
             StatusManager.Instance.SetStatus(skillEffect, self, opponent);

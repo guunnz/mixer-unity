@@ -58,3 +58,4 @@ MonoBehaviour:
   Damage: 30
   animationToPlay: 2
   totalDuration: 1.733
+  statusEffectsTiming: 0

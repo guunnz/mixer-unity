@@ -481,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad48e22934c489c478fbec68270e2579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillEffects: {fileID: 11400000, guid: 3f33fe9b8f056e04c9796cf4f31a93bc, type: 2}
 --- !u!1 &607280473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,6 +1158,8 @@ MonoBehaviour:
     type: 3}
   badTeamHP: {fileID: 6511453744880959042, guid: 22dcf1814e5dedd4db07399955de6305,
     type: 3}
+  axieSkillEffectManager: {fileID: 3444513607992520960, guid: 58086b1653d39bd45bdc29b5f729d00e,
+    type: 3}
   landBattleTarget: {fileID: 1898098270}
   axieClassObjects:
   - classSprite: {fileID: 21300000, guid: 2904413c5dbeb1340a71d31e2419eea6, type: 3}
@@ -1613,6 +1616,7 @@ GameObject:
   - component: {fileID: 1494011142}
   - component: {fileID: 1494011141}
   - component: {fileID: 1494011144}
+  - component: {fileID: 1494011145}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1738,6 +1742,18 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &1494011145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494011140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e532984614ef1604083275768e18f7e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1506392972
 GameObject:
   m_ObjectHideFlags: 0

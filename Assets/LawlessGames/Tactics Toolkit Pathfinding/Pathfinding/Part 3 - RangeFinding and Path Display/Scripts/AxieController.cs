@@ -34,11 +34,10 @@ public class AxieController : MonoBehaviour
     public Team badTeam;
     private Team.CharacterState state;
     private AxieController[] allCharacters;
-    private AxieSkillEffectManager axieSkillEffectManager;
+    internal AxieSkillEffectManager axieSkillEffectManager;
     public GetAxiesExample.Stats stats;
     internal bool imGood;
-
-
+    
     public void AddStatusEffect(SkillEffect skillEffect)
     {
         axieSkillEffectManager.AddStatusEffect(skillEffect);
@@ -46,12 +45,12 @@ public class AxieController : MonoBehaviour
 
     public void RemoveStatusEffect(SkillEffect skillEffect)
     {
-        axieSkillEffectManager.RemoveStatusEffect(skillEffect);
+        axieSkillEffectManager.RemoveStatusEffect();
     }
 
     public List<SkillEffect> GetAllSkillEffectsNotPassives()
     {
-        return axieSkillEffectManager.statusEffects.Where(x => x.isPassive == false).ToList();
+        return axieSkillEffectManager.GetAllSkillEffectsNotPassives().ToList();
     }
 
     public void RemoveAllEffects()
@@ -63,7 +62,7 @@ public class AxieController : MonoBehaviour
     {
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
-        axieSkillEffectManager = gameObject.AddComponent<AxieSkillEffectManager>();
+        
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
             state = badTeam.GetCharacterState(spawnedAxie.axieId);

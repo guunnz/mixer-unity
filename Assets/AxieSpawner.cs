@@ -46,6 +46,7 @@ namespace Game
 
         public GameObject goodTeamHP;
         public GameObject badTeamHP;
+        public GameObject axieSkillEffectManager;
 
         public AxieLandBattleTarget landBattleTarget;
 
@@ -62,14 +63,14 @@ namespace Game
             if (Input.GetKeyDown(KeyCode.R))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }  
+            }
         }
 
 
         public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class,
             GetAxiesExample.Stats stats, bool isOpponent = false)
         {
-            StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats,isOpponent));
+            StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats, isOpponent));
         }
 
         bool isFetchingGenes = false;
@@ -140,7 +141,7 @@ namespace Game
             GameObject go = new GameObject("Axie");
             CreateAxie(go, builderResult, axieId, bodyPart,
                 skillName,
-                @class, stats,isOpponent);
+                @class, stats, isOpponent);
         }
 
 
@@ -187,7 +188,11 @@ namespace Game
 
             controller.SkeletonAnim = runtimeSkeletonAnimation;
             controller.statsManagerUI =
-                Instantiate(badTeamHP, runtimeSkeletonAnimation.transform).GetComponent<StatsManager>();
+                Instantiate(isEnemy ? badTeamHP : goodTeamHP, runtimeSkeletonAnimation.transform)
+                    .GetComponent<StatsManager>();
+            controller.axieSkillEffectManager =
+                Instantiate(axieSkillEffectManager, runtimeSkeletonAnimation.transform)
+                    .GetComponent<AxieSkillEffectManager>();
             controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
         }
 

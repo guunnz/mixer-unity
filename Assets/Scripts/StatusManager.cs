@@ -25,6 +25,9 @@ public class StatusManager : MonoBehaviour
 {
     static public StatusManager Instance;
 
+    public SkillEffectSO skillEffects;
+
+
     private void Awake()
     {
         if (Instance != null)
@@ -59,7 +62,6 @@ public class StatusManager : MonoBehaviour
                 {
                     OverlayTile.currentOccupier.RemoveAllEffects();
                 }
-
                 break;
             case StatusApplyType.ApplySelfAndEnemy:
                 target.AddStatusEffect(effect);
@@ -76,7 +78,6 @@ public class StatusManager : MonoBehaviour
                 {
                     overlayTile.currentOccupier.AddStatusEffect(effect);
                 }
-
                 break;
             case StatusApplyType.ApplyAdjacentTargetAndTarget:
                 adjacentTiles = MapManager.Instance.GetAdjacentTiles(target.standingOnTile);
@@ -84,14 +85,12 @@ public class StatusManager : MonoBehaviour
                 {
                     overlayTile.currentOccupier.AddStatusEffect(effect);
                 }
-
                 break;
             case StatusApplyType.StealTargetFromSelf:
                 foreach (var skillEffect in target.GetAllSkillEffectsNotPassives())
                 {
                     self.AddStatusEffect(skillEffect);
                 }
-
                 target.RemoveAllEffects();
                 break;
             case StatusApplyType.StealSelfFromTarget:
@@ -99,7 +98,6 @@ public class StatusManager : MonoBehaviour
                 {
                     target.AddStatusEffect(skillEffect);
                 }
-
                 self.RemoveAllEffects();
                 break;
             case StatusApplyType.ApplyTeam:
@@ -107,14 +105,12 @@ public class StatusManager : MonoBehaviour
                 {
                     teammate.AddStatusEffect(effect);
                 }
-
                 break;
             case StatusApplyType.ApplyEnemyTeam:
                 foreach (var teammate in target.goodTeam.GetCharacters())
                 {
                     teammate.AddStatusEffect(effect);
                 }
-
                 break;
             case StatusApplyType.AllAxies:
 
@@ -127,7 +123,6 @@ public class StatusManager : MonoBehaviour
                 {
                     teammate.AddStatusEffect(effect);
                 }
-
                 break;
         }
     }

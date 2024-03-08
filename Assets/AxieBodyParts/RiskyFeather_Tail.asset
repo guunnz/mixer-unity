@@ -14,20 +14,100 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 76
   statusEffects:
-  - statusEffect: 10
+  - statusEffect: 14
     statusApplyType: 0
-    StunDuration: 0
-    FearDuration: 0
-    SleepDuration: 0
-    JinxDuration: 0
-    ChillDuration: 0
-    AromaDuration: 0
-    StenchDuration: 0
-    FragileDuration: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
     PoisonStack: 0
     Attack: -1
     Speed: 0
     Morale: 1
+    StealEnergyPercentage: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
     Lethal: 1
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    extraDamageAgainstList: []
+  - statusEffect: 13
+    statusApplyType: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: -1
+    Speed: 0
+    Morale: 1
+    StealEnergyPercentage: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 1
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    extraDamageAgainstList: []
+  - statusEffect: 12
+    statusApplyType: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: -1
+    Speed: 0
+    Morale: 1
+    StealEnergyPercentage: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 1
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    extraDamageAgainstList: []
   bodyPart: 5
   prefab: {fileID: 2407781631212507186, guid: 55bb36ad399c4c441a62235c42950ad1, type: 3}
+  bodyPartClass: 0
+  damage: 0
+  shield: 0
+  energy: 0
+  description: 

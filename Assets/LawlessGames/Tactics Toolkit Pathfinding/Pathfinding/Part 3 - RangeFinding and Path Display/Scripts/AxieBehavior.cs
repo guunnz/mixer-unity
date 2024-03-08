@@ -199,7 +199,8 @@ public class AxieBehavior : MonoBehaviour
             myController.spawnedAxie.axieClass,
             myController.spawnedAxie.bodyPartMain,
             myController.CurrentTarget.transform, this.transform, myController.SkeletonAnim,
-            myController.spawnedAxie.skillName == SkillName.Rosebud ? this.myController : myController.CurrentTarget);
+            myController.spawnedAxie.skillName == SkillName.Rosebud ? this.myController : myController.CurrentTarget,
+            myController);
         yield return new WaitForSeconds(timeToWait);
         myController.spawnedAxie.CurrentMana = myController.spawnedAxie.MinMana;
         myController.SkeletonAnim.loop = true;

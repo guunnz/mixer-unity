@@ -25,7 +25,7 @@ public class SkillLauncher : MonoBehaviour
     }
 
     public float ThrowSkill(SkillName skillName, AxieClass axieClass, BodyPart axiebodyPart, Transform target,
-        Transform origin, SkeletonAnimation skeletonAnimation, AxieController opponent)
+        Transform origin, SkeletonAnimation skeletonAnimation, AxieController opponent, AxieController self)
     {
         AxieBodyPart part =
             skillList.axieBodyParts.FirstOrDefault(x => x.skillName == skillName && x.bodyPart == axiebodyPart);
@@ -35,12 +35,15 @@ public class SkillLauncher : MonoBehaviour
             Debug.Log(skillName + " " + axiebodyPart);
             return 0.5f;
         }
+        
+        
 
         Skill skill = Instantiate(part.prefab).GetComponent<Skill>();
 
         skill.axieBodyPart = part;
         skill.target = target;
         skill.origin = origin;
+        skill.self = self;
         skill.@class = axieClass;
         skill.skeletonAnimation = skeletonAnimation;
         skill.opponent = opponent;

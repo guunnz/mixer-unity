@@ -12,7 +12,7 @@ namespace AxieMixer.Unity
     {
         private const string StuffName = "axie-2d-v3-stuff";
 
-        private static bool initialized;
+        public static bool initialized;
         private static Axie2dBuilder builder;
 
         public static Axie2dBuilder Builder

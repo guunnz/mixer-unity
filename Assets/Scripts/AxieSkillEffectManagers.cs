@@ -1,53 +1,179 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Spine.Unity;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AxieSkillEffectManager : MonoBehaviour
 {
-    public List<SkillEffect> statusEffects = new List<SkillEffect>();
-
-    // Define the events
-    public event Action<SkillEffect> OnAddStatusEffect;
-    public event Action<SkillEffect> OnRemoveStatusEffect;
-    public event Action OnRemoveAllEffects;
+    public List<SkillEffect> skillEffects = new List<SkillEffect>();
+    public List<SkillEffectGraphic> skillEffectGraphics = new List<SkillEffectGraphic>();
+    public GameObject skillEffectGraphicPrefab;
+    public Transform HorizontalLayoutGroup;
+    private Transform mainCharacter;
+    private int lastXAxisScale;
 
     private void Start()
     {
-        // Subscribe to the events
-        OnAddStatusEffect += HandleAddStatusEffect;
-        OnRemoveStatusEffect += HandleRemoveStatusEffect;
-        OnRemoveAllEffects += HandleRemoveAllEffects;
+        BoneFollower boneFollower = this.gameObject.AddComponent<BoneFollower>();
+
+        if (boneFollower.skeletonRenderer == null)
+            boneFollower.skeletonRenderer = transform.parent.GetComponent<SkeletonRenderer>();
+
+        boneFollower.boneName = "@body";
+        boneFollower.followBoneRotation = false;
+        boneFollower.followXYPosition = true;
+        boneFollower.followZPosition = false;
+        boneFollower.followSkeletonFlip = false;
+        boneFollower.yOffset = 4.5f;
+
+        mainCharacter = transform.parent.parent;
+        int scaleWished = mainCharacter.transform.localScale.x < 0 ? -1 : 1;
+
+        this.transform.localScale =
+            new Vector3(scaleWished, this.transform.localScale.y, this.transform.localScale.z);
+        lastXAxisScale = scaleWished;
+    }
+
+
+    private void Update()
+    {
+        int scaleWished = mainCharacter.transform.localScale.x < 0 ? -1 : 1;
+        if (lastXAxisScale != scaleWished)
+        {
+            this.transform.localScale =
+                new Vector3(scaleWished, this.transform.localScale.y, this.transform.localScale.z);
+            lastXAxisScale = scaleWished;
+        }
+    }
+
+    public List<SkillEffect> GetAllSkillEffectsNotPassives()
+    {
+        return skillEffects.Where(x => x.isPassive == false).ToList();
     }
 
     public void AddStatusEffect(SkillEffect skillEffect)
     {
-        statusEffects.Add(skillEffect);
-        OnAddStatusEffect?.Invoke(skillEffect); // Trigger the event
+        SkillEffect skillEffectOnList = skillEffects.FirstOrDefault(x => x.statusEffect == skillEffect.statusEffect);
+
+        if (skillEffectOnList != null)
+        {
+            switch (skillEffect.statusEffect)
+            {
+                case StatusEffectEnum.Aroma:
+                case StatusEffectEnum.Chill:
+                case StatusEffectEnum.Fear:
+                case StatusEffectEnum.Stench:
+                case StatusEffectEnum.Fragile:
+                case StatusEffectEnum.Jinx:
+                case StatusEffectEnum.Sleep:
+                case StatusEffectEnum.Lethal:
+                case StatusEffectEnum.Stun:
+                    skillEffectOnList.skillDuration = skillEffect.skillDuration;
+                    return;
+                default:
+                    break;
+            }
+        }
+
+        SkillEffectGraphic skillEffectGraphic =
+            skillEffectGraphics.FirstOrDefault(x => x.statusEffect == skillEffect.statusEffect);
+
+        if (skillEffectGraphic == null)
+        {
+            skillEffectGraphic =
+                Instantiate(skillEffectGraphicPrefab, Vector3.zero, Quaternion.identity, HorizontalLayoutGroup)
+                    .GetComponent<SkillEffectGraphic>();
+
+            skillEffectGraphic.statusEffect = skillEffect.statusEffect;
+
+            skillEffectGraphic.transform.localPosition = Vector3.zero;
+            skillEffectGraphic.transform.localEulerAngles = Vector3.zero;
+
+            skillEffectGraphics.Add(skillEffectGraphic);
+
+            skillEffectGraphic.SetSprite(StatusManager.Instance.skillEffects.statusEffectGraphicsList
+                .FirstOrDefault(x => x.statusEffectEnum == skillEffect.statusEffect)?.sprite);
+        }
+        else
+        {
+            SkillEffect skillEffectCounter = null;
+            switch (skillEffect.statusEffect)
+            {
+                case StatusEffectEnum.AttackNegative:
+                    skillEffectCounter =
+                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.AttackPositive);
+                    break;
+                case StatusEffectEnum.AttackPositive:
+                    skillEffectCounter =
+                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.AttackNegative);
+                    break;
+                case StatusEffectEnum.MoraleNegative:
+                    skillEffectCounter =
+                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.MoralePositive);
+                    break;
+                case StatusEffectEnum.MoralePositive:
+                    skillEffectCounter =
+                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.MoraleNegative);
+                    break;
+                case StatusEffectEnum.SpeedNegative:
+                    skillEffectCounter =
+                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.SpeedPositive);
+                    break;
+                case StatusEffectEnum.SpeedPositive:
+                    skillEffectCounter =
+                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.SpeedNegative);
+                    break;
+                default:
+                    break;
+            }
+
+            if (skillEffectCounter == null)
+            {
+                if (skillEffectOnList != null)
+                {
+                    skillEffectOnList.timesSet++;
+                }
+
+                skillEffectGraphic.IncreaseNumber(1);
+            }
+            else
+            {
+                skillEffectCounter.timesSet--;
+
+                if (skillEffectCounter.timesSet <= 0)
+                {
+                    RemoveStatusEffect(skillEffectCounter.statusEffect);
+                }
+            }
+        }
     }
 
-    public void RemoveStatusEffect(SkillEffect skillEffect)
+    public void RemoveStatusEffect(StatusEffectEnum statusEffect)
     {
-        statusEffects.RemoveAll(x => !x.isPassive);
-        OnRemoveStatusEffect?.Invoke(skillEffect); // Trigger the event
+        SkillEffect skillEffect = skillEffects.FirstOrDefault(x => x.statusEffect == statusEffect);
+        SkillEffectGraphic skillEffectGraphic = skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
+        skillEffects.Remove(skillEffect);
+        skillEffectGraphics.Remove(skillEffectGraphic);
+        if (skillEffectGraphic != null) Destroy(skillEffectGraphic.gameObject);
+    }
+
+    public void RemoveStatusEffect()
+    {
+        skillEffects.RemoveAll(x => !x.isPassive);
+        foreach (var skillEffectGraphic in skillEffectGraphics)
+        {
+            Destroy(skillEffectGraphic.gameObject);
+        }
+
+        skillEffectGraphics.Clear();
     }
 
     public void RemoveAllEffects()
     {
-        statusEffects.Clear();
-        OnRemoveAllEffects?.Invoke(); // Trigger the event
-    }
-
-    // Event handlers
-    private void HandleAddStatusEffect(SkillEffect skillEffect)
-    {
-    }
-
-    private void HandleRemoveStatusEffect(SkillEffect skillEffect)
-    {
-    }
-
-    private void HandleRemoveAllEffects()
-    {
+        skillEffects.Clear();
     }
 }

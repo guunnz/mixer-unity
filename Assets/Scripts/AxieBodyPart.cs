@@ -49,7 +49,6 @@ public enum AxieAnimation
     action_mix_body_animation
 }
 
-
 [CreateAssetMenu(fileName = "AxieBodyPart", menuName = "Axie/BodyPart")]
 public class AxieBodyPart : ScriptableObject
 {

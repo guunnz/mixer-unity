@@ -35,6 +35,7 @@ public class SkillEffect
     public bool Fragile;
     public bool Poison;
     public List<ExtraDamageAgainst> extraDamageAgainstList;
+    internal int timesSet;
     internal bool hasExtraDamageAgainstType => extraDamageAgainstList.Count > 0;
 }
 
