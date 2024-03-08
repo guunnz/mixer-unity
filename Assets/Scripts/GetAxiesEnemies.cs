@@ -39,7 +39,6 @@ namespace enemies
 
         void GetOpponentTeam(AxieIdsWrapper jsonAxieIds)
         {
-   
             graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
             List<string> axieIds = jsonAxieIds.axieids.ToList();
             string combinedQuery = "";
@@ -128,19 +127,19 @@ namespace enemies
 
 // Assuming these are the correct method calls and enum values
                     axieSpawner.SpawnAxieById(axiesData.Data["axie0"].id, BodyPart.Tail, SkillName.RiskyFeather,
-                        AxieClass.Bird,
+                        axiesData.Data["axie0"].axieClass,
                         axiesData.Data["axie0"].stats, isOpponent);
                     axieSpawner.SpawnAxieById(axiesData.Data["axie1"].id, BodyPart.Back, SkillName.Ronin,
-                        AxieClass.Beast,
+                        axiesData.Data["axie1"].axieClass,
                         axiesData.Data["axie1"].stats, isOpponent);
                     axieSpawner.SpawnAxieById(axiesData.Data["axie2"].id, BodyPart.Mouth, SkillName.RiskyFish,
-                        AxieClass.Dusk,
+                        axiesData.Data["axie2"].axieClass,
                         axiesData.Data["axie2"].stats, isOpponent);
                     axieSpawner.SpawnAxieById(axiesData.Data["axie3"].id, BodyPart.Horn, SkillName.Rosebud,
-                        AxieClass.Plant,
+                        axiesData.Data["axie3"].axieClass,
                         axiesData.Data["axie3"].stats, isOpponent);
                     axieSpawner.SpawnAxieById(axiesData.Data["axie4"].id, BodyPart.Horn, SkillName.HerosBane,
-                        AxieClass.Aquatic,
+                        axiesData.Data["axie4"].axieClass,
                         axiesData.Data["axie4"].stats, isOpponent);
                 }
             }
@@ -168,6 +167,8 @@ namespace enemies
             public string Genes { get; set; }
             public string id { get; set; }
             public string Class { get; set; }
+
+            public AxieClass axieClass => (AxieClass)Enum.Parse(typeof(AxieClass), Class);
             public List<GetAxiesExample.Part> Parts { get; set; }
             public GetAxiesExample.Stats stats { get; set; }
             public string BodyShape { get; set; }

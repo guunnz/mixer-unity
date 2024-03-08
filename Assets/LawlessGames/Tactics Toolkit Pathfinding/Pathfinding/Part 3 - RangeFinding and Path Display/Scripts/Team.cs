@@ -29,7 +29,9 @@ public class Team : MonoBehaviour
 
     public CharacterState GetCharacterState(string axieId)
     {
-        return characters[GetCharacters().Single(x => x.spawnedAxie.axieId == axieId)];
+        return characters[
+            GetCharacters().Single(x =>
+                x.spawnedAxie.axieId == axieId && x.axieBehavior.axieState != AxieState.Killed)];
     }
 
 
@@ -72,7 +74,8 @@ public class Team : MonoBehaviour
             {
                 if (character.Key == null)
                     continue;
-                if (character.Key.axieBehavior.axieState == AxieState.Shrimping)
+                if (character.Key.axieBehavior.axieState == AxieState.Shrimping ||
+                    character.Key.axieBehavior.axieState == AxieState.Killed)
                     continue;
                 if (character.Value.isMoving && character.Value.path.Count > 0)
                 {
@@ -146,6 +149,17 @@ public class Team : MonoBehaviour
                 GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
 
             character.CurrentTarget = closestCharacter;
+
+            if (state.path == null || state.path.Count == 0)
+            {
+                var step = speed * Time.deltaTime;
+                if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+                {
+                    character.transform.position = Vector3.MoveTowards(character.transform.position,
+                        character.standingOnTile.transform.position, step);
+                }
+            }
+
             if (character.spawnedAxie.Range > 1)
             {
                 if (distanceToClosestCharacterGrid <= (int)character.spawnedAxie.Range)
@@ -154,6 +168,7 @@ public class Team : MonoBehaviour
                     return;
                 }
             }
+
 
             float distanceToClosestCharacterX =
                 Mathf.Abs(character.transform.position.x - closestCharacter.transform.position.x);

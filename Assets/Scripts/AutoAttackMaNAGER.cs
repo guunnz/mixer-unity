@@ -20,11 +20,11 @@ public class AutoAttackMaNAGER : MonoBehaviour
         instance = this;
     }
 
-    public void SpawnProjectileBird(Transform target, Transform from)
+    public void SpawnProjectileBird(Transform fromPos, Transform targetPos)
     {
         ProjectileMover projectileMover =
-            Instantiate(ProjectileBird, from.transform.position, ProjectileBird.transform.rotation, null)
+            Instantiate(ProjectileBird, fromPos.transform.position, ProjectileBird.transform.rotation, null)
                 .GetComponent<ProjectileMover>();
-        projectileMover.MoveToTarget(target, 0.56f);
+        projectileMover.MoveToTarget(targetPos, 0.56f);
     }
 }
