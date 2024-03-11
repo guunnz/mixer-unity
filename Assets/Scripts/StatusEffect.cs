@@ -15,6 +15,8 @@ public class SkillEffect
     public int Speed;
     public int Morale;
     public int StealEnergyPercentage;
+    
+    public int GainEnergy;
     public int MeleeReflect;
     public int RangedReflect;
     public int GainShieldOnAttack;
@@ -34,14 +36,57 @@ public class SkillEffect
     public bool Stench;
     public bool Fragile;
     public bool Poison;
-    public List<ExtraDamageAgainst> extraDamageAgainstList;
+    public bool Wombo;
+    public bool AlwaysCritical;
+    public bool DamageEqualsBasicAttack;
+    public int ExtraDamagePercentage;
+    public int ExtraDamageOnCritical;
+    public int MultiCastTimes;
+    [Header("Special Interactions")] public List<SpecialActivationAgainstAxieClass> specialActivationAgainstAxiesList;
+    public List<SpecialComboWithAxieCard> specialActivationIfComboedWithList;
+    public List<SpecialComboWithAxiesInBattle> specialActivationBasedOnAxiesInBattle;
     internal int timesSet;
-    internal bool hasExtraDamageAgainstType => extraDamageAgainstList.Count > 0;
+    internal bool hasSpecialActivationBasedOnTargetAxieClass => specialActivationAgainstAxiesList.Count > 0;
+    [Header("Trigger If")] public bool triggerIfCertainHPTreshold;
+    [Tooltip("if above bool is enabled, and this is false. It is considered MoreThan")]
+    public bool LessThan;
+    public int HPTresholdPercentage;
+    public int ComboAmount;
+    public bool LastAxieAliveTeam;
+    public bool LastAxieAliveOpponent;
+    [Tooltip("My attack - target attack = difference. Ex: AttackStatDifference = -1. MyAttack - TargetAttack = -1. Target has more attack, this triggers")]
+    public int AttackStatDifference;
+    public int SpeedStatDifference;
+    public int MoraleStatDifference;
+    [Header("Reactivation")] public bool AllowReactivation;
+    public int ReactivateEffectEveryXSeconds;
 }
 
 [System.Serializable]
-public class ExtraDamageAgainst
+public class SpecialActivationAgainstAxieClass
 {
     public AxieClass axieClass;
     public int ExtraDamage;
+    public int ExtraTimesAbilityCast;
+    public int ExtraTimesStatusEffectApplied;
+}
+
+[System.Serializable]
+public class SpecialComboWithAxieCard
+{
+    public AxieClass axieClassCard;
+    public bool OnlyCareAboutClassCard;
+    public SkillName axieCard;
+    public int ExtraDamage;
+    public int ExtraTimesAbilityCast;
+    public int ExtraTimesStatusEffectApplied;
+}
+
+[System.Serializable]
+public class SpecialComboWithAxiesInBattle
+{
+    public AxieClass axieClass;
+    public int ExtraTimesAbilityCastPerAxie;
+    public int ExtraTimesStatusEffectAppliedPerAxie;
+    public int ExtraDamageAppliedPerAxie;
 }

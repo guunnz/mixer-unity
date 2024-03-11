@@ -13,5 +13,53 @@ MonoBehaviour:
   m_Name: Ronin_Back
   m_EditorClassIdentifier: 
   skillName: 63
+  statusEffects:
+  - statusEffect: 0
+    statusApplyType: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 0
+    StealEnergyPercentage: 0
+    GainEnergy: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 0
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    Wombo: 0
+    AlwaysCritical: 1
+    ExtraDamageOnCritical: 0
+    specialActivationAgainstAxiesList: []
+    specialActivationIfComboedWithList: []
+    specialActivationBasedOnAxiesInBattle: []
+    triggerIfBelowCertainHPTreshold: 0
+    LessThan: 0
+    HPTresholdPercentage: 0
+    ComboAmount: 2
+    AllowReactivation: 0
+    ReactivateEffectEveryXSeconds: 0
   bodyPart: 4
   prefab: {fileID: 489240768068986823, guid: 1203b90f5268c474a89b71eef3d9d8f1, type: 3}
+  bodyPartClass: 0
+  damage: 85
+  shield: 20
+  energy: 1
+  description: Guarantee critical strike in 3 hits combo

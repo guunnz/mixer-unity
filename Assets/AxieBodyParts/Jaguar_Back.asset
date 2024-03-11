@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
-  m_Name: Goda_Mouth
+  m_Name: Jaguar_Back
   m_EditorClassIdentifier: 
-  skillName: 41
+  skillName: 79
   statusEffects:
-  - statusEffect: 0
+  - statusEffect: 16
     statusApplyType: 1
     skillTriggerType: 0
     isPassive: 0
@@ -22,9 +22,9 @@ MonoBehaviour:
     PoisonStack: 0
     Attack: 0
     Speed: 0
-    Morale: 0
+    Morale: -1
     StealEnergyPercentage: 0
-    GainEnergy: -1
+    GainEnergy: 0
     MeleeReflect: 0
     RangedReflect: 0
     GainShieldOnAttack: 0
@@ -45,18 +45,36 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
-    specialActivationAgainstAxiesList: []
+    AlwaysCritical: 0
+    ExtraDamageOnCritical: 0
+    specialActivationAgainstAxiesList:
+    - axieClass: 5
+      ExtraDamage: 20
+      ExtraTimesAbilityCast: 0
+      ExtraTimesStatusEffectApplied: 0
+    - axieClass: 2
+      ExtraDamage: 20
+      ExtraTimesAbilityCast: 0
+      ExtraTimesStatusEffectApplied: 0
+    - axieClass: 7
+      ExtraDamage: 20
+      ExtraTimesAbilityCast: 0
+      ExtraTimesStatusEffectApplied: 0
     specialActivationIfComboedWithList: []
     specialActivationBasedOnAxiesInBattle: []
     triggerIfBelowCertainHPTreshold: 0
     LessThan: 0
     HPTresholdPercentage: 0
+    ComboAmount: 0
+    AttackStatDifference: 0
+    SpeedStatDifference: -1
+    MoraleStatDifference: 0
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
-  bodyPart: 3
+  bodyPart: 4
   prefab: {fileID: 0}
   bodyPartClass: 0
-  damage: 80
-  shield: 40
-  energy: 1
-  description: Destroy 1 target's energy
+  damage: 0
+  shield: 0
+  energy: 0
+  description: Gain X% Damage against Aquatic, bird or dawn enemy

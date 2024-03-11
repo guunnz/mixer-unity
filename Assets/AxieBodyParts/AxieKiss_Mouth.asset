@@ -13,5 +13,60 @@ MonoBehaviour:
   m_Name: AxieKiss_Mouth
   m_EditorClassIdentifier: 
   skillName: 43
+  statusEffects:
+  - statusEffect: 0
+    statusApplyType: 1
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 0
+    StealEnergyPercentage: 0
+    GainEnergy: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 1
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    Wombo: 0
+    AlwaysCritical: 0
+    ExtraDamagePercentage: 0
+    ExtraDamageOnCritical: 0
+    MultiCastTimes: 0
+    specialActivationAgainstAxiesList: []
+    specialActivationIfComboedWithList: []
+    specialActivationBasedOnAxiesInBattle: []
+    triggerIfCertainHPTreshold: 1
+    LessThan: 1
+    HPTresholdPercentage: 30
+    ComboAmount: 0
+    LastAxieAliveTeam: 0
+    LastAxieAliveOpponent: 0
+    AttackStatDifference: 0
+    SpeedStatDifference: 0
+    MoraleStatDifference: 0
+    AllowReactivation: 0
+    ReactivateEffectEveryXSeconds: 0
   bodyPart: 3
   prefab: {fileID: 0}
+  bodyPartClass: 0
+  damage: 110
+  shield: 30
+  energy: 1
+  description: Apply Lethal on target when users HP is below 30%

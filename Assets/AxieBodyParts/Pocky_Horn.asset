@@ -13,5 +13,54 @@ MonoBehaviour:
   m_Name: Pocky_Horn
   m_EditorClassIdentifier: 
   skillName: 35
+  statusEffects:
+  - statusEffect: 6
+    statusApplyType: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 0
+    StealEnergyPercentage: 0
+    GainEnergy: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 10
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 0
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    Wombo: 0
+    specialActivationAgainstAxiesList: []
+    specialActivationIfComboedWithList: []
+    specialActivationBasedOnAxiesInBattle:
+    - axieClass: 1
+      ExtraTimesAbilityCastPerAxie: 0
+      ExtraTimesStatusEffectAppliedPerAxie: 1
+      ExtraDamageAppliedPerAxie: 0
+    triggerIfBelowCertainHPTreshold: 0
+    LessThan: 0
+    HPTresholdPercentage: 0
+    AllowReactivation: 0
+    ReactivateEffectEveryXSeconds: 0
   bodyPart: 2
   prefab: {fileID: 0}
+  bodyPartClass: 0
+  damage: 110
+  shield: 20
+  energy: 1
+  description: 

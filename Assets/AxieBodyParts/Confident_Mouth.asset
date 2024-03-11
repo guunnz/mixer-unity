@@ -13,5 +13,50 @@ MonoBehaviour:
   m_Name: Confident_Mouth
   m_EditorClassIdentifier: 
   skillName: 39
+  statusEffects:
+  - statusEffect: 13
+    statusApplyType: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 2
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 2
+    StealEnergyPercentage: 0
+    GainEnergy: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 0
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    Wombo: 1
+    specialActivationAgainstAxiesList: []
+    specialActivationIfComboedWithList: []
+    specialActivationBasedOnAxiesInBattle: []
+    triggerIfBelowCertainHPTreshold: 0
+    LessThan: 0
+    HPTresholdPercentage: 0
+    AllowReactivation: 0
+    ReactivateEffectEveryXSeconds: 0
   bodyPart: 3
   prefab: {fileID: 0}
+  bodyPartClass: 0
+  damage: 0
+  shield: 30
+  energy: 1
+  description: WOMBO, Apply Morale++ on user for 2 seconds

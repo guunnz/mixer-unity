@@ -13,11 +13,56 @@ MonoBehaviour:
   m_Name: NutCracker_Mouth
   m_EditorClassIdentifier: 
   skillName: 14
-  statusEffects: []
+  statusEffects:
+  - statusEffect: 0
+    statusApplyType: 1
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 0
+    StealEnergyPercentage: 0
+    GainEnergy: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShieldOnAttack: 0
+    GainHPPercentage: 0
+    ShieldOnStart: 0
+    OnlyCanDamageShield: 0
+    StunOnShieldBreak: 0
+    Lethal: 0
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    Wombo: 0
+    specialActivationAgainstAxiesList: []
+    specialActivationIfComboedWithList:
+    - axieClassCard: 0
+      OnlyCareAboutClassCard: 0
+      axieCard: 14
+      ExtraDamage: 30
+      ExtraTimesAbilityCast: 0
+      ExtraTimesStatusEffectApplied: 0
+    specialActivationBasedOnAxiesInBattle: []
+    triggerIfBelowCertainHPTreshold: 0
+    LessThan: 0
+    HPTresholdPercentage: 0
+    AllowReactivation: 0
+    ReactivateEffectEveryXSeconds: 0
   bodyPart: 3
   prefab: {fileID: 0}
   bodyPartClass: 0
-  damage: 0
-  shield: 0
-  energy: 0
-  description: 
+  damage: 105
+  shield: 40
+  energy: 1
+  description: When you combo with another "Nut Crack" deal 30% more damage

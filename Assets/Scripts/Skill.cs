@@ -27,7 +27,6 @@ public enum BodyPart
 
 public enum SkillName
 {
-    // Eyes
     Mystic,
     Chubby,
     Dreamy,
@@ -42,8 +41,6 @@ public enum SkillName
     Sky,
     Confused,
     Kawaii,
-
-    // Ears
     NutCracker,
     Zigzag,
     Hamaya,
@@ -56,8 +53,6 @@ public enum SkillName
     Curly,
     Leafy,
     Pointy,
-
-    // Horns
     Antenna,
     BambooShoot,
     Cactus,
@@ -71,8 +66,6 @@ public enum SkillName
     Kestrel,
     Anemone,
     HerosBane,
-
-    // Mouths
     Confident,
     CuteBunny,
     Goda,
@@ -86,8 +79,6 @@ public enum SkillName
     Pincer,
     Dango,
     Kotaro,
-
-    // Backs
     BlueMoon,
     Hero,
     RiskyBeast,
@@ -100,8 +91,6 @@ public enum SkillName
     SnailShell,
     Bunny,
     Ronin,
-
-    // Tails
     GranmasFan,
     Hare,
     Cottontail,
@@ -114,7 +103,12 @@ public enum SkillName
     Cattail,
     Cucumber,
     Furball,
-    RiskyFeather
+    RiskyFeather,
+    Merry,
+    DualBlade,
+    Jaguar,
+    Shiba,
+    Gerbil
 }
 
 public enum SkillTriggerType

@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Timber_Back
   m_EditorClassIdentifier: 
   skillName: 57
+  statusEffects: []
   bodyPart: 4
   prefab: {fileID: 0}
+  bodyPartClass: 0
+  damage: 80
+  shield: 80
+  energy: 0
+  description: If the target is a Plant enemy, gain shield equal to damage dealt

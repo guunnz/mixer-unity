@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
-  m_Name: Goda_Mouth
+  m_Name: NutCracker_Tail
   m_EditorClassIdentifier: 
-  skillName: 41
+  skillName: 14
   statusEffects:
   - statusEffect: 0
     statusApplyType: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
     Speed: 0
     Morale: 0
     StealEnergyPercentage: 0
-    GainEnergy: -1
+    GainEnergy: 0
     MeleeReflect: 0
     RangedReflect: 0
     GainShieldOnAttack: 0
@@ -45,18 +45,34 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    AlwaysCritical: 0
+    ExtraDamagePercentage: 0
+    ExtraDamageOnCritical: 0
+    MultiCastTimes: 0
     specialActivationAgainstAxiesList: []
-    specialActivationIfComboedWithList: []
+    specialActivationIfComboedWithList:
+    - axieClassCard: 0
+      OnlyCareAboutClassCard: 0
+      axieCard: 14
+      ExtraDamage: 30
+      ExtraTimesAbilityCast: 0
+      ExtraTimesStatusEffectApplied: 0
     specialActivationBasedOnAxiesInBattle: []
-    triggerIfBelowCertainHPTreshold: 0
+    triggerIfCertainHPTreshold: 0
     LessThan: 0
     HPTresholdPercentage: 0
+    ComboAmount: 0
+    LastAxieAliveTeam: 0
+    LastAxieAliveOpponent: 0
+    AttackStatDifference: 0
+    SpeedStatDifference: 0
+    MoraleStatDifference: 0
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
-  bodyPart: 3
+  bodyPart: 5
   prefab: {fileID: 0}
   bodyPartClass: 0
-  damage: 80
+  damage: 105
   shield: 40
   energy: 1
-  description: Destroy 1 target's energy
+  description: When you combo with another "Nut Crack" deal 30% more damage
