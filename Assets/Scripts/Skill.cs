@@ -190,7 +190,7 @@ public enum SkillName
     TinyDino,
     SnakeJar,
     Gila,
-    GrassSnake
+    GrassSnake,
 }
 
 public enum SkillTriggerType
@@ -233,7 +233,9 @@ public enum StatusEffectEnum
     CannotUseMeleeAbility,
     InmuneToDebuffs,
     HotButt,
-    Kestrel
+    Kestrel,
+    RangedReflect,
+    MeleeReflect
 }
 
 

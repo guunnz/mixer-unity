@@ -23,7 +23,7 @@ public class SkillEffect
     public int GainHPPercentage;
     public bool HPBaseOnDamage;
     public int ShieldOnStart;
-    public bool OnlyCanDamageShield; //Doubletalk can damage hp
+    public bool IgnoresShield;
     public bool Lethal;
     public bool Merry;
     public bool Gecko;
@@ -75,6 +75,7 @@ public class SkillEffect
     public bool Shielded;
     public bool OnShieldBreak;
     public bool TargetIsDebuff;
+    public bool TargetIsPoisoned;
     public bool SelfIsDebuff;
     public bool RangeTarget;
     public int ShieldNotBrokenForXSeconds;

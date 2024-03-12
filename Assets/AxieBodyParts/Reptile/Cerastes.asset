@@ -31,7 +31,7 @@ MonoBehaviour:
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
-    OnlyCanDamageShield: 0
+    IgnoresShield: 0
     Lethal: 0
     Merry: 0
     Gecko: 0
@@ -76,10 +76,12 @@ MonoBehaviour:
     Shielded: 0
     OnShieldBreak: 0
     TargetIsDebuff: 0
+    TargetIsPoisoned: 0
     SelfIsDebuff: 0
     RangeTarget: 0
     ShieldNotBrokenForXSeconds: 0
     RangeAbility: 0
+    SecondsOfFight: 0
     AttackStatDifference: 0
     SpeedStatDifference: -1
     MoraleStatDifference: 0
@@ -88,7 +90,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 2
-  prefab: {fileID: 0}
+  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
   bodyPartClass: 3
   damage: 90
   shield: 60
