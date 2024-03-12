@@ -79,6 +79,7 @@ public class SkillEffect
     public bool RangeTarget;
     public int ShieldNotBrokenForXSeconds;
     public bool RangeAbility;
+    public int SecondsOfFight;
     
     [Tooltip("My attack - target attack = difference. Ex: AttackStatDifference = -1. MyAttack - TargetAttack = -1. Target has more attack, this triggers")]
     public int AttackStatDifference;
