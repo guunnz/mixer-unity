@@ -18,7 +18,8 @@ public enum StatusApplyType
     ApplyAdjacentTargetAndTarget,
     ApplyTeam,
     ApplyEnemyTeam,
-    AllAxies
+    AllAxies,
+    ApplyAllied
 }
 
 public class StatusManager : MonoBehaviour
