@@ -24,6 +24,7 @@ public class SpawnedAxie
 
 public class AxieController : MonoBehaviour
 {
+    internal int AxieId;
     public OverlayTile standingOnTile;
     public AxieController CurrentTarget;
     public AxieBehavior axieBehavior;
@@ -37,7 +38,8 @@ public class AxieController : MonoBehaviour
     internal AxieSkillEffectManager axieSkillEffectManager;
     public GetAxiesExample.Stats stats;
     internal bool imGood;
-    
+    public int Range = 1;
+
     public void AddStatusEffect(SkillEffect skillEffect)
     {
         axieSkillEffectManager.AddStatusEffect(skillEffect);
@@ -62,7 +64,7 @@ public class AxieController : MonoBehaviour
     {
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
-        
+
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
             state = badTeam.GetCharacterState(spawnedAxie.axieId);
@@ -74,12 +76,14 @@ public class AxieController : MonoBehaviour
         }
 
         if (spawnedAxie.axieClass == AxieClass.Bird)
+        {
             spawnedAxie.Range = 4;
+            Range = 4;
+        }
 
         spawnedAxie.HP = AxieStatCalculator.GetHP(stats);
 
         spawnedAxie.currentHP = spawnedAxie.HP;
-        SetAllCharacters();
         if (imGood)
         {
             SkeletonAnim.GetComponent<Renderer>().sortingOrder =
@@ -97,11 +101,6 @@ public class AxieController : MonoBehaviour
     }
 
 
-    public void SetAllCharacters()
-    {
-        allCharacters = FindObjectsOfType<AxieController>();
-    }
-
     private void OnMouseOver()
     {
         axieBehavior.DoAction(AxieState.Hovered);
@@ -112,8 +111,13 @@ public class AxieController : MonoBehaviour
         axieBehavior.DoAction(AxieState.Idle);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if (CurrentTarget != null && CurrentTarget.spawnedAxie.currentHP <= 0)
+        {
+            CurrentTarget = null;
+        }
+
         if (axieBehavior.axieState == AxieState.Shrimping || !goodTeam.battleStarted)
             return;
 
@@ -121,7 +125,7 @@ public class AxieController : MonoBehaviour
         {
             if (spawnedAxie.axieClass == AxieClass.Aquatic)
             {
-                axieBehavior.DoAction(AxieState.Shrimping);
+                // axieBehavior.DoAction(AxieState.Shrimping);
                 return;
             }
         }
@@ -176,7 +180,7 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        spawnedAxie.CurrentMana += Time.deltaTime * 3;
+        spawnedAxie.CurrentMana += 0.2f;
 
         if (spawnedAxie.CurrentMana >= spawnedAxie.MaxMana)
         {
@@ -186,7 +190,7 @@ public class AxieController : MonoBehaviour
         }
 
         if (CurrentTarget != null && state.isMoving == false &&
-            GetManhattanDistancePlayer(this.transform.position, CurrentTarget.transform.position) <= spawnedAxie.Range)
+            GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= spawnedAxie.Range)
         {
             axieBehavior.DoAction(AxieState.Attacking);
 
@@ -214,6 +218,8 @@ public class AxieController : MonoBehaviour
         {
             SkeletonAnim.AnimationName = "action/run";
             SkeletonAnim.loop = true;
+            if (CurrentTarget == null)
+                return;
             transform.localScale =
                 new Vector3(CurrentTarget.transform.position.x > this.transform.position.x ? -0.2f : 0.2f,
                     transform.localScale.y, transform.localScale.z);
@@ -225,9 +231,9 @@ public class AxieController : MonoBehaviour
         }
     }
 
-    private int GetManhattanDistancePlayer(Vector3 tile1, Vector3 tile2)
+    private int GetManhattanDistance(OverlayTile tile1, OverlayTile tile2)
     {
-        return Mathf.RoundToInt(Mathf.Abs(tile1.x - tile2.x) +
-                                Mathf.Abs(tile1.z - tile2.z));
+        return Mathf.Abs(tile1.gridLocation.x - tile2.gridLocation.x) +
+               Mathf.Abs(tile1.gridLocation.z - tile2.gridLocation.z);
     }
 }

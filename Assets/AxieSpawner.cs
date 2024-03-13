@@ -155,6 +155,7 @@ namespace Game
             go.AddComponent<AxieController>();
             AxieController controller = go.GetComponent<AxieController>();
             controller.axieBehavior = go.AddComponent<AxieBehavior>();
+            controller.AxieId = int.Parse(axieId);
             controller.spawnedAxie = new SpawnedAxie();
             controller.spawnedAxie.axieId = axieId;
             controller.spawnedAxie.HP = stats.hp * 2;

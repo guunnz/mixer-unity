@@ -35,8 +35,6 @@ public class SkillLauncher : MonoBehaviour
             Debug.Log(skillName + " " + axiebodyPart);
             return 0.5f;
         }
-        
-        
 
         Skill skill = Instantiate(part.prefab).GetComponent<Skill>();
 

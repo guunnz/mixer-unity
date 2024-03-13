@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using enemies;
 using UnityEngine;
 
 public class Team : MonoBehaviour
@@ -13,7 +14,6 @@ public class Team : MonoBehaviour
 
     public AxieLandBattleTarget target;
 
-    // Boolean flag to differentiate between good and bad teams
     public bool isGoodTeam;
 
     private void Start()
@@ -34,9 +34,14 @@ public class Team : MonoBehaviour
                 x.spawnedAxie.axieId == axieId && x.axieBehavior.axieState != AxieState.Killed)];
     }
 
-
     private void RecalculatePath(AxieController character, CharacterState state)
     {
+        if (character.CurrentTarget != null)
+        {
+            state.isMoving = false;
+            return;
+        }
+
         AxieController closestCharacter = FindClosestCharacter(character);
         if (closestCharacter != null)
         {
@@ -52,7 +57,7 @@ public class Team : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.H)) // Move all characters
         {
@@ -77,7 +82,7 @@ public class Team : MonoBehaviour
                 if (character.Key.axieBehavior.axieState == AxieState.Shrimping ||
                     character.Key.axieBehavior.axieState == AxieState.Killed)
                     continue;
-                if (character.Value.isMoving && character.Value.path.Count > 0)
+                if (character.Value.isMoving && character.Value.path != null && character.Value.path.Count > 0)
                 {
                     // Check if next tile in path is occupied
                     if (!character.Value.path[0].occupied)
@@ -105,15 +110,14 @@ public class Team : MonoBehaviour
     public void AddCharacter(AxieController character, Vector2Int? gridLocation = null)
     {
         OverlayTile startingTile = null;
-
+        int minRange = isGoodTeam ? 0 : 4;
+        int maxRange = isGoodTeam ? 4 : 8;
         int index = 0;
         while (startingTile == null || startingTile.occupied)
         {
             if (gridLocation == null)
             {
-                int minRange = isGoodTeam ? 0 : 4;
-                int maxRange = isGoodTeam ? 4 : 8;
-                gridLocation = new Vector2Int(Random.Range(minRange, maxRange), Random.Range(0, 5));
+                gridLocation = new Vector2Int(isGoodTeam ? 0 : 7, index);
             }
 
             startingTile = MapManager.Instance.map[gridLocation.Value];
@@ -135,37 +139,59 @@ public class Team : MonoBehaviour
         };
     }
 
+
+    private bool IsPathPossible(AxieController axieController, AxieController enemy)
+    {
+        return pathFinder.FindPath(axieController.standingOnTile, enemy.standingOnTile,
+            GetInRangeTiles(axieController)) != null;
+    }
+
     private void MoveTowardsClosestCharacter(AxieController character)
     {
+        if (character.CurrentTarget != null)
+        {
+            if (character.Range == 1 && !IsPathPossible(character, character.CurrentTarget))
+            {
+                character.CurrentTarget = null;
+            }
+        }
+
         var state = characters[character];
         if (state.isMoving) return;
+        AxieController closestCharacter = character.CurrentTarget;
 
-        AxieController closestCharacter = FindClosestCharacter(character);
+
+        if (character.CurrentTarget == null)
+        {
+            closestCharacter = FindClosestCharacter(character);
+        }
+
         if (closestCharacter != null)
         {
-            OverlayTile targetTile = closestCharacter.standingOnTile;
-            state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
             int distanceToClosestCharacterGrid =
                 GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
 
             character.CurrentTarget = closestCharacter;
-
-            if (state.path == null || state.path.Count == 0)
-            {
-                var step = speed * Time.deltaTime;
-                if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
-                {
-                    character.transform.position = Vector3.MoveTowards(character.transform.position,
-                        character.standingOnTile.transform.position, step);
-                }
-            }
-
             if (character.spawnedAxie.Range > 1)
             {
                 if (distanceToClosestCharacterGrid <= (int)character.spawnedAxie.Range)
                 {
                     state.isMoving = false;
                     return;
+                }
+            }
+
+            OverlayTile targetTile = closestCharacter.standingOnTile;
+            state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
+
+
+            if (state.path == null || state.path.Count == 0)
+            {
+                var step = speed * Time.fixedDeltaTime;
+                if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+                {
+                    character.transform.position = Vector3.MoveTowards(character.transform.position,
+                        character.standingOnTile.transform.position, step);
                 }
             }
 
@@ -227,12 +253,7 @@ public class Team : MonoBehaviour
             }
             else if (manhattanDistance == minManhattanDistance)
             {
-                float transformDistance = Vector3.Distance(character.transform.position, other.transform.position);
-                if (transformDistance < minTransformDistance)
-                {
-                    minTransformDistance = transformDistance;
-                    closestCharacter = other;
-                }
+                continue;
             }
         }
 
@@ -241,15 +262,20 @@ public class Team : MonoBehaviour
 
     private void MoveAlongPath(AxieController character, CharacterState state)
     {
-        AxieController closestCharacter = FindClosestCharacter(character);
-        if (closestCharacter != null)
+        var step = speed * Time.fixedDeltaTime;
+        if (state.path == null)
         {
-            OverlayTile targetTile = closestCharacter.standingOnTile;
-            state.path = pathFinder.FindPath(character.standingOnTile, targetTile, GetInRangeTiles(character));
-            int distanceToClosestCharacterGrid =
-                GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
+            state.isMoving = false;
+            return;
+        }
 
-            character.CurrentTarget = closestCharacter;
+        int distanceToClosestCharacterGrid = 0;
+        if (character.CurrentTarget != null)
+        {
+            state.path = pathFinder.FindPath(character.standingOnTile, character.CurrentTarget.standingOnTile,
+                GetInRangeTiles(character));
+            distanceToClosestCharacterGrid =
+                GetManhattanDistance(character.standingOnTile, character.CurrentTarget.standingOnTile);
             if (character.spawnedAxie.Range > 1)
             {
                 if (distanceToClosestCharacterGrid <= (int)character.spawnedAxie.Range)
@@ -260,14 +286,8 @@ public class Team : MonoBehaviour
             }
         }
 
-        var step = speed * Time.deltaTime;
-        if (state.path == null)
-        {
-            state.isMoving = false;
-            return;
-        }
 
-        if (state.path.Count == 0)
+        if (state.path == null || state.path.Count == 0)
         {
             character.transform.position = Vector3.MoveTowards(character.transform.position,
                 character.standingOnTile.transform.position, step);
@@ -318,7 +338,7 @@ public class Team : MonoBehaviour
     public List<OverlayTile> GetInRangeTiles(AxieController character)
     {
         return FindObjectsOfType<OverlayTile>().Where(t =>
-                !t.occupied &&
+                character.Range > 1 || !t.occupied &&
                 Vector2Int.Distance(new Vector2Int(t.gridLocation.x, t.gridLocation.z),
                     new Vector2Int(character.standingOnTile.gridLocation.x,
                         character.standingOnTile.gridLocation.z)) <= movementRange)

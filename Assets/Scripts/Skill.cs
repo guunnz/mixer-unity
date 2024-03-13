@@ -281,7 +281,7 @@ public class Skill : MonoBehaviour
 
         foreach (SkillVFX skill in vfxToThrow)
         {
-            yield return new WaitForSeconds(skill.SkillDelay);
+            yield return new WaitForSecondsRealtime(skill.SkillDelay);
             GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                 skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                 skill.VFXPrefab.transform.rotation,
@@ -320,7 +320,7 @@ public class Skill : MonoBehaviour
 
     private IEnumerator Destroy(GameObject obj, float timing)
     {
-        yield return new WaitForSeconds(timing);
+        yield return new WaitForSecondsRealtime(timing);
         Destroy(obj);
     }
 }

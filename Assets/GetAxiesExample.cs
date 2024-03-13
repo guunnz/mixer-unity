@@ -13,6 +13,7 @@ public class GetAxiesExample : MonoBehaviour
     public AxieSpawner axieSpawner;
     public int spawnCountMax = 0;
     public TeamToJSON teamToJson;
+
     void Start()
     {
         graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
@@ -81,43 +82,43 @@ public class GetAxiesExample : MonoBehaviour
         try
         {
             string responseString = task.Result;
-            var axiesData = JsonUtility.FromJson<AxiesData>(responseString);
-            var axiesResults = axiesData.data.axies.results;
-            // for (int i = axiesResults.Length - 9; i >= 0; i--)
-            // {
-            //     if (spawnCountMax >= 3)
-            //         break;
-            //     spawnCountMax++;
-            //     axieSpawner.SpawnAxieById(axiesResults[i].id);
-            // }
-
-            Axie bird = axiesResults.FirstOrDefault(x => x.@class.Contains("Bird"));
-            Axie beast = axiesResults.FirstOrDefault(x => x.@class.Contains("Beast"));
-            Axie dusk = axiesResults.FirstOrDefault(x => x.@class.Contains("Dusk"));
-            Axie plant = axiesResults
-                .Where(x => x.@class.Contains("Plant") && x.parts.Any(y => y.name.ToLower() == "rose bud")).ToList()[0];
-            Axie aqua = axiesResults.FirstOrDefault(x => x.@class.Contains("Aqua"));
-
-            List<string> axieIds = new List<string>();
-            
-            axieIds.Add(bird.id);
-            axieIds.Add(beast.id);
-            axieIds.Add(dusk.id);
-            axieIds.Add(plant.id);
-            axieIds.Add(aqua.id);
-            
-            Debug.Log(teamToJson.JsonConstructor(axieIds.ToArray()));
-
-            axieSpawner.SpawnAxieById(bird.id, BodyPart.Tail, SkillName.RiskyFeather, AxieClass.Bird, bird.stats);
-            axieSpawner.SpawnAxieById(beast.id, BodyPart.Back, SkillName.Ronin, AxieClass.Beast, beast.stats);
-            axieSpawner.SpawnAxieById(dusk.id, BodyPart.Mouth, SkillName.RiskyFish, AxieClass.Dusk, dusk.stats);
-            axieSpawner.SpawnAxieById(plant.id, BodyPart.Horn, SkillName.Rosebud, AxieClass.Plant, plant.stats);
-            axieSpawner.SpawnAxieById(aqua.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Aquatic, aqua.stats);
+            StartCoroutine(SpawnAxies(responseString));
         }
         catch (System.Exception ex)
         {
             Debug.LogError("Error processing response: " + ex.Message);
         }
+    }
+
+    IEnumerator SpawnAxies(string response)
+    {
+        var axiesData = JsonUtility.FromJson<AxiesData>(response);
+        var axiesResults = axiesData.data.axies.results;
+
+        Axie bird = axiesResults.FirstOrDefault(x => x.@class.Contains("Bird"));
+        Axie beast = axiesResults.FirstOrDefault(x => x.@class.Contains("Beast"));
+        Axie dusk = axiesResults.FirstOrDefault(x => x.@class.Contains("Dusk"));
+        Axie plant = axiesResults
+            .Where(x => x.@class.Contains("Plant") && x.parts.Any(y => y.name.ToLower() == "rose bud")).ToList()[0];
+        Axie aqua = axiesResults.FirstOrDefault(x => x.@class.Contains("Aqua"));
+
+        List<string> axieIds = new List<string>();
+
+        axieIds.Add(bird.id);
+        axieIds.Add(beast.id);
+        axieIds.Add(dusk.id);
+        axieIds.Add(plant.id);
+        axieIds.Add(aqua.id);
+
+        axieSpawner.SpawnAxieById(bird.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Bird, bird.stats);
+        yield return new WaitForSeconds(0.2f);
+        axieSpawner.SpawnAxieById(beast.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Beast, beast.stats);
+        yield return new WaitForSeconds(0.2f);
+        axieSpawner.SpawnAxieById(dusk.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Dusk, dusk.stats);
+        yield return new WaitForSeconds(0.2f);
+        axieSpawner.SpawnAxieById(plant.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Plant, plant.stats);
+        yield return new WaitForSeconds(0.2f);
+        axieSpawner.SpawnAxieById(aqua.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Aquatic, aqua.stats);
     }
 
     public void SetAddress(string newAddress)

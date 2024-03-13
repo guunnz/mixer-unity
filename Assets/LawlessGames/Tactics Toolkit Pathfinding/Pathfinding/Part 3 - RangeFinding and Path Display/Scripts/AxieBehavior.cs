@@ -136,10 +136,10 @@ public class AxieBehavior : MonoBehaviour
         this.myController.standingOnTile = overlayTile;
         this.transform.position = positionToMove;
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
         myController.SkeletonAnim.enabled = true;
-        yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
+        yield return new WaitForSecondsRealtime(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
         myController.SkeletonAnim.loop = true;
         this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
             this.transform.localScale.z);
@@ -161,9 +161,9 @@ public class AxieBehavior : MonoBehaviour
         this.myController.standingOnTile = overlayTile;
         this.transform.position = positionToMove;
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
         myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
-        yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
+        yield return new WaitForSecondsRealtime(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
 
         this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
             this.transform.localScale.z);
@@ -171,6 +171,8 @@ public class AxieBehavior : MonoBehaviour
 
     public IEnumerator TryAttack()
     {
+        if (myController.CurrentTarget == null)
+            yield break;
         while (axieState == AxieState.Attacking)
         {
             myController.SkeletonAnim.AnimationName = AttackAnimation;
@@ -180,10 +182,11 @@ public class AxieBehavior : MonoBehaviour
             if (myController.spawnedAxie.axieClass == AxieClass.Bird)
                 AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
                     myController.CurrentTarget.transform);
-            yield return new WaitForSeconds(AttackSpeed);
+            yield return new WaitForSecondsRealtime(AttackSpeed);
+            if (myController.CurrentTarget == null)
+                yield break;
             myController.CurrentTarget.spawnedAxie.currentHP -= AxieStatCalculator.GetAttackDamage(myController.stats);
             myController.spawnedAxie.CurrentMana += AxieStatCalculator.GetManaPerAttack(myController.stats);
-            yield return null;
         }
     }
 
@@ -195,13 +198,20 @@ public class AxieBehavior : MonoBehaviour
 
     IEnumerator ICastSpell()
     {
+        if (myController.CurrentTarget == null)
+        {     
+            myController.spawnedAxie.CurrentMana = myController.spawnedAxie.MinMana;
+            myController.SkeletonAnim.loop = true;
+            DoAction(AxieState.Idle);
+            yield break;
+        }
         float timeToWait = SkillLauncher.Instance.ThrowSkill(myController.spawnedAxie.skillName,
             myController.spawnedAxie.axieClass,
             myController.spawnedAxie.bodyPartMain,
             myController.CurrentTarget.transform, this.transform, myController.SkeletonAnim,
             myController.spawnedAxie.skillName == SkillName.Rosebud ? this.myController : myController.CurrentTarget,
             myController);
-        yield return new WaitForSeconds(timeToWait);
+        yield return new WaitForSecondsRealtime(timeToWait);
         myController.spawnedAxie.CurrentMana = myController.spawnedAxie.MinMana;
         myController.SkeletonAnim.loop = true;
         DoAction(AxieState.Idle);

@@ -13,8 +13,8 @@ public class AxieTeamIdsWrapper
 
 public class AxieLandBattleTarget : MonoBehaviour
 {
-    private string postUrl = "https://axie-team-api-xicj.onrender.com/api/team";
-    private string getUrl = "https://axie-team-api-xicj.onrender.com/api/team/:score";
+    private string postUrl = "https://axie-landbattles-api.onrender.com/api/team";
+    private string getUrl = "https://axie-landbattles-api.onrender.com/api/team/:score";
     private int maxRetries = 5;
 
     public void PostTeam(int score, List<SpawnedAxie> axies)

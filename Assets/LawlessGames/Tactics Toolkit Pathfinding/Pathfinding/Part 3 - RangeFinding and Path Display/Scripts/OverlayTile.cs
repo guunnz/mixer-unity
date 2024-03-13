@@ -66,7 +66,7 @@ public class OverlayTile : MonoBehaviour
         beingHovered = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         CheckOccupied();
         UpdateTileColor();

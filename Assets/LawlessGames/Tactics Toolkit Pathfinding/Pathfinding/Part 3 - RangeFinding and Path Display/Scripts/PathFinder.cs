@@ -9,6 +9,7 @@ public class PathFinder
 
     public List<OverlayTile> FindPath(OverlayTile start, OverlayTile end, List<OverlayTile> inRangeTiles)
     {
+        bool isRanged = start.currentOccupier != null && start.currentOccupier.Range > 1;
         searchableTiles = new Dictionary<Vector2Int, OverlayTile>();
         List<OverlayTile> openList = new List<OverlayTile>();
         HashSet<OverlayTile> closedList = new HashSet<OverlayTile>();
@@ -44,7 +45,7 @@ public class PathFinder
 
             foreach (var tile in GetNeightbourOverlayTiles(currentOverlayTile))
             {
-                if (tile.occupied || closedList.Contains(tile))
+                if ((!isRanged && tile.occupied) || closedList.Contains(tile))
                 {
                     continue;
                 }

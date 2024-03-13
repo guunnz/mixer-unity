@@ -114,38 +114,38 @@ namespace enemies
                 {
                     RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
 
-                    List<string> axieIds = new List<string>();
+                    List<AxieEnemy> axieIds = new List<AxieEnemy>();
 
                     // Assuming axieIds is a List<string>
-                    axieIds.Add(axiesData.Data["axie0"].id);
-                    axieIds.Add(axiesData.Data["axie1"].id);
-                    axieIds.Add(axiesData.Data["axie2"].id);
-                    axieIds.Add(axiesData.Data["axie3"].id);
-                    axieIds.Add(axiesData.Data["axie4"].id);
+                    AxieEnemy axie1 = axiesData.Data["axie0"];
+                    AxieEnemy axie2 = axiesData.Data["axie1"];
+                    AxieEnemy axie3 = axiesData.Data["axie2"];
+                    AxieEnemy axie4 = axiesData.Data["axie3"];
+                    AxieEnemy axie5 = axiesData.Data["axie4"];
+                    axieIds.Add(axie1);
+                    axieIds.Add(axie2);
+                    axieIds.Add(axie3);
+                    axieIds.Add(axie4);
+                    axieIds.Add(axie5);
 
-                    Debug.Log(teamToJson.JsonConstructor(axieIds.ToArray()));
-
-// Assuming these are the correct method calls and enum values
-                    axieSpawner.SpawnAxieById(axiesData.Data["axie0"].id, BodyPart.Tail, SkillName.RiskyFeather,
-                        axiesData.Data["axie0"].axieClass,
-                        axiesData.Data["axie0"].stats, isOpponent);
-                    axieSpawner.SpawnAxieById(axiesData.Data["axie1"].id, BodyPart.Back, SkillName.Ronin,
-                        axiesData.Data["axie1"].axieClass,
-                        axiesData.Data["axie1"].stats, isOpponent);
-                    axieSpawner.SpawnAxieById(axiesData.Data["axie2"].id, BodyPart.Mouth, SkillName.RiskyFish,
-                        axiesData.Data["axie2"].axieClass,
-                        axiesData.Data["axie2"].stats, isOpponent);
-                    axieSpawner.SpawnAxieById(axiesData.Data["axie3"].id, BodyPart.Horn, SkillName.Rosebud,
-                        axiesData.Data["axie3"].axieClass,
-                        axiesData.Data["axie3"].stats, isOpponent);
-                    axieSpawner.SpawnAxieById(axiesData.Data["axie4"].id, BodyPart.Horn, SkillName.HerosBane,
-                        axiesData.Data["axie4"].axieClass,
-                        axiesData.Data["axie4"].stats, isOpponent);
+                    axieIds = axieIds.OrderBy(x => int.Parse(x.id)).ToList();
+                    StartCoroutine(SpawnAxies(axieIds, isOpponent));
                 }
             }
             catch (System.Exception ex)
             {
                 Debug.LogError("Error processing response: " + ex.Message);
+            }
+        }
+
+        IEnumerator SpawnAxies(List<AxieEnemy> axieIds, bool isOpponent)
+        {
+            foreach (var VARIABLE in axieIds)
+            {
+                axieSpawner.SpawnAxieById(VARIABLE.id, BodyPart.Horn, SkillName.HerosBane,
+                    VARIABLE.axieClass,
+                    VARIABLE.stats, isOpponent);
+                yield return new WaitForSeconds(0.2f);
             }
         }
 
