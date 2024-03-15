@@ -95,4 +95,4 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: Reflect 20% of taken damage
+  description: Reflect 20% of melee taken damage
