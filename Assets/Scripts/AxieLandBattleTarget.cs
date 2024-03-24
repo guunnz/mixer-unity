@@ -17,7 +17,7 @@ public class AxieLandBattleTarget : MonoBehaviour
     private string getUrl = "https://axie-landbattles-api.onrender.com/api/team/:score";
     private int maxRetries = 5;
 
-    public void PostTeam(int score, List<SpawnedAxie> axies)
+    public void PostTeam(int score, List<IngameStats> axies)
     {
         AxieTeamIdsWrapper wrapper = new AxieTeamIdsWrapper
         {

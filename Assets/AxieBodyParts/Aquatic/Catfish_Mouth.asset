@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Catfish_Mouth
   m_EditorClassIdentifier: 
   skillName: 98
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 0
     skillTriggerType: 0
@@ -58,7 +58,13 @@ MonoBehaviour:
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
     specialActivationIfComboedWithList: []
-    specialActivationWithBodyParts: []
+    specialActivationWithBodyParts:
+    - axieClassCard: 0
+      OnlyCareAboutClassCard: 0
+      axieCard: 0
+      ExtraDamage: 0
+      ExtraTimesAbilityCast: 0
+      ExtraTimesStatusEffectApplied: 0
     specialActivationBasedOnAxiesInBattle: []
     specialActivactionWhenReceiveDamage: []
     lowestHP: 0

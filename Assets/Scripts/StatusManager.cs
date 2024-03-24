@@ -14,7 +14,7 @@ public enum StatusApplyType
     RemoveTarget,
     RemoveSelfAndTarget,
     ApplyAdjacentTarget,
-    ApplyAdjacentTargetAndSelf,
+    ApplyAdjacentSelfAndSelf,
     ApplyAdjacentTargetAndTarget,
     ApplyTeam,
     ApplyEnemyTeam,
@@ -72,7 +72,7 @@ public class StatusManager : MonoBehaviour
                 target.RemoveAllEffects();
                 self.AddStatusEffect(effect);
                 break;
-            case StatusApplyType.ApplyAdjacentTargetAndSelf:
+            case StatusApplyType.ApplyAdjacentSelfAndSelf:
                 target = self;
                 adjacentTiles = MapManager.Instance.GetAdjacentTiles(target.standingOnTile);
                 foreach (var overlayTile in adjacentTiles)
