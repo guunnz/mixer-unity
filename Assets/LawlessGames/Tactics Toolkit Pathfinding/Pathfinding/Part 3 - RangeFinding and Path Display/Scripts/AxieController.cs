@@ -6,39 +6,50 @@ using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class SpawnedAxie
+public class IngameStats
 {
     public float Range = 1f;
     public string axieId;
     public float AttackSpeed;
-    public float MinMana;
+    public float MinEnergy;
     public float MaxMana;
-    public float CurrentMana;
+    public float CurrentEnergy;
     public float HP;
     public float currentHP;
-    public BodyPart bodyPartMain;
-    public SkillName skillName;
+    public float currentShield;
     public AxieClass axieClass;
 }
-
 
 public class AxieController : MonoBehaviour
 {
     internal int AxieId;
+    internal IngameStats axieIngameStats;
+    internal AxieSkillEffectManager axieSkillEffectManager;
+    private Team.CharacterState state;
+    private AxieController[] allCharacters;
     public OverlayTile standingOnTile;
     public AxieController CurrentTarget;
     public AxieBehavior axieBehavior;
     public SkeletonAnimation SkeletonAnim;
     public StatsManager statsManagerUI;
-    internal SpawnedAxie spawnedAxie;
     public Team goodTeam;
     public Team badTeam;
-    private Team.CharacterState state;
-    private AxieController[] allCharacters;
-    internal AxieSkillEffectManager axieSkillEffectManager;
+    public AxieSkillController axieSkillController;
     public GetAxiesExample.Stats stats;
-    internal bool imGood;
     public int Range = 1;
+    public List<SkillName> axieBodyParts = new List<SkillName>();
+    internal bool imGood;
+
+    public List<AxieController> GetAdjacent()
+    {
+        return MapManager.Instance.GetAdjacentTiles(this.standingOnTile)
+            .Where(x => x.currentOccupier.imGood == this.imGood).Select(x => x.currentOccupier).ToList();
+    }
+
+    public Vector3 GetPartPosition(BodyPart part)
+    {
+        return transform.position;
+    }
 
     public void AddStatusEffect(SkillEffect skillEffect)
     {
@@ -64,26 +75,27 @@ public class AxieController : MonoBehaviour
     {
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
+        axieSkillController = this.gameObject.AddComponent<AxieSkillController>();
 
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
-            state = badTeam.GetCharacterState(spawnedAxie.axieId);
+            state = badTeam.GetCharacterState(axieIngameStats.axieId);
         }
         else
         {
             imGood = true;
-            state = goodTeam.GetCharacterState(spawnedAxie.axieId);
+            state = goodTeam.GetCharacterState(axieIngameStats.axieId);
         }
 
-        if (spawnedAxie.axieClass == AxieClass.Bird)
+        if (axieIngameStats.axieClass == AxieClass.Bird)
         {
-            spawnedAxie.Range = 4;
+            axieIngameStats.Range = 4;
             Range = 4;
         }
 
-        spawnedAxie.HP = AxieStatCalculator.GetHP(stats);
+        axieIngameStats.HP = AxieStatCalculator.GetHP(stats);
 
-        spawnedAxie.currentHP = spawnedAxie.HP;
+        axieIngameStats.currentHP = axieIngameStats.HP;
         if (imGood)
         {
             SkeletonAnim.GetComponent<Renderer>().sortingOrder =
@@ -113,7 +125,7 @@ public class AxieController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (CurrentTarget != null && CurrentTarget.spawnedAxie.currentHP <= 0)
+        if (CurrentTarget != null && CurrentTarget.axieIngameStats.currentHP <= 0)
         {
             CurrentTarget = null;
         }
@@ -123,9 +135,9 @@ public class AxieController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            if (spawnedAxie.axieClass == AxieClass.Aquatic)
+            if (axieIngameStats.axieClass == AxieClass.Aquatic)
             {
-                // axieBehavior.DoAction(AxieState.Shrimping);
+                //axieBehavior.DoAction(AxieState.Shrimping);
                 return;
             }
         }
@@ -137,20 +149,20 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        if (spawnedAxie.currentHP > spawnedAxie.HP)
+        if (axieIngameStats.currentHP > axieIngameStats.HP)
         {
-            spawnedAxie.currentHP = spawnedAxie.HP;
+            axieIngameStats.currentHP = axieIngameStats.HP;
         }
 
-        if (spawnedAxie.currentHP <= 0)
+        if (axieIngameStats.currentHP <= 0)
         {
             axieBehavior.DoAction(AxieState.Killed);
             return;
         }
         else
         {
-            statsManagerUI.SetMana(spawnedAxie.CurrentMana / spawnedAxie.MaxMana);
-            statsManagerUI.SetHP(spawnedAxie.currentHP / spawnedAxie.HP);
+            statsManagerUI.SetMana(axieIngameStats.CurrentEnergy / axieIngameStats.MaxMana);
+            statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);
         }
 
         if (axieBehavior.axieState == AxieState.Killed)
@@ -180,17 +192,16 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        spawnedAxie.CurrentMana += 0.2f;
+        axieIngameStats.CurrentEnergy += 0.2f;
 
-        if (spawnedAxie.CurrentMana >= spawnedAxie.MaxMana)
+        if (axieIngameStats.CurrentEnergy >= axieSkillController.GetComboCost())
         {
             axieBehavior.DoAction(AxieState.Casting);
-            spawnedAxie.CurrentMana = 0;
             return;
         }
 
         if (CurrentTarget != null && state.isMoving == false &&
-            GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= spawnedAxie.Range)
+            GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= axieIngameStats.Range)
         {
             axieBehavior.DoAction(AxieState.Attacking);
 
