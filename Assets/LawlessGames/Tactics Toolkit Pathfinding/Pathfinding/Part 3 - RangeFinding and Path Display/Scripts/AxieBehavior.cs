@@ -185,11 +185,14 @@ public class AxieBehavior : MonoBehaviour
             if (myController.axieIngameStats.axieClass == AxieClass.Bird)
                 AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
                     myController.CurrentTarget.transform);
+            
             yield return new WaitForSecondsRealtime(AttackSpeed);
+            
             if (myController.CurrentTarget == null)
                 yield break;
+            
             myController.CurrentTarget.axieIngameStats.currentHP -= AxieStatCalculator.GetAttackDamage(myController.stats);
-            myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
+            // myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
         }
     }
 

@@ -16,6 +16,7 @@ MonoBehaviour:
   skillEffects:
   - statusEffect: 0
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -58,13 +59,7 @@ MonoBehaviour:
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
     specialActivationIfComboedWithList: []
-    specialActivationWithBodyParts:
-    - axieClassCard: 0
-      OnlyCareAboutClassCard: 0
-      axieCard: 0
-      ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
-      ExtraTimesStatusEffectApplied: 0
+    specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
     specialActivactionWhenReceiveDamage: []
     lowestHP: 0

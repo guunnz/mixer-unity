@@ -6,7 +6,21 @@ using System.Threading.Tasks;
 using finished3;
 using Spine;
 using Spine.Unity;
+using Unity.Mathematics;
 using UnityEngine;
+
+public class DamagePair
+{
+    public AxieController axieController;
+    public int damage;
+}
+
+public class SpecialEffectExtras
+{
+    public AxieController axieController;
+    public int extraDamage;
+    public int multiplyStatusEffect = 1;
+}
 
 public class SkillLauncher : MonoBehaviour
 {
@@ -37,6 +51,7 @@ public class SkillLauncher : MonoBehaviour
             skill.self = self;
             skill.@class = skills[i].bodyPartSO.bodyPartClass;
             skill.skeletonAnimation = skeletonAnimation;
+            skill.ExtraTimerCast += (1f * i);
             skillActions.AddRange(PerformSkill(skills[i], skill, self, target));
         }
 
@@ -60,6 +75,79 @@ public class SkillLauncher : MonoBehaviour
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    private SpecialEffectExtras HandleSpecialEffects(SkillEffect skillEffect, AxieController target, AxieSkill skill,
+        AxieController self)
+    {
+        SpecialEffectExtras effectExtras = new SpecialEffectExtras();
+
+        if (skillEffect.specialActivationAgainstAxiesList.Count > 0)
+        {
+            var specialActivationAgainstAxieClass = skillEffect.specialActivationAgainstAxiesList.FirstOrDefault(x =>
+                x.axieClass == target.axieIngameStats.axieClass);
+            if (specialActivationAgainstAxieClass != null)
+            {
+                effectExtras.extraDamage += specialActivationAgainstAxieClass.ExtraDamage;
+                effectExtras.multiplyStatusEffect += specialActivationAgainstAxieClass.ExtraTimesStatusEffectApplied;
+            }
+        }
+
+        if (skillEffect.specialActivationIfComboedWithList.Count > 0)
+        {
+            bool comboed = false;
+            foreach (var skillToComboWith in skillEffect.specialActivationIfComboedWithList)
+            {
+                if (skillToComboWith.OnlyCareAboutClassCard)
+                {
+                    if (self.axieSkillController.IsClassSkillInAxie(skillToComboWith.axieClassCard, skill))
+                    {
+                        effectExtras.extraDamage += skillToComboWith.ExtraDamage;
+                        effectExtras.multiplyStatusEffect += skillToComboWith.ExtraTimesStatusEffectApplied;
+                    }
+                }
+                else if (self.axieSkillController.IsSkillSelectedInAxie(skillToComboWith.axieCard, skill))
+                {
+                    effectExtras.extraDamage += skillToComboWith.ExtraDamage;
+                    effectExtras.multiplyStatusEffect += skillToComboWith.ExtraTimesStatusEffectApplied;
+                }
+            }
+        }
+
+        if (skillEffect.specialActivationBasedOnAxiesInBattle.Count > 0)
+        {
+            foreach (var bodyPart in skillEffect.specialActivationBasedOnAxiesInBattle)
+            {
+                int axieTypeMultiplier =
+                    self.badTeam.GetCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass) + self
+                        .goodTeam.GetCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass);
+
+                effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectAppliedPerAxie * axieTypeMultiplier;
+                effectExtras.extraDamage += bodyPart.ExtraDamageAppliedPerAxie * axieTypeMultiplier;
+            }
+        }
+
+        if (skillEffect.specialActivationWithBodyParts.Count > 0)
+        {
+            foreach (var bodyPart in skillEffect.specialActivationWithBodyParts)
+            {
+                if (bodyPart.OnlyCareAboutClassCard)
+                {
+                    if (self.axieBodyParts.Contains(bodyPart.axieCard))
+                    {
+                        effectExtras.extraDamage += bodyPart.ExtraDamage;
+                        effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectApplied;
+                    }
+                }
+                else if (self.axieSkillController.IsSkillSelectedInAxie(bodyPart.axieCard, skill))
+                {
+                    effectExtras.extraDamage += bodyPart.ExtraDamage;
+                    effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectApplied;
+                }
+            }
+        }
+
+        return effectExtras;
     }
 
     private bool FulfillsTriggerCondition(AxieSkill skill, Skill skillInstance, AxieController self,
@@ -285,7 +373,7 @@ public class SkillLauncher : MonoBehaviour
     }
 
     private List<AxieController> DoSkillEffect(AxieController self,
-        AxieController target, SkillEffect skillEffect)
+        AxieController target, SkillEffect skillEffect, Skill skillInstance, SpecialEffectExtras specialEffectExtras)
     {
         List<AxieController> statusEffectTargetList = new List<AxieController>();
         List<AxieController> targetList = new List<AxieController>();
@@ -358,6 +446,8 @@ public class SkillLauncher : MonoBehaviour
             targetList = statusEffectTargetList;
         }
 
+        skillInstance.statusEffectTargetList = statusEffectTargetList;
+
         if (skillEffect.Prioritize)
         {
             if (skillEffect.lowestHP)
@@ -428,13 +518,9 @@ public class SkillLauncher : MonoBehaviour
             {
                 statusEffectTargetList.ForEach(x =>
                 {
-                    if (remove)
+                    for (int i = 0; i < specialEffectExtras.multiplyStatusEffect; i++)
                     {
-                        x.RemoveAllEffects();
-                    }
-                    else
-                    {
-                        x.AddStatusEffect(skillEffect);
+                        skillInstance.AddStatusEffectTargetPair(x.AxieId, new[] { skillEffect }, remove);
                     }
                 });
             }
@@ -445,17 +531,16 @@ public class SkillLauncher : MonoBehaviour
 
                 List<SkillEffect> skillsToSteal = gotStolen.axieSkillEffectManager.GetAllBuffs();
 
-                foreach (var effect in skillsToSteal)
-                {
-                    gotStolen.RemoveStatusEffect(effect);
-                    stealer.AddStatusEffect(effect);
-                }
+                skillInstance.AddStatusEffectTargetPair(gotStolen.AxieId, skillsToSteal.ToArray(), true);
+                skillInstance.AddStatusEffectTargetPair(stealer.AxieId, skillsToSteal.ToArray(), false);
             }
         }
 
         if (skillEffect.StealEnergyPercentage > 0)
         {
-            float energyToTransfer = target.axieIngameStats.CurrentEnergy * (skillEffect.StealEnergyPercentage * 0.01f);
+            float energyToTransfer = target.axieIngameStats.CurrentEnergy *
+                                     (skillEffect.StealEnergyPercentage * 0.01f) *
+                                     specialEffectExtras.multiplyStatusEffect;
 
             target.axieIngameStats.CurrentEnergy -= energyToTransfer;
             self.axieIngameStats.CurrentEnergy += energyToTransfer;
@@ -463,7 +548,7 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.GainShield > 0)
         {
-            self.axieIngameStats.currentShield += skillEffect.GainShield;
+            self.axieIngameStats.currentShield += skillEffect.GainShield * specialEffectExtras.multiplyStatusEffect;
         }
 
         if (skillEffect.GainHPPercentage > 0)
@@ -472,39 +557,152 @@ public class SkillLauncher : MonoBehaviour
             {
                 foreach (var axieController in statusEffectTargetList)
                 {
-                    axieController.axieIngameStats.currentHP += (skillEffect.GainHPPercentage * 0.01f);
+                    skillInstance.AddHealTargetPair(axieController.AxieId,
+                        (skillEffect.GainHPPercentage * 0.01f) * specialEffectExtras.multiplyStatusEffect);
                 }
             }
-            //TODO: Gain HP on Hit saved for damage calculation
         }
 
         return targetList;
     }
 
-    private void DamageCaluculation()
+    private List<DamagePair> DamageCalculation(AxieSkill skill, Skill skillInstance, AxieController self,
+        List<AxieController> targets, SkillEffect skillEffect, AxieController originalTarget,
+        SpecialEffectExtras specialEffectExtras, bool multiCasted = false)
     {
+        List<DamagePair> damagePairList = new List<DamagePair>();
+        foreach (var target in targets)
+        {
+            DamagePair dmgPair = new DamagePair();
+
+            dmgPair.axieController = target;
+            dmgPair.damage = Mathf.RoundToInt(skill.bodyPartSO.damage);
+
+            if (skillEffect.DamageEqualsBasicAttack)
+            {
+                dmgPair.damage =
+                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
+            }
+
+            if (skillEffect.ExtraDamagePercentage > 0)
+            {
+                dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ExtraDamagePercentage * 0.01f));
+            }
+
+            if (skillEffect.HPBaseOnDamage)
+            {
+                skillInstance.AddHealTargetPair(self.AxieId,
+                    (dmgPair.damage * (skillEffect.GainHPPercentage * 0.01f) *
+                     specialEffectExtras.multiplyStatusEffect));
+            }
+
+            dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
+
+            damagePairList.Add(dmgPair);
+        }
+
+
+        foreach (var damagePair in damagePairList)
+        {
+            if (skillEffect.AlwaysCritical)
+            {
+                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+            }
+        }
+
+        return damagePairList;
+    }
+
+    private void BuildSkillActions(Skill skillInstance, ref List<SkillAction> skillActions)
+    {
+        if (skillInstance.GetHealAction() != null)
+        {
+            skillActions.Add(skillInstance.GetHealAction());
+        }
+
+        if (skillInstance.GetDealDamageAction() != null)
+        {
+            skillActions.Add(skillInstance.GetDealDamageAction());
+        }
+
+        if (skillInstance.GetStatusEffectAction() != null)
+        {
+            skillActions.Add(skillInstance.GetStatusEffectAction());
+        }
+
+        if (skillInstance.GetAxieAnimationAction() != null)
+        {
+            skillActions.Add(skillInstance.GetAxieAnimationAction());
+        }
+
+        if (skillInstance.GetAllVFXActions() != null)
+        {
+            skillActions.AddRange(skillInstance.GetAllVFXActions());
+        }
+    }
+
+    private void PerformDamage(Skill skillInstance, List<DamagePair> damagePairs)
+    {
+        foreach (var damagePair in damagePairs)
+        {
+            skillInstance.AddDamageTargetPair(damagePair.axieController.AxieId, damagePair.damage);
+        }
     }
 
     private List<SkillAction> PerformSkill(AxieSkill skill, Skill skillInstance, AxieController self,
-        AxieController target)
+        AxieController target, bool multiCasted = false)
     {
         List<SkillAction> skillActions = new List<SkillAction>();
+        List<DamagePair> damagePairs = new List<DamagePair>();
 
 
         foreach (var skillEffect in skill.bodyPartSO.skillEffects)
         {
-            List<AxieController> Targets = new List<AxieController>();
+            SpecialEffectExtras specialEffectExtras = HandleSpecialEffects(skillEffect, target, skill, self);
+
+            List<AxieController> targets = new List<AxieController>();
             if (skillEffect.hasTriggerCondition)
             {
+                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
                 if (FulfillsTriggerCondition(skill, skillInstance, self, target, skillEffect))
                 {
-                    Targets = DoSkillEffect(self, target, skillEffect);
+                    if (!multiCasted && skillEffect.MultiCastTimes > 0)
+                    {
+                        for (int i = 0; i < skillEffect.MultiCastTimes; i++)
+                        {
+                            PerformSkill(skill, skillInstance, self, target, true);
+                        }
+                    }
+
+                    if (skillEffect.isPassive)
+                        continue;
                 }
+
+                skillInstance.targetList = targets;
+                damagePairs = DamageCalculation(skill, skillInstance, self, targets, skillEffect, target,
+                    specialEffectExtras, multiCasted);
             }
             else
             {
-                Targets = DoSkillEffect(self, target, skillEffect);
+                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
+                skillInstance.targetList = targets;
+                if (skillEffect.isPassive)
+                    continue;
+
+                if (!multiCasted && skillEffect.MultiCastTimes > 0)
+                {
+                    for (int i = 0; i < skillEffect.MultiCastTimes; i++)
+                    {
+                        PerformSkill(skill, skillInstance, self, target, true);
+                    }
+                }
+
+                damagePairs = DamageCalculation(skill, skillInstance, self, targets, skillEffect, target,
+                    specialEffectExtras, multiCasted);
             }
+
+            PerformDamage(skillInstance, damagePairs);
+            BuildSkillActions(skillInstance, ref skillActions);
         }
 
         return skillActions;
