@@ -16,7 +16,7 @@ public class AxieSkillController : MonoBehaviour
 {
     private int skillEnergyCost;
 
-    private List<AxieSkill> skillList;
+    private List<AxieSkill> skillList = new List<AxieSkill>();
 
     private int comboCost;
 

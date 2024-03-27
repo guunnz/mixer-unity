@@ -124,76 +124,7 @@ public class SkillEffect
     public bool IsOnlyBuffOrDebuff()
     {
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
-                Stench || Attack != 0 || Morale != 0 || Speed != 0) &&
-               IsAllOtherFieldsDefault();
-    }
-
-    private bool IsAllOtherFieldsDefault()
-    {
-        return statusEffect == default(StatusEffectEnum) &&
-               statusApplyType == default(StatusApplyType) &&
-               skillTriggerType == default(SkillTriggerType) &&
-               !isPassive &&
-               skillDuration == 0 &&
-               PoisonStack == 0 &&
-               StealEnergyPercentage == 0 &&
-               !isBuffOrDebuff &&
-               GainEnergy == 0 &&
-               MeleeReflect == 0 &&
-               RangedReflect == 0 &&
-               GainShield == 0 &&
-               GainHPPercentage == 0 &&
-               !HPBaseOnDamage &&
-               ShieldOnStart == 0 &&
-               !IgnoresShield &&
-               !Merry &&
-               !Gecko &&
-               !Wombo &&
-               !AlwaysCritical &&
-               !RandomEffectIsDebuff &&
-               !RandomEffectIsBuff &&
-               !ApplyRandomEffect &&
-               !DamageEqualsBasicAttack &&
-               ExtraDamagePercentage == 0 &&
-               ExtraDamageOnCritical == 0 &&
-               MultiCastTimes == 0 &&
-               !InmuneToCriticalStrike &&
-               ReduceDamagePercentage == 0 &&
-               !UseSpecialsAsTrigger &&
-               (specialActivationAgainstAxiesList == null || specialActivationAgainstAxiesList.Count == 0) &&
-               (specialActivationIfComboedWithList == null || specialActivationIfComboedWithList.Count == 0) &&
-               (specialActivationWithBodyParts == null || specialActivationWithBodyParts.Count == 0) &&
-               (specialActivationBasedOnAxiesInBattle == null || specialActivationBasedOnAxiesInBattle.Count == 0) &&
-               (specialActivactionWhenReceiveDamage == null || specialActivactionWhenReceiveDamage.Count == 0) &&
-               timesSet == 0 &&
-               !lowestHP &&
-               !FurthestTarget &&
-               !targetHighestEnergy &&
-               !targetHighestSpeed &&
-               !targetAxieClass &&
-               axieClassToTarget == default(AxieClass) &&
-               !triggerIfCertainHPTreshold &&
-               !LessThan &&
-               HPTresholdPercentage == 0 &&
-               ComboAmount == 0 &&
-               !LastAxieAliveTeam &&
-               !LastAxieAliveOpponent &&
-               !Shielded &&
-               !OnShieldBreak &&
-               !TargetIsDebuff &&
-               !TargetIsPoisoned &&
-               !SelfIsDebuff &&
-               !RangeTarget &&
-               ShieldNotBrokenForXSeconds == 0 &&
-               !RangeAbility &&
-               SecondsOfFight == 0 &&
-               !AllowReactivation &&
-               ReactivateEffectEveryXSeconds == 0 &&
-               (arreglabugs == null || arreglabugs.Count == 0) &&
-               AttackStatDifference == 0 &&
-               SpeedStatDifference == 0 &&
-               MoraleStatDifference == 0 &&
-               CurrentHPStatDifference == 0;
+                Stench || Attack != 0 || Morale != 0 || Speed != 0);
     }
 }
 
@@ -220,7 +151,6 @@ public class SpecialComboWithAxieCard
 public class SpecialComboWithAxiesInBattle
 {
     public AxieClass axieClass;
-    public int ExtraTimesAbilityCastPerAxie;
     public int ExtraTimesStatusEffectAppliedPerAxie;
     public int ExtraDamageAppliedPerAxie;
 }
@@ -232,7 +162,6 @@ public class SpecialActivationWithBodyPart
     public bool OnlyCareAboutClassCard;
     public SkillName axieCard;
     public int ExtraDamage;
-    public int ExtraTimesAbilityCast;
     public int ExtraTimesStatusEffectApplied;
 }
 

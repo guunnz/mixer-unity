@@ -12,7 +12,7 @@ public class IngameStats
     public string axieId;
     public float AttackSpeed;
     public float MinEnergy;
-    public float MaxMana;
+    public float MaxEnergy;
     public float CurrentEnergy;
     public float HP;
     public float currentHP;
@@ -107,6 +107,12 @@ public class AxieController : MonoBehaviour
                 (int)MathHelpers.InvLerp(0, 7, (standingOnTile.grid2DLocation.y));
         }
 
+        axieSkillController.SetAxieSkills(new List<SkillName>() { SkillName.Imp, SkillName.Ronin },
+            new List<BodyPart>()
+            {
+                BodyPart.Horn, BodyPart.Back
+            });
+
         axieBehavior.myController = this;
         SkeletonAnim.loop = true;
         axieBehavior.DoAction(AxieState.Idle);
@@ -161,7 +167,7 @@ public class AxieController : MonoBehaviour
         }
         else
         {
-            statsManagerUI.SetMana(axieIngameStats.CurrentEnergy / axieIngameStats.MaxMana);
+            statsManagerUI.SetMana(axieIngameStats.CurrentEnergy / axieIngameStats.MaxEnergy);
             statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);
         }
 
@@ -192,7 +198,7 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        axieIngameStats.CurrentEnergy += 0.2f;
+        axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
 
         if (axieIngameStats.CurrentEnergy >= axieSkillController.GetComboCost())
         {

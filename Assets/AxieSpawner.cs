@@ -158,11 +158,11 @@ namespace Game
             controller.AxieId = int.Parse(axieId);
             controller.axieIngameStats = new IngameStats();
             controller.axieIngameStats.axieId = axieId;
-            controller.axieIngameStats.HP = stats.hp * 2;
+            controller.axieIngameStats.HP = stats.hp * 1000;
             controller.axieIngameStats.axieClass = @class;
-            controller.axieIngameStats.MinEnergy = stats.skill;
-            controller.axieIngameStats.MaxMana = 100;
-            controller.axieIngameStats.currentHP = stats.skill;
+            controller.axieIngameStats.MinEnergy = stats.skill / 100f;
+            controller.axieIngameStats.MaxEnergy = 2;
+            controller.axieIngameStats.currentHP = stats.hp * 1000;
             controller.stats = stats;
             if (isEnemy)
             {

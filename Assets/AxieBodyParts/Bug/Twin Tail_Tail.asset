@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Twin Tail_Tail
   m_EditorClassIdentifier: 
   skillName: 93
-  statusEffects:
+  skillEffects:
   - statusEffect: 24
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 2

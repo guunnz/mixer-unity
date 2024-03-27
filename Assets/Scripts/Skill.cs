@@ -268,11 +268,13 @@ public class StatusEffectTargetPair
 {
     public int axieId;
     public SkillEffect[] skillEffects;
+    public bool remove;
 
-    public StatusEffectTargetPair(int axieId, SkillEffect[] value)
+    public StatusEffectTargetPair(int axieId, SkillEffect[] value, bool remove = false)
     {
         this.axieId = axieId;
         skillEffects = value;
+        this.remove = remove;
     }
 }
 
@@ -283,15 +285,17 @@ public class Skill : MonoBehaviour
     internal AxieClass @class;
     internal SkeletonAnimation skeletonAnimation;
     internal AxieController self;
-    internal List<AxieController> targetList;
+    internal List<AxieController> targetList = new List<AxieController>();
+    internal List<AxieController> statusEffectTargetList = new List<AxieController>();
     internal AxieBodyPart axieBodyPart;
     [SerializeField] private float axieAnimationTiming;
     [SerializeField] private float statusEffectsTiming;
 
-    private List<DamageTargetPair> damageTargetPairs;
-    private List<HealTargetPair> healTargetPairs;
-    private List<StatusEffectTargetPair> statusEffectTargetPair;
+    private List<DamageTargetPair> damageTargetPairs = new List<DamageTargetPair>();
+    private List<HealTargetPair> healTargetPairs = new List<HealTargetPair>();
+    private List<StatusEffectTargetPair> statusEffectTargetPair = new List<StatusEffectTargetPair>();
     internal float damageOrHealTiming;
+    internal float ExtraTimerCast;
 
     public void AddDamageTargetPair(int axieId, float damage)
     {
@@ -303,32 +307,37 @@ public class Skill : MonoBehaviour
         healTargetPairs.Add(new HealTargetPair(axieId, heal));
     }
 
-    public void AddStatusEffectTargetPair(int axieId, SkillEffect[] skillEffects)
+    public void AddStatusEffectTargetPair(int axieId, SkillEffect[] skillEffects, bool remove = false)
     {
-        statusEffectTargetPair.Add(new StatusEffectTargetPair(axieId, skillEffects));
+        statusEffectTargetPair.Add(new StatusEffectTargetPair(axieId, skillEffects, remove));
     }
 
     public SkillAction GetAxieAnimationAction()
     {
-        return new SkillAction(PlayAxieAnimation, axieAnimationTiming);
+        return new SkillAction(PlayAxieAnimation, axieAnimationTiming + ExtraTimerCast);
     }
 
     public SkillAction GetDealDamageAction()
     {
-        return new SkillAction(DoDamage, damageOrHealTiming);
+        return new SkillAction(DoDamage, damageOrHealTiming + ExtraTimerCast);
     }
 
     public SkillAction GetHealAction()
     {
-        return new SkillAction(DoHeal, damageOrHealTiming);
+        if (healTargetPairs.Count == 0)
+            return null;
+
+        return new SkillAction(DoHeal, damageOrHealTiming + ExtraTimerCast);
     }
 
     public List<SkillAction> GetAllVFXActions()
     {
         List<SkillAction> skillActions = new List<SkillAction>();
+        if (vfxToThrow.Count == 0)
+            return null;
         foreach (var vfx in vfxToThrow)
         {
-            skillActions.Add(new SkillAction(delegate { LaunchVFX(vfx); }, vfx.ActivateTiming));
+            skillActions.Add(new SkillAction(delegate { LaunchVFX(vfx); }, vfx.ActivateTiming + ExtraTimerCast));
         }
 
         return skillActions;
@@ -336,7 +345,10 @@ public class Skill : MonoBehaviour
 
     public SkillAction GetStatusEffectAction()
     {
-        return new SkillAction(SetStatusEffects, statusEffectsTiming);
+        if (statusEffectTargetPair.Count == 0)
+            return null;
+
+        return new SkillAction(SetStatusEffects, statusEffectsTiming + ExtraTimerCast);
     }
 
     private void DoDamage()
@@ -349,7 +361,7 @@ public class Skill : MonoBehaviour
 
     private void DoHeal()
     {
-        foreach (var target in targetList)
+        foreach (var target in statusEffectTargetList)
         {
             target.axieIngameStats.currentHP += healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value;
         }
@@ -402,10 +414,7 @@ public class Skill : MonoBehaviour
 
     private void SetStatusEffects()
     {
-        if (axieBodyPart.skillEffects == null)
-            return;
-
-        foreach (var target in targetList)
+        foreach (var target in statusEffectTargetList)
         {
             var skillEffects = statusEffectTargetPair.FirstOrDefault(x => x.axieId == target.AxieId)
                 ?.skillEffects;
