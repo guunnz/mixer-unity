@@ -268,6 +268,8 @@ public class Skill : MonoBehaviour
 
         string animationName = animationToPlay.ToString();
 
+        StartCoroutine(Destroy(this.gameObject,totalDuration));
+
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
 
@@ -285,10 +287,17 @@ public class Skill : MonoBehaviour
         foreach (SkillVFX skill in vfxToThrow)
         {
             yield return new WaitForSecondsRealtime(skill.SkillDelay);
+            Vector3 pos = skill.VFXPrefab.transform.localPosition;
             GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                 skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                 skill.VFXPrefab.transform.rotation,
-                null);
+                this.transform);
+
+            vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                             pos.x, vfxSpawned.transform.localPosition.y +
+                                                                    pos.y, vfxSpawned.transform.localPosition.z +
+                                                                           pos.z);
+
             VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
             if (changer != null)
@@ -303,11 +312,7 @@ public class Skill : MonoBehaviour
                 if (projectileMover != null)
                     projectileMover.MoveToTarget(this.target, skill.SkillDuration);
             }
-
-            StartCoroutine(Destroy(vfxSpawned.gameObject, skill.SkillDuration));
         }
-
-        opponent.spawnedAxie.currentHP -= this.Damage;
     }
 
     public IEnumerator LaunchSkillTest()
@@ -359,9 +364,6 @@ public class Skill : MonoBehaviour
                     projectileMover.MoveToTarget(this.target, skill.SkillDuration);
             }
         }
-
-
-        
     }
 
     private void SetStatusEffects()
