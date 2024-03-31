@@ -314,6 +314,8 @@ public class Skill : MonoBehaviour
     {
         string animationName = animationToPlay.ToString();
 
+        StartCoroutine(Destroy(this.gameObject,totalDuration));
+
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
 
@@ -358,10 +360,8 @@ public class Skill : MonoBehaviour
             }
         }
 
-        skeletonAnimation.AnimationName = "action/idle/normal";
 
-        yield return new WaitForSeconds(0.1f);
-        Destroy(this.gameObject);
+        
     }
 
     private void SetStatusEffects()
@@ -378,6 +378,7 @@ public class Skill : MonoBehaviour
     private IEnumerator Destroy(GameObject obj, float timing)
     {
         yield return new WaitForSecondsRealtime(timing);
+        skeletonAnimation.AnimationName = "action/idle/normal";
         Destroy(obj);
     }
 }
