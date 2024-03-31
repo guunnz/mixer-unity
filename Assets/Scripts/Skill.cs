@@ -126,7 +126,7 @@ public enum SkillName
     Pupae,
     ThornyCatterpilar,
     Catfish,
-    Piranha, 
+    Piranha,
     Babylonia,
     TealShell,
     Clamshell,
@@ -153,7 +153,7 @@ public enum SkillName
     Yam,
     PotatoLeaf,
     HotButt,
-    Doubletalk, 
+    Doubletalk,
     HungryBird,
     LittleOwl,
     Eggshell,
@@ -253,9 +253,12 @@ public class Skill : MonoBehaviour
     internal AxieController opponent;
     public float totalDuration;
     public float statusEffectsTiming;
+    internal bool debug;
 
     private void Start()
     {
+        if (debug)
+            return;
         StartCoroutine(LaunchSkill());
     }
 
@@ -307,11 +310,65 @@ public class Skill : MonoBehaviour
         opponent.spawnedAxie.currentHP -= this.Damage;
     }
 
+    public IEnumerator LaunchSkillTest()
+    {
+        string animationName = animationToPlay.ToString();
+
+        // Find the last underscore and replace it with a hyphen
+        int lastUnderscoreIndex = animationName.LastIndexOf('_');
+
+        if (lastUnderscoreIndex != -1)
+        {
+            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
+                            animationName.Substring(lastUnderscoreIndex + 1);
+        }
+
+        // Replace the remaining underscores with slashes
+        animationName = animationName.Replace("_", "/");
+
+        skeletonAnimation.AnimationName = animationName;
+
+        foreach (SkillVFX skill in vfxToThrow)
+        {
+            yield return new WaitForSecondsRealtime(skill.SkillDelay);
+            Vector3 pos = skill.VFXPrefab.transform.localPosition;
+            GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                skill.StartFromOrigin ? origin.transform.position : target.transform.position,
+                skill.VFXPrefab.transform.rotation,
+                this.transform);
+
+            vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                             pos.x, vfxSpawned.transform.localPosition.y +
+                                                                    pos.y, vfxSpawned.transform.localPosition.z +
+                                                                           pos.z);
+
+            VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
+
+            if (changer != null)
+            {
+                changer.ChangeBasedOnClass(@class);
+            }
+
+            if (skill.StartFromOrigin)
+            {
+                ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                if (projectileMover != null)
+                    projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+            }
+        }
+
+        skeletonAnimation.AnimationName = "action/idle/normal";
+
+        yield return new WaitForSeconds(0.1f);
+        Destroy(this.gameObject);
+    }
+
     private void SetStatusEffects()
     {
         if (axieBodyPart.statusEffects == null)
             return;
-        
+
         foreach (var skillEffect in axieBodyPart.statusEffects)
         {
             StatusManager.Instance.SetStatus(skillEffect, self, opponent);
