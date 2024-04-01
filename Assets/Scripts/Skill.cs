@@ -253,6 +253,7 @@ public class Skill : MonoBehaviour
     internal AxieController opponent;
     public float totalDuration;
     public float statusEffectsTiming;
+    public float attackAudioTiming;
     internal bool debug;
 
     private void Start()
@@ -309,7 +310,10 @@ public class Skill : MonoBehaviour
             {
                 ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
-                vfxSpawned.transform.localScale = new Vector3(vfxSpawned.transform.localScale.x,
+                vfxSpawned.transform.localScale = new Vector3(
+                    origin.transform.localScale.x > 0
+                        ? -vfxSpawned.transform.localScale.x
+                        : vfxSpawned.transform.localScale.x,
                     vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
 
                 if (projectileMover != null)
@@ -362,6 +366,17 @@ public class Skill : MonoBehaviour
             if (skill.StartFromOrigin)
             {
                 ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                vfxSpawned.transform.localScale = new Vector3(
+                    origin.transform.localScale.x < 0
+                        ? -vfxSpawned.transform.localScale.x
+                        : vfxSpawned.transform.localScale.x,
+                    vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                if (origin.transform.localScale.x > 0)
+                {
+                    vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                }
 
                 if (projectileMover != null)
                     projectileMover.MoveToTarget(this.target, skill.SkillDuration);
