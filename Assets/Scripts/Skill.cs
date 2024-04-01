@@ -268,7 +268,7 @@ public class Skill : MonoBehaviour
 
         string animationName = animationToPlay.ToString();
 
-        StartCoroutine(Destroy(this.gameObject,totalDuration));
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
 
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
@@ -309,6 +309,9 @@ public class Skill : MonoBehaviour
             {
                 ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
+                vfxSpawned.transform.localScale = new Vector3(vfxSpawned.transform.localScale.x,
+                    vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
                 if (projectileMover != null)
                     projectileMover.MoveToTarget(this.target, skill.SkillDuration);
             }
@@ -319,7 +322,7 @@ public class Skill : MonoBehaviour
     {
         string animationName = animationToPlay.ToString();
 
-        StartCoroutine(Destroy(this.gameObject,totalDuration));
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
 
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
