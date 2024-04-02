@@ -126,7 +126,7 @@ public enum SkillName
     Pupae,
     ThornyCatterpilar,
     Catfish,
-    Piranha, 
+    Piranha,
     Babylonia,
     TealShell,
     Clamshell,
@@ -153,7 +153,7 @@ public enum SkillName
     Yam,
     PotatoLeaf,
     HotButt,
-    Doubletalk, 
+    Doubletalk,
     HungryBird,
     LittleOwl,
     Eggshell,
@@ -253,9 +253,13 @@ public class Skill : MonoBehaviour
     internal AxieController opponent;
     public float totalDuration;
     public float statusEffectsTiming;
+    public float attackAudioTiming;
+    internal bool debug;
 
     private void Start()
     {
+        if (debug)
+            return;
         StartCoroutine(LaunchSkill());
     }
 
@@ -264,6 +268,8 @@ public class Skill : MonoBehaviour
         Invoke("SetStatusEffects", statusEffectsTiming == 0 ? totalDuration - 0.1f : statusEffectsTiming);
 
         string animationName = animationToPlay.ToString();
+
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
 
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
@@ -282,10 +288,17 @@ public class Skill : MonoBehaviour
         foreach (SkillVFX skill in vfxToThrow)
         {
             yield return new WaitForSecondsRealtime(skill.SkillDelay);
+            Vector3 pos = skill.VFXPrefab.transform.localPosition;
             GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                 skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                 skill.VFXPrefab.transform.rotation,
-                null);
+                this.transform);
+
+            vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                             pos.x, vfxSpawned.transform.localPosition.y +
+                                                                    pos.y, vfxSpawned.transform.localPosition.z +
+                                                                           pos.z);
+
             VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
             if (changer != null)
@@ -297,21 +310,85 @@ public class Skill : MonoBehaviour
             {
                 ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
+                vfxSpawned.transform.localScale = new Vector3(
+                    origin.transform.localScale.x > 0
+                        ? -vfxSpawned.transform.localScale.x
+                        : vfxSpawned.transform.localScale.x,
+                    vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
                 if (projectileMover != null)
                     projectileMover.MoveToTarget(this.target, skill.SkillDuration);
             }
+        }
+    }
 
-            StartCoroutine(Destroy(vfxSpawned.gameObject, skill.SkillDuration));
+    public IEnumerator LaunchSkillTest()
+    {
+        string animationName = animationToPlay.ToString();
+
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
+
+        // Find the last underscore and replace it with a hyphen
+        int lastUnderscoreIndex = animationName.LastIndexOf('_');
+
+        if (lastUnderscoreIndex != -1)
+        {
+            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
+                            animationName.Substring(lastUnderscoreIndex + 1);
         }
 
-        opponent.spawnedAxie.currentHP -= this.Damage;
+        // Replace the remaining underscores with slashes
+        animationName = animationName.Replace("_", "/");
+
+        skeletonAnimation.AnimationName = animationName;
+
+        foreach (SkillVFX skill in vfxToThrow)
+        {
+            yield return new WaitForSecondsRealtime(skill.SkillDelay);
+            Vector3 pos = skill.VFXPrefab.transform.localPosition;
+            GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                skill.StartFromOrigin ? origin.transform.position : target.transform.position,
+                skill.VFXPrefab.transform.rotation,
+                this.transform);
+
+            vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                             pos.x, vfxSpawned.transform.localPosition.y +
+                                                                    pos.y, vfxSpawned.transform.localPosition.z +
+                                                                           pos.z);
+
+            VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
+
+            if (changer != null)
+            {
+                changer.ChangeBasedOnClass(@class);
+            }
+
+            if (skill.StartFromOrigin)
+            {
+                ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                vfxSpawned.transform.localScale = new Vector3(
+                    origin.transform.localScale.x < 0
+                        ? -vfxSpawned.transform.localScale.x
+                        : vfxSpawned.transform.localScale.x,
+                    vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                if (origin.transform.localScale.x > 0)
+                {
+                    vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                }
+
+                if (projectileMover != null)
+                    projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+            }
+        }
     }
 
     private void SetStatusEffects()
     {
         if (axieBodyPart.statusEffects == null)
             return;
-        
+
         foreach (var skillEffect in axieBodyPart.statusEffects)
         {
             StatusManager.Instance.SetStatus(skillEffect, self, opponent);
@@ -321,6 +398,7 @@ public class Skill : MonoBehaviour
     private IEnumerator Destroy(GameObject obj, float timing)
     {
         yield return new WaitForSecondsRealtime(timing);
+        skeletonAnimation.AnimationName = "action/idle/normal";
         Destroy(obj);
     }
 }

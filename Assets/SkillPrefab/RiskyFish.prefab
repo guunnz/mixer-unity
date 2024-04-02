@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3133670662096343493}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.0932848, y: 2.967022, z: -8.352276}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxToThrow:
-  - SkillDelay: 0.1
+  - SkillDelay: 0.25
     VFXPrefab: {fileID: 167057102666415109, guid: 8911f99243ca9b448b1b16ec49d65e96,
       type: 3}
     SkillDuration: 0.333
@@ -57,4 +57,6 @@ MonoBehaviour:
     StartFromOrigin: 0
   Damage: 30
   animationToPlay: 20
-  totalDuration: 0.6
+  totalDuration: 0.65
+  statusEffectsTiming: 0
+  attackAudioTiming: 0

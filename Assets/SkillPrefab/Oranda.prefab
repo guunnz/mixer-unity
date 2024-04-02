@@ -50,12 +50,12 @@ MonoBehaviour:
       type: 3}
     SkillDuration: 0.833
     StartFromOrigin: 0
-  - SkillDelay: 0.8
+  - SkillDelay: 0.7
     VFXPrefab: {fileID: 3080438502371652594, guid: 82231976e41e96140bacdd995a018ed8,
       type: 3}
     SkillDuration: 0.167
     StartFromOrigin: 0
   Damage: 30
   animationToPlay: 2
-  totalDuration: 1.733
+  totalDuration: 1
   statusEffectsTiming: 0
