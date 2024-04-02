@@ -16,7 +16,7 @@ MonoBehaviour:
   statusEffects:
   - statusEffect: 1
     statusApplyType: 1
-    skillTriggerType: 2
+    skillTriggerType: 3
     isPassive: 1
     skillDuration: 0
     PoisonStack: 0
