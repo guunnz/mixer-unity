@@ -1,7 +1,6 @@
 using finished3;
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 using DG.Tweening;
 
 public enum LandType
@@ -37,6 +36,9 @@ public class MaterialTipColorChanger : MonoBehaviour
     public float floorMoveAmount = 0.1f;
     private float startYPosition;
 
+    // Instance of System.Random
+    private System.Random random = new System.Random(0); // Default seed
+
     void Awake()
     {
         // Initialize the renderer and property block
@@ -47,12 +49,22 @@ public class MaterialTipColorChanger : MonoBehaviour
     private void Start()
     {
         this.transform.position = new Vector3(this.transform.position.x,
-            this.transform.position.y + Random.Range(-0.1f, 0.1f),
+            this.transform.position.y + RandomRange(-0.1f, 0.1f),
             this.transform.position.z);
 
         startYPosition = this.transform.position.y;
     }
 
+    // Function to set the random seed
+    public void SetRandomSeed(int seed)
+    {
+        random = new System.Random(seed);
+    }
+
+    private float RandomRange(float min, float max)
+    {
+        return (float)(min + random.NextDouble() * (max - min));
+    }
 
     private void Update()
     {
@@ -62,29 +74,29 @@ public class MaterialTipColorChanger : MonoBehaviour
             switch (landType)
             {
                 case LandType.arctic:
-                    color = new Color(Random.Range(arcticColorMin.x, arcticColorMax.x),
-                        Random.Range(arcticColorMin.y, arcticColorMax.y),
-                        Random.Range(arcticColorMin.z, arcticColorMax.z));
+                    color = new Color(RandomRange(arcticColorMin.x, arcticColorMax.x),
+                        RandomRange(arcticColorMin.y, arcticColorMax.y),
+                        RandomRange(arcticColorMin.z, arcticColorMax.z));
                     break;
                 case LandType.forest:
-                    color = new Color(Random.Range(forestColorMin.x, forestColorMax.x),
-                        Random.Range(forestColorMin.y, forestColorMax.y),
-                        Random.Range(forestColorMin.z, forestColorMax.z));
+                    color = new Color(RandomRange(forestColorMin.x, forestColorMax.x),
+                        RandomRange(forestColorMin.y, forestColorMax.y),
+                        RandomRange(forestColorMin.z, forestColorMax.z));
                     break;
                 case LandType.genesis:
-                    color = new Color(Random.Range(genesisColorMin.x, genesisColorMax.x),
-                        Random.Range(genesisColorMin.y, genesisColorMax.y),
-                        Random.Range(genesisColorMin.z, genesisColorMax.z));
+                    color = new Color(RandomRange(genesisColorMin.x, genesisColorMax.x),
+                        RandomRange(genesisColorMin.y, genesisColorMax.y),
+                        RandomRange(genesisColorMin.z, genesisColorMax.z));
                     break;
                 case LandType.mystic:
-                    color = new Color(Random.Range(mysticColorMin.x, mysticColorMax.x),
-                        Random.Range(mysticColorMin.y, mysticColorMax.y),
-                        Random.Range(mysticColorMin.z, mysticColorMax.z));
+                    color = new Color(RandomRange(mysticColorMin.x, mysticColorMax.x),
+                        RandomRange(mysticColorMin.y, mysticColorMax.y),
+                        RandomRange(mysticColorMin.z, mysticColorMax.z));
                     break;
                 case LandType.savannah:
-                    color = new Color(Random.Range(savannahColorMin.x, savannahColorMax.x),
-                        Random.Range(savannahColorMin.y, savannahColorMax.y),
-                        Random.Range(savannahColorMin.z, savannahColorMax.z));
+                    color = new Color(RandomRange(savannahColorMin.x, savannahColorMax.x),
+                        RandomRange(savannahColorMin.y, savannahColorMax.y),
+                        RandomRange(savannahColorMin.z, savannahColorMax.z));
                     break;
             }
         }
@@ -105,7 +117,7 @@ public class MaterialTipColorChanger : MonoBehaviour
         else if (floorUp)
         {
             floorUp = false;
-            transform.DOMoveY(startYPosition + -floorMoveAmount, 0.5f);
+            transform.DOMoveY(startYPosition - floorMoveAmount, 0.5f);
         }
     }
 

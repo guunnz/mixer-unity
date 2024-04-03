@@ -29,7 +29,8 @@ public class OverlayTile : MonoBehaviour
     private Team badTeam;
     internal AxieController currentOccupier;
     public Rectangle rectangle;
-    
+    private bool untoggleable;
+
     public static AxieController GetCurrentOccupierByY(int yValue, List<OverlayTile> allTiles)
     {
         return allTiles.FirstOrDefault(tile => tile.grid2DLocation.y == yValue)?.currentOccupier;
@@ -45,11 +46,16 @@ public class OverlayTile : MonoBehaviour
         {
             spriteRenderer.enabled = false;
             Destroy(this.GetComponent<BoxCollider>());
+            untoggleable = true;
         }
+
+        ToggleRectangle(false);
     }
 
     public void ToggleRectangle(bool enabled = false)
     {
+        if (untoggleable)
+            return;
         if (rectangle != null)
             rectangle.enabled = enabled;
     }

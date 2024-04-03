@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using SimpleGraphQL;
@@ -18,39 +19,46 @@ public class GetAxiesExample : MonoBehaviour
     {
         graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
         string query = @"
-    query MyQuery {
-      axies(owner: """ + address + @""") {
-        results {
-          birthDate
-          name
-          genes
-          id
-          class
-          parts {
-            class
-            id
-            name
-            type
-            abilities {
-              attack
-              attackType
+        query MyQuery {
+          axies(owner: """ + address + @""") {
+            results {
+              birthDate
               name
+              genes
               id
-              effectIconUrl
-              defense
-              backgroundUrl
+              class
+              parts {
+                class
+                id
+                name
+                type
+                abilities {
+                  attack
+                  attackType
+                  name
+                  id
+                  effectIconUrl
+                  defense
+                  backgroundUrl
+                }
+              }
+              stats {
+                speed
+                skill
+                morale
+                hp
+              }
+              bodyShape
             }
           }
-          stats {
-            speed
-            skill
-            morale
-            hp
+          lands(owner: {address: """ + address + @""", ownerships: Owned}) {
+            total
+            results {
+              landType
+              tokenId
+            }
           }
-          bodyShape
-        }
-      }
-    }";
+        }";
         StartCoroutine(RequestGraphQL(query));
     }
 
@@ -95,12 +103,11 @@ public class GetAxiesExample : MonoBehaviour
         var axiesData = JsonUtility.FromJson<AxiesData>(response);
         var axiesResults = axiesData.data.axies.results;
 
-        Axie bird = axiesResults.FirstOrDefault(x => x.@class.Contains("Bird"));
-        Axie beast = axiesResults.FirstOrDefault(x => x.@class.Contains("Beast"));
-        Axie dusk = axiesResults.FirstOrDefault(x => x.@class.Contains("Dusk"));
-        Axie plant = axiesResults
-            .Where(x => x.@class.Contains("Plant") && x.parts.Any(y => y.name.ToLower() == "rose bud")).ToList()[0];
-        Axie aqua = axiesResults.FirstOrDefault(x => x.@class.Contains("Aqua"));
+        Axie bird = axiesResults[0];
+        Axie beast = axiesResults[1];
+        Axie dusk = axiesResults[2];
+        Axie plant = axiesResults[3];
+        Axie aqua = axiesResults[4];
 
         List<string> axieIds = new List<string>();
 
@@ -136,6 +143,24 @@ public class GetAxiesExample : MonoBehaviour
     public class Data
     {
         public Axies axies;
+        public Lands lands;
+    }
+
+    [System.Serializable]
+    public class Lands
+    {
+        public int total;
+        public Land[] results;
+    }
+
+    [System.Serializable]
+    public class Land
+    {
+        public string landType;
+        public string tokenId;
+        public string col;
+        public string row;
+        public LandType LandTypeEnum => (LandType)Enum.Parse(typeof(LandType), landType, true);
     }
 
     [System.Serializable]
@@ -150,8 +175,10 @@ public class GetAxiesExample : MonoBehaviour
         public long birthDate;
         public string name;
         public string genes;
+        public string newGenes;
         public string id;
         public string @class;
+        public AxieClass axieClass => (AxieClass)Enum.Parse(typeof(AxieClass), @class, true);
         public Part[] parts;
         public Stats stats;
         public string bodyShape;

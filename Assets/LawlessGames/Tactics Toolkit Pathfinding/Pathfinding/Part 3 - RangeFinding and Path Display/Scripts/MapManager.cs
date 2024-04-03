@@ -17,6 +17,7 @@ public class MapManager : MonoBehaviour
     public Dictionary<Vector2Int, OverlayTile> map;
 
     public int width = 12; // Width of the map
+    private List<OverlayTile> overlayTiles = new List<OverlayTile>();
     public int depth = 2; // Depth of the map (previously height)
 
     private void Awake()
@@ -31,12 +32,15 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void ToggleRectangles()
     {
-        GenerateMap();
+        foreach (var overlayTile in overlayTiles)
+        {
+            overlayTile.ToggleRectangle(true);
+        }
     }
 
-    void GenerateMap()
+    public void GenerateMap()
     {
         map = new Dictionary<Vector2Int, OverlayTile>();
 
@@ -47,8 +51,8 @@ public class MapManager : MonoBehaviour
                 var overlayTile = Instantiate(overlayPrefab, overlayContainer.transform);
                 Vector3 cellWorldPosition = new Vector3(x, 0, z); // Position based on x and z
                 overlayTile.transform.position = cellWorldPosition;
-
                 var tileScript = overlayTile.GetComponent<OverlayTile>();
+                overlayTiles.Add(tileScript);
                 tileScript.gridLocation = new Vector3Int(x, 0, z);
 
                 map.Add(new Vector2Int(x, z), tileScript);
