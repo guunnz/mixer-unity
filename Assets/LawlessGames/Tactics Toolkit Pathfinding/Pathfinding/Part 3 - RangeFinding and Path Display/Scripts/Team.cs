@@ -16,6 +16,8 @@ public class Team : MonoBehaviour
 
     public bool isGoodTeam;
 
+    internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
+
     private void Start()
     {
         pathFinder = new PathFinder();
@@ -31,7 +33,7 @@ public class Team : MonoBehaviour
     {
         return characters[
             GetCharacters().Single(x =>
-                x.spawnedAxie.axieId == axieId && x.axieBehavior.axieState != AxieState.Killed)];
+                x.axieIngameStats.axieId == axieId && x.axieBehavior.axieState != AxieState.Killed)];
     }
 
     private void RecalculatePath(AxieController character, CharacterState state)
@@ -70,7 +72,7 @@ public class Team : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L)) // Move all characters
         {
-            target.PostTeam(1, characters.Select(x => x.Key.spawnedAxie).ToList());
+            target.PostTeam(1, characters.Select(x => x.Key.axieIngameStats).ToList());
         }
 
         if (battleStarted)
@@ -172,9 +174,9 @@ public class Team : MonoBehaviour
                 GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
 
             character.CurrentTarget = closestCharacter;
-            if (character.spawnedAxie.Range > 1)
+            if (character.axieIngameStats.Range > 1)
             {
-                if (distanceToClosestCharacterGrid <= (int)character.spawnedAxie.Range)
+                if (distanceToClosestCharacterGrid <= (int)character.axieIngameStats.Range)
                 {
                     state.isMoving = false;
                     return;
@@ -198,12 +200,12 @@ public class Team : MonoBehaviour
 
             float distanceToClosestCharacterX =
                 Mathf.Abs(character.transform.position.x - closestCharacter.transform.position.x);
-            if (distanceToClosestCharacterGrid > character.spawnedAxie.Range + 1 ||
+            if (distanceToClosestCharacterGrid > character.axieIngameStats.Range + 1 ||
                 distanceToClosestCharacterGrid >= 1 &&
                 (character.standingOnTile.grid2DLocation.y == closestCharacter.standingOnTile.grid2DLocation.y
-                    ? distanceToClosestCharacterX > character.spawnedAxie.Range
+                    ? distanceToClosestCharacterX > character.axieIngameStats.Range
                     : distanceToClosestCharacterX > 0.1f ||
-                      distanceToClosestCharacterGrid <= character.spawnedAxie.Range + 1))
+                      distanceToClosestCharacterGrid <= character.axieIngameStats.Range + 1))
             {
                 MoveAlongPath(character, state);
             }
@@ -238,7 +240,7 @@ public class Team : MonoBehaviour
                 Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                 Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
-            if ((int)character.spawnedAxie.Range == 1)
+            if ((int)character.axieIngameStats.Range == 1)
             {
                 var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
                     GetInRangeTiles(character));
@@ -259,6 +261,62 @@ public class Team : MonoBehaviour
 
         return closestCharacter;
     }
+    
+    public AxieController FindFurthestCharacter(AxieController character)
+    {
+        AxieController furthestCharacter = null;
+        int maxManhattanDistance = 0;
+
+        foreach (var other in enemyTeam.GetCharacters())
+        {
+            int manhattanDistance =
+                Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
+                Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
+
+            if ((int)character.axieIngameStats.Range == 1)
+            {
+                var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
+                    GetInRangeTiles(character));
+                if (path == null) continue;
+            }
+
+            if (manhattanDistance > maxManhattanDistance)
+            {
+                maxManhattanDistance = manhattanDistance;
+                furthestCharacter = other;
+            }
+        }
+
+        return furthestCharacter;
+    }    
+    
+    public AxieController FindFurthestCharacter(AxieController character, List<AxieController> potentialCharacters)
+    {
+        AxieController furthestCharacter = null;
+        int maxManhattanDistance = 0;
+
+        foreach (var other in potentialCharacters)
+        {
+            int manhattanDistance =
+                Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
+                Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
+
+            if ((int)character.axieIngameStats.Range == 1)
+            {
+                var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
+                    GetInRangeTiles(character));
+                if (path == null) continue;
+            }
+
+            if (manhattanDistance > maxManhattanDistance)
+            {
+                maxManhattanDistance = manhattanDistance;
+                furthestCharacter = other;
+            }
+        }
+
+        return furthestCharacter;
+    }
 
     private void MoveAlongPath(AxieController character, CharacterState state)
     {
@@ -276,9 +334,9 @@ public class Team : MonoBehaviour
                 GetInRangeTiles(character));
             distanceToClosestCharacterGrid =
                 GetManhattanDistance(character.standingOnTile, character.CurrentTarget.standingOnTile);
-            if (character.spawnedAxie.Range > 1)
+            if (character.axieIngameStats.Range > 1)
             {
-                if (distanceToClosestCharacterGrid <= (int)character.spawnedAxie.Range)
+                if (distanceToClosestCharacterGrid <= (int)character.axieIngameStats.Range)
                 {
                     state.isMoving = false;
                     return;

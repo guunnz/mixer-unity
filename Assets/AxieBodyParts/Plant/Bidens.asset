@@ -94,5 +94,5 @@ MonoBehaviour:
   bodyPartClass: 4
   damage: 0
   shield: 0
-  energy: 1
+  energy: 0
   description: Gain 50 Shield at starts, You are inmune to debuffs

@@ -17,7 +17,7 @@ MonoBehaviour:
   - statusEffect: 0
     statusApplyType: 1
     skillTriggerType: 4
-    isPassive: 0
+    isPassive: 1
     skillDuration: 0
     PoisonStack: 0
     Attack: 0
@@ -95,4 +95,4 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: This axie ignores shield
+  description: This axie ignores shield with auto attack
