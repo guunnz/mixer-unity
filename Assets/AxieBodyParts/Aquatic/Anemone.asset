@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Anemone
   m_EditorClassIdentifier: 
   skillName: 37
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 0
     skillTriggerType: 0
@@ -58,15 +58,11 @@ MonoBehaviour:
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
     specialActivationIfComboedWithList: []
-    specialActivationWithBodyParts:
-    - axieClassCard: 5
-      OnlyCareAboutClassCard: 0
-      axieCard: 37
-      ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
-      ExtraTimesStatusEffectApplied: 1
+    specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
-    specialActivactionWhenReceiveDamage: []
+    specialActivactionWhenReceiveDamage:
+    - onlyAbilities: 0
+      axieClass: 0
     lowestHP: 0
     FurthestTarget: 0
     targetHighestEnergy: 0

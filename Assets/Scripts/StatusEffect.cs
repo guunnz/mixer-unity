@@ -7,6 +7,7 @@ public class SkillEffect
 {
     public StatusEffectEnum statusEffect;
     public StatusApplyType statusApplyType;
+    public bool statusApplyTypeIsTarget;
     public SkillTriggerType skillTriggerType;
     public bool isPassive;
     public float skillDuration;
@@ -15,7 +16,7 @@ public class SkillEffect
     public int Speed;
     public int Morale;
     public int StealEnergyPercentage;
-    
+    internal bool isBuffOrDebuff;
     public float GainEnergy;
     public int MeleeReflect;
     public int RangedReflect;
@@ -47,8 +48,7 @@ public class SkillEffect
     public int MultiCastTimes;
     public bool InmuneToCriticalStrike;
     public int ReduceDamagePercentage;
-    [Header( "Special Interactions" )]
-    public bool UseSpecialsAsTrigger;
+    [Header("Special Interactions")] public bool UseSpecialsAsTrigger;
     public List<SpecialActivationAgainstAxieClass> specialActivationAgainstAxiesList;
     public List<SpecialComboWithAxieCard> specialActivationIfComboedWithList;
     public List<SpecialActivationWithBodyPart> specialActivationWithBodyParts;
@@ -56,18 +56,21 @@ public class SkillEffect
     public List<SpecialActivactionWhenReceiveDamage> specialActivactionWhenReceiveDamage;
     internal int timesSet;
     internal bool hasSpecialActivationBasedOnTargetAxieClass => specialActivationAgainstAxiesList.Count > 0;
-    
-    [Header("Targeting")] 
-    public bool lowestHP;
+
+    [Header("Targeting")] public bool lowestHP;
     public bool FurthestTarget;
     public bool targetHighestEnergy;
     public bool targetHighestSpeed;
     public bool targetAxieClass;
     public AxieClass axieClassToTarget;
-    
+
+    internal bool Prioritize => FurthestTarget || targetHighestEnergy || targetHighestSpeed || targetAxieClass;
+
     [Header("Trigger If")] public bool triggerIfCertainHPTreshold;
+
     [Tooltip("if above bool is enabled, and this is false. It is considered MoreThan")]
     public bool LessThan;
+
     public int HPTresholdPercentage;
     public int ComboAmount;
     public bool LastAxieAliveTeam;
@@ -81,17 +84,48 @@ public class SkillEffect
     public int ShieldNotBrokenForXSeconds;
     public bool RangeAbility;
     public int SecondsOfFight;
-    
-    [Tooltip("My attack - target attack = difference. Ex: AttackStatDifference = -1. MyAttack - TargetAttack = -1. Target has more attack, this triggers")]
+
+    internal bool hasTriggerCondition => LessThan
+                                         ||
+                                         HPTresholdPercentage > 0
+                                         || ComboAmount > 0
+                                         || LastAxieAliveOpponent
+                                         || LastAxieAliveTeam
+                                         || Shielded
+                                         || OnShieldBreak
+                                         || TargetIsDebuff
+                                         || TargetIsPoisoned
+                                         || SelfIsDebuff
+                                         || RangeTarget
+                                         || ShieldNotBrokenForXSeconds > 0
+                                         || RangeAbility
+                                         || SecondsOfFight > 0
+                                         || UseSpecialsAsTrigger
+                                         || statDifferenceTrigger;
+
+    internal bool statDifferenceTrigger => AttackStatDifference > 0 || SpeedStatDifference > 0 ||
+                                           MoraleStatDifference > 0 || CurrentHPStatDifference > 0;
+
+    [Tooltip(
+        "My attack - target attack = difference. Ex: AttackStatDifference = -1. MyAttack - TargetAttack = -1. Target has more attack, this triggers")]
     public int AttackStatDifference;
+
     public int SpeedStatDifference;
     public int MoraleStatDifference;
     public int CurrentHPStatDifference;
+
     //
     [Header("Reactivation")] public bool AllowReactivation;
     public int ReactivateEffectEveryXSeconds;
 
     public List<int> arreglabugs;
+
+
+    public bool IsOnlyBuffOrDebuff()
+    {
+        return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
+                Stench || Attack != 0 || Morale != 0 || Speed != 0);
+    }
 }
 
 [System.Serializable]
@@ -99,7 +133,6 @@ public class SpecialActivationAgainstAxieClass
 {
     public AxieClass axieClass;
     public int ExtraDamage;
-    public int ExtraTimesAbilityCast;
     public int ExtraTimesStatusEffectApplied;
 }
 
@@ -118,7 +151,6 @@ public class SpecialComboWithAxieCard
 public class SpecialComboWithAxiesInBattle
 {
     public AxieClass axieClass;
-    public int ExtraTimesAbilityCastPerAxie;
     public int ExtraTimesStatusEffectAppliedPerAxie;
     public int ExtraDamageAppliedPerAxie;
 }
@@ -130,9 +162,9 @@ public class SpecialActivationWithBodyPart
     public bool OnlyCareAboutClassCard;
     public SkillName axieCard;
     public int ExtraDamage;
-    public int ExtraTimesAbilityCast;
     public int ExtraTimesStatusEffectApplied;
 }
+
 [System.Serializable]
 public class SpecialActivactionWhenReceiveDamage
 {
