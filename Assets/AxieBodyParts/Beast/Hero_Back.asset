@@ -59,12 +59,15 @@ MonoBehaviour:
     specialActivationAgainstAxiesList:
     - axieClass: 5
       ExtraDamage: 20
+      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     - axieClass: 2
       ExtraDamage: 20
+      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     - axieClass: 7
       ExtraDamage: 20
+      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []

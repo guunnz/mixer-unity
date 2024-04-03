@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Shoal Star
   m_EditorClassIdentifier: 
   skillName: 104
-  skillEffects:
+  statusEffects:
   - statusEffect: 0
     statusApplyType: 10
-    statusApplyTypeIsTarget: 1
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0

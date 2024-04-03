@@ -156,13 +156,15 @@ namespace Game
             AxieController controller = go.GetComponent<AxieController>();
             controller.axieBehavior = go.AddComponent<AxieBehavior>();
             controller.AxieId = int.Parse(axieId);
-            controller.axieIngameStats = new IngameStats();
-            controller.axieIngameStats.axieId = axieId;
-            controller.axieIngameStats.HP = stats.hp * 1000;
-            controller.axieIngameStats.axieClass = @class;
-            controller.axieIngameStats.MinEnergy = stats.skill / 100f;
-            controller.axieIngameStats.MaxEnergy = 2;
-            controller.axieIngameStats.currentHP = stats.hp * 1000;
+            controller.spawnedAxie = new SpawnedAxie();
+            controller.spawnedAxie.axieId = axieId;
+            controller.spawnedAxie.HP = stats.hp * 2;
+            controller.spawnedAxie.skillName = skillName;
+            controller.spawnedAxie.axieClass = @class;
+            controller.spawnedAxie.bodyPartMain = bodyPart;
+            controller.spawnedAxie.MinMana = stats.skill;
+            controller.spawnedAxie.MaxMana = 100;
+            controller.spawnedAxie.currentHP = stats.skill;
             controller.stats = stats;
             if (isEnemy)
             {

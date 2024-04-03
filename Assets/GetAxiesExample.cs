@@ -95,11 +95,12 @@ public class GetAxiesExample : MonoBehaviour
         var axiesData = JsonUtility.FromJson<AxiesData>(response);
         var axiesResults = axiesData.data.axies.results;
 
-        Axie bird = axiesResults[0];
-        Axie beast = axiesResults[1];
-        Axie dusk = axiesResults[2];
-        Axie plant = axiesResults[3];
-        Axie aqua = axiesResults[4];
+        Axie bird = axiesResults.FirstOrDefault(x => x.@class.Contains("Bird"));
+        Axie beast = axiesResults.FirstOrDefault(x => x.@class.Contains("Beast"));
+        Axie dusk = axiesResults.FirstOrDefault(x => x.@class.Contains("Dusk"));
+        Axie plant = axiesResults
+            .Where(x => x.@class.Contains("Plant") && x.parts.Any(y => y.name.ToLower() == "rose bud")).ToList()[0];
+        Axie aqua = axiesResults.FirstOrDefault(x => x.@class.Contains("Aqua"));
 
         List<string> axieIds = new List<string>();
 

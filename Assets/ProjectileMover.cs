@@ -37,28 +37,6 @@ public class ProjectileMover : MonoBehaviour
         }, 1f, duration).SetEase(Ease.Linear);
     }
 
-    public void MoveToTarget(Vector3 target, float duration)
-    {
-        Invoke("Destroy", duration + 0.15f);
-
-        // Cancel the existing tween if it's still running
-        if (tween != null && tween.IsPlaying())
-        {
-            tween.Kill();
-        }
-
-        Vector3 startPosition = transform.position;
-        Vector3 endPosition = target;
-
-        tween = DOTween.To(() => 0f, value =>
-        {
-            float height = trajectoryCurve.Evaluate(value);
-            Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, value);
-            currentPosition.y += height;
-            transform.position = currentPosition;
-        }, 1f, duration).SetEase(Ease.Linear);
-    }
-
     public void Destroy()
     {
         Destroy(this.gameObject);

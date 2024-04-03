@@ -16,38 +16,6 @@ public class AxieSkillEffectManager : MonoBehaviour
     private Transform mainCharacter;
     private int lastXAxisScale;
 
-    public bool IsDebuff()
-    {
-        return skillEffects.Any(x =>
-            x.Aroma || x.Chill || x.Fear || x.Fragile || x.Jinx || x.Lethal || x.Poison || x.Stun || x.Sleep ||
-            x.Stench || x.Attack < 0 || x.Morale < 0 || x.Speed < 0);
-    }
-
-    public List<SkillEffect> GetAllBuffs()
-    {
-        return skillEffects.Where(x => x.Attack > 0 || x.Morale > 0 || x.Speed > 0).ToList();
-    }
-
-    public bool IsPoisoned()
-    {
-        return skillEffects.Any(x => x.Poison);
-    }
-
-    public int GetAttackBuff()
-    {
-        return skillEffects.Sum(x => x.Attack);
-    }
-
-    public int GetMoraleBuff()
-    {
-        return skillEffects.Sum(x => x.Morale);
-    }
-
-    public int GetSpeedBuff()
-    {
-        return skillEffects.Sum(x => x.Speed);
-    }
-
     private void Start()
     {
         BoneFollower boneFollower = this.gameObject.AddComponent<BoneFollower>();

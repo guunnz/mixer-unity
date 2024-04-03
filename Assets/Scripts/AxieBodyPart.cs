@@ -1,6 +1,4 @@
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum AxieAnimation
 {
@@ -55,7 +53,7 @@ public enum AxieAnimation
 public class AxieBodyPart : ScriptableObject
 {
     public SkillName skillName;
-    [FormerlySerializedAs("statusEffects")] public SkillEffect[] skillEffects;
+    public SkillEffect[] statusEffects;
     public BodyPart bodyPart;
     public GameObject prefab; // Prefab can be assigned in the editor if needed
     public AxieClass bodyPartClass;
@@ -63,6 +61,4 @@ public class AxieBodyPart : ScriptableObject
     public float shield;
     public float energy;
     public string description;
-    public bool wombo => skillEffects.Any(x => x.Wombo);
-    public bool isPassive => energy == 0;
 }

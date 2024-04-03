@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using finished3;
 using Spine.Unity;
 using UnityEngine;
@@ -10,10 +9,10 @@ using UnityEngine.Serialization;
 [System.Serializable]
 public class SkillVFX
 {
-    public float ActivateTiming;
+    public float SkillDelay;
     public GameObject VFXPrefab;
+    [FormerlySerializedAs("SkillTiming")] public float SkillDuration;
     public bool StartFromOrigin;
-    public float SkillDuration;
 }
 
 public enum BodyPart
@@ -201,7 +200,6 @@ public enum SkillTriggerType
     PassivePermanent,
     PassiveOnDamageTaken,
     PassiveOnAttack,
-    OnReactivationPerSeconds
 }
 
 public enum StatusEffectEnum
@@ -240,136 +238,38 @@ public enum StatusEffectEnum
     MeleeReflect
 }
 
-public class DamageTargetPair
-{
-    public int axieId;
-    public float Value;
-
-    public DamageTargetPair(int axieId, float value)
-    {
-        this.axieId = axieId;
-        Value = value;
-    }
-}
-
-public class HealTargetPair
-{
-    public int axieId;
-    public float Value;
-
-    public HealTargetPair(int axieId, float value)
-    {
-        this.axieId = axieId;
-        Value = value;
-    }
-}
-
-public class StatusEffectTargetPair
-{
-    public int axieId;
-    public SkillEffect[] skillEffects;
-    public bool remove;
-
-    public StatusEffectTargetPair(int axieId, SkillEffect[] value, bool remove = false)
-    {
-        this.axieId = axieId;
-        skillEffects = value;
-        this.remove = remove;
-    }
-}
 
 public class Skill : MonoBehaviour
 {
     public List<SkillVFX> vfxToThrow = new List<SkillVFX>();
-    public AxieAnimation animationToPlay;
+    internal Transform target;
+    internal Transform origin;
     internal AxieClass @class;
+    public float Damage;
+    public AxieAnimation animationToPlay;
     internal SkeletonAnimation skeletonAnimation;
-    internal AxieController self;
-    internal List<AxieController> targetList = new List<AxieController>();
-    internal List<AxieController> statusEffectTargetList = new List<AxieController>();
     internal AxieBodyPart axieBodyPart;
-    [SerializeField] private float axieAnimationTiming;
-    [SerializeField] private float statusEffectsTiming;
+    internal AxieController self;
+    internal AxieController opponent;
+    public float totalDuration;
+    public float statusEffectsTiming;
+    public float attackAudioTiming;
+    internal bool debug;
 
-    private List<DamageTargetPair> damageTargetPairs = new List<DamageTargetPair>();
-    private List<HealTargetPair> healTargetPairs = new List<HealTargetPair>();
-    private List<StatusEffectTargetPair> statusEffectTargetPair = new List<StatusEffectTargetPair>();
-    internal float damageOrHealTiming;
-    internal float ExtraTimerCast;
-
-    public void AddDamageTargetPair(int axieId, float damage)
+    private void Start()
     {
-        damageTargetPairs.Add(new DamageTargetPair(axieId, damage));
+        if (debug)
+            return;
+        StartCoroutine(LaunchSkill());
     }
 
-    public void AddHealTargetPair(int axieId, float heal)
+    private IEnumerator LaunchSkill()
     {
-        healTargetPairs.Add(new HealTargetPair(axieId, heal));
-    }
+        Invoke("SetStatusEffects", statusEffectsTiming == 0 ? totalDuration - 0.1f : statusEffectsTiming);
 
-    public void AddStatusEffectTargetPair(int axieId, SkillEffect[] skillEffects, bool remove = false)
-    {
-        statusEffectTargetPair.Add(new StatusEffectTargetPair(axieId, skillEffects, remove));
-    }
-
-    public SkillAction GetAxieAnimationAction()
-    {
-        return new SkillAction(PlayAxieAnimation, axieAnimationTiming + ExtraTimerCast);
-    }
-
-    public SkillAction GetDealDamageAction()
-    {
-        return new SkillAction(DoDamage, damageOrHealTiming + ExtraTimerCast);
-    }
-
-    public SkillAction GetHealAction()
-    {
-        if (healTargetPairs.Count == 0)
-            return null;
-
-        return new SkillAction(DoHeal, damageOrHealTiming + ExtraTimerCast);
-    }
-
-    public List<SkillAction> GetAllVFXActions()
-    {
-        List<SkillAction> skillActions = new List<SkillAction>();
-        if (vfxToThrow.Count == 0)
-            return null;
-        foreach (var vfx in vfxToThrow)
-        {
-            skillActions.Add(new SkillAction(delegate { LaunchVFX(vfx); }, vfx.ActivateTiming + ExtraTimerCast));
-        }
-
-        return skillActions;
-    }
-
-    public SkillAction GetStatusEffectAction()
-    {
-        if (statusEffectTargetPair.Count == 0)
-            return null;
-
-        return new SkillAction(SetStatusEffects, statusEffectsTiming + ExtraTimerCast);
-    }
-
-    private void DoDamage()
-    {
-        foreach (var target in targetList)
-        {
-            target.axieIngameStats.currentHP -= damageTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value;
-        }
-    }
-
-    private void DoHeal()
-    {
-        foreach (var target in statusEffectTargetList)
-        {
-            target.axieIngameStats.currentHP += healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value;
-        }
-    }
-
-    private void PlayAxieAnimation()
-    {
         string animationName = animationToPlay.ToString();
+
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
 
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
@@ -384,16 +284,20 @@ public class Skill : MonoBehaviour
         animationName = animationName.Replace("_", "/");
 
         skeletonAnimation.AnimationName = animationName;
-    }
 
-    private void LaunchVFX(SkillVFX skill)
-    {
-        foreach (var target in targetList)
+        foreach (SkillVFX skill in vfxToThrow)
         {
+            yield return new WaitForSecondsRealtime(skill.SkillDelay);
+            Vector3 pos = skill.VFXPrefab.transform.localPosition;
             GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
-                skill.StartFromOrigin ? self.GetPartPosition(BodyPart.Horn) : target.GetPartPosition(BodyPart.Horn),
+                skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                 skill.VFXPrefab.transform.rotation,
-                null);
+                this.transform);
+
+            vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                             pos.x, vfxSpawned.transform.localPosition.y +
+                                                                    pos.y, vfxSpawned.transform.localPosition.z +
+                                                                           pos.z);
 
             VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
@@ -406,26 +310,95 @@ public class Skill : MonoBehaviour
             {
                 ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
+                vfxSpawned.transform.localScale = new Vector3(
+                    origin.transform.localScale.x > 0
+                        ? -vfxSpawned.transform.localScale.x
+                        : vfxSpawned.transform.localScale.x,
+                    vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
                 if (projectileMover != null)
-                    projectileMover.MoveToTarget(target.GetPartPosition(BodyPart.Horn), skill.SkillDuration);
+                    projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+            }
+        }
+    }
+
+    public IEnumerator LaunchSkillTest()
+    {
+        string animationName = animationToPlay.ToString();
+
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
+
+        // Find the last underscore and replace it with a hyphen
+        int lastUnderscoreIndex = animationName.LastIndexOf('_');
+
+        if (lastUnderscoreIndex != -1)
+        {
+            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
+                            animationName.Substring(lastUnderscoreIndex + 1);
+        }
+
+        // Replace the remaining underscores with slashes
+        animationName = animationName.Replace("_", "/");
+
+        skeletonAnimation.AnimationName = animationName;
+
+        foreach (SkillVFX skill in vfxToThrow)
+        {
+            yield return new WaitForSecondsRealtime(skill.SkillDelay);
+            Vector3 pos = skill.VFXPrefab.transform.localPosition;
+            GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                skill.StartFromOrigin ? origin.transform.position : target.transform.position,
+                skill.VFXPrefab.transform.rotation,
+                this.transform);
+
+            vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                             pos.x, vfxSpawned.transform.localPosition.y +
+                                                                    pos.y, vfxSpawned.transform.localPosition.z +
+                                                                           pos.z);
+
+            VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
+
+            if (changer != null)
+            {
+                changer.ChangeBasedOnClass(@class);
+            }
+
+            if (skill.StartFromOrigin)
+            {
+                ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                vfxSpawned.transform.localScale = new Vector3(
+                    origin.transform.localScale.x < 0
+                        ? -vfxSpawned.transform.localScale.x
+                        : vfxSpawned.transform.localScale.x,
+                    vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                if (origin.transform.localScale.x > 0)
+                {
+                    vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                }
+
+                if (projectileMover != null)
+                    projectileMover.MoveToTarget(this.target, skill.SkillDuration);
             }
         }
     }
 
     private void SetStatusEffects()
     {
-        foreach (var target in statusEffectTargetList)
-        {
-            var skillEffects = statusEffectTargetPair.FirstOrDefault(x => x.axieId == target.AxieId)
-                ?.skillEffects;
+        if (axieBodyPart.statusEffects == null)
+            return;
 
-            if (skillEffects != null)
-            {
-                foreach (var skillEffect in skillEffects)
-                {
-                    StatusManager.Instance.SetStatus(skillEffect, self, target);
-                }
-            }
+        foreach (var skillEffect in axieBodyPart.statusEffects)
+        {
+            StatusManager.Instance.SetStatus(skillEffect, self, opponent);
         }
+    }
+
+    private IEnumerator Destroy(GameObject obj, float timing)
+    {
+        yield return new WaitForSecondsRealtime(timing);
+        skeletonAnimation.AnimationName = "action/idle/normal";
+        Destroy(obj);
     }
 }

@@ -46,8 +46,8 @@ MonoBehaviour:
     Poison: 0
     Wombo: 0
     AlwaysCritical: 0
-    RandomEffectIsDebuff: 0
-    RandomEffectIsBuff: 0
+    RandomEffectIsDebuff: 1
+    RandomEffectIsBuff: 1
     ApplyRandomEffect: 1
     DamageEqualsBasicAttack: 0
     ExtraDamagePercentage: 0

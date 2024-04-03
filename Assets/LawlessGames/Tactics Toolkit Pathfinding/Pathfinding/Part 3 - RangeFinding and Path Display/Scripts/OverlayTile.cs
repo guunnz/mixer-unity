@@ -29,7 +29,7 @@ public class OverlayTile : MonoBehaviour
     private Team badTeam;
     internal AxieController currentOccupier;
     public Rectangle rectangle;
-
+    
     public static AxieController GetCurrentOccupierByY(int yValue, List<OverlayTile> allTiles)
     {
         return allTiles.FirstOrDefault(tile => tile.grid2DLocation.y == yValue)?.currentOccupier;

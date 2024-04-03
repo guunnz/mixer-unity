@@ -31,7 +31,7 @@ MonoBehaviour:
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
-    IgnoresShield: 1
+    IgnoresShield: 0
     Lethal: 0
     Merry: 0
     Gecko: 0

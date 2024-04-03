@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tri Spikes
   m_EditorClassIdentifier: 
   skillName: 56
-  skillEffects:
+  statusEffects:
   - statusEffect: 0
     statusApplyType: 0
     skillTriggerType: 0
@@ -95,4 +95,4 @@ MonoBehaviour:
   damage: 100
   shield: 50
   energy: 1
-  description: Target furthest enemy when played on combo
+  description: Target furthes enemy when played on combo
