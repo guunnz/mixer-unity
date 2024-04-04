@@ -72,7 +72,7 @@ public class Team : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L)) // Move all characters
         {
-            target.PostTeam(1, characters.Select(x => x.Key.axieIngameStats).ToList());
+            target.PostTeam(1, GetCharacters());
         }
 
         if (battleStarted)
@@ -112,27 +112,39 @@ public class Team : MonoBehaviour
     public void AddCharacter(AxieController character, Vector2Int? gridLocation = null)
     {
         OverlayTile startingTile = null;
-        int minRange = isGoodTeam ? 0 : 4;
-        int maxRange = isGoodTeam ? 4 : 8;
-        int index = 0;
-        while (startingTile == null || startingTile.occupied)
+        if (isGoodTeam)
         {
-            if (gridLocation == null)
+            int minRange = isGoodTeam ? 0 : 4;
+            int maxRange = isGoodTeam ? 4 : 8;
+            int index = 0;
+            while (startingTile == null || startingTile.occupied)
             {
-                gridLocation = new Vector2Int(isGoodTeam ? 0 : 7, index);
-            }
+                if (gridLocation == null)
+                {
+                    gridLocation = new Vector2Int(isGoodTeam ? 0 : 7, index);
+                }
 
-            startingTile = MapManager.Instance.map[gridLocation.Value];
-            if (startingTile.occupied)
-            {
-                gridLocation = null;
-                index++;
+                startingTile = MapManager.Instance.map[gridLocation.Value];
+                if (startingTile.occupied)
+                {
+                    gridLocation = null;
+                    index++;
+                }
             }
+        }
+        else
+        {
+            gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+            startingTile = MapManager.Instance.map[gridLocation.Value];
+            character.transform.localScale = new Vector3(character.startingRow, character.startingCol);
         }
 
         PositionCharacterOnTile(character, startingTile);
         character.transform.localScale = new Vector3(gridLocation.Value.x < 4 ? -0.2f : 0.2f,
-            character.transform.localScale.y, character.transform.localScale.z);
+            0.2f, character.transform.localScale.z);
+
+        character.startingCol = startingTile.grid2DLocation.y;
+        character.startingRow = startingTile.grid2DLocation.x;
 
         characters[character] = new CharacterState
         {
@@ -261,7 +273,7 @@ public class Team : MonoBehaviour
 
         return closestCharacter;
     }
-    
+
     public AxieController FindFurthestCharacter(AxieController character)
     {
         AxieController furthestCharacter = null;
@@ -288,8 +300,8 @@ public class Team : MonoBehaviour
         }
 
         return furthestCharacter;
-    }    
-    
+    }
+
     public AxieController FindFurthestCharacter(AxieController character, List<AxieController> potentialCharacters)
     {
         AxieController furthestCharacter = null;

@@ -18,8 +18,8 @@ public class SkillVFX
 
 public enum BodyPart
 {
-    Eye,
-    Ear,
+    Eyes,
+    Ears,
     Horn,
     Mouth,
     Back,
@@ -283,6 +283,8 @@ public class Skill : MonoBehaviour
     public List<SkillVFX> vfxToThrow = new List<SkillVFX>();
     public AxieAnimation animationToPlay;
     internal AxieClass @class;
+    internal Transform origin;
+    internal Transform target;
     internal SkeletonAnimation skeletonAnimation;
     internal AxieController self;
     internal List<AxieController> targetList = new List<AxieController>();
@@ -296,6 +298,9 @@ public class Skill : MonoBehaviour
     private List<StatusEffectTargetPair> statusEffectTargetPair = new List<StatusEffectTargetPair>();
     internal float damageOrHealTiming;
     internal float ExtraTimerCast;
+    public float totalDuration;
+    public float attackAudioTiming;
+    internal bool debug;
 
     public void AddDamageTargetPair(int axieId, float damage)
     {
@@ -410,6 +415,83 @@ public class Skill : MonoBehaviour
                     projectileMover.MoveToTarget(target.GetPartPosition(BodyPart.Horn), skill.SkillDuration);
             }
         }
+    }
+
+    public IEnumerator LaunchSkillTest()
+    {
+        string animationName = animationToPlay.ToString();
+
+        StartCoroutine(Destroy(this.gameObject, totalDuration));
+
+        // Find the last underscore and replace it with a hyphen
+        int lastUnderscoreIndex = animationName.LastIndexOf('_');
+
+        if (lastUnderscoreIndex != -1)
+        {
+            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
+                            animationName.Substring(lastUnderscoreIndex + 1);
+        }
+
+        // Replace the remaining underscores with slashes
+        animationName = animationName.Replace("_", "/");
+
+        skeletonAnimation.AnimationName = animationName;
+
+        float timer = 0;
+        while (true)
+        {
+            timer += Time.deltaTime;
+
+            foreach (SkillVFX skill in vfxToThrow)
+            {
+                if (skill.ActivateTiming < timer)
+                    continue;
+                
+                Vector3 pos = skill.VFXPrefab.transform.localPosition;
+                GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                    skill.StartFromOrigin ? origin.transform.position : target.transform.position,
+                    skill.VFXPrefab.transform.rotation,
+                    this.transform);
+
+                vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                                 pos.x, vfxSpawned.transform.localPosition.y +
+                                                                        pos.y, vfxSpawned.transform.localPosition.z +
+                                                                               pos.z);
+
+                VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
+
+                if (changer != null)
+                {
+                    changer.ChangeBasedOnClass(@class);
+                }
+
+                if (skill.StartFromOrigin)
+                {
+                    ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                    vfxSpawned.transform.localScale = new Vector3(
+                        origin.transform.localScale.x < 0
+                            ? -vfxSpawned.transform.localScale.x
+                            : vfxSpawned.transform.localScale.x,
+                        vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                    if (origin.transform.localScale.x > 0)
+                    {
+                        vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                    }
+
+                    if (projectileMover != null)
+                        projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+                }
+            }
+        }
+    }
+
+    private IEnumerator Destroy(GameObject obj, float timing)
+    {
+        yield return new WaitForSecondsRealtime(timing);
+        skeletonAnimation.AnimationName = "action/idle/normal";
+        Destroy(obj);
     }
 
     private void SetStatusEffects()

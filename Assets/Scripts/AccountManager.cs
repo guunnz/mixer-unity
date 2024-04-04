@@ -9,7 +9,7 @@ public class AccountManager : MonoBehaviour
 {
     private GraphQLClient graphQLClient;
     public TMP_InputField RoninWallet;
-    private string address = "0x5506e7c52163d07d9a42ce9514aecdb694d674e3";
+    private string address = "0x46571200388f6dce5416e552e28caa7a6833c88e";
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;

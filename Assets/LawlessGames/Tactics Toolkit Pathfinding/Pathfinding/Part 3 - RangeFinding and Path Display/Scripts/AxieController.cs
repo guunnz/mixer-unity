@@ -26,6 +26,8 @@ public class AxieController : MonoBehaviour
     internal IngameStats axieIngameStats;
     internal AxieSkillEffectManager axieSkillEffectManager;
     private Team.CharacterState state;
+    internal int startingCol;
+    internal int startingRow;
     private AxieController[] allCharacters;
     public OverlayTile standingOnTile;
     public AxieController CurrentTarget;
@@ -76,7 +78,7 @@ public class AxieController : MonoBehaviour
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
         axieSkillController = this.gameObject.AddComponent<AxieSkillController>();
-
+        
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
             state = badTeam.GetCharacterState(axieIngameStats.axieId);

@@ -68,15 +68,16 @@ namespace Game
 
 
         public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class,
-            GetAxiesExample.Stats stats, bool isOpponent = false)
+            GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isOpponent = false)
         {
-            StartCoroutine(GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats, isOpponent));
+            StartCoroutine(
+                GetAxiesGenesAndSpawn(axieId, bodyPart, skillName, @class, stats, axieForBackend, isOpponent));
         }
 
         bool isFetchingGenes = false;
 
         private IEnumerator GetAxiesGenesAndSpawn(string axieId, BodyPart bodyPart, SkillName skillName,
-            AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
+            AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isOpponent = false)
         {
             isFetchingGenes = true;
             string searchString = "{ axie (axieId: \"" + axieId + "\") { id, genes, newGenes}}";
@@ -99,7 +100,7 @@ namespace Game
                     JObject jResult = JObject.Parse(result);
                     string genesStr = (string)jResult["data"]["axie"]["newGenes"];
                     Debug.Log(genesStr);
-                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, bodyPart, skillName, @class, stats, isOpponent);
+                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, @class, stats, axieForBackend, isOpponent);
                 }
             }
 
@@ -107,8 +108,32 @@ namespace Game
         }
 
 
-        private void ProcessMixer(string axieId, string genesStr, bool isGraphic, BodyPart bodyPart,
-            SkillName skillName,
+        public void ProcessMixer(string axieId, string genesStr, bool isGraphic,
+            AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isOpponent = false)
+        {
+            if (string.IsNullOrEmpty(genesStr))
+            {
+                Debug.LogError($"[{axieId}] genes not found!!!");
+                return;
+            }
+
+            float scale = 0.007f;
+            var meta = new Dictionary<string, string>();
+
+            var builderResult = builder.BuildSpineFromGene(axieId, genesStr, meta, scale, isGraphic);
+
+            if (isGraphic)
+            {
+                SpawnSkeletonGraphic(builderResult);
+            }
+            else
+            {
+                SpawnSkeletonAnimation(builderResult, axieId,
+                    @class, stats, axieForBackend, isOpponent);
+            }
+        }
+        
+        public void ProcessMixer(string axieId, string genesStr, bool isGraphic,
             AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
         {
             if (string.IsNullOrEmpty(genesStr))
@@ -128,26 +153,38 @@ namespace Game
             }
             else
             {
-                SpawnSkeletonAnimation(builderResult, axieId, bodyPart,
-                    skillName,
-                    @class, stats, isOpponent);
+                SpawnSkeletonAnimation(builderResult, axieId,
+                    @class, stats, null, isOpponent);
             }
         }
 
-        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId, BodyPart bodyPart,
-            SkillName skillName,
-            AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
+
+        public Axie2dBuilderResult SimpleProcessMixer(string axieId, string genesStr, bool isGraphic)
+        {
+            if (string.IsNullOrEmpty(genesStr))
+            {
+                Debug.LogError($"[{axieId}] genes not found!!!");
+                return null;
+            }
+
+            float scale = 0.007f;
+            var meta = new Dictionary<string, string>();
+
+            var builderResult = builder.BuildSpineFromGene(axieId, genesStr, meta, scale, isGraphic);
+
+            return builderResult;
+        }
+
+        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId,
+            AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isOpponent = false)
         {
             GameObject go = new GameObject("Axie");
-            CreateAxie(go, builderResult, axieId, bodyPart,
-                skillName,
-                @class, stats, isOpponent);
+            CreateAxie(go, builderResult, axieId, @class, stats, axieForBackend, isOpponent);
         }
 
 
-        private void CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId, BodyPart bodyPart,
-            SkillName skillName,
-            AxieClass @class, GetAxiesExample.Stats stats, bool isEnemy = false)
+        private void CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId, AxieClass @class,
+            GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isEnemy = false)
         {
             go.transform.SetParent(rootTF, false);
             go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
@@ -158,15 +195,24 @@ namespace Game
             controller.AxieId = int.Parse(axieId);
             controller.axieIngameStats = new IngameStats();
             controller.axieIngameStats.axieId = axieId;
-            controller.axieIngameStats.HP = stats.hp * 1000;
+            controller.axieIngameStats.HP = stats.hp * 2;
             controller.axieIngameStats.axieClass = @class;
-            controller.axieIngameStats.MinEnergy = stats.skill / 100f;
-            controller.axieIngameStats.MaxEnergy = 2;
-            controller.axieIngameStats.currentHP = stats.hp * 1000;
+ 
+            controller.axieIngameStats.MinEnergy = stats.skill;
+            controller.axieIngameStats.MaxEnergy = 100;
+            controller.axieIngameStats.currentHP = stats.skill;
             controller.stats = stats;
+
+
             if (isEnemy)
-            {
+            {          
+                controller.startingCol = axieForBackend.col;
+                controller.startingRow = axieForBackend.row;
                 enemyTeam.AddCharacter(controller);
+                foreach (var i in axieForBackend.combo)
+                {
+                    controller.axieBodyParts.Add((SkillName)i);
+                }
             }
             else
             {

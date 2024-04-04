@@ -5,10 +5,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
+[System.Serializable]
+public class AxieForBackend
+{
+    public string axieid;
+    public int[] combo = new[] { 1, 2, 3 };
+    public int row = 1;
+    public int col = 1;
+}
+
 public class AxieTeamIdsWrapper
 {
-    public int score;
-    public List<string> axieids;
+    public AxieForBackend[] axies;
 }
 
 public class AxieLandBattleTarget : MonoBehaviour
@@ -17,26 +25,41 @@ public class AxieLandBattleTarget : MonoBehaviour
     private string getUrl = "https://axielandbattles-teams-api-go.onrender.com/api/team/:score";
     private int maxRetries = 5;
 
-    public void PostTeam(int score, List<IngameStats> axies)
+    public void PostTeam(int score, List<AxieController> axies)
     {
+        List<AxieForBackend> axieForBackends = new List<AxieForBackend>();
+
+        foreach (var axie in axies)
+        {
+            AxieForBackend axieForBackend = new AxieForBackend();
+            axieForBackend.axieid = axie.AxieId.ToString();
+            axieForBackend.row = Mathf.Abs(axie.standingOnTile.grid2DLocation.x - 7);
+            axieForBackend.col = axie.standingOnTile.grid2DLocation.y;
+            axieForBackend.combo = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.bodyPart).ToArray();
+
+            axieForBackends.Add(axieForBackend);
+        }
+
         AxieTeamIdsWrapper wrapper = new AxieTeamIdsWrapper
         {
-            score = score,
-            axieids = axies.Select(x => x.axieId).ToList()
+            axies = axieForBackends.ToArray()
         };
 
-        PostScore(JsonUtility.ToJson(wrapper));
+        PostScore(JsonUtility.ToJson(wrapper), score);
     }
 
     // Method to post data
-    public void PostScore(string jsonData)
+    public void PostScore(string jsonData, int score)
     {
-        StartCoroutine(PostRequest(postUrl, jsonData, maxRetries));
+        StartCoroutine(PostRequest(postUrl, jsonData, maxRetries,
+            score));
     }
 
-    IEnumerator PostRequest(string url, string jsonData, int retries)
+    IEnumerator PostRequest(string url, string jsonData, int retries, int score)
     {
-        UnityWebRequest webRequest = new UnityWebRequest(url, "POST");
+        string urlWithScore = $"{url}?score={score}";
+
+        UnityWebRequest webRequest = new UnityWebRequest(urlWithScore, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
         webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -50,7 +73,7 @@ public class AxieLandBattleTarget : MonoBehaviour
             if (retries > 0)
             {
                 Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
-                StartCoroutine(PostRequest(url, jsonData, retries - 1));
+                StartCoroutine(PostRequest(url, jsonData, retries - 1, score));
             }
         }
         else
@@ -58,6 +81,7 @@ public class AxieLandBattleTarget : MonoBehaviour
             Debug.Log("Post request complete! " + webRequest.downloadHandler.text);
         }
     }
+
 
     // Method to get data as an async Task
     public async Task<string> GetScoreAsync(string score)

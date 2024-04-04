@@ -5,6 +5,7 @@ using SimpleGraphQL;
 using System.Collections.Generic;
 using System.Linq;
 using Game;
+using Spine.Unity;
 
 public class GetAxiesExample : MonoBehaviour
 {
@@ -116,16 +117,7 @@ public class GetAxiesExample : MonoBehaviour
         axieIds.Add(dusk.id);
         axieIds.Add(plant.id);
         axieIds.Add(aqua.id);
-
-        axieSpawner.SpawnAxieById(bird.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Bird, bird.stats);
-        yield return new WaitForSeconds(0.2f);
-        axieSpawner.SpawnAxieById(beast.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Beast, beast.stats);
-        yield return new WaitForSeconds(0.2f);
-        axieSpawner.SpawnAxieById(dusk.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Dusk, dusk.stats);
-        yield return new WaitForSeconds(0.2f);
-        axieSpawner.SpawnAxieById(plant.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Plant, plant.stats);
-        yield return new WaitForSeconds(0.2f);
-        axieSpawner.SpawnAxieById(aqua.id, BodyPart.Horn, SkillName.HerosBane, AxieClass.Aquatic, aqua.stats);
+        yield break;
     }
 
     public void SetAddress(string newAddress)
@@ -180,8 +172,12 @@ public class GetAxiesExample : MonoBehaviour
         public string @class;
         public AxieClass axieClass => (AxieClass)Enum.Parse(typeof(AxieClass), @class, true);
         public Part[] parts;
+
         public Stats stats;
         public string bodyShape;
+        public SkeletonDataAsset skeletonDataAsset;
+        public int maxBodyPartAmount = 2;
+        public Material skeletonDataAssetMaterial;
     }
 
     [System.Serializable]
@@ -191,7 +187,12 @@ public class GetAxiesExample : MonoBehaviour
         public string id;
         public string name;
         public string type;
+        public int order;
+        public AxieClass partClass => (AxieClass)Enum.Parse(typeof(AxieClass), @class, true);
+        public BodyPart BodyPart => (BodyPart)Enum.Parse(typeof(BodyPart), type, true);
+        public SkillName SkillName => (SkillName)Enum.Parse(typeof(SkillName), name.Replace(" ", ""), true);
         public Ability[] abilities;
+        public bool selected;
     }
 
     [System.Serializable]

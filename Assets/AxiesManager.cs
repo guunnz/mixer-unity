@@ -16,6 +16,7 @@ public class AxiesManager : MonoBehaviour
     private int AmountSelected;
     private List<string> chosenAxies = new List<string>();
     public List<SkeletonGraphic> skeletonGraphics = new List<SkeletonGraphic>();
+    public List<GetAxiesExample.Axie> currentTeam = new List<GetAxiesExample.Axie>(); 
 
     public void StartGame()
     {
@@ -23,7 +24,8 @@ public class AxiesManager : MonoBehaviour
             return;
 
         MapManager.Instance.ToggleRectangles();
-        foreach (var axie in AccountManager.userAxies.results.Where(x => chosenAxies.Contains(x.id)))
+        currentTeam = AccountManager.userAxies.results.Where(x => chosenAxies.Contains(x.id)).ToList();
+        foreach (var axie in currentTeam)
         {
             axieSpawner.ProcessMixer(axie.id, axie.newGenes, false, axie.axieClass, axie.stats, false);
         }
@@ -38,6 +40,8 @@ public class AxiesManager : MonoBehaviour
             Axie2dBuilderResult builder = axieSpawner.SimpleProcessMixer(axie.id, axie.newGenes, true);
             SkeletonGraphic skeletonGraphic = UIItem.transform.GetChild(0).GetComponent<SkeletonGraphic>();
             skeletonGraphic.skeletonDataAsset = builder.skeletonDataAsset;
+            axie.skeletonDataAsset = builder.skeletonDataAsset;
+            axie.skeletonDataAssetMaterial = builder.sharedGraphicMaterial;
             skeletonGraphic.material = builder.sharedGraphicMaterial;
             skeletonGraphic.AnimationState.SetAnimation(0, "action/idle/normal", true);
             UIItem.GetComponent<Button>().onClick.AddListener(delegate { ChooseAxie(axie.id, builder); });
