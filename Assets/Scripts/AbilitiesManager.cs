@@ -57,21 +57,17 @@ public class AbilitiesManager : MonoBehaviour
     {
         for (int i = 0; i < axiesManager.currentTeam.Count; i++)
         {
-            // Create local copies of the variables
-            string localAxieId = AccountManager.userAxies.results[i].id;
+            string localAxieId = axiesManager.currentTeam[i].id;
             SkeletonGraphic localGraphic = TeamGraphics[i];
 
-            // Assign the skeleton data asset and initialize
-            localGraphic.skeletonDataAsset = AccountManager.userAxies.results[i].skeletonDataAsset;
+            localGraphic.skeletonDataAsset = axiesManager.currentTeam[i].skeletonDataAsset;
             localGraphic.startingAnimation = "action/idle/random-0" + Random.Range(1, 5).ToString();
-            localGraphic.material = AccountManager.userAxies.results[i].skeletonDataAssetMaterial;
+            localGraphic.material = axiesManager.currentTeam[i].skeletonDataAssetMaterial;
             localGraphic.Initialize(true);
 
-            // Clear existing onClick listeners to avoid stacking them
             var parent = localGraphic.transform.parent;
             parent.GetComponent<Button>().onClick.RemoveAllListeners();
 
-            // Add the new onClick listener with the local variable
             parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId); });
         }
 
@@ -168,7 +164,11 @@ public class AbilitiesManager : MonoBehaviour
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
                 x.skillName == bodyPartToSelect.SkillName).description;
 
-        // Reduce the order of each selected part by one
+        var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
+
+        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
+            .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
+                AxieSelecteds.Select(x => x.BodyPart).ToList());
     }
 
     public void ChoosePartOnlyDo()

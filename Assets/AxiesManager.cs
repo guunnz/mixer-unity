@@ -16,8 +16,8 @@ public class AxiesManager : MonoBehaviour
     private int AmountSelected;
     private List<string> chosenAxies = new List<string>();
     public List<SkeletonGraphic> skeletonGraphics = new List<SkeletonGraphic>();
-    public List<GetAxiesExample.Axie> currentTeam = new List<GetAxiesExample.Axie>(); 
-
+    public List<GetAxiesExample.Axie> currentTeam = new List<GetAxiesExample.Axie>();
+    public List<AxieController> axieControllers = new List<AxieController>();
     public void StartGame()
     {
         if (AmountSelected < 5)
@@ -27,7 +27,10 @@ public class AxiesManager : MonoBehaviour
         currentTeam = AccountManager.userAxies.results.Where(x => chosenAxies.Contains(x.id)).ToList();
         foreach (var axie in currentTeam)
         {
-            axieSpawner.ProcessMixer(axie.id, axie.newGenes, false, axie.axieClass, axie.stats, false);
+            AxieController axieController =
+                axieSpawner.ProcessMixer(axie.id, axie.newGenes, false, axie.axieClass, axie.stats, false);
+            
+            axieControllers.Add(axieController);
         }
     }
 

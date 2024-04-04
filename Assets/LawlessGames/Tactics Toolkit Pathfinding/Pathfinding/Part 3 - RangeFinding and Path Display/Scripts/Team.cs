@@ -121,7 +121,7 @@ public class Team : MonoBehaviour
             {
                 if (gridLocation == null)
                 {
-                    gridLocation = new Vector2Int(isGoodTeam ? 0 : 7, index);
+                    gridLocation = new Vector2Int(0, index);
                 }
 
                 startingTile = MapManager.Instance.map[gridLocation.Value];

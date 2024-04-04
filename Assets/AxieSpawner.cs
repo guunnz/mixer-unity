@@ -35,6 +35,7 @@ namespace Game
 {
     public class AxieSpawner : MonoBehaviour
     {
+        public AxieBodyPartsManager skillList;
         [SerializeField] RectTransform rootTF; // Assign this in the inspector
         private Axie2dBuilder builder => Mixer.Builder;
         const bool USE_GRAPHIC = false;
@@ -132,14 +133,14 @@ namespace Game
                     @class, stats, axieForBackend, isOpponent);
             }
         }
-        
-        public void ProcessMixer(string axieId, string genesStr, bool isGraphic,
+
+        public AxieController ProcessMixer(string axieId, string genesStr, bool isGraphic,
             AxieClass @class, GetAxiesExample.Stats stats, bool isOpponent = false)
         {
             if (string.IsNullOrEmpty(genesStr))
             {
                 Debug.LogError($"[{axieId}] genes not found!!!");
-                return;
+                return null;
             }
 
             float scale = 0.007f;
@@ -150,10 +151,11 @@ namespace Game
             if (isGraphic)
             {
                 SpawnSkeletonGraphic(builderResult);
+                return null;
             }
             else
             {
-                SpawnSkeletonAnimation(builderResult, axieId,
+                return SpawnSkeletonAnimation(builderResult, axieId,
                     @class, stats, null, isOpponent);
             }
         }
@@ -175,15 +177,16 @@ namespace Game
             return builderResult;
         }
 
-        private void SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId,
+        private AxieController SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId,
             AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isOpponent = false)
         {
             GameObject go = new GameObject("Axie");
-            CreateAxie(go, builderResult, axieId, @class, stats, axieForBackend, isOpponent);
+            return CreateAxie(go, builderResult, axieId, @class, stats, axieForBackend, isOpponent);
         }
 
 
-        private void CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId, AxieClass @class,
+        private AxieController CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId,
+            AxieClass @class,
             GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isEnemy = false)
         {
             go.transform.SetParent(rootTF, false);
@@ -197,22 +200,26 @@ namespace Game
             controller.axieIngameStats.axieId = axieId;
             controller.axieIngameStats.HP = stats.hp * 2;
             controller.axieIngameStats.axieClass = @class;
- 
+
             controller.axieIngameStats.MinEnergy = stats.skill;
             controller.axieIngameStats.MaxEnergy = 100;
             controller.axieIngameStats.currentHP = stats.skill;
             controller.stats = stats;
-
+            controller.axieBodyParts = AccountManager.userAxies.results.Single(x => x.id == axieId).parts
+                .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
+                .Select(x => x.SkillName).ToList();
 
             if (isEnemy)
-            {          
+            {
                 controller.startingCol = axieForBackend.col;
                 controller.startingRow = axieForBackend.row;
                 enemyTeam.AddCharacter(controller);
-                foreach (var i in axieForBackend.combo)
-                {
-                    controller.axieBodyParts.Add((SkillName)i);
-                }
+
+                List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
+                    .Where(x => axieForBackend.combo.Select(x => (SkillName)x).Contains(x.skillName)).ToList();
+
+                controller.axieSkillController.SetAxieSkills(skillsSelected.Select(x => x.skillName).ToList(),
+                    skillsSelected.Select(x => x.bodyPart).ToList());
             }
             else
             {
@@ -239,6 +246,7 @@ namespace Game
                 Instantiate(axieSkillEffectManager, runtimeSkeletonAnimation.transform)
                     .GetComponent<AxieSkillEffectManager>();
             controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
+            return controller;
         }
 
         private void SpawnSkeletonGraphic(Axie2dBuilderResult builderResult)

@@ -192,6 +192,7 @@ public enum SkillName
     SnakeJar,
     Gila,
     GrassSnake,
+    Earwing,
 }
 
 public enum SkillTriggerType
