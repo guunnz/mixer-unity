@@ -15,11 +15,19 @@ public class AxiePartGraphic
     public Sprite bodyPartSprite;
 }
 
+[System.Serializable]
+public class AxieClassGraphic
+{
+    public AxieClass axieClass;
+    public Sprite axieClassSprite;
+}
+
 public class AbilitiesManager : MonoBehaviour
 {
     public AxiesManager manager;
     public List<SkeletonGraphic> TeamGraphics = new List<SkeletonGraphic>();
     public List<AxiePartGraphic> BodyPartGraphics = new List<AxiePartGraphic>();
+    public List<AxieClassGraphic> AxieClassGraphics = new List<AxieClassGraphic>();
     public SkeletonGraphic SkeletonGraphicCombo;
     public TextMeshProUGUI AbilityNameText;
     public TextMeshProUGUI AbilityDescriptionText;
@@ -29,6 +37,7 @@ public class AbilitiesManager : MonoBehaviour
     public Image MouthBodyPart;
     public Image BackBodyPart;
     public Image TailBodyPart;
+    public Image axieClassImage;
 
     public Button ButtonHornBodyPart;
     public Button ButtonMouthBodyPart;
@@ -86,6 +95,11 @@ public class AbilitiesManager : MonoBehaviour
 
         GetAxiesExample.Part bodyPartToSelect =
             currentSelectedAxie.parts.Single(x => x.BodyPart == part);
+
+        if (bodyPartToSelect.order == currentSelectedAxie.maxBodyPartAmount)
+        {
+            return;
+        }
 
         int amountSelected = currentSelectedAxie.parts.Count(x => x.selected);
 
@@ -205,6 +219,7 @@ public class AbilitiesManager : MonoBehaviour
     {
         GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
 
+        axieClassImage.sprite = AxieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
         HealthText.text = axie.stats.hp.ToString();
         SpeedText.text = axie.stats.speed.ToString();
         SkillText.text = axie.stats.skill.ToString();

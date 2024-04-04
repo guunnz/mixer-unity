@@ -3493,7 +3493,7 @@ GameObject:
   - component: {fileID: 843701702}
   - component: {fileID: 843701701}
   m_Layer: 5
-  m_Name: Image
+  m_Name: AxieClass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5110,6 +5110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e83bf437338f74bbf3deba83df11fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillList: {fileID: 0}
   rootTF: {fileID: 0}
   goodTeam: {fileID: 1898098267}
   enemyTeam: {fileID: 1898098269}
@@ -8060,6 +8061,7 @@ MonoBehaviour:
   - {fileID: 1501958642}
   - {fileID: 695617936}
   currentTeam: []
+  axieControllers: []
 --- !u!114 &1546848191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8152,6 +8154,25 @@ MonoBehaviour:
   - bodyPart: 5
     axieClass: 5
     bodyPartSprite: {fileID: 21300000, guid: 73523af0872d332409a85154ab897e13, type: 3}
+  AxieClassGraphics:
+  - axieClass: 0
+    axieClassSprite: {fileID: 21300000, guid: 2904413c5dbeb1340a71d31e2419eea6, type: 3}
+  - axieClass: 1
+    axieClassSprite: {fileID: 21300000, guid: 185ed848395009f4eb08f5b2a875b752, type: 3}
+  - axieClass: 2
+    axieClassSprite: {fileID: 21300000, guid: ed5f88e04cd0f78418c87a7bdfedbb8c, type: 3}
+  - axieClass: 3
+    axieClassSprite: {fileID: 21300000, guid: 5a9f66a11b3b30e48a0826bc2fa6ea18, type: 3}
+  - axieClass: 4
+    axieClassSprite: {fileID: 21300000, guid: 25bfc79635622024b87a60c97c1829df, type: 3}
+  - axieClass: 5
+    axieClassSprite: {fileID: 21300000, guid: 6537e4e9426b7a64aa66ea67e26cf56b, type: 3}
+  - axieClass: 6
+    axieClassSprite: {fileID: 21300000, guid: 4403060d607e17e4ba559b279b3e7c17, type: 3}
+  - axieClass: 7
+    axieClassSprite: {fileID: 21300000, guid: e9d6a9ae6ed1198408785f4351f511da, type: 3}
+  - axieClass: 8
+    axieClassSprite: {fileID: 21300000, guid: f25ce14852ace77468c2ee803adca2cc, type: 3}
   SkeletonGraphicCombo: {fileID: 1403939570}
   AbilityNameText: {fileID: 74157110}
   AbilityDescriptionText: {fileID: 124461174}
@@ -8161,6 +8182,7 @@ MonoBehaviour:
   MouthBodyPart: {fileID: 900508866}
   BackBodyPart: {fileID: 1796887297}
   TailBodyPart: {fileID: 607293350}
+  axieClassImage: {fileID: 843701701}
   ButtonHornBodyPart: {fileID: 618211979}
   ButtonMouthBodyPart: {fileID: 1780096894}
   ButtonBackBodyPart: {fileID: 451823597}
