@@ -98,6 +98,7 @@ public class AbilitiesManager : MonoBehaviour
             bodyPartToReplace.order = 1;
             bodyPartToReplace.selected = false;
         }
+
         HornBodyPartOrderImage.SetActive(false);
         BackBodyPartOrderImage.SetActive(false);
         MouthBodyPartOrderImage.SetActive(false);
@@ -168,7 +169,36 @@ public class AbilitiesManager : MonoBehaviour
                 x.skillName == bodyPartToSelect.SkillName).description;
 
         // Reduce the order of each selected part by one
-      
+    }
+
+    public void ChoosePartOnlyDo()
+    {
+        HornBodyPartOrderImage.SetActive(false);
+        BackBodyPartOrderImage.SetActive(false);
+        MouthBodyPartOrderImage.SetActive(false);
+        TailBodyPartOrderImage.SetActive(false);
+        foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected))
+        {
+            switch (partObj.BodyPart)
+            {
+                case BodyPart.Back:
+                    BackBodyPartOrderText.text = partObj.order + "°";
+                    BackBodyPartOrderImage.SetActive(true);
+                    break;
+                case BodyPart.Mouth:
+                    MouthBodyPartOrderText.text = partObj.order + "°";
+                    MouthBodyPartOrderImage.SetActive(true);
+                    break;
+                case BodyPart.Horn:
+                    HornBodyPartOrderText.text = partObj.order + "°";
+                    HornBodyPartOrderImage.SetActive(true);
+                    break;
+                case BodyPart.Tail:
+                    TailBodyPartOrderText.text = partObj.order + "°";
+                    TailBodyPartOrderImage.SetActive(true);
+                    break;
+            }
+        }
     }
 
     public void SelectAxie(string axieId)
@@ -204,10 +234,7 @@ public class AbilitiesManager : MonoBehaviour
 
         if (axie.parts.Any(x => x.selected))
         {
-            foreach (var axiePart in axie.parts.Where(x => x.selected == true).ToList())
-            {
-                ChoosePart(axiePart.BodyPart);
-            }
+            ChoosePartOnlyDo();
         }
         else
         {

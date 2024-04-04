@@ -125,7 +125,7 @@ public enum SkillName
     FishSnack,
     GravelAnt,
     Pupae,
-    ThornyCatterpilar,
+    ThornyCaterpillar,
     Catfish,
     Piranha,
     Babylonia,
