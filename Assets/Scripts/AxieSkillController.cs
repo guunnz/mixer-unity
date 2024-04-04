@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 
+[System.Serializable]
 public class AxieSkill
 {
     public SkillName skillName;

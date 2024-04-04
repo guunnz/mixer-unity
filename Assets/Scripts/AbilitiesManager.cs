@@ -212,6 +212,12 @@ public class AbilitiesManager : MonoBehaviour
                     TailBodyPartOrderImage.SetActive(true);
                     break;
             }
+
+            AbilityNameText.text = partObj.name;
+            AbilityDescriptionText.text = skillList.axieBodyParts
+                .Single(x =>
+                    x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
+                    x.skillName == partObj.SkillName).description;
         }
     }
 
