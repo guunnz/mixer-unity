@@ -209,6 +209,8 @@ namespace Game
                 .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
                 .Select(x => x.SkillName).ToList();
 
+            controller.axieSkillController = this.gameObject.AddComponent<AxieSkillController>();
+
             if (isEnemy)
             {
                 controller.startingCol = axieForBackend.col;

@@ -77,7 +77,7 @@ public class AxieController : MonoBehaviour
     {
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
-        axieSkillController = this.gameObject.AddComponent<AxieSkillController>();
+
         
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
