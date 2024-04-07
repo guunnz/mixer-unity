@@ -557,8 +557,9 @@ public class SkillLauncher : MonoBehaviour
             {
                 foreach (var axieController in statusEffectTargetList)
                 {
-                    skillInstance.AddHealTargetPair(axieController.AxieId,
-                        (skillEffect.GainHPPercentage * 0.01f) * specialEffectExtras.multiplyStatusEffect);
+                    skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.HP *
+                                                                            (skillEffect.GainHPPercentage * 0.01f)) *
+                                                                           specialEffectExtras.multiplyStatusEffect);
                 }
             }
         }
