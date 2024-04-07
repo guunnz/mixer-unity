@@ -216,7 +216,7 @@ public class AxieBehavior : MonoBehaviour
 
         yield return StartCoroutine(SkillLauncher.Instance.ThrowSkill(myController.axieSkillController.GetAxieSkills(),
             myController.SkeletonAnim,
-            this.myController, myController.CurrentTarget));
+            myController.CurrentTarget, this.myController));
 
         CastSpellAftermath();
     }

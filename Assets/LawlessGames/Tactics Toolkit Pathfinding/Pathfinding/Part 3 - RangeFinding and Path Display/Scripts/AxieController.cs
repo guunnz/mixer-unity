@@ -6,6 +6,7 @@ using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[System.Serializable]
 public class IngameStats
 {
     public float Range = 1f;
@@ -23,7 +24,7 @@ public class IngameStats
 public class AxieController : MonoBehaviour
 {
     internal int AxieId;
-    internal IngameStats axieIngameStats;
+    public IngameStats axieIngameStats;
     internal AxieSkillEffectManager axieSkillEffectManager;
     private Team.CharacterState state;
     internal int startingCol;
@@ -89,8 +90,7 @@ public class AxieController : MonoBehaviour
             imGood = true;
             state = goodTeam.GetCharacterState(axieIngameStats.axieId);
         }
-        
-        
+
 
         if (axieIngameStats.axieClass == AxieClass.Bird)
         {
@@ -170,7 +170,8 @@ public class AxieController : MonoBehaviour
         }
         else
         {
-            statsManagerUI.SetMana(axieIngameStats.CurrentEnergy / axieSkillController.GetComboCost());
+            statsManagerUI.SetMana((float)Math.Round(axieIngameStats.CurrentEnergy, 2) /
+                                   axieSkillController.GetComboCost());
             statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);
         }
 

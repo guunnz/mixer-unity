@@ -356,9 +356,10 @@ public class Skill : MonoBehaviour
 
         return new SkillAction(SetStatusEffects, statusEffectsTiming + ExtraTimerCast);
     }
+
     public SkillAction GetDestroyAction()
     {
-        return new SkillAction(delegate { StartCoroutine(Destroy());} , 0);
+        return new SkillAction(delegate { StartCoroutine(Destroy()); }, 0);
     }
 
     private void DoDamage()
