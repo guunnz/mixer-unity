@@ -639,6 +639,8 @@ public class SkillLauncher : MonoBehaviour
         {
             skillActions.AddRange(skillInstance.GetAllVFXActions());
         }
+
+        skillActions.Add(skillInstance.GetDestroyAction());
     }
 
     private void PerformDamage(Skill skillInstance, List<DamagePair> damagePairs)

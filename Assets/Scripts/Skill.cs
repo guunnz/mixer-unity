@@ -356,6 +356,10 @@ public class Skill : MonoBehaviour
 
         return new SkillAction(SetStatusEffects, statusEffectsTiming + ExtraTimerCast);
     }
+    public SkillAction GetDestroyAction()
+    {
+        return new SkillAction(delegate { StartCoroutine(Destroy());} , 0);
+    }
 
     private void DoDamage()
     {
@@ -493,11 +497,10 @@ public class Skill : MonoBehaviour
         }
     }
 
-    private IEnumerator Destroy(GameObject obj, float timing)
+    private IEnumerator Destroy()
     {
-        yield return new WaitForSecondsRealtime(timing);
-        skeletonAnimation.AnimationName = "action/idle/normal";
-        Destroy(obj);
+        yield return new WaitForSecondsRealtime(totalDuration);
+        Destroy(this.gameObject);
     }
 
     private void SetStatusEffects()
