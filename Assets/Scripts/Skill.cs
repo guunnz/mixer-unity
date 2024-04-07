@@ -439,7 +439,7 @@ public class Skill : MonoBehaviour
         skeletonAnimation.AnimationName = animationName;
 
         float timer = 0;
-        while (true)
+        while (timer < totalDuration)
         {
             timer += Time.deltaTime;
 
@@ -485,6 +485,8 @@ public class Skill : MonoBehaviour
                         projectileMover.MoveToTarget(this.target, skill.SkillDuration);
                 }
             }
+
+            yield return null;
         }
     }
 
