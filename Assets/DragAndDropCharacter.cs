@@ -109,22 +109,22 @@ public class DragAndDropCharacter : MonoBehaviour
             if (occupyingCharacter != null)
             {
                 SwapCharacters(selectedAxieController, occupyingCharacter);
-                occupyingCharacter.startingCol = occupyingCharacter.standingOnTile.grid2DLocation.x;
-                occupyingCharacter.startingRow = occupyingCharacter.standingOnTile.grid2DLocation.y;
+                occupyingCharacter.startingCol = occupyingCharacter.standingOnTile.grid2DLocation.y;
+                occupyingCharacter.startingRow = occupyingCharacter.standingOnTile.grid2DLocation.x;
             }
             else
             {
                 MoveCharacterToTile(selectedAxieController, targetTile);
             }
 
-            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.x;
-            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.y;
+            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
+            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
         }
         else
         {
             MoveCharacterToTile(selectedAxieController, targetTile);
-            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.x;
-            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.y;
+            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
+            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
         }
     }
 
