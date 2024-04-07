@@ -438,54 +438,57 @@ public class Skill : MonoBehaviour
 
         skeletonAnimation.AnimationName = animationName;
 
+        List<SkillVFX> VFXLIST = new List<SkillVFX>();
+        VFXLIST.AddRange(vfxToThrow);
         float timer = 0;
         while (timer < totalDuration)
         {
-            timer += Time.deltaTime;
-
-            foreach (SkillVFX skill in vfxToThrow)
+            foreach (SkillVFX skill in VFXLIST)
             {
-                if (skill.ActivateTiming < timer)
-                    continue;
-                
-                Vector3 pos = skill.VFXPrefab.transform.localPosition;
-                GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
-                    skill.StartFromOrigin ? origin.transform.position : target.transform.position,
-                    skill.VFXPrefab.transform.rotation,
-                    this.transform);
-
-                vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
-                                                                 pos.x, vfxSpawned.transform.localPosition.y +
-                                                                        pos.y, vfxSpawned.transform.localPosition.z +
-                                                                               pos.z);
-
-                VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
-
-                if (changer != null)
+                if (timer >= skill.ActivateTiming)
                 {
-                    changer.ChangeBasedOnClass(@class);
-                }
+                    Vector3 pos = skill.VFXPrefab.transform.localPosition;
+                    GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                        skill.StartFromOrigin ? origin.transform.position : target.transform.position,
+                        skill.VFXPrefab.transform.rotation,
+                        this.transform);
 
-                if (skill.StartFromOrigin)
-                {
-                    ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+                    vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                                     pos.x, vfxSpawned.transform.localPosition.y +
+                                                                            pos.y,
+                        vfxSpawned.transform.localPosition.z +
+                        pos.z);
 
-                    vfxSpawned.transform.localScale = new Vector3(
-                        origin.transform.localScale.x < 0
-                            ? -vfxSpawned.transform.localScale.x
-                            : vfxSpawned.transform.localScale.x,
-                        vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+                    VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
-                    if (origin.transform.localScale.x > 0)
+                    if (changer != null)
                     {
-                        vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                        changer.ChangeBasedOnClass(@class);
                     }
 
-                    if (projectileMover != null)
-                        projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+                    if (skill.StartFromOrigin)
+                    {
+                        ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                        vfxSpawned.transform.localScale = new Vector3(
+                            origin.transform.localScale.x < 0
+                                ? -vfxSpawned.transform.localScale.x
+                                : vfxSpawned.transform.localScale.x,
+                            vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                        if (origin.transform.localScale.x > 0)
+                        {
+                            vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                        }
+
+                        if (projectileMover != null)
+                            projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+                    }
                 }
             }
 
+            VFXLIST.RemoveAll(x => timer >= x.ActivateTiming);
+            timer += Time.deltaTime;
             yield return null;
         }
     }
