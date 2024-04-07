@@ -3641,7 +3641,6 @@ GameObject:
   m_Component:
   - component: {fileID: 872714261}
   - component: {fileID: 872714262}
-  - component: {fileID: 872714263}
   m_Layer: 0
   m_Name: OverlayContainer
   m_TagString: Untagged
@@ -3676,22 +3675,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422f3bfe00929434785555bd52f8fa21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &872714263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872714260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f389cd2322da30c43aee81b1753bbad9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  axieSpawner: {fileID: 1133128482}
-  spawnCountMax: 0
-  landBattleTarget: {fileID: 1898098270}
-  teamToJson: {fileID: 1133128483}
 --- !u!1 &877002197
 GameObject:
   m_ObjectHideFlags: 0
@@ -5049,6 +5032,7 @@ GameObject:
   - component: {fileID: 1133128481}
   - component: {fileID: 1133128482}
   - component: {fileID: 1133128483}
+  - component: {fileID: 1133128484}
   m_Layer: 0
   m_Name: AxieSpawner
   m_TagString: Untagged
@@ -5152,6 +5136,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1b9b65161db4f60aabd4ed78448d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1133128484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133128478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f389cd2322da30c43aee81b1753bbad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axieSpawner: {fileID: 1133128482}
+  spawnCountMax: 0
+  landBattleTarget: {fileID: 1898098270}
+  teamToJson: {fileID: 1133128483}
 --- !u!1 &1154136242
 GameObject:
   m_ObjectHideFlags: 0
@@ -10341,6 +10341,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1133128484}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GetEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: enemies.GetAxiesEnemies, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016684310777907226, guid: 2590551e27d868f4989b54230eed0e94,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7084771778987900160, guid: 2590551e27d868f4989b54230eed0e94,
         type: 3}

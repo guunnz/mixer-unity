@@ -76,9 +76,9 @@ public class Team : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) // Move all characters
+        if (Input.GetKeyDown(KeyCode.L) && isGoodTeam) // Move all characters
         {
-            target.PostTeam(2, GetCharacters());
+            target.PostTeam(3, GetCharacters());
         }
 
         if (Input.GetKeyDown(KeyCode.T) && isGoodTeam) // Move all characters

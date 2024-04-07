@@ -31,7 +31,7 @@ namespace enemies
 
         public async void GetEnemy()
         {
-            string json = await landBattleTarget.GetScoreAsync("2");
+            string json = await landBattleTarget.GetScoreAsync("3");
 
             AxieIdsWrapper wrapper = JsonConvert.DeserializeObject<AxieIdsWrapper>(json);
             GetOpponentTeam(wrapper);
