@@ -78,7 +78,7 @@ public class AxieController : MonoBehaviour
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
 
-        
+
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
             state = badTeam.GetCharacterState(axieIngameStats.axieId);
@@ -123,12 +123,14 @@ public class AxieController : MonoBehaviour
 
     private void OnMouseOver()
     {
-        axieBehavior.DoAction(AxieState.Hovered);
+        if (!goodTeam.battleStarted)
+            axieBehavior.DoAction(AxieState.Hovered);
     }
 
     private void OnMouseExit()
     {
-        axieBehavior.DoAction(AxieState.Idle);
+        if (!goodTeam.battleStarted)
+            axieBehavior.DoAction(AxieState.Idle);
     }
 
     private void FixedUpdate()

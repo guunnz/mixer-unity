@@ -17,7 +17,7 @@ static public class AxieStatCalculator
         float minHp = 300f;
         //el 27 son la stat mas baja de hp que puede tener un axie, se lo resto para unicamente tener en cuenta los stats extra a eso
         //el 4 es la importancia de estos stats sobrantes, ( si fuera 1, un axie con 61 de hp tendria 300 + (61-27)
-        return (minHp + (4f * (stats.hp - 27f))) * 10;
+        return (minHp + (4f * (stats.hp - 27f))) * 7;
     }
 
     static public float GetManaPerAttack(GetAxiesExample.Stats stats)
@@ -77,6 +77,6 @@ static public class AxieStatCalculator
         // skill suma o resta un 25% de la diferencia entre el skill y 31 (un numero arbitrario para marcar la norma de skill de un axie)
         // Este numero lo multiplico por un coeficiente para reducirlo levemente por las dudas, este coeficiente puede no estar
         return (stats.speed * 0.09f + stats.morale * 0.2f + (stats.hp - 27) * 0.3f + (stats.skill - 31f) * 0.25f) *
-               0.9f;
+               5.9f;//era0.9
     }
 }

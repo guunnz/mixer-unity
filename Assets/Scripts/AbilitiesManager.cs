@@ -84,7 +84,10 @@ public class AbilitiesManager : MonoBehaviour
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
         ButtonBackBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Back); });
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
-        SelectAxie(axiesManager.currentTeam[0].id);
+        for (int i = axiesManager.currentTeam.Count - 1; i >= 0; i--)
+        {
+            SelectAxie(axiesManager.currentTeam[i].id);
+        }
     }
 
 
