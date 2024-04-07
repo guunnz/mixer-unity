@@ -82,6 +82,7 @@ public class AxieSkillController : MonoBehaviour
                 {
                     skillList.Add(skill);
                 }
+
                 break;
             default:
                 break;
@@ -93,15 +94,23 @@ public class AxieSkillController : MonoBehaviour
     {
         skillList.Clear();
 
-        foreach (var bodyPart in SkillLauncher.Instance.skillList.axieBodyParts
-                     .Where(x => skillNames.Contains(x.skillName) && bodyParts.Contains(x.bodyPart)).ToList())
+        var pairedBodyParts = new List<AxieBodyPart>();
+
+        for (int i = 0; i < skillNames.Count; i++)
+        {
+            pairedBodyParts.AddRange(SkillLauncher.Instance.skillList.axieBodyParts
+                .Where(x => x.skillName == skillNames[i] && x.bodyPart == bodyParts[i]));
+        }
+
+        foreach (var bodyPart in pairedBodyParts)
         {
             AxieSkill skill = new AxieSkill();
             skill.skillName = bodyPart.skillName;
             skill.bodyPartSO = bodyPart;
             skill.bodyPart = bodyPart.bodyPart;
 
-            AddAndHandleSpecialCases(skill, SkillLauncher.Instance.skillList.axieBodyParts, bodyPart);
+            AddAndHandleSpecialCases(skill, pairedBodyParts, bodyPart);
         }
     }
+
 }

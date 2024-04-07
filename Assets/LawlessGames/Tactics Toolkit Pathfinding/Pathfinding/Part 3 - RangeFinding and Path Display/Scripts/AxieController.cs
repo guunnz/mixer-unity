@@ -109,12 +109,6 @@ public class AxieController : MonoBehaviour
                 (int)MathHelpers.InvLerp(0, 7, (standingOnTile.grid2DLocation.y));
         }
 
-        axieSkillController.SetAxieSkills(new List<SkillName>() { SkillName.Imp, SkillName.Ronin },
-            new List<BodyPart>()
-            {
-                BodyPart.Horn, BodyPart.Back
-            });
-
         axieBehavior.myController = this;
         SkeletonAnim.loop = true;
         axieBehavior.DoAction(AxieState.Idle);
