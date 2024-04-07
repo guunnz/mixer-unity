@@ -201,7 +201,7 @@ namespace Game
             controller.axieIngameStats.HP = stats.hp * 2;
             controller.axieIngameStats.axieClass = @class;
 
-            controller.axieIngameStats.MinEnergy = stats.skill;
+            controller.axieIngameStats.MinEnergy = 0;
             controller.axieIngameStats.MaxEnergy = 100;
             controller.axieIngameStats.currentHP = stats.skill;
             controller.stats = stats;
