@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using enemies;
@@ -7,7 +8,7 @@ public class Team : MonoBehaviour
 {
     public float speed;
     public int movementRange = 300;
-    private Dictionary<AxieController, CharacterState> characters = new Dictionary<AxieController, CharacterState>();
+    internal Dictionary<AxieController, CharacterState> characters = new Dictionary<AxieController, CharacterState>();
     private PathFinder pathFinder;
     public Team enemyTeam;
     public bool battleStarted = false;
@@ -27,6 +28,11 @@ public class Team : MonoBehaviour
     {
         return new List<AxieController>(characters.Keys).Where(x => x.axieBehavior.axieState != AxieState.Killed)
             .ToList();
+    }
+
+    public List<AxieController> GetCharactersAll()
+    {
+        return new List<AxieController>(characters.Keys).ToList();
     }
 
     public CharacterState GetCharacterState(string axieId)
@@ -59,20 +65,61 @@ public class Team : MonoBehaviour
         }
     }
 
+    public void StartBattle()
+    {
+        battleStarted = true;
+        foreach (var inRangeTile in FindObjectsOfType<OverlayTile>())
+        {
+            inRangeTile.ToggleRectangle(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L)) // Move all characters
+        {
+            target.PostTeam(2, GetCharacters());
+        }
+
+        if (Input.GetKeyDown(KeyCode.T) && isGoodTeam) // Move all characters
+        {
+            battleStarted = false;
+            enemyTeam.battleStarted = false;
+            var enemyList = enemyTeam.GetCharactersAll();
+
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                Destroy(enemyList[i].gameObject);
+            }
+
+            enemyTeam.characters = new Dictionary<AxieController, CharacterState>();
+
+            foreach (var character in GetCharactersAll())
+            {
+                character.axieBehavior.axieState = AxieState.Idle;
+                character.gameObject.SetActive(true);
+                Vector2Int gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+                OverlayTile startingTile = MapManager.Instance.map[gridLocation];
+                character.transform.localScale = new Vector3(gridLocation.x < 4 ? -0.2f : 0.2f,
+                    0.2f, character.transform.localScale.z);
+                character.axieBehavior.DoAction(AxieState.Idle);
+                character.axieSkillEffectManager.RemoveAllEffects();
+                character.axieIngameStats.currentHP = character.axieIngameStats.HP;
+                character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.HP);
+                character.axieIngameStats.CurrentEnergy = character.axieIngameStats.MinEnergy;
+                character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
+                                                 character.axieSkillController.GetComboCost());
+                character.SkeletonAnim.Initialize(true);
+                PositionCharacterOnTile(character, startingTile);
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.H)) // Move all characters
         {
-            battleStarted = true;
-            foreach (var inRangeTile in FindObjectsOfType<OverlayTile>())
-            {
-                inRangeTile.ToggleRectangle(false);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.L)) // Move all characters
-        {
-            target.PostTeam(1, GetCharacters());
+            StartBattle();
         }
 
         if (battleStarted)
@@ -136,7 +183,6 @@ public class Team : MonoBehaviour
         {
             gridLocation = new Vector2Int(character.startingRow, character.startingCol);
             startingTile = MapManager.Instance.map[gridLocation.Value];
-            character.transform.localScale = new Vector3(character.startingRow, character.startingCol);
         }
 
         PositionCharacterOnTile(character, startingTile);

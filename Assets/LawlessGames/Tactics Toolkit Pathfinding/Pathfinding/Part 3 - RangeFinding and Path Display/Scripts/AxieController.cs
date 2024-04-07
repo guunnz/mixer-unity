@@ -60,7 +60,7 @@ public class AxieController : MonoBehaviour
 
     public void RemoveStatusEffect(SkillEffect skillEffect)
     {
-        axieSkillEffectManager.RemoveStatusEffect();
+        axieSkillEffectManager.RemoveAllEffects();
     }
 
     public List<SkillEffect> GetAllSkillEffectsNotPassives()
@@ -73,8 +73,9 @@ public class AxieController : MonoBehaviour
         axieSkillEffectManager.RemoveAllEffects();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForFixedUpdate();
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
 
@@ -88,6 +89,8 @@ public class AxieController : MonoBehaviour
             imGood = true;
             state = goodTeam.GetCharacterState(axieIngameStats.axieId);
         }
+        
+        
 
         if (axieIngameStats.axieClass == AxieClass.Bird)
         {
@@ -129,6 +132,8 @@ public class AxieController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (goodTeam == null)
+            return;
         if (CurrentTarget != null && CurrentTarget.axieIngameStats.currentHP <= 0)
         {
             CurrentTarget = null;

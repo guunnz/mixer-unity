@@ -21,7 +21,7 @@ public class AxieSkillController : MonoBehaviour
 
     public int GetComboCost()
     {
-        return comboCost;
+        return comboCost == 0 ? 1 : comboCost;
     }
 
     public List<AxieSkill> GetAxieSkills()
@@ -112,5 +112,4 @@ public class AxieSkillController : MonoBehaviour
             AddAndHandleSpecialCases(skill, pairedBodyParts, bodyPart);
         }
     }
-
 }

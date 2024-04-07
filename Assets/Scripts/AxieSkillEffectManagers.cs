@@ -193,7 +193,7 @@ public class AxieSkillEffectManager : MonoBehaviour
         if (skillEffectGraphic != null) Destroy(skillEffectGraphic.gameObject);
     }
 
-    public void RemoveStatusEffect()
+    public void RemoveAllEffects()
     {
         skillEffects.RemoveAll(x => !x.isPassive);
         foreach (var skillEffectGraphic in skillEffectGraphics)
@@ -202,10 +202,5 @@ public class AxieSkillEffectManager : MonoBehaviour
         }
 
         skillEffectGraphics.Clear();
-    }
-
-    public void RemoveAllEffects()
-    {
-        skillEffects.Clear();
     }
 }

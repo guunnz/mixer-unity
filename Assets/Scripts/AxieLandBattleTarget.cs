@@ -35,7 +35,7 @@ public class AxieLandBattleTarget : MonoBehaviour
             axieForBackend.axieid = axie.AxieId.ToString();
             axieForBackend.row = Mathf.Abs(axie.standingOnTile.grid2DLocation.x - 7);
             axieForBackend.col = axie.standingOnTile.grid2DLocation.y;
-            axieForBackend.combo = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.bodyPart).ToArray();
+            axieForBackend.combo = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.skillName).ToArray();
 
             axieForBackends.Add(axieForBackend);
         }

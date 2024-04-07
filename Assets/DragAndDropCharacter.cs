@@ -90,7 +90,8 @@ public class DragAndDropCharacter : MonoBehaviour
         OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
         if (tile == null)
         {
-            tile = team.GetCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)?.standingOnTile;
+            tile = team.GetCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)
+                ?.standingOnTile;
         }
 
         return tile;
@@ -108,15 +109,22 @@ public class DragAndDropCharacter : MonoBehaviour
             if (occupyingCharacter != null)
             {
                 SwapCharacters(selectedAxieController, occupyingCharacter);
+                occupyingCharacter.startingCol = occupyingCharacter.standingOnTile.grid2DLocation.x;
+                occupyingCharacter.startingRow = occupyingCharacter.standingOnTile.grid2DLocation.y;
             }
             else
             {
                 MoveCharacterToTile(selectedAxieController, targetTile);
             }
+
+            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.x;
+            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.y;
         }
         else
         {
             MoveCharacterToTile(selectedAxieController, targetTile);
+            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.x;
+            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.y;
         }
     }
 

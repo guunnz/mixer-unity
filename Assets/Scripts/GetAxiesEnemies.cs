@@ -31,7 +31,7 @@ namespace enemies
 
         public async void GetEnemy()
         {
-            string json = await landBattleTarget.GetScoreAsync("1");
+            string json = await landBattleTarget.GetScoreAsync("2");
 
             AxieIdsWrapper wrapper = JsonConvert.DeserializeObject<AxieIdsWrapper>(json);
             GetOpponentTeam(wrapper);
@@ -148,6 +148,16 @@ namespace enemies
                     VARIABLE.stats, axieForBackend, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
+
+            while (axieSpawner.enemyTeam.GetCharacters().Count != 5)
+            {
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(3f);
+
+            axieSpawner.enemyTeam.StartBattle();
+            axieSpawner.goodTeam.StartBattle();
         }
 
         public class RootObject

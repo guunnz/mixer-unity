@@ -27,8 +27,10 @@ public class AxieBehavior : MonoBehaviour
     private string AttackAnimation;
     public List<SkillName> SkillList;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForFixedUpdate();
+        yield return new WaitForFixedUpdate();
         AttackSpeed = AxieStatCalculator.GetAttackSpeed(myController.stats);
         if (myController.axieIngameStats.axieClass == AxieClass.Bird)
         {
@@ -60,7 +62,7 @@ public class AxieBehavior : MonoBehaviour
 
     public void DoAction(AxieState state)
     {
-        if (state == axieState)
+        if (state == axieState && state != AxieState.Idle)
             return;
         axieState = state;
         switch (state)
