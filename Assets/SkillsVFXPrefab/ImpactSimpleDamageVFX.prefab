@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 178367611955392804}
   - component: {fileID: -2519863480969727265}
   m_Layer: 0
-  m_Name: impact-simple-a
+  m_Name: ImpactSimpleDamageVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
