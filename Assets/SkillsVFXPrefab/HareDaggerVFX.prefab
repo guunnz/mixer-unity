@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 805033104938764951}
   - component: {fileID: 6438802935423681230}
   - component: {fileID: 4253134424990844028}
+  - component: {fileID: -6335529031242719299}
   m_Layer: 0
   m_Name: HareDaggerVFX
   m_TagString: Untagged
@@ -121,3 +122,99 @@ MonoBehaviour:
   _animationName: fly
   loop: 0
   timeScale: 1
+--- !u!114 &-6335529031242719299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874856428231209894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f8f03d947ca4a408ae5839289065dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trajectoryCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.049999237
+      value: 0.0023498535
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.35107967
+      value: 0.8962148
+      inSlope: 0.21878596
+      outSlope: 0.21878596
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24730057
+    - serializedVersion: 3
+      time: 0.39494622
+      value: 0.920377
+      inSlope: 0.59197545
+      outSlope: 0.59197545
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4998117
+      value: 0.95071906
+      inSlope: -0.023840046
+      outSlope: -0.023840046
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0375061
+      value: 0.035381317
+      inSlope: -5.415053
+      outSlope: -5.415053
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23715562
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.47333455
+      value: 0.14231972
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

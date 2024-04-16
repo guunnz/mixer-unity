@@ -5,6 +5,7 @@ using DG.Tweening;
 public class ProjectileMover : MonoBehaviour
 {
     public AnimationCurve trajectoryCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
+    public AnimationCurve rotationCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 0)); // Default is no rotation
     private Transform target;
     private Tween tween;
 
@@ -34,6 +35,8 @@ public class ProjectileMover : MonoBehaviour
             Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, value);
             currentPosition.y += height;
             transform.position = currentPosition;
+            float rotationY = rotationCurve.Evaluate(value);
+            transform.localRotation = Quaternion.Euler(0, rotationY, 0);
         }, 1f, duration).SetEase(Ease.Linear);
     }
 
@@ -56,11 +59,13 @@ public class ProjectileMover : MonoBehaviour
             Vector3 currentPosition = Vector3.Lerp(startPosition, endPosition, value);
             currentPosition.y += height;
             transform.position = currentPosition;
+            float rotationY = rotationCurve.Evaluate(value);
+            transform.localRotation = Quaternion.Euler(0, rotationY, 0);
         }, 1f, duration).SetEase(Ease.Linear);
     }
 
     public void Destroy()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }
