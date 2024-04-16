@@ -7994,7 +7994,7 @@ MonoBehaviour:
   mapManager: {fileID: 1130830892}
   spawnableLands:
   - landType: 0
-    landPrefab: {fileID: 6767682642782189418, guid: 3f71135ff3d4f6c43af46ce573125222,
+    landPrefab: {fileID: 6589546139147105113, guid: 99fba58af34cd7640b672097218ab1c7,
       type: 3}
   - landType: 1
     landPrefab: {fileID: 6767682642782189418, guid: 3f71135ff3d4f6c43af46ce573125222,
