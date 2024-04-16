@@ -447,6 +447,10 @@ public class Skill : MonoBehaviour
 
         // Replace the remaining underscores with slashes
         animationName = animationName.Replace("_", "/");
+        if (animationName.Contains("shrimp"))
+        {
+            animationName = animationName.Replace("-", "/");
+        }
 
         skeletonAnimation.AnimationName = animationName;
 

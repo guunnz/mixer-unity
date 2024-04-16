@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Koi
   m_EditorClassIdentifier: 
   skillName: 67
-  statusEffects:
+  skillEffects:
   - statusEffect: 12
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 3
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: 29f2779239fbf20438c10fcfa5a4d69c, type: 3}
   bodyPartClass: 5
   damage: 115
   shield: 35

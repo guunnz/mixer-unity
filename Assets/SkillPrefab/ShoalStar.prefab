@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1133412504546022753}
   - component: {fileID: 7779078594319462066}
   m_Layer: 0
-  m_Name: Anemone
+  m_Name: ShoalStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,12 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxToThrow:
   - ActivateTiming: 0
-    VFXPrefab: {fileID: 9055478562752661061, guid: 3af0497b906336e4daacb193500e96c2,
+    VFXPrefab: {fileID: 2091871727397417807, guid: 586334c350f098d4884ebdfb130edffb,
       type: 3}
     StartFromOrigin: 1
     SkillDuration: 0.3
-  - ActivateTiming: 0.3
-    VFXPrefab: {fileID: 3080438502371652594, guid: 82231976e41e96140bacdd995a018ed8,
+  - ActivateTiming: 0.28
+    VFXPrefab: {fileID: 6956100692228829456, guid: 837e65fbe8247a9459850484bd99e367,
       type: 3}
     StartFromOrigin: 0
     SkillDuration: 0.5

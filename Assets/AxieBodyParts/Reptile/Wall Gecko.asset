@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Wall Gecko
   m_EditorClassIdentifier: 
   skillName: 158
-  statusEffects:
+  skillEffects:
   - statusEffect: 18
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: ce1b520bfd0f2124ab2f069f1bb0323f, type: 3}
   bodyPartClass: 3
   damage: 100
   shield: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1133412504546022753}
   - component: {fileID: 7779078594319462066}
   m_Layer: 0
-  m_Name: Anemone
+  m_Name: Ranchu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxToThrow:
   - ActivateTiming: 0
-    VFXPrefab: {fileID: 9055478562752661061, guid: 3af0497b906336e4daacb193500e96c2,
+    VFXPrefab: {fileID: 5533293548336109487, guid: 6563a7708f1facb4c8184080446f28f1,
       type: 3}
     StartFromOrigin: 1
     SkillDuration: 0.3

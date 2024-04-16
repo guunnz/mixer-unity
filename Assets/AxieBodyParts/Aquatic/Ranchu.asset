@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
-  m_Name: Rancho
+  m_Name: Ranchu
   m_EditorClassIdentifier: 
   skillName: 110
-  statusEffects:
+  skillEffects:
   - statusEffect: 5
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 2
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 5186805709753591173, guid: 651bd46774df51e44b55fe225940c858, type: 3}
   bodyPartClass: 5
   damage: 110
   shield: 30

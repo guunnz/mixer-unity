@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Tadpole
   m_EditorClassIdentifier: 
   skillName: 109
-  statusEffects:
+  skillEffects:
   - statusEffect: 4
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 2
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 5186805709753591173, guid: 5d605e4fbe0445c47834a86a1ca2f94a, type: 3}
   bodyPartClass: 5
   damage: 100
   shield: 40
