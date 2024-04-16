@@ -413,11 +413,18 @@ public class Skill : MonoBehaviour
                 changer.ChangeBasedOnClass(@class);
             }
 
+            VFXClassSelector classSelector = vfxSpawned.GetComponent<VFXClassSelector>();
+
+            if (classSelector != null)
+            {
+                classSelector.SetAnimation(self.axieIngameStats.axieClass);
+            }
+
             if (skill.StartFromOrigin)
             {
                 ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
-                if (projectileMover != null)
+                if (projectileMover != null && self != null)
                     projectileMover.MoveToTarget(target.GetPartPosition(BodyPart.Horn), skill.SkillDuration);
             }
         }
@@ -471,6 +478,13 @@ public class Skill : MonoBehaviour
                         changer.ChangeBasedOnClass(@class);
                     }
 
+                    VFXClassSelector classSelector = vfxSpawned.GetComponent<VFXClassSelector>();
+
+                    if (classSelector != null && self != null)
+                    {
+                        classSelector.SetAnimation(self.axieIngameStats.axieClass);
+                    }
+
                     if (skill.StartFromOrigin)
                     {
                         ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
@@ -496,6 +510,8 @@ public class Skill : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+
+        skeletonAnimation.AnimationName = "action/idle/normal";
     }
 
     private IEnumerator Destroy()

@@ -119,7 +119,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: animation
+  _animationName: fly
   loop: 1
   timeScale: 1
 --- !u!114 &945278759824698538
