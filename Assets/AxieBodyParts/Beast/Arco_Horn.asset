@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Arco_Horn
   m_EditorClassIdentifier: 
   skillName: 33
-  statusEffects:
+  skillEffects:
   - statusEffect: 12
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 2
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: 417c9d04ab297754f8fdf459e6dd6a53, type: 3}
   bodyPartClass: 0
   damage: 100
   shield: 20

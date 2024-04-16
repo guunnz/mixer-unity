@@ -118,7 +118,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: pop
+  _animationName: impact-sharp-range
   loop: 0
   timeScale: 1
 --- !u!114 &6085515720974866533

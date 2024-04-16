@@ -118,7 +118,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: pop
+  _animationName: play
   loop: 0
   timeScale: 1
 --- !u!114 &7990752439033100092
