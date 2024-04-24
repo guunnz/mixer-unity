@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Ant_Tail
   m_EditorClassIdentifier: 
   skillName: 92
-  statusEffects:
+  skillEffects:
   - statusEffect: 7
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 2
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2179489554462401005, guid: 47af3f65940215c4aa7e8cfb4464b148, type: 3}
   bodyPartClass: 1
   damage: 30
   shield: 40

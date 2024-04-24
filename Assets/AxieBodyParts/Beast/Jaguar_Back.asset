@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Jaguar_Back
   m_EditorClassIdentifier: 
   skillName: 79
-  statusEffects:
+  skillEffects:
   - statusEffect: 16
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 4
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: cf129018e8e434947a18c45d98b32895, type: 3}
   bodyPartClass: 0
   damage: 115
   shield: 35

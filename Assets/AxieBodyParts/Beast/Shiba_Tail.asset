@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Shiba_Tail
   m_EditorClassIdentifier: 
   skillName: 80
-  statusEffects:
+  skillEffects:
   - statusEffect: 13
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: 16c07cebe1b1edd4389749b5a58db521, type: 3}
   bodyPartClass: 0
   damage: 110
   shield: 40

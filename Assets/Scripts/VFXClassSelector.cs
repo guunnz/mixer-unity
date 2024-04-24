@@ -6,11 +6,11 @@ using UnityEngine;
 public class VFXClassSelector : MonoBehaviour
 {
     public string skinName;
-    private SkeletonGraphic skeletonGraphic;
+    private SkeletonAnimation skeletonGraphic;
 
     public void SetAnimation(AxieClass axieClass)
     {
-        skeletonGraphic = GetComponent<SkeletonGraphic>();
+        skeletonGraphic = GetComponent<SkeletonAnimation>();
 
         skeletonGraphic.initialSkinName = axieClass.ToString().ToLower() + skinName;
 

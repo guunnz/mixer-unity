@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Peace Maker
   m_EditorClassIdentifier: 
   skillName: 45
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 3
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 3133670662096343493, guid: 1844bd847e0294e47a3f63fc8099d787, type: 3}
   bodyPartClass: 2
   damage: 120
   shield: 30

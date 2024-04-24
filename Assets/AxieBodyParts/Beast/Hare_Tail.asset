@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Hare_Tail
   m_EditorClassIdentifier: 
   skillName: 65
-  statusEffects:
+  skillEffects:
   - statusEffect: 11
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2407781631212507186, guid: 21df3d0f20202fb43901a4e9bbd0c250, type: 3}
   bodyPartClass: 0
   damage: 120
   shield: 30

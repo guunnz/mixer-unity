@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Buzz Buzz_Back
   m_EditorClassIdentifier: 
   skillName: 88
-  statusEffects:
+  skillEffects:
   - statusEffect: 14
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 2
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 4
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2179489554462401005, guid: 480b393f795f7c547bcf85480f6ccfbe, type: 3}
   bodyPartClass: 1
   damage: 100
   shield: 40

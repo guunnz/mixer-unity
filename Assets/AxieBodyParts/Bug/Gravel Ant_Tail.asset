@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
   m_Name: Gravel Ant_Tail
   m_EditorClassIdentifier: 
-  skillName: 0
-  statusEffects:
+  skillName: 95
+  skillEffects:
   - statusEffect: 26
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 2
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2179489554462401005, guid: f3a7a9d02b9596f4785b6395c906586e, type: 3}
   bodyPartClass: 1
   damage: 30
   shield: 40

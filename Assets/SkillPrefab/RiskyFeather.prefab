@@ -45,17 +45,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxToThrow:
-  - SkillDelay: 0.1
+  - ActivateTiming: 0
     VFXPrefab: {fileID: 8651745034597143931, guid: 0b42bddf39019404a83b04941cc64963,
       type: 3}
-    SkillDuration: 1
     StartFromOrigin: 1
-  - SkillDelay: 0.9
+    SkillDuration: 1
+  - ActivateTiming: 1
     VFXPrefab: {fileID: 3080438502371652594, guid: 82231976e41e96140bacdd995a018ed8,
       type: 3}
-    SkillDuration: 0.167
     StartFromOrigin: 0
-  Damage: 50
+    SkillDuration: 0.167
   animationToPlay: 6
-  totalDuration: 1.067
+  axieAnimationTiming: 0
   statusEffectsTiming: 1
+  totalDuration: 1.067
+  attackAudioTiming: 0

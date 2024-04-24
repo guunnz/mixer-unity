@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Razor Bite
   m_EditorClassIdentifier: 
   skillName: 145
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -59,7 +60,6 @@ MonoBehaviour:
     specialActivationAgainstAxiesList:
     - axieClass: 5
       ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []
@@ -94,7 +94,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 3
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 3133670662096343493, guid: f991069a19957414397db2dfb5b78d94, type: 3}
   bodyPartClass: 3
   damage: 100
   shield: 50

@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Raven
   m_EditorClassIdentifier: 
   skillName: 136
-  statusEffects:
+  skillEffects:
   - statusEffect: 4
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 3
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 4
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2407781631212507186, guid: 6c9ebc88a223ff3468b51c181b75b11b, type: 3}
   bodyPartClass: 2
   damage: 110
   shield: 30

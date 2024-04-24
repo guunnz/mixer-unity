@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: LittleBranch_Horn
   m_EditorClassIdentifier: 
   skillName: 30
-  statusEffects:
+  skillEffects:
   - statusEffect: 13
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -59,7 +60,6 @@ MonoBehaviour:
     specialActivationAgainstAxiesList:
     - axieClass: 4
       ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 1
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []
@@ -94,7 +94,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 2
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: c8df28a9666ea0243a5431c3686b5943, type: 3}
   bodyPartClass: 0
   damage: 110
   shield: 40

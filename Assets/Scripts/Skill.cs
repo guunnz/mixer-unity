@@ -398,6 +398,11 @@ public class Skill : MonoBehaviour
             animationName = animationName.Replace("-", "/");
         }
 
+        if (animationName.Contains("tail/multi"))
+        {
+            animationName = animationName.Replace("tail/multi", "tail-multi");
+        }
+
         skeletonAnimation.AnimationName = animationName;
     }
 
@@ -456,8 +461,14 @@ public class Skill : MonoBehaviour
             animationName = animationName.Replace("-", "/");
         }
 
-        skeletonAnimation.AnimationName = animationName;
+        if (animationName.Contains("tail/multi"))
+        {
+            animationName = animationName.Replace("tail/multi", "tail-multi");
+        }
 
+        skeletonAnimation.AnimationName = animationName;
+        skeletonAnimation.loop = false;
+        skeletonAnimation.Initialize(true);
         List<SkillVFX> VFXLIST = new List<SkillVFX>();
         VFXLIST.AddRange(vfxToThrow);
         float timer = 0;
@@ -488,9 +499,9 @@ public class Skill : MonoBehaviour
 
                     VFXClassSelector classSelector = vfxSpawned.GetComponent<VFXClassSelector>();
 
-                    if (classSelector != null && self != null)
+                    if (classSelector != null)
                     {
-                        classSelector.SetAnimation(self.axieIngameStats.axieClass);
+                        classSelector.SetAnimation(this.@class);
                     }
 
                     if (skill.StartFromOrigin)
@@ -520,6 +531,7 @@ public class Skill : MonoBehaviour
         }
 
         skeletonAnimation.AnimationName = "action/idle/normal";
+        skeletonAnimation.loop = true;
     }
 
     private IEnumerator Destroy()

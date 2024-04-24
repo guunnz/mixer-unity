@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Bamboo Shoot
   m_EditorClassIdentifier: 
   skillName: 27
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -96,7 +97,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 2
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 489240768068986823, guid: feaa3b55e6cfb8a48b016d0ac1f2fcb1, type: 3}
   bodyPartClass: 4
   damage: 80
   shield: 70

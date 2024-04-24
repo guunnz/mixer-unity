@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Grass Snake
   m_EditorClassIdentifier: 
   skillName: 163
-  statusEffects:
+  skillEffects:
   - statusEffect: 10
     statusApplyType: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 5
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2179489554462401005, guid: 1e6dbd89c2f4fad4289ac40544e08975, type: 3}
   bodyPartClass: 3
   damage: 10
   shield: 20

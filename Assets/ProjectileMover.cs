@@ -36,7 +36,7 @@ public class ProjectileMover : MonoBehaviour
             currentPosition.y += height;
             transform.position = currentPosition;
             float rotationY = rotationCurve.Evaluate(value);
-            transform.localRotation = Quaternion.Euler(0, rotationY, 0);
+            transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, rotationY, transform.localEulerAngles.z);
         }, 1f, duration).SetEase(Ease.Linear);
     }
 
