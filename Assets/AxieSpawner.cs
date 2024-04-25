@@ -59,14 +59,6 @@ namespace Game
             Mixer.Init();
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
-
 
         public void SpawnAxieById(string axieId, BodyPart bodyPart, SkillName skillName, AxieClass @class,
             GetAxiesExample.Stats stats, AxieForBackend axieForBackend, bool isOpponent = false)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game;
 using Newtonsoft.Json;
+using TMPro;
 
 namespace enemies
 {
@@ -17,21 +18,22 @@ namespace enemies
         public AxieSpawner axieSpawner;
         public int spawnCountMax = 0;
 
+        public TextMeshProUGUI Countdown;
+        public GameObject FindingOpponent;
+        public GameObject IngameOverlay;
+        public GameObject BattleOverlay;
+
         public AxieLandBattleTarget landBattleTarget;
 
         public TeamToJSON teamToJson;
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                GetEnemy();
-            }
-        }
-
         public async void GetEnemy()
         {
-            string json = await landBattleTarget.GetScoreAsync("3");
+            FindingOpponent.SetActive(true);
+            IngameOverlay.SetActive(false);
+            string json =
+                await landBattleTarget.GetScoreAsync(
+                    (RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
 
             AxieIdsWrapper wrapper = JsonConvert.DeserializeObject<AxieIdsWrapper>(json);
             GetOpponentTeam(wrapper);
@@ -103,6 +105,7 @@ namespace enemies
 
             if (task.Exception != null)
             {
+                GetEnemy();
                 Debug.LogError("GraphQL Error: " + task.Exception.Message);
                 yield break;
             }
@@ -154,8 +157,18 @@ namespace enemies
                 yield return null;
             }
 
-            yield return new WaitForSeconds(3f);
-
+            FindingOpponent.gameObject.SetActive(false);
+            Countdown.gameObject.SetActive(true);
+            Countdown.text = "3!";
+            yield return new WaitForSeconds(1f);
+            Countdown.text = "2!";
+            yield return new WaitForSeconds(1f);
+            Countdown.text = "1!";
+            yield return new WaitForSeconds(0.5f);
+            Countdown.text = "BATTLE!";
+            yield return new WaitForSeconds(0.5f);
+            BattleOverlay.SetActive(true);
+            Countdown.gameObject.SetActive(false);
             axieSpawner.enemyTeam.StartBattle();
             axieSpawner.goodTeam.StartBattle();
         }

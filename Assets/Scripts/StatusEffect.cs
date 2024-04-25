@@ -124,7 +124,7 @@ public class SkillEffect
     public bool IsOnlyBuffOrDebuff()
     {
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
-                Stench || Attack != 0 || Morale != 0 || Speed != 0);
+                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect);
     }
 }
 

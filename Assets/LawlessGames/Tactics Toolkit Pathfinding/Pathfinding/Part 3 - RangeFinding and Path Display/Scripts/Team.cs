@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using enemies;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Team : MonoBehaviour
 {
@@ -12,7 +14,9 @@ public class Team : MonoBehaviour
     private PathFinder pathFinder;
     public Team enemyTeam;
     public bool battleStarted = false;
-
+    [FormerlySerializedAs("Timer")] public GameObject BattleOverlay;
+    public GameObject IngameOverlay;
+    public TextMeshProUGUI YouWinLose;
     public AxieLandBattleTarget target;
 
     public bool isGoodTeam;
@@ -74,44 +78,37 @@ public class Team : MonoBehaviour
         }
     }
 
-    private void Update()
+    void RestartTeam()
     {
-        if (Input.GetKeyDown(KeyCode.L) && isGoodTeam) // Move all characters
+        IngameOverlay.SetActive(true);
+        battleStarted = false;
+        enemyTeam.battleStarted = false;
+        var enemyList = enemyTeam.GetCharactersAll();
+
+        for (int i = 0; i < enemyList.Count; i++)
         {
-            target.PostTeam(3, GetCharacters());
+            Destroy(enemyList[i].gameObject);
         }
 
-        if (Input.GetKeyDown(KeyCode.T) && isGoodTeam) // Move all characters
+        enemyTeam.characters = new Dictionary<AxieController, CharacterState>();
+
+        foreach (var character in GetCharactersAll())
         {
-            battleStarted = false;
-            enemyTeam.battleStarted = false;
-            var enemyList = enemyTeam.GetCharactersAll();
-
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                Destroy(enemyList[i].gameObject);
-            }
-
-            enemyTeam.characters = new Dictionary<AxieController, CharacterState>();
-
-            foreach (var character in GetCharactersAll())
-            {
-                character.axieBehavior.axieState = AxieState.Idle;
-                character.gameObject.SetActive(true);
-                Vector2Int gridLocation = new Vector2Int(character.startingRow, character.startingCol);
-                OverlayTile startingTile = MapManager.Instance.map[gridLocation];
-                character.transform.localScale = new Vector3(gridLocation.x < 4 ? -0.2f : 0.2f,
-                    0.2f, character.transform.localScale.z);
-                character.axieBehavior.DoAction(AxieState.Idle);
-                character.axieSkillEffectManager.RemoveAllEffects();
-                character.axieIngameStats.currentHP = character.axieIngameStats.HP;
-                character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.HP);
-                character.axieIngameStats.CurrentEnergy = character.axieIngameStats.MinEnergy;
-                character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
-                                                 character.axieSkillController.GetComboCost());
-                character.SkeletonAnim.Initialize(true);
-                PositionCharacterOnTile(character, startingTile);
-            }
+            character.axieBehavior.axieState = AxieState.Idle;
+            character.gameObject.SetActive(true);
+            Vector2Int gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+            OverlayTile startingTile = MapManager.Instance.map[gridLocation];
+            character.transform.localScale = new Vector3(gridLocation.x < 4 ? -0.2f : 0.2f,
+                0.2f, character.transform.localScale.z);
+            character.axieBehavior.DoAction(AxieState.Idle);
+            character.axieSkillEffectManager.RemoveAllEffects();
+            character.axieIngameStats.currentHP = character.axieIngameStats.HP;
+            character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.HP);
+            character.axieIngameStats.CurrentEnergy = character.axieIngameStats.MinEnergy;
+            character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
+                                             character.axieSkillController.GetComboCost());
+            character.SkeletonAnim.Initialize(true);
+            PositionCharacterOnTile(character, startingTile);
         }
     }
 
@@ -124,6 +121,39 @@ public class Team : MonoBehaviour
 
         if (battleStarted)
         {
+            if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
+            {
+                BattleOverlay.SetActive(false);
+                YouWinLose.gameObject.SetActive(true);
+                if (isGoodTeam)
+                {
+                    YouWinLose.text = "You Lost.";
+                }
+                else
+                {
+                    YouWinLose.text = "You Win!";
+                }
+
+                if (Input.GetMouseButton(0))
+                {
+                    if (isGoodTeam)
+                    {
+                        RunManagerSingleton.instance.SetResult(false);
+                    }
+                    else
+                    {
+                        RunManagerSingleton.instance.SetResult(true);
+                    }
+
+                    target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
+                        GetCharacters());
+                    YouWinLose.gameObject.SetActive(false);
+                    RestartTeam();
+                }
+
+                return;
+            }
+
             foreach (var character in characters)
             {
                 if (character.Key == null)

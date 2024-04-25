@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c440e5e6fed7246609d4170f00822382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillToCast: 46
+  skillToCast: 134
   castFrom: {fileID: 1081381366}
   target: {fileID: 2110070034}
   skillList: {fileID: 11400000, guid: 532455106d934fc4fad6ce5723d224ad, type: 2}

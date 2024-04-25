@@ -176,10 +176,11 @@ public class AbilitiesManager : MonoBehaviour
         }
 
         AbilityNameText.text = bodyPartToSelect.name;
-        AbilityDescriptionText.text = skillList.axieBodyParts
+        AxieBodyPart ability = skillList.axieBodyParts
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
-                x.skillName == bodyPartToSelect.SkillName).description;
+                x.skillName == bodyPartToSelect.SkillName);
+        AbilityDescriptionText.text = ability.description + (ability.isPassive ? " (PASSIVES DO NOT WORK FOR NOW)" : "");
 
         var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 

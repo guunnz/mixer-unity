@@ -74,6 +74,19 @@ public class AxieController : MonoBehaviour
         axieSkillEffectManager.RemoveAllEffects();
     }
 
+    public void UpdateStats()
+    {
+        if (axieIngameStats.axieClass == AxieClass.Bird)
+        {
+            axieIngameStats.Range = 4;
+            Range = 4;
+        }
+
+        axieIngameStats.HP = AxieStatCalculator.GetHP(stats);
+
+        axieIngameStats.currentHP = axieIngameStats.HP;
+    }
+
     private IEnumerator Start()
     {
         yield return new WaitForFixedUpdate();
@@ -92,15 +105,7 @@ public class AxieController : MonoBehaviour
         }
 
 
-        if (axieIngameStats.axieClass == AxieClass.Bird)
-        {
-            axieIngameStats.Range = 4;
-            Range = 4;
-        }
-
-        axieIngameStats.HP = AxieStatCalculator.GetHP(stats);
-
-        axieIngameStats.currentHP = axieIngameStats.HP;
+        UpdateStats();
         if (imGood)
         {
             SkeletonAnim.GetComponent<Renderer>().sortingOrder =

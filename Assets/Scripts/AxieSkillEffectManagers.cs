@@ -6,6 +6,7 @@ using Spine.Unity;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = System.Random;
 
 public class AxieSkillEffectManager : MonoBehaviour
 {
@@ -89,11 +90,18 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public void AddStatusEffect(SkillEffect skillEffect)
     {
-        SkillEffect skillEffectOnList = skillEffects.FirstOrDefault(x => x.statusEffect == skillEffect.statusEffect);
+        StatusEffectEnum statusEffect = skillEffect.statusEffect;
+        if (statusEffect == StatusEffectEnum.None)
+        {
+            Debug.LogWarning("Setting random effect");
+            statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+        }
+
+        SkillEffect skillEffectOnList = skillEffects.FirstOrDefault(x => x.statusEffect == statusEffect);
 
         if (skillEffectOnList != null)
         {
-            switch (skillEffect.statusEffect)
+            switch (statusEffect)
             {
                 case StatusEffectEnum.Aroma:
                 case StatusEffectEnum.Chill:
@@ -104,7 +112,7 @@ public class AxieSkillEffectManager : MonoBehaviour
                 case StatusEffectEnum.Sleep:
                 case StatusEffectEnum.Lethal:
                 case StatusEffectEnum.Stun:
-                    skillEffectOnList.skillDuration = skillEffect.skillDuration;
+                    skillEffectOnList.skillDuration = skillEffect.skillDuration == 0 ? 1 : skillEffect.skillDuration;
                     return;
                 default:
                     break;
@@ -112,7 +120,7 @@ public class AxieSkillEffectManager : MonoBehaviour
         }
 
         SkillEffectGraphic skillEffectGraphic =
-            skillEffectGraphics.FirstOrDefault(x => x.statusEffect == skillEffect.statusEffect);
+            skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
 
         if (skillEffectGraphic == null)
         {
@@ -128,12 +136,12 @@ public class AxieSkillEffectManager : MonoBehaviour
             skillEffectGraphics.Add(skillEffectGraphic);
 
             skillEffectGraphic.SetSprite(StatusManager.Instance.skillEffects.statusEffectGraphicsList
-                .FirstOrDefault(x => x.statusEffectEnum == skillEffect.statusEffect)?.sprite);
+                .FirstOrDefault(x => x.statusEffectEnum == statusEffect)?.sprite);
         }
         else
         {
             SkillEffect skillEffectCounter = null;
-            switch (skillEffect.statusEffect)
+            switch (statusEffect)
             {
                 case StatusEffectEnum.AttackNegative:
                     skillEffectCounter =

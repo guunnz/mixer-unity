@@ -15,8 +15,8 @@ MonoBehaviour:
   skillName: 26
   skillEffects:
   - statusEffect: 0
-    statusApplyType: 13
-    statusApplyTypeIsTarget: 0
+    statusApplyType: 2
+    statusApplyTypeIsTarget: 1
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -93,7 +93,8 @@ MonoBehaviour:
   bodyPart: 2
   prefab: {fileID: 5186805709753591173, guid: e26905bc05f23a84a867fdffba1e619b, type: 3}
   bodyPartClass: 1
-  damage: 90
+  damage: 130
   shield: 60
   energy: 1
-  description: When you cast this ability EVERY axie gains a random buff or debuff
+  description: When you cast this ability you and your target gains a random buff
+    or debuff
