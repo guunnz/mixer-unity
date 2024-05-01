@@ -22,7 +22,7 @@ MonoBehaviour:
     skillDuration: 3
     PoisonStack: 0
     Attack: 0
-    Speed: -1
+    Speed: 0
     Morale: 0
     StealEnergyPercentage: 0
     GainEnergy: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
     Fear: 0
     Sleep: 0
     Jinx: 0
-    Chill: 0
+    Chill: 1
     Aroma: 0
     Stench: 0
     Fragile: 0
@@ -96,4 +96,4 @@ MonoBehaviour:
   damage: 110
   shield: 30
   energy: 1
-  description: Apply -Speed for 3 seconds
+  description: Apply Chill for 3 seconds

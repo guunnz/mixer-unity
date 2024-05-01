@@ -602,10 +602,12 @@ public class SkillLauncher : MonoBehaviour
             damagePairList.Add(dmgPair);
         }
 
+        if (self.axieSkillEffectManager.IsJinxed())
+            return damagePairList;
 
         foreach (var damagePair in damagePairList)
         {
-            if (skillEffect.AlwaysCritical)
+            if (skillEffect.AlwaysCritical || damagePair.axieController.axieSkillEffectManager.IsLethal())
             {
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
             }
@@ -644,11 +646,12 @@ public class SkillLauncher : MonoBehaviour
         skillActions.Add(skillInstance.GetDestroyAction());
     }
 
-    private void PerformDamage(Skill skillInstance, List<DamagePair> damagePairs)
+    private void PerformDamage(Skill skillInstance, List<DamagePair> damagePairs, SkillEffect skillEffect)
     {
         foreach (var damagePair in damagePairs)
         {
-            skillInstance.AddDamageTargetPair(damagePair.axieController.AxieId, damagePair.damage);
+            skillInstance.AddDamageTargetPair(damagePair.axieController.AxieId, damagePair.damage,
+                onlyShield: skillEffect.Fragile);
         }
     }
 
@@ -704,7 +707,7 @@ public class SkillLauncher : MonoBehaviour
                     specialEffectExtras, multiCasted);
             }
 
-            PerformDamage(skillInstance, damagePairs);
+            PerformDamage(skillInstance, damagePairs, skillEffect);
             BuildSkillActions(skillInstance, ref skillActions);
         }
 

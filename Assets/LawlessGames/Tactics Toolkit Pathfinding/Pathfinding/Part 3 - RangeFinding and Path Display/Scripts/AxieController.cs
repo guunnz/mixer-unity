@@ -24,24 +24,24 @@ public class IngameStats
 public class AxieController : MonoBehaviour
 {
     internal int AxieId;
-    public IngameStats axieIngameStats;
     internal AxieSkillEffectManager axieSkillEffectManager;
-    private Team.CharacterState state;
-    internal int startingCol;
-    internal int startingRow;
     private AxieController[] allCharacters;
-    public OverlayTile standingOnTile;
+    private Team.CharacterState state;
+    public AxieSkillController axieSkillController;
     public AxieController CurrentTarget;
     public AxieBehavior axieBehavior;
+    public IngameStats axieIngameStats;
+    public OverlayTile standingOnTile;
+    public GetAxiesExample.Stats stats;
     public SkeletonAnimation SkeletonAnim;
     public StatsManager statsManagerUI;
+    public List<SkillName> axieBodyParts = new List<SkillName>();
+    internal int startingCol;
+    internal int startingRow;
     public Team goodTeam;
     public Team badTeam;
-    public AxieSkillController axieSkillController;
-    public GetAxiesExample.Stats stats;
-    public int Range = 1;
-    public List<SkillName> axieBodyParts = new List<SkillName>();
     internal bool imGood;
+    public int Range = 1;
 
     public List<AxieController> GetAdjacent()
     {
@@ -104,7 +104,6 @@ public class AxieController : MonoBehaviour
             state = goodTeam.GetCharacterState(axieIngameStats.axieId);
         }
 
-
         UpdateStats();
         if (imGood)
         {
@@ -119,9 +118,9 @@ public class AxieController : MonoBehaviour
 
         axieBehavior.myController = this;
         SkeletonAnim.loop = true;
+        axieBehavior.axieSkillEffectManager = axieSkillEffectManager;
         axieBehavior.DoAction(AxieState.Idle);
     }
-
 
     private void OnMouseOver()
     {
@@ -207,7 +206,10 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
+        if (!axieSkillEffectManager.IsChilled())
+        {
+            axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
+        }
 
         if (axieIngameStats.CurrentEnergy >= axieSkillController.GetComboCost())
         {

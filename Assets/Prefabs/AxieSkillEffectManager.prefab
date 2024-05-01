@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2830202221279842880}
   - component: {fileID: 1810639304658299051}
   - component: {fileID: 3097724006088715935}
-  - component: {fileID: 8082695489151247093}
+  - component: {fileID: 6514511091167472160}
   m_Layer: 0
   m_Name: AxieSkillEffectManager
   m_TagString: Untagged
@@ -107,7 +107,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &8082695489151247093
+--- !u!114 &6514511091167472160
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -49,7 +49,6 @@ public class AbilitiesManager : MonoBehaviour
     public GameObject MouthBodyPartOrderImage;
     public GameObject BackBodyPartOrderImage;
     public GameObject TailBodyPartOrderImage;
-
     public TextMeshProUGUI HornBodyPartOrderText;
     public TextMeshProUGUI MouthBodyPartOrderText;
     public TextMeshProUGUI BackBodyPartOrderText;

@@ -23,6 +23,7 @@ public class AxieBehavior : MonoBehaviour
 {
     public AxieState axieState;
     internal AxieController myController;
+    internal AxieSkillEffectManager axieSkillEffectManager;
     private float AttackSpeed;
     private string AttackAnimation;
     public List<SkillName> SkillList;
@@ -54,6 +55,14 @@ public class AxieBehavior : MonoBehaviour
         }
     }
 
+    private void OnAction()
+    {
+        if (axieSkillEffectManager.IsPoisoned())
+        {
+            myController.axieIngameStats.currentHP -=
+                AxieStatCalculator.GetPoisonDamage(axieSkillEffectManager.PoisonStacks());
+        }
+    }
 
     public void DoShrimp()
     {
@@ -64,6 +73,13 @@ public class AxieBehavior : MonoBehaviour
     {
         if (state == axieState && state != AxieState.Idle)
             return;
+
+        if (axieSkillEffectManager.IsStunned())
+        {
+            state = AxieState.Stunned;
+        }
+
+        OnAction();
         axieState = state;
         switch (state)
         {
@@ -178,6 +194,7 @@ public class AxieBehavior : MonoBehaviour
     {
         if (myController.CurrentTarget == null)
             yield break;
+
         while (axieState == AxieState.Attacking)
         {
             myController.SkeletonAnim.AnimationName = AttackAnimation;
@@ -187,13 +204,43 @@ public class AxieBehavior : MonoBehaviour
             if (myController.axieIngameStats.axieClass == AxieClass.Bird)
                 AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
                     myController.CurrentTarget.transform);
-            
+
             yield return new WaitForSecondsRealtime(AttackSpeed);
-            
+
             if (myController.CurrentTarget == null)
                 yield break;
-            
-            myController.CurrentTarget.axieIngameStats.currentHP -= AxieStatCalculator.GetAttackDamage(myController.stats);
+
+            if (axieSkillEffectManager.IsFeared())
+            {
+                Debug.Log("Missed!");
+            }
+            else
+            {
+                var target = myController.CurrentTarget;
+                float attackDamage = AxieStatCalculator.GetAttackDamage(myController.stats);
+                if (myController.axieSkillController.IgnoresShieldOnAttack())
+                {
+                    target.axieIngameStats.currentHP -= attackDamage;
+                    target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, attackDamage, myController);
+                }
+                else
+                {
+                    float shieldDamage = attackDamage - target.axieIngameStats.currentShield;
+
+                    if (shieldDamage < 0)
+                    {
+                        target.axieIngameStats.currentShield -= attackDamage;
+                    }
+                    else
+                    {
+                        target.axieIngameStats.currentShield = 0;
+                        target.axieIngameStats.currentHP -= shieldDamage;
+                    }
+
+                    target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, shieldDamage,
+                        myController);
+                }
+            }
             // myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
         }
     }
@@ -212,6 +259,11 @@ public class AxieBehavior : MonoBehaviour
             myController.SkeletonAnim.loop = true;
             DoAction(AxieState.Idle);
             yield break;
+        }
+
+        while (axieSkillEffectManager.IsStunned())
+        {
+            yield return new WaitForFixedUpdate();
         }
 
         yield return StartCoroutine(SkillLauncher.Instance.ThrowSkill(myController.axieSkillController.GetAxieSkills(),

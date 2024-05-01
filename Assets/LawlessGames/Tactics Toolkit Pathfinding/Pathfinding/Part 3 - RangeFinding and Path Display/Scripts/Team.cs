@@ -134,7 +134,7 @@ public class Team : MonoBehaviour
                     YouWinLose.text = "You Win!";
                 }
 
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     if (isGoodTeam)
                     {
@@ -142,13 +142,20 @@ public class Team : MonoBehaviour
                     }
                     else
                     {
+                        target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
+                            GetCharactersAll());
                         RunManagerSingleton.instance.SetResult(true);
                     }
 
-                    target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
-                        GetCharacters());
                     YouWinLose.gameObject.SetActive(false);
-                    RestartTeam();
+                    if (isGoodTeam)
+                    {
+                        RestartTeam();
+                    }
+                    else
+                    {
+                        enemyTeam.RestartTeam();
+                    }
                 }
 
                 return;

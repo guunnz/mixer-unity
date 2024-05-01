@@ -96,4 +96,4 @@ MonoBehaviour:
   damage: 20
   shield: 0
   energy: 1
-  description: Wombo, apply fragile
+  description: Wombo, breaks target shield

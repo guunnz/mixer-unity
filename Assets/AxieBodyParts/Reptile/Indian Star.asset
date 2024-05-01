@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Indian Star
   m_EditorClassIdentifier: 
   skillName: 155
-  statusEffects:
+  skillEffects:
   - statusEffect: 31
     statusApplyType: 0
-    skillTriggerType: 2
+    statusApplyTypeIsTarget: 0
+    skillTriggerType: 3
     isPassive: 1
     skillDuration: 0
     PoisonStack: 0

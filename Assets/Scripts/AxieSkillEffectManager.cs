@@ -8,15 +8,32 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Random = System.Random;
 
+
+
+public class SkillEffectDuration
+{
+    public SkillEffect effect;
+    public float duration;
+
+    public SkillEffectDuration(SkillEffect effect, float duration)
+    {
+        this.effect = effect;
+        this.duration = duration;
+    }
+}
+
 public class AxieSkillEffectManager : MonoBehaviour
 {
     public List<SkillEffect> skillEffects = new List<SkillEffect>();
+
+    private List<SkillEffectDuration> skillEffectDurationList = new List<SkillEffectDuration>();
+
     public List<SkillEffectGraphic> skillEffectGraphics = new List<SkillEffectGraphic>();
     public GameObject skillEffectGraphicPrefab;
     public Transform HorizontalLayoutGroup;
     private Transform mainCharacter;
     private int lastXAxisScale;
-
+//
     public bool IsDebuff()
     {
         return skillEffects.Any(x =>
@@ -32,6 +49,49 @@ public class AxieSkillEffectManager : MonoBehaviour
     public bool IsPoisoned()
     {
         return skillEffects.Any(x => x.Poison);
+    }
+
+    public int PoisonStacks()
+    {
+        if (!IsPoisoned())
+            return 0;
+
+        return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Poison).Times;
+    }
+
+    public bool IsStunned()
+    {
+        return skillEffects.Any(x => x.Stun);
+    }
+
+    public bool IsFeared()
+    {
+        return skillEffects.Any(x => x.Fear);
+    }
+
+    public bool IsStenched()
+    {
+        return skillEffects.Any(x => x.Stench);
+    }
+
+    public bool IsLethal()
+    {
+        return skillEffects.Any(x => x.Lethal);
+    }
+
+    public bool IsJinxed()
+    {
+        return skillEffects.Any(x => x.Jinx);
+    }
+
+    public bool IsFragiled()
+    {
+        return skillEffects.Any(x => x.Fragile);
+    }
+
+    public bool IsChilled()
+    {
+        return skillEffects.Any(x => x.Chill);
     }
 
     public int GetAttackBuff()
@@ -81,6 +141,21 @@ public class AxieSkillEffectManager : MonoBehaviour
                 new Vector3(scaleWished, this.transform.localScale.y, this.transform.localScale.z);
             lastXAxisScale = scaleWished;
         }
+
+        ManageDurations();
+    }
+
+    private void ManageDurations()
+    {
+        foreach (var skillEffectPair in skillEffectDurationList)
+        {
+            skillEffectPair.duration -= Time.deltaTime;
+
+            if (skillEffectPair.duration <= 0)
+            {
+                RemoveStatusEffect(skillEffectPair.effect.statusEffect);
+            }
+        }
     }
 
     public List<SkillEffect> GetAllSkillEffectsNotPassives()
@@ -118,6 +193,8 @@ public class AxieSkillEffectManager : MonoBehaviour
                     break;
             }
         }
+
+        SetSkillEffectDuration(skillEffect);
 
         SkillEffectGraphic skillEffectGraphic =
             skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
@@ -189,6 +266,20 @@ public class AxieSkillEffectManager : MonoBehaviour
                     RemoveStatusEffect(skillEffectCounter.statusEffect);
                 }
             }
+        }
+    }
+
+    private void SetSkillEffectDuration(SkillEffect skillEffect)
+    {
+        if (skillEffectDurationList.Any(x => x.effect.statusEffect == skillEffect.statusEffect))
+        {
+            skillEffectDurationList.Single(x => x.effect.statusEffect == skillEffect.statusEffect).duration =
+                skillEffect.skillDuration == 0 ? 999999 : skillEffect.skillDuration;
+        }
+        else
+        {
+            skillEffectDurationList.Add(new SkillEffectDuration(skillEffect,
+                skillEffect.skillDuration == 0 ? 999999 : skillEffect.skillDuration));
         }
     }
 

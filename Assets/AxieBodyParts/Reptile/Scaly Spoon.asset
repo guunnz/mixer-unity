@@ -17,7 +17,7 @@ MonoBehaviour:
   - statusEffect: 30
     statusApplyType: 0
     statusApplyTypeIsTarget: 0
-    skillTriggerType: 2
+    skillTriggerType: 3
     isPassive: 1
     skillDuration: 0
     PoisonStack: 0

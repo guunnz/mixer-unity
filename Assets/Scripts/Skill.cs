@@ -245,11 +245,13 @@ public class DamageTargetPair
 {
     public int axieId;
     public float Value;
+    public bool onlyShield;
 
-    public DamageTargetPair(int axieId, float value)
+    public DamageTargetPair(int axieId, float value, bool onlyShield = false)
     {
         this.axieId = axieId;
         Value = value;
+        this.onlyShield = onlyShield;
     }
 }
 
@@ -303,9 +305,9 @@ public class Skill : MonoBehaviour
     public float attackAudioTiming;
     internal bool debug;
 
-    public void AddDamageTargetPair(int axieId, float damage)
+    public void AddDamageTargetPair(int axieId, float damage, bool onlyShield = false)
     {
-        damageTargetPairs.Add(new DamageTargetPair(axieId, damage));
+        damageTargetPairs.Add(new DamageTargetPair(axieId, damage, onlyShield));
     }
 
     public void AddHealTargetPair(int axieId, float heal)
@@ -366,7 +368,32 @@ public class Skill : MonoBehaviour
     {
         foreach (var target in targetList)
         {
-            target.axieIngameStats.currentHP -= damageTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value;
+            DamageTargetPair pair = damageTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
+
+            if (pair == null)
+                return;
+
+            if (pair.onlyShield)
+            {
+                target.axieIngameStats.currentShield -= pair.Value;
+            }
+            else
+            {
+                float shieldDamage = pair.Value - target.axieIngameStats.currentShield;
+
+                if (shieldDamage < 0)
+                {
+                    target.axieIngameStats.currentShield -= pair.Value;
+                }
+                else
+                {
+                    target.axieIngameStats.currentShield = 0;
+
+                    target.axieIngameStats.currentHP -= shieldDamage;
+                }
+            }
+
+            target.axieSkillController.DamageReceived(@class, pair.Value, self);
         }
     }
 

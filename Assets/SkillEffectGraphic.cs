@@ -10,7 +10,7 @@ public class SkillEffectGraphic : MonoBehaviour
     private Image image;
     public TextMeshProUGUI tmPro;
     public StatusEffectEnum statusEffect;
-    private int Times = 1;
+    internal int Times = 1;
 
     private void Start()
     {
