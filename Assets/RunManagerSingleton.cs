@@ -46,7 +46,6 @@ public class RunManagerSingleton : MonoBehaviour
         if (won)
         {
             wins++;
-            losses++;
             if (wins >= 12)
             {
                 Debug.Log("YOU WON THE RUN");
