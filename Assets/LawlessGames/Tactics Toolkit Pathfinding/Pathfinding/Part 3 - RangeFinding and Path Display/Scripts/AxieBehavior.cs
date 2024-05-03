@@ -218,10 +218,22 @@ public class AxieBehavior : MonoBehaviour
             {
                 var target = myController.CurrentTarget;
                 float attackDamage = AxieStatCalculator.GetAttackDamage(myController.stats);
+
+                attackDamage += this.myController.axieSkillController.passives.AutoattackIncrease;
+
+                attackDamage -= (attackDamage * (target.axieSkillController.passives.DamageReductionAmount / 100f));
+
+                if (!myController.axieSkillEffectManager.IsJinxed() &&
+                    !target.axieSkillController.passives.ImmuneToCriticals)
+                {
+                    //Calculate criticals
+                }
+
                 if (myController.axieSkillController.IgnoresShieldOnAttack())
                 {
                     target.axieIngameStats.currentHP -= attackDamage;
-                    target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, attackDamage, myController);
+                    target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, attackDamage,
+                        myController);
                 }
                 else
                 {
@@ -240,6 +252,8 @@ public class AxieBehavior : MonoBehaviour
                     target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, shieldDamage,
                         myController);
                 }
+                
+                myController.axieSkillController.OnAutoAttack(attackDamage);
             }
             // myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
         }

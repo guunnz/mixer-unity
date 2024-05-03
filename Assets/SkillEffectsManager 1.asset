@@ -55,21 +55,21 @@ MonoBehaviour:
     statusEffectEnum: 21
   - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
     statusEffectEnum: 22
-  - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
+  - sprite: {fileID: 21300000, guid: 9109dbfe4223f7a499471a546634e6b4, type: 3}
     statusEffectEnum: 23
   - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
     statusEffectEnum: 24
-  - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
+  - sprite: {fileID: 21300000, guid: 82efb4ba60e5e184c985dcfc760140c1, type: 3}
     statusEffectEnum: 25
   - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
     statusEffectEnum: 26
   - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
     statusEffectEnum: 27
-  - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
+  - sprite: {fileID: 21300000, guid: 0759696f3b24a3441bc7176f488606c8, type: 3}
     statusEffectEnum: 28
-  - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
+  - sprite: {fileID: 21300000, guid: 45ac3522939c3dc4a9177598c951291a, type: 3}
     statusEffectEnum: 29
-  - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
+  - sprite: {fileID: 21300000, guid: dfba0ca1ddc1dba449f5f302dfc6afcf, type: 3}
     statusEffectEnum: 30
-  - sprite: {fileID: 21300000, guid: f79628906e1b64844a07b7362393e799, type: 3}
+  - sprite: {fileID: 21300000, guid: 3fb60523745bbe447830499b2d55172c, type: 3}
     statusEffectEnum: 31

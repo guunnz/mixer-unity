@@ -393,7 +393,7 @@ public class Skill : MonoBehaviour
                 }
             }
 
-            target.axieSkillController.DamageReceived(@class, pair.Value, self);
+            target.axieSkillController.DamageReceived(@class, pair.Value, self,true);
         }
     }
 

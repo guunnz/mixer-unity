@@ -58,6 +58,24 @@ public class SkillLauncher : MonoBehaviour
         yield return StartCoroutine(DoSkills(skillActions));
     }
 
+    public IEnumerator ThrowPassive(AxieSkill passive, SkeletonAnimation skeletonAnimation, AxieController target,
+        AxieController self)
+    {
+        List<SkillAction> skillActions = new List<SkillAction>();
+
+        Skill skill = Instantiate(passive.bodyPartSO.prefab).GetComponent<Skill>();
+
+        skill.axieBodyPart = passive.bodyPartSO;
+        skill.self = self;
+        skill.@class = passive.bodyPartSO.bodyPartClass;
+        skill.skeletonAnimation = skeletonAnimation;
+        skill.ExtraTimerCast++;
+        skillActions.AddRange(PerformPassive(passive, skill, self, target));
+
+
+        yield return StartCoroutine(DoSkills(skillActions));
+    }
+
     IEnumerator DoSkills(List<SkillAction> skillActions)
     {
         float timer = 0;
@@ -581,8 +599,7 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.DamageEqualsBasicAttack)
             {
-                dmgPair.damage =
-                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
+                dmgPair.damage = AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
             }
 
             if (skillEffect.ExtraDamagePercentage > 0)
@@ -598,20 +615,33 @@ public class SkillLauncher : MonoBehaviour
             }
 
             dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
-
+            
+            dmgPair.damage -= (dmgPair.damage * (target.axieSkillController.passives.DamageReductionAmount / 100));
+            
             damagePairList.Add(dmgPair);
         }
+        
+        
 
         if (self.axieSkillEffectManager.IsJinxed())
             return damagePairList;
 
+        //Calculate crits
         foreach (var damagePair in damagePairList)
         {
+            if (damagePair.axieController.axieSkillController.passives.ImmuneToCriticals)
+            {
+                Debug.Log("Immune to crits.");
+                continue;
+            }
+
             if (skillEffect.AlwaysCritical || damagePair.axieController.axieSkillEffectManager.IsLethal())
             {
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
             }
         }
+        
+    
 
         return damagePairList;
     }
@@ -653,6 +683,68 @@ public class SkillLauncher : MonoBehaviour
             skillInstance.AddDamageTargetPair(damagePair.axieController.AxieId, damagePair.damage,
                 onlyShield: skillEffect.Fragile);
         }
+    }
+
+    private List<SkillAction> PerformPassive(AxieSkill skill, Skill skillInstance, AxieController self,
+        AxieController target, bool multiCasted = false)
+    {
+        List<SkillAction> skillActions = new List<SkillAction>();
+        List<DamagePair> damagePairs = new List<DamagePair>();
+        foreach (var skillEffect in skill.bodyPartSO.skillEffects)
+        {
+            SpecialEffectExtras specialEffectExtras = HandleSpecialEffects(skillEffect, target, skill, self);
+
+            List<AxieController> targets = new List<AxieController>();
+            if (skillEffect.hasTriggerCondition)
+            {
+                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
+                if (FulfillsTriggerCondition(skill, skillInstance, self, target, skillEffect))
+                {
+                    if (!multiCasted && skillEffect.MultiCastTimes > 0)
+                    {
+                        for (int i = 0; i < skillEffect.MultiCastTimes; i++)
+                        {
+                            PerformSkill(skill, skillInstance, self, target, true);
+                        }
+                    }
+                }
+
+                if (skill.bodyPartSO.damage > 0)
+                {
+                    damagePairs = DamageCalculation(skill, skillInstance, self, targets, skillEffect, target,
+                        specialEffectExtras, multiCasted);
+                }
+
+                skillInstance.targetList = targets;
+            }
+            else
+            {
+                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
+                skillInstance.targetList = targets;
+
+                if (!multiCasted && skillEffect.MultiCastTimes > 0)
+                {
+                    for (int i = 0; i < skillEffect.MultiCastTimes; i++)
+                    {
+                        PerformSkill(skill, skillInstance, self, target, true);
+                    }
+                }
+
+                if (skill.bodyPartSO.damage > 0)
+                {
+                    damagePairs = DamageCalculation(skill, skillInstance, self, targets, skillEffect, target,
+                        specialEffectExtras, multiCasted);
+                }
+            }
+
+            if (damagePairs.Count > 0)
+            {
+                PerformDamage(skillInstance, damagePairs, skillEffect);
+            }
+            BuildSkillActions(skillInstance, ref skillActions);
+        }
+
+        return skillActions;
     }
 
     private List<SkillAction> PerformSkill(AxieSkill skill, Skill skillInstance, AxieController self,

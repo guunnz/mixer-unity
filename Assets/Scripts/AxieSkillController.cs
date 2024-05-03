@@ -18,9 +18,6 @@ public class AxiePassives
     public List<AxieBodyPart> bodyPartList = new List<AxieBodyPart>();
     public bool ImmuneToCriticals;
     public bool AutoattacksIgnoreShield;
-    public bool DamageReduction;
-    public bool IgnoreShield;
-
     public float AutoattackIncrease;
     public int DamageReductionAmount;
     public int RangedReflectDamageAmount;
@@ -33,6 +30,7 @@ public class AxieSkillController : MonoBehaviour
 
     public AxiePassives passives = new AxiePassives();
 
+    public AxieController self;
 
     private int comboCost;
 
@@ -136,11 +134,67 @@ public class AxieSkillController : MonoBehaviour
         }
     }
 
-    public void DamageReceived(AxieClass attackClass, float damage, AxieController attacker)
+    public void OnAutoAttack(float damage)
     {
+        if (passives.bodyPartList.Any(x =>
+                x.skillEffects.Any(y => y.skillTriggerType == SkillTriggerType.PassiveOnAttack)))
+        {
+            return;
+        }
+
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
         {
-            //DO STUFF PASSIVE ON DAMAGE TAKEN
+            foreach (var skillEffect in bodyPartPassive.skillEffects)
+            {
+                if (skillEffect.skillTriggerType != SkillTriggerType.PassiveOnAttack)
+                    return;
+
+                StartCoroutine(
+                    SkillLauncher.Instance.ThrowPassive(
+                        skillList.FirstOrDefault(x => x.skillName == bodyPartPassive.skillName), self.SkeletonAnim,
+                        self.CurrentTarget, self));
+            }
+        }
+    }
+
+    public void DamageReceived(AxieClass attackClass, float damage, AxieController attacker, bool isSkill = false)
+    {
+        if (this.self.axieSkillEffectManager.IsPoisoned())
+        {
+            self.axieIngameStats.currentHP -=
+                AxieStatCalculator.GetPoisonDamage(self.axieSkillEffectManager.PoisonStacks());
+        }
+
+        foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
+        {
+            if (passives.RangedReflectDamageAmount > 0)
+            {
+                Debug.Log("Reflected Ranged to: " + attacker.AxieId + " / Damage: " +
+                          damage * passives.RangedReflectDamageAmount / 100f);
+            }
+
+            if (passives.MeleeReflectDamageAmount > 0)
+            {
+                Debug.Log("Reflected melee to: " + attacker.AxieId + " / Damage: " +
+                          damage * passives.MeleeReflectDamageAmount / 100f);
+            }
+
+            foreach (var skillEffect in bodyPartPassive.skillEffects)
+            {
+                foreach (var bodyPart in skillEffect.specialActivactionWhenReceiveDamage)
+                {
+                    if (bodyPart.onlyAbilities && !isSkill)
+                        continue;
+
+                    if (bodyPart.axieClass != attackClass)
+                        continue;
+
+                    StartCoroutine(
+                        SkillLauncher.Instance.ThrowPassive(
+                            skillList.FirstOrDefault(x => x.skillName == bodyPartPassive.skillName), self.SkeletonAnim,
+                            attacker, self));
+                }
+            }
         }
     }
 
