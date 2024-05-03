@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Gerbil_Tail
   m_EditorClassIdentifier: 
   skillName: 81
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 8
-    skillTriggerType: 2
+    statusApplyTypeIsTarget: 0
+    skillTriggerType: 4
     isPassive: 0
     skillDuration: 0
     PoisonStack: 0

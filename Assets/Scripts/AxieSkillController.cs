@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 [System.Serializable]
 public class AxieSkill
 {
@@ -134,7 +133,7 @@ public class AxieSkillController : MonoBehaviour
         }
     }
 
-    public void OnAutoAttack(float damage)
+    public void OnAutoAttack()
     {
         if (passives.bodyPartList.Any(x =>
                 x.skillEffects.Any(y => y.skillTriggerType == SkillTriggerType.PassiveOnAttack)))

@@ -599,7 +599,8 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.DamageEqualsBasicAttack)
             {
-                dmgPair.damage = AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
+                dmgPair.damage =
+                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
             }
 
             if (skillEffect.ExtraDamagePercentage > 0)
@@ -615,13 +616,18 @@ public class SkillLauncher : MonoBehaviour
             }
 
             dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
-            
-            dmgPair.damage -= (dmgPair.damage * (target.axieSkillController.passives.DamageReductionAmount / 100));
-            
+
+            int damageReduction = target.axieSkillController.passives.DamageReductionAmount;
+
+            if (target.axieSkillEffectManager.IsAromad())
+            {
+                damageReduction -= 50;
+            }
+
+            dmgPair.damage -= (dmgPair.damage * (damageReduction / 100));
+
             damagePairList.Add(dmgPair);
         }
-        
-        
 
         if (self.axieSkillEffectManager.IsJinxed())
             return damagePairList;
@@ -640,8 +646,7 @@ public class SkillLauncher : MonoBehaviour
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
             }
         }
-        
-    
+
 
         return damagePairList;
     }
@@ -741,6 +746,7 @@ public class SkillLauncher : MonoBehaviour
             {
                 PerformDamage(skillInstance, damagePairs, skillEffect);
             }
+
             BuildSkillActions(skillInstance, ref skillActions);
         }
 

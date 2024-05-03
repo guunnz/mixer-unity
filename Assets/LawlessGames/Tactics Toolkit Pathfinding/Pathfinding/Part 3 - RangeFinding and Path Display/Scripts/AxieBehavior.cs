@@ -79,6 +79,12 @@ public class AxieBehavior : MonoBehaviour
             state = AxieState.Stunned;
         }
 
+        if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+        {
+            state = AxieState.Idle;
+            myController.CurrentTarget = null;
+        }
+
         OnAction();
         axieState = state;
         switch (state)
@@ -221,7 +227,15 @@ public class AxieBehavior : MonoBehaviour
 
                 attackDamage += this.myController.axieSkillController.passives.AutoattackIncrease;
 
-                attackDamage -= (attackDamage * (target.axieSkillController.passives.DamageReductionAmount / 100f));
+
+                float damageReduction = target.axieSkillController.passives.DamageReductionAmount;
+
+                if (target.axieSkillEffectManager.IsAromad())
+                {
+                    damageReduction -= 50;
+                }
+
+                attackDamage -= (attackDamage * (damageReduction / 100f));
 
                 if (!myController.axieSkillEffectManager.IsJinxed() &&
                     !target.axieSkillController.passives.ImmuneToCriticals)
@@ -252,8 +266,8 @@ public class AxieBehavior : MonoBehaviour
                     target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, shieldDamage,
                         myController);
                 }
-                
-                myController.axieSkillController.OnAutoAttack(attackDamage);
+
+                myController.axieSkillController.OnAutoAttack();
             }
             // myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
         }

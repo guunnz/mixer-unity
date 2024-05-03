@@ -87,6 +87,11 @@ public class AxieSkillEffectManager : MonoBehaviour
     public bool IsFragiled()
     {
         return skillEffects.Any(x => x.Fragile);
+    }    
+    
+    public bool IsAromad()
+    {
+        return skillEffects.Any(x => x.Aroma);
     }
 
     public bool IsChilled()

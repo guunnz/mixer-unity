@@ -30,7 +30,8 @@ public class Team : MonoBehaviour
 
     public List<AxieController> GetCharacters()
     {
-        return new List<AxieController>(characters.Keys).Where(x => x.axieBehavior.axieState != AxieState.Killed)
+        return new List<AxieController>(characters.Keys).Where(x =>
+                x.axieBehavior.axieState != AxieState.Killed && !x.axieSkillEffectManager.IsStenched())
             .ToList();
     }
 
