@@ -641,9 +641,16 @@ public class SkillLauncher : MonoBehaviour
                 continue;
             }
 
-            if (skillEffect.AlwaysCritical || damagePair.axieController.axieSkillEffectManager.IsLethal())
+            if (skillEffect.AlwaysCritical)
             {
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+            }
+
+            if (damagePair.axieController.axieSkillEffectManager.IsLethal())
+            {
+                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+
+                damagePair.axieController.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);
             }
         }
 
