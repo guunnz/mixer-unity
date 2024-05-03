@@ -93,7 +93,7 @@ MonoBehaviour:
   bodyPart: 4
   prefab: {fileID: 5186805709753591173, guid: 8d936ae91e998284fac61901f081bee6, type: 3}
   bodyPartClass: 1
-  damage: 20
+  damage: 999
   shield: 0
   energy: 1
-  description: Wombo, breaks target shield
+  description: Wombo, deals damage only to shields

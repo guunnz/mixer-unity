@@ -178,7 +178,7 @@ public class AxieSkillEffectManager : MonoBehaviour
             Debug.LogWarning("Setting random effect");
             statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
 
-            while (statusEffect == StatusEffectEnum.Sleep)
+            while (statusEffect == StatusEffectEnum.Sleep || statusEffect == StatusEffectEnum.Fragile)
             {
                 statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
             }
