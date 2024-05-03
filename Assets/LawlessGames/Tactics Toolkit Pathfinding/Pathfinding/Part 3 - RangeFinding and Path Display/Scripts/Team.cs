@@ -219,7 +219,7 @@ public class Team : MonoBehaviour
         }
         else
         {
-            if (character.startingRow < 5)
+            if (character.startingRow < 4)
             {
                 gridLocation = new Vector2Int(Mathf.Abs(character.startingRow - 7),
                     Mathf.Abs(character.startingCol - 5));
@@ -229,7 +229,7 @@ public class Team : MonoBehaviour
                 gridLocation = new Vector2Int(character.startingRow, character.startingCol);
             }
 
-            while (gridLocation.Value.x < 5)
+            while (gridLocation.Value.x < 4)
             {
                 gridLocation = new Vector2Int(character.startingRow + 1, character.startingCol);
             }
