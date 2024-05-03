@@ -221,13 +221,19 @@ public class Team : MonoBehaviour
         {
             if (character.startingRow < 5)
             {
-                gridLocation = new Vector2Int(Mathf.Abs(character.startingRow - 7), Mathf.Abs(character.startingCol - 5));
+                gridLocation = new Vector2Int(Mathf.Abs(character.startingRow - 7),
+                    Mathf.Abs(character.startingCol - 5));
             }
             else
             {
                 gridLocation = new Vector2Int(character.startingRow, character.startingCol);
             }
-          
+
+            while (gridLocation.Value.x < 5)
+            {
+                gridLocation = new Vector2Int(character.startingRow + 1, character.startingCol);
+            }
+
             startingTile = MapManager.Instance.map[gridLocation.Value];
         }
 
@@ -377,7 +383,7 @@ public class Team : MonoBehaviour
         AxieController furthestCharacter = null;
         int maxManhattanDistance = 0;
         var characters = enemyTeam.GetCharacters();
-        
+
         if (characters.Count > 1)
         {
             characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
