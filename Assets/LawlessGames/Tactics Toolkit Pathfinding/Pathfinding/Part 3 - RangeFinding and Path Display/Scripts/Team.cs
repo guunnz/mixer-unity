@@ -31,7 +31,7 @@ public class Team : MonoBehaviour
     public List<AxieController> GetCharacters()
     {
         return new List<AxieController>(characters.Keys).Where(x =>
-                x.axieBehavior.axieState != AxieState.Killed && !x.axieSkillEffectManager.IsStenched())
+                x.axieBehavior.axieState != AxieState.Killed)
             .ToList();
     }
 
@@ -219,7 +219,15 @@ public class Team : MonoBehaviour
         }
         else
         {
-            gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+            if (character.startingRow < 5)
+            {
+                gridLocation = new Vector2Int(Mathf.Abs(character.startingRow - 7), Mathf.Abs(character.startingCol - 5));
+            }
+            else
+            {
+                gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+            }
+          
             startingTile = MapManager.Instance.map[gridLocation.Value];
         }
 
@@ -330,7 +338,13 @@ public class Team : MonoBehaviour
         int minManhattanDistance = int.MaxValue;
         float minTransformDistance = float.MaxValue;
 
-        foreach (var other in enemyTeam.GetCharacters())
+        var characters = enemyTeam.GetCharacters();
+        if (characters.Count > 1)
+        {
+            characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
+        }
+
+        foreach (var other in characters)
         {
             int manhattanDistance =
                 Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
@@ -362,8 +376,14 @@ public class Team : MonoBehaviour
     {
         AxieController furthestCharacter = null;
         int maxManhattanDistance = 0;
+        var characters = enemyTeam.GetCharacters();
+        
+        if (characters.Count > 1)
+        {
+            characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
+        }
 
-        foreach (var other in enemyTeam.GetCharacters())
+        foreach (var other in characters)
         {
             int manhattanDistance =
                 Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +

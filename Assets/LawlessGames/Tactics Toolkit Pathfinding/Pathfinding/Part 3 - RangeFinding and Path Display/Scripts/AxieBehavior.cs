@@ -74,7 +74,7 @@ public class AxieBehavior : MonoBehaviour
         if (state == axieState && state != AxieState.Idle)
             return;
 
-        if (axieSkillEffectManager.IsStunned())
+        if (axieSkillEffectManager.IsStunned() && state != AxieState.Killed && state != AxieState.Victory)
         {
             state = AxieState.Stunned;
         }
@@ -221,7 +221,7 @@ public class AxieBehavior : MonoBehaviour
                     yield break;
                 }
             }
-            
+
             if (myController.axieIngameStats.axieClass == AxieClass.Bird)
                 AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
                     myController.CurrentTarget.transform);
