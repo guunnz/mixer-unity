@@ -76,7 +76,8 @@ public class AxieController : MonoBehaviour
 
     public void UpdateStats()
     {
-        if (axieIngameStats.axieClass == AxieClass.Bird)
+        if (axieIngameStats.axieClass == AxieClass.Bird || axieIngameStats.axieClass == AxieClass.Dusk ||
+            axieIngameStats.axieClass == AxieClass.Bug)
         {
             axieIngameStats.Range = 4;
             Range = 4;
