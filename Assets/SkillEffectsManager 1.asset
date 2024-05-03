@@ -43,6 +43,8 @@ MonoBehaviour:
     statusEffectEnum: 14
   - sprite: {fileID: 21300000, guid: 9980ac9844c49934785079a2cea7f2f9, type: 3}
     statusEffectEnum: 16
+  - sprite: {fileID: 21300000, guid: bd51bfc377fedbe469a398b4a380e69b, type: 3}
+    statusEffectEnum: 15
   - sprite: {fileID: 21300000, guid: 3207ea997d376544188e67fd4452e4d7, type: 3}
     statusEffectEnum: 17
   - sprite: {fileID: 21300000, guid: 11d7cca76b89f004ba4d7bb8bd9dfff6, type: 3}

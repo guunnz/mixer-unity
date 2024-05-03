@@ -9,7 +9,6 @@ using UnityEngine.Serialization;
 using Random = System.Random;
 
 
-
 public class SkillEffectDuration
 {
     public SkillEffect effect;
@@ -32,7 +31,9 @@ public class AxieSkillEffectManager : MonoBehaviour
     public GameObject skillEffectGraphicPrefab;
     public Transform HorizontalLayoutGroup;
     private Transform mainCharacter;
+
     private int lastXAxisScale;
+
 //
     public bool IsDebuff()
     {
@@ -87,8 +88,8 @@ public class AxieSkillEffectManager : MonoBehaviour
     public bool IsFragiled()
     {
         return skillEffects.Any(x => x.Fragile);
-    }    
-    
+    }
+
     public bool IsAromad()
     {
         return skillEffects.Any(x => x.Aroma);
@@ -171,10 +172,69 @@ public class AxieSkillEffectManager : MonoBehaviour
     public void AddStatusEffect(SkillEffect skillEffect)
     {
         StatusEffectEnum statusEffect = skillEffect.statusEffect;
+        SkillEffect clone = (SkillEffect)skillEffect.Clone();
         if (statusEffect == StatusEffectEnum.None)
         {
             Debug.LogWarning("Setting random effect");
             statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+
+            while (statusEffect == StatusEffectEnum.Sleep)
+            {
+                statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+            }
+
+            switch (statusEffect)
+            {
+                case StatusEffectEnum.Aroma:
+                    clone.Aroma = true;
+                    break;
+                case StatusEffectEnum.Chill:
+                    clone.Chill = true;
+                    break;
+                case StatusEffectEnum.Fear:
+                    clone.Fear = true;
+                    break;
+                case StatusEffectEnum.Stench:
+                    clone.Stench = true;
+                    break;
+                case StatusEffectEnum.Fragile:
+                    clone.Fragile = true;
+                    break;
+                case StatusEffectEnum.Jinx:
+                    clone.Jinx = true;
+                    break;
+                case StatusEffectEnum.Lethal:
+                    clone.Lethal = true;
+                    break;
+                case StatusEffectEnum.Stun:
+                    clone.Stun = true;
+                    break;
+                case StatusEffectEnum.Poison:
+                    clone.Poison = true;
+                    break;
+                case StatusEffectEnum.AttackPositive:
+                    clone.Attack = 1;
+                    break;
+                case StatusEffectEnum.SpeedPositive:
+                    clone.Speed = 1;
+                    break;
+                case StatusEffectEnum.MoralePositive:
+                    clone.Morale = 1;
+                    break;
+                case StatusEffectEnum.AttackNegative:
+                    clone.Attack = -1;
+                    break;
+                case StatusEffectEnum.SpeedNegative:
+                    clone.Speed = -1;
+                    break;
+                case StatusEffectEnum.MoraleNegative:
+                    clone.Morale = -1;
+                    break;
+                default:
+                    // If the statusEffect does not match any of the cases above,
+                    // there's nothing to set, so we can return or break here.
+                    return;
+            }
         }
 
         SkillEffect skillEffectOnList = skillEffects.FirstOrDefault(x => x.statusEffect == statusEffect);
@@ -198,8 +258,12 @@ public class AxieSkillEffectManager : MonoBehaviour
                     break;
             }
         }
+        else
+        {
+            skillEffects.Add(clone);
+        }
 
-        SetSkillEffectDuration(skillEffect);
+        SetSkillEffectDuration(skillEffect, statusEffect);
 
         SkillEffectGraphic skillEffectGraphic =
             skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
@@ -210,7 +274,7 @@ public class AxieSkillEffectManager : MonoBehaviour
                 Instantiate(skillEffectGraphicPrefab, Vector3.zero, Quaternion.identity, HorizontalLayoutGroup)
                     .GetComponent<SkillEffectGraphic>();
 
-            skillEffectGraphic.statusEffect = skillEffect.statusEffect;
+            skillEffectGraphic.statusEffect = statusEffect;
 
             skillEffectGraphic.transform.localPosition = Vector3.zero;
             skillEffectGraphic.transform.localEulerAngles = Vector3.zero;
@@ -274,11 +338,11 @@ public class AxieSkillEffectManager : MonoBehaviour
         }
     }
 
-    private void SetSkillEffectDuration(SkillEffect skillEffect)
+    private void SetSkillEffectDuration(SkillEffect skillEffect, StatusEffectEnum statusEffectEnum)
     {
-        if (skillEffectDurationList.Any(x => x.effect.statusEffect == skillEffect.statusEffect))
+        if (skillEffectDurationList.Any(x => x.effect.statusEffect == statusEffectEnum))
         {
-            skillEffectDurationList.Single(x => x.effect.statusEffect == skillEffect.statusEffect).duration =
+            skillEffectDurationList.Single(x => x.effect.statusEffect == statusEffectEnum).duration =
                 skillEffect.skillDuration == 0 ? 999999 : skillEffect.skillDuration;
         }
         else

@@ -79,12 +79,6 @@ public class AxieBehavior : MonoBehaviour
             state = AxieState.Stunned;
         }
 
-        if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
-        {
-            state = AxieState.Idle;
-            myController.CurrentTarget = null;
-        }
-
         OnAction();
         axieState = state;
         switch (state)
@@ -93,6 +87,17 @@ public class AxieBehavior : MonoBehaviour
                 StartCoroutine(TryAttack());
                 break;
             case AxieState.Casting:
+                if (myController.CurrentTarget != null)
+                {
+                    if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+                    {
+                        state = AxieState.Idle;
+                        axieState = state;
+                        myController.CurrentTarget = null;
+                        return;
+                    }
+                }
+
                 CastSpell();
                 break;
             case AxieState.Moving:
@@ -207,14 +212,35 @@ public class AxieBehavior : MonoBehaviour
             myController.SkeletonAnim.timeScale =
                 myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / AttackSpeed;
 
+            if (myController.CurrentTarget != null)
+            {
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+                {
+                    axieState = AxieState.Idle;
+                    myController.CurrentTarget = null;
+                    yield break;
+                }
+            }
+            
             if (myController.axieIngameStats.axieClass == AxieClass.Bird)
                 AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
                     myController.CurrentTarget.transform);
 
             yield return new WaitForSecondsRealtime(AttackSpeed);
 
-            if (myController.CurrentTarget == null)
+            if (myController.CurrentTarget != null)
+            {
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+                {
+                    axieState = AxieState.Idle;
+                    myController.CurrentTarget = null;
+                    yield break;
+                }
+            }
+            else
+            {
                 yield break;
+            }
 
             if (axieSkillEffectManager.IsFeared())
             {

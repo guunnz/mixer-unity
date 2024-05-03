@@ -6,14 +6,14 @@ using UnityEngine;
 public class OpenShopOnEnable : MonoBehaviour
 {
     public GameObject shop;
-
+    public bool reverse = false;
     private void OnEnable()
     {
-        shop.SetActive(true);
+        shop.SetActive((!reverse));
     }
 
     private void OnDisable()
     {
-        shop.SetActive(false);
+        shop.SetActive(reverse);
     }
 }

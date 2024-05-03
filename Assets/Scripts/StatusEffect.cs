@@ -1,10 +1,16 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Serialization;
-
+using System;
+using System.Collections.Generic;
 [System.Serializable]
-public class SkillEffect
+public class SkillEffect: ICloneable
 {
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
+    
     public StatusEffectEnum statusEffect;
     public StatusApplyType statusApplyType;
     public bool statusApplyTypeIsTarget;

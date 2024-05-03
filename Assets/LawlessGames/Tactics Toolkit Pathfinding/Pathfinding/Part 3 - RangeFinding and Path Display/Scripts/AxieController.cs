@@ -175,6 +175,11 @@ public class AxieController : MonoBehaviour
         }
         else
         {
+            if (axieIngameStats.CurrentEnergy >= axieIngameStats.MaxEnergy)
+            {
+                axieIngameStats.CurrentEnergy = axieIngameStats.MaxEnergy;
+            }
+
             statsManagerUI.SetMana((float)Math.Round(axieIngameStats.CurrentEnergy, 2) /
                                    axieSkillController.GetComboCost());
             statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);

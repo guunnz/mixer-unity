@@ -393,7 +393,7 @@ public class Skill : MonoBehaviour
                 }
             }
 
-            target.axieSkillController.DamageReceived(@class, pair.Value, self,true);
+            target.axieSkillController.DamageReceived(@class, pair.Value, self, true);
         }
     }
 
@@ -571,14 +571,14 @@ public class Skill : MonoBehaviour
     {
         foreach (var target in statusEffectTargetList)
         {
-            var skillEffects = statusEffectTargetPair.FirstOrDefault(x => x.axieId == target.AxieId)
-                ?.skillEffects;
+            var pair = statusEffectTargetPair.FirstOrDefault(x => x.axieId == target.AxieId);
+            var skillEffects = pair?.skillEffects;
 
             if (skillEffects != null)
             {
                 foreach (var skillEffect in skillEffects)
                 {
-                    StatusManager.Instance.SetStatus(skillEffect, self, target);
+                    StatusManager.Instance.SetStatus(skillEffect, target, pair.remove);
                 }
             }
         }

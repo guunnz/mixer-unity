@@ -16,7 +16,7 @@ MonoBehaviour:
   skillEffects:
   - statusEffect: 0
     statusApplyType: 2
-    statusApplyTypeIsTarget: 1
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
