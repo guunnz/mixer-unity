@@ -42,11 +42,21 @@ public class StatsManager : MonoBehaviour
 
     public void SetMana(float mana)
     {
+        if (mana > 1)
+        {
+            mana = 1;
+        }
+
         ManaRectangle.Width = mana;
     }
 
     public void SetHP(float mana)
     {
+        if (mana > 1)
+        {
+            mana = 1;
+        }
+
         HPRectangle.Width = mana;
     }
 

@@ -42,11 +42,16 @@ public class AxieController : MonoBehaviour
     public Team badTeam;
     internal bool imGood;
     public int Range = 1;
+    public bool ShrimpOnStart;
+    internal bool Shrimped = false;
 
     public List<AxieController> GetAdjacent()
     {
-        return MapManager.Instance.GetAdjacentTiles(this.standingOnTile)
-            .Where(x => x.currentOccupier.imGood == this.imGood).Select(x => x.currentOccupier).ToList();
+        if (MapManager.Instance.GetAdjacentTiles(this.standingOnTile).All(x => x.currentOccupier == null))
+        {
+            return null;
+        }
+        return MapManager.Instance.GetAdjacentTiles(this.standingOnTile).Where(x => x.currentOccupier.imGood == this.imGood).Select(x => x.currentOccupier).ToList();
     }
 
     public Vector3 GetPartPosition(BodyPart part)
@@ -140,6 +145,7 @@ public class AxieController : MonoBehaviour
     {
         if (goodTeam == null)
             return;
+
         if (CurrentTarget != null && CurrentTarget.axieIngameStats.currentHP <= 0)
         {
             CurrentTarget = null;
@@ -157,9 +163,17 @@ public class AxieController : MonoBehaviour
             }
         }
 
+        if (ShrimpOnStart && !Shrimped && CurrentTarget != null)
+        {
+            axieBehavior.DoAction(AxieState.Shrimping);
+            Shrimped = true;
+            return;
+        }
+
         if (imGood && badTeam.GetCharacters().Count == 0 ||
             !imGood && goodTeam.GetCharacters().Count == 0)
         {
+            Shrimped = false;
             axieBehavior.DoAction(AxieState.Victory);
             return;
         }
@@ -169,8 +183,16 @@ public class AxieController : MonoBehaviour
             axieIngameStats.currentHP = axieIngameStats.HP;
         }
 
+
+        if (!axieSkillEffectManager.IsChilled())
+        {
+            axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
+        }
+
+
         if (axieIngameStats.currentHP <= 0)
         {
+            Shrimped = false;
             axieBehavior.DoAction(AxieState.Killed);
             return;
         }
@@ -213,22 +235,23 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        if (!axieSkillEffectManager.IsChilled())
-        {
-            axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
-        }
-
         if (axieIngameStats.CurrentEnergy >= axieSkillController.GetComboCost())
         {
             axieBehavior.DoAction(AxieState.Casting);
             return;
         }
 
-        if (CurrentTarget != null && state.isMoving == false && CurrentTarget.standingOnTile != null && standingOnTile != null &&
+        if (CurrentTarget != null && state.isMoving == false && CurrentTarget.standingOnTile != null &&
+            standingOnTile != null &&
             GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= axieIngameStats.Range
            )
         {
             axieBehavior.DoAction(AxieState.Attacking);
+
+            if (CurrentTarget == null)
+            {
+                return;
+            }
 
             if (CurrentTarget.standingOnTile.grid2DLocation.y != standingOnTile.grid2DLocation.y)
             {

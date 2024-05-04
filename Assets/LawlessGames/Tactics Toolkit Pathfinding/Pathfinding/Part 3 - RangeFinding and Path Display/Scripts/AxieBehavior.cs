@@ -33,7 +33,9 @@ public class AxieBehavior : MonoBehaviour
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
         AttackSpeed = AxieStatCalculator.GetAttackSpeed(myController.stats);
-        if (myController.axieIngameStats.axieClass == AxieClass.Bird)
+        if (myController.axieIngameStats.axieClass == AxieClass.Bird ||
+            myController.axieIngameStats.axieClass == AxieClass.Dusk ||
+            myController.axieIngameStats.axieClass == AxieClass.Bug)
         {
             AttackAnimation = "attack/ranged/cast-multi";
         }
@@ -89,7 +91,9 @@ public class AxieBehavior : MonoBehaviour
             case AxieState.Casting:
                 if (myController.CurrentTarget != null)
                 {
-                    if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+                    if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() &&
+                        !myController.CurrentTarget.badTeam.GetCharacters()
+                            .All(x => x.axieSkillEffectManager.IsStenched()))
                     {
                         state = AxieState.Idle;
                         axieState = state;
@@ -214,8 +218,8 @@ public class AxieBehavior : MonoBehaviour
 
             if (myController.CurrentTarget != null)
             {
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() &&
-                    myController.CurrentTarget.goodTeam.GetCharacters().Count > 1)
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.CurrentTarget
+                        .badTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -223,7 +227,9 @@ public class AxieBehavior : MonoBehaviour
                 }
             }
 
-            if (myController.axieIngameStats.axieClass == AxieClass.Bird)
+            if (myController.axieIngameStats.axieClass == AxieClass.Bird ||
+                myController.axieIngameStats.axieClass == AxieClass.Dusk ||
+                myController.axieIngameStats.axieClass == AxieClass.Bug)
                 AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
                     myController.CurrentTarget.transform);
 
@@ -231,8 +237,8 @@ public class AxieBehavior : MonoBehaviour
 
             if (myController.CurrentTarget != null)
             {
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && 
-                    myController.CurrentTarget.goodTeam.GetCharacters().Count > 1)
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.CurrentTarget
+                        .badTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -268,7 +274,16 @@ public class AxieBehavior : MonoBehaviour
                 if (!myController.axieSkillEffectManager.IsJinxed() &&
                     !target.axieSkillController.passives.ImmuneToCriticals)
                 {
-                    //Calculate criticals
+                    bool isLethal = target.axieSkillEffectManager.IsLethal();
+                    if (isLethal || Random.Range(0, 1f) <= AxieStatCalculator.GetCritChance(myController.stats))
+                    {
+                        attackDamage *= AxieStatCalculator.GetCritDamage(myController.stats);
+
+                        if (isLethal)
+                        {
+                            target.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);
+                        }
+                    }
                 }
 
                 if (myController.axieSkillController.IgnoresShieldOnAttack())

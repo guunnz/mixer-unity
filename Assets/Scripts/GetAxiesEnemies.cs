@@ -141,14 +141,14 @@ namespace enemies
             }
         }
 
-        IEnumerator SpawnAxies(List<AxieEnemy> axieIds, AxieIdsWrapper axieIdsWrapper, bool isOpponent)
+        IEnumerator SpawnAxies(List<AxieEnemy> axieList, AxieIdsWrapper axieIdsWrapper, bool isOpponent)
         {
-            foreach (var VARIABLE in axieIds)
+            foreach (var VARIABLE in axieList)
             {
                 AxieForBackend axieForBackend = axieIdsWrapper.axies.Single(x => x.axieid == VARIABLE.id);
-                axieSpawner.SpawnAxieById(VARIABLE.id, BodyPart.Horn, SkillName.HerosBane,
+                axieSpawner.SpawnEnemyAxieById(VARIABLE.id, BodyPart.Horn, SkillName.HerosBane,
                     VARIABLE.axieClass,
-                    VARIABLE.stats, axieForBackend, isOpponent);
+                    VARIABLE.stats, axieForBackend,axieList, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
 

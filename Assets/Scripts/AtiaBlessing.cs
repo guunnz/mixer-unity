@@ -21,7 +21,8 @@ public class AtiaBlessing : MonoBehaviour
         Increase_HP,
         Increase_Morale,
         Increase_Speed,
-        Increase_Skill
+        Increase_Skill,
+        Backdoor
     }
 
     public Team goodTeam;
@@ -42,7 +43,7 @@ public class AtiaBlessing : MonoBehaviour
     {
         for (int i = 0; i <= (int)AxieClass.Dusk; i++)
         {
-            for (int y = 0; y <= (int)Blessing.Increase_Skill; y++)
+            for (int y = 0; y <= (int)Blessing.Backdoor; y++)
             {
                 blessingAugument.Add(new BlessingAugument() { axieClass = (AxieClass)i, blessing = (Blessing)y });
             }
@@ -84,12 +85,35 @@ public class AtiaBlessing : MonoBehaviour
             augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         }
 
-        FirstAugumentText.text = "Increase your " + augument1.axieClass.ToString() + " axies " +
-                                 augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
-        SecondAugumentText.text = "Increase your " + augument2.axieClass.ToString() + " axies " +
-                                  augument2.blessing.ToString().Replace("_", " ") + " stat by 10";
-        ThirdAugumentText.text = "Increase your " + augument3.axieClass.ToString() + " axies " +
-                                 augument3.blessing.ToString().Replace("_", " ") + " stat by 10";
+        if (augument1.blessing != Blessing.Backdoor)
+        {
+            FirstAugumentText.text = "Increase your " + augument1.axieClass.ToString() + " axies " +
+                                     augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
+        }
+        else
+        {
+            FirstAugumentText.text = "Your " + augument1.axieClass.ToString() + " axies now Backdoor on start";
+        }
+
+        if (augument2.blessing != Blessing.Backdoor)
+        {
+            SecondAugumentText.text = "Increase your " + augument2.axieClass.ToString() + " axies " +
+                                      augument2.blessing.ToString().Replace("_", " ") + " stat by 10";
+        }
+        else
+        {
+            SecondAugumentText.text = "Your " + augument2.axieClass.ToString() + " axies now Backdoor on start";
+        }
+
+        if (augument3.blessing != Blessing.Backdoor)
+        {
+            ThirdAugumentText.text = "Increase your " + augument3.axieClass.ToString() + " axies " +
+                                     augument3.blessing.ToString().Replace("_", " ") + " stat by 10";
+        }
+        else
+        {
+            ThirdAugumentText.text = "Your " + augument3.axieClass.ToString() + " axies now Backdoor on start";
+        }
 
         FirstAugument.onClick.RemoveAllListeners();
         SecondAugument.onClick.RemoveAllListeners();
@@ -123,6 +147,9 @@ public class AtiaBlessing : MonoBehaviour
                     break;
                 case Blessing.Increase_Skill:
                     controller.stats.skill += 10;
+                    break;
+                case Blessing.Backdoor:
+                    controller.ShrimpOnStart = true;
                     break;
             }
         }

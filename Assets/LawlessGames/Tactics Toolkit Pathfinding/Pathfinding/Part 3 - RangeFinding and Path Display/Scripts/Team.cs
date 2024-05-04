@@ -4,6 +4,7 @@ using System.Linq;
 using enemies;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class Team : MonoBehaviour
@@ -120,6 +121,11 @@ public class Team : MonoBehaviour
             StartBattle();
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
         if (battleStarted)
         {
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
@@ -229,9 +235,14 @@ public class Team : MonoBehaviour
                 gridLocation = new Vector2Int(character.startingRow, character.startingCol);
             }
 
-            while (gridLocation.Value.x < 4)
+            while (gridLocation.Value.x < 4 || MapManager.Instance.map[gridLocation.Value].occupied)
             {
-                gridLocation = new Vector2Int(character.startingRow + 1, character.startingCol);
+                gridLocation = new Vector2Int(gridLocation.Value.x + 1, character.startingCol);
+
+                if (gridLocation.Value.y >= 5)
+                {
+                    gridLocation = new Vector2Int(gridLocation.Value.x, character.startingCol - 1);
+                }
             }
 
             startingTile = MapManager.Instance.map[gridLocation.Value];
@@ -345,7 +356,7 @@ public class Team : MonoBehaviour
         float minTransformDistance = float.MaxValue;
 
         var characters = enemyTeam.GetCharacters();
-        if (characters.Count > 1)
+        if (!characters.All(x => x.axieSkillEffectManager.IsStenched()))
         {
             characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
         }

@@ -459,6 +459,8 @@ public class SkillLauncher : MonoBehaviour
                 break;
         }
 
+        statusEffectTargetList.RemoveAll(x => x == null);
+
         if (skillEffect.statusApplyTypeIsTarget)
         {
             targetList = statusEffectTargetList;
