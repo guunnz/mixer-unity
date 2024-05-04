@@ -68,9 +68,9 @@ public class AtiaBlessing : MonoBehaviour
         FirstAugumentText.text = "Increase your " + augument1.axieClass.ToString() + " axies " +
                                  augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
         SecondAugumentText.text = "Increase your " + augument2.axieClass.ToString() + " axies " +
-                                  augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
+                                  augument2.blessing.ToString().Replace("_", " ") + " stat by 10";
         ThirdAugumentText.text = "Increase your " + augument3.axieClass.ToString() + " axies " +
-                                 augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
+                                 augument3.blessing.ToString().Replace("_", " ") + " stat by 10";
 
         FirstAugument.onClick.RemoveAllListeners();
         SecondAugument.onClick.RemoveAllListeners();
