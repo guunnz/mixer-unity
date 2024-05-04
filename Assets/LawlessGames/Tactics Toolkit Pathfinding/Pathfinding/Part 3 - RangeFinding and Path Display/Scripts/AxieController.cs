@@ -224,8 +224,9 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        if (CurrentTarget != null && state.isMoving == false &&
-            GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= axieIngameStats.Range)
+        if (CurrentTarget != null && state.isMoving == false && CurrentTarget.standingOnTile != null && standingOnTile != null &&
+            GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= axieIngameStats.Range
+           )
         {
             axieBehavior.DoAction(AxieState.Attacking);
 

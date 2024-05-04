@@ -28,6 +28,8 @@ public class RunManagerSingleton : MonoBehaviour
     public Image[] lives;
     public Team goodTeam;
 
+    public AtiaBlessing atiaBlessing;
+
     private void Awake()
     {
         if (instance != null)
@@ -41,6 +43,7 @@ public class RunManagerSingleton : MonoBehaviour
 
     public void SetResult(bool won)
     {
+        atiaBlessing.ShowRandomAuguments();
         coins += 3;
         coinsText.text = coins.ToString();
         if (won)

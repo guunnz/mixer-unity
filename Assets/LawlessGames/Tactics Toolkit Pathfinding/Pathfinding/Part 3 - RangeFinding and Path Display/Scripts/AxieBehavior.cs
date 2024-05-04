@@ -214,7 +214,8 @@ public class AxieBehavior : MonoBehaviour
 
             if (myController.CurrentTarget != null)
             {
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() &&
+                    myController.CurrentTarget.goodTeam.GetCharacters().Count > 1)
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -230,7 +231,8 @@ public class AxieBehavior : MonoBehaviour
 
             if (myController.CurrentTarget != null)
             {
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched())
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && 
+                    myController.CurrentTarget.goodTeam.GetCharacters().Count > 1)
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
