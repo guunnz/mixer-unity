@@ -4322,7 +4322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b425ca42508d194598e2facd6d10144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgrade: 0
+  upgrade: 1
+  AtiasBlessing: {fileID: 304333233}
 --- !u!1 &744627063
 GameObject:
   m_ObjectHideFlags: 0
@@ -5438,7 +5439,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b425ca42508d194598e2facd6d10144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgrade: 0
+  upgrade: 2
+  AtiasBlessing: {fileID: 304333233}
 --- !u!114 &895742591 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8939892399820461824, guid: 2590551e27d868f4989b54230eed0e94,
@@ -11356,7 +11358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b425ca42508d194598e2facd6d10144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgrade: 0
+  upgrade: 3
+  AtiasBlessing: {fileID: 304333233}
 --- !u!1 &1780096892
 GameObject:
   m_ObjectHideFlags: 0
@@ -14429,6 +14432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrade: 0
+  AtiasBlessing: {fileID: 304333233}
 --- !u!1 &2001723006
 GameObject:
   m_ObjectHideFlags: 0

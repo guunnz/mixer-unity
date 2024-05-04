@@ -52,19 +52,38 @@ public class AtiaBlessing : MonoBehaviour
     public void ShowRandomAuguments()
     {
         AugumentSelect.SetActive(true);
-
+        List<AxieController> axieControllers = goodTeam.GetCharactersAll();
         List<BlessingAugument> blessingAuguments = new List<BlessingAugument>();
 
         blessingAuguments.AddRange(blessingAugument);
 
         BlessingAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         blessingAuguments.Remove(augument1);
-
         BlessingAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         blessingAuguments.Remove(augument2);
-
         BlessingAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         blessingAuguments.Remove(augument3);
+        while (axieControllers.Count(x => x.axieIngameStats.axieClass == augument1.axieClass) == 0)
+        {
+            augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+        }
+
+        blessingAuguments.Remove(augument2);
+
+
+        while (axieControllers.Count(x => x.axieIngameStats.axieClass == augument2.axieClass) == 0)
+        {
+            augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+        }
+
+        blessingAuguments.Remove(augument2);
+
+
+        while (axieControllers.Count(x => x.axieIngameStats.axieClass == augument3.axieClass) == 0)
+        {
+            augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+        }
+
         FirstAugumentText.text = "Increase your " + augument1.axieClass.ToString() + " axies " +
                                  augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
         SecondAugumentText.text = "Increase your " + augument2.axieClass.ToString() + " axies " +

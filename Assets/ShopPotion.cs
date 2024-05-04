@@ -8,8 +8,12 @@ public class ShopPotion : MonoBehaviour
 {
     public Upgrades upgrade;
 
+    public GameObject AtiasBlessing;
+
     private void OnMouseDown()
     {
+        if (AtiasBlessing.activeSelf)
+            return;
         RunManagerSingleton.instance.BuyUpgrade((int)upgrade);
     }
 }
