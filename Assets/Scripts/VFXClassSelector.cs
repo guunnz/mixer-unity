@@ -7,12 +7,20 @@ public class VFXClassSelector : MonoBehaviour
 {
     public string skinName;
     private SkeletonAnimation skeletonGraphic;
+    public bool AquaticIsAqua = false;
 
     public void SetAnimation(AxieClass axieClass)
     {
         skeletonGraphic = GetComponent<SkeletonAnimation>();
 
-        skeletonGraphic.initialSkinName = axieClass.ToString().ToLower() + skinName;
+        string skinNameString = axieClass.ToString().ToLower() + skinName;
+
+        if (AquaticIsAqua)
+        {
+            skinNameString = skinNameString.Replace("aquatic", "aqua");
+        }
+
+        skeletonGraphic.initialSkinName = skinNameString;
 
         skeletonGraphic.Initialize(true);
     }
