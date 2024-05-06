@@ -47,11 +47,23 @@ public class AxieController : MonoBehaviour
 
     public List<AxieController> GetAdjacent()
     {
-        if (MapManager.Instance.GetAdjacentTiles(this.standingOnTile).All(x => x.currentOccupier == null))
+        try
+        {
+            if (this.standingOnTile == null)
+                return null;
+            if (MapManager.Instance.GetAdjacentTiles(this.standingOnTile).All(x => x.currentOccupier == null))
+            {
+                return null;
+            }
+
+            return MapManager.Instance.GetAdjacentTiles(this.standingOnTile)
+                .Where(x => x.currentOccupier != null && x.currentOccupier.imGood == this.imGood)
+                .Select(x => x.currentOccupier).ToList();
+        }
+        catch (Exception e)
         {
             return null;
         }
-        return MapManager.Instance.GetAdjacentTiles(this.standingOnTile).Where(x => x.currentOccupier.imGood == this.imGood).Select(x => x.currentOccupier).ToList();
     }
 
     public Vector3 GetPartPosition(BodyPart part)

@@ -212,10 +212,6 @@ public class AxieBehavior : MonoBehaviour
 
         while (axieState == AxieState.Attacking)
         {
-            myController.SkeletonAnim.AnimationName = AttackAnimation;
-            myController.SkeletonAnim.timeScale =
-                myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / AttackSpeed;
-
             if (myController.CurrentTarget != null)
             {
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.CurrentTarget
@@ -225,6 +221,13 @@ public class AxieBehavior : MonoBehaviour
                     myController.CurrentTarget = null;
                     yield break;
                 }
+            }
+            
+            if (!myController.axieSkillController.OnAutoAttack())
+            {
+                myController.SkeletonAnim.AnimationName = AttackAnimation;
+                myController.SkeletonAnim.timeScale =
+                    myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / AttackSpeed;
             }
 
             if (myController.axieIngameStats.axieClass == AxieClass.Bird ||
@@ -310,8 +313,10 @@ public class AxieBehavior : MonoBehaviour
                         myController);
                 }
 
-                myController.axieSkillController.OnAutoAttack();
+
             }
+            
+            
             // myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
         }
     }

@@ -470,7 +470,7 @@ public class Skill : MonoBehaviour
     {
         string animationName = animationToPlay.ToString();
 
-        StartCoroutine(Destroy());
+        // StartCoroutine(Destroy());
 
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');

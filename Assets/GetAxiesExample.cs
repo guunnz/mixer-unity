@@ -190,7 +190,10 @@ public class GetAxiesExample : MonoBehaviour
         public int order;
         public AxieClass partClass => (AxieClass)Enum.Parse(typeof(AxieClass), @class, true);
         public BodyPart BodyPart => (BodyPart)Enum.Parse(typeof(BodyPart), type, true);
-        public SkillName SkillName => (SkillName)Enum.Parse(typeof(SkillName), name.Replace(" ", ""), true);
+
+        public SkillName SkillName =>
+            (SkillName)Enum.Parse(typeof(SkillName), name.Replace(" ", "").Replace("'", ""), true);
+
         public Ability[] abilities;
         public bool selected;
     }

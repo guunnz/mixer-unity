@@ -12,6 +12,7 @@ public class AxieSkill
     public AxieBodyPart bodyPartSO;
 }
 
+[System.Serializable]
 public class AxiePassives
 {
     public List<AxieBodyPart> bodyPartList = new List<AxieBodyPart>();
@@ -27,7 +28,7 @@ public class AxieSkillController : MonoBehaviour
 {
     public List<AxieSkill> skillList = new List<AxieSkill>();
 
-    public AxiePassives passives = new AxiePassives();
+    public AxiePassives passives;
 
     public AxieController self;
 
@@ -92,7 +93,6 @@ public class AxieSkillController : MonoBehaviour
     public void AddAndHandleSpecialCases(AxieSkill skill, List<AxieBodyPart> bodyParts, AxieBodyPart bodyPartToExclude)
     {
         skillList.Add(skill);
-        passives = new AxiePassives();
         switch (skill.skillName)
         {
             case SkillName.Imp:
@@ -106,54 +106,34 @@ public class AxieSkillController : MonoBehaviour
             default:
                 break;
         }
-
-        foreach (var axieBodyPart in bodyParts)
-        {
-            if (axieBodyPart.isPassive)
-            {
-                AxiePassives passives = new AxiePassives();
-                List<SkillEffect> skillEffects = axieBodyPart.skillEffects.ToList();
-                foreach (var skillEffect in skillEffects)
-                {
-                    if (skillEffect.InmuneToCriticalStrike)
-                    {
-                        passives.ImmuneToCriticals = true;
-                    }
-
-                    passives.MeleeReflectDamageAmount += skillEffect.MeleeReflect;
-                    passives.RangedReflectDamageAmount += skillEffect.RangedReflect;
-                    passives.DamageReductionAmount += skillEffect.ReduceDamagePercentage;
-                    passives.AutoattackIncrease += skillEffect.skillTriggerType == SkillTriggerType.PassiveOnAttack
-                        ? axieBodyPart.damage
-                        : 0f;
-
-                    passives.bodyPartList.Add(axieBodyPart);
-                }
-            }
-        }
     }
 
-    public void OnAutoAttack()
+    public bool OnAutoAttack()
     {
-        if (passives.bodyPartList.Any(x =>
+        if (!passives.bodyPartList.Any(x =>
                 x.skillEffects.Any(y => y.skillTriggerType == SkillTriggerType.PassiveOnAttack)))
         {
-            return;
+            return false;
         }
+
+        bool hasPassiveOnAutoattack = false;
 
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
         {
             foreach (var skillEffect in bodyPartPassive.skillEffects)
             {
                 if (skillEffect.skillTriggerType != SkillTriggerType.PassiveOnAttack)
-                    return;
+                    continue;
 
+                hasPassiveOnAutoattack = true;
                 StartCoroutine(
                     SkillLauncher.Instance.ThrowPassive(
                         skillList.FirstOrDefault(x => x.skillName == bodyPartPassive.skillName), self.SkeletonAnim,
                         self.CurrentTarget, self));
             }
         }
+
+        return hasPassiveOnAutoattack;
     }
 
     public void DamageReceived(AxieClass attackClass, float damage, AxieController attacker, bool isSkill = false)
@@ -202,6 +182,7 @@ public class AxieSkillController : MonoBehaviour
     {
         skillList.Clear();
 
+        passives = new AxiePassives();
         var pairedBodyParts = new List<AxieBodyPart>();
 
         for (int i = 0; i < skillNames.Count; i++)
@@ -216,6 +197,30 @@ public class AxieSkillController : MonoBehaviour
             skill.skillName = bodyPart.skillName;
             skill.bodyPartSO = bodyPart;
             skill.bodyPart = bodyPart.bodyPart;
+
+
+            if (skill.bodyPartSO.isPassive)
+            {
+                List<SkillEffect> skillEffects = skill.bodyPartSO.skillEffects.ToList();
+                foreach (var skillEffect in skillEffects)
+                {
+                    if (skillEffect.InmuneToCriticalStrike)
+                    {
+                        passives.ImmuneToCriticals = true;
+                    }
+
+                    passives.MeleeReflectDamageAmount += skillEffect.MeleeReflect;
+                    passives.RangedReflectDamageAmount += skillEffect.RangedReflect;
+                    passives.DamageReductionAmount += skillEffect.ReduceDamagePercentage;
+                    passives.AutoattacksIgnoreShield = skillEffect.IgnoresShield;
+                    passives.AutoattackIncrease += skillEffect.skillTriggerType == SkillTriggerType.PassiveOnAttack
+                        ? skill.bodyPartSO.damage
+                        : 0f;
+
+                    passives.bodyPartList.Add(skill.bodyPartSO);
+                }
+            }
+
 
             AddAndHandleSpecialCases(skill, pairedBodyParts, bodyPart);
         }
