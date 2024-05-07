@@ -110,7 +110,7 @@ public class Team : MonoBehaviour
             character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
                                              character.axieSkillController.GetComboCost());
             character.SkeletonAnim.Initialize(true);
-            PositionCharacterOnTile(character, startingTile);
+            PositionCharacterOnTile(character, startingTile, true);
         }
     }
 
@@ -509,9 +509,9 @@ public class Team : MonoBehaviour
         }
     }
 
-    private void PositionCharacterOnTile(AxieController character, OverlayTile tile)
+    private void PositionCharacterOnTile(AxieController character, OverlayTile tile, bool force = false)
     {
-        if (!tile.occupied)
+        if (!tile.occupied || force)
         {
             character.transform.position = tile.transform.position;
             tile.occupied = true;
