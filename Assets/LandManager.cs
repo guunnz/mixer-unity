@@ -66,6 +66,7 @@ public class LandManager : MonoBehaviour
     public void ChooseLand()
     {
         currentLandType = AccountManager.userLands.results[indexChoosing].LandTypeEnum;
+        RunManagerSingleton.instance.landType = currentLandType;
         for (int i = 0; i < landSquares.Length; i++)
         {
             MaterialTipColorChanger materialTipColorChanger = landSquares[i];

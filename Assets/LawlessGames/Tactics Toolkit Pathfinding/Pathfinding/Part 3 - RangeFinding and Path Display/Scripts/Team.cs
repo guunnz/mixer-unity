@@ -116,6 +116,12 @@ public class Team : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.P) && this.isGoodTeam)
+        {
+            target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
+                GetCharactersAll());
+        }
+
         if (Input.GetKey(KeyCode.H)) // Move all characters
         {
             StartBattle();
@@ -173,7 +179,8 @@ public class Team : MonoBehaviour
                 if (character.Key == null)
                     continue;
                 if (character.Key.axieBehavior.axieState == AxieState.Shrimping ||
-                    character.Key.axieBehavior.axieState == AxieState.Killed)
+                    character.Key.axieBehavior.axieState == AxieState.Killed ||
+                    character.Key.axieBehavior.axieState == AxieState.Stunned)
                     continue;
                 if (character.Value.isMoving && character.Value.path != null && character.Value.path.Count > 0)
                 {
@@ -225,25 +232,8 @@ public class Team : MonoBehaviour
         }
         else
         {
-            if (character.startingRow < 4)
-            {
-                gridLocation = new Vector2Int(Mathf.Abs(character.startingRow - 7),
-                    Mathf.Abs(character.startingCol - 5));
-            }
-            else
-            {
-                gridLocation = new Vector2Int(character.startingRow, character.startingCol);
-            }
+            gridLocation = new Vector2Int(character.startingRow, character.startingCol);
 
-            while (gridLocation.Value.x < 4 || MapManager.Instance.map[gridLocation.Value].occupied)
-            {
-                gridLocation = new Vector2Int(gridLocation.Value.x + 1, character.startingCol);
-
-                if (gridLocation.Value.y >= 5)
-                {
-                    gridLocation = new Vector2Int(gridLocation.Value.x, character.startingCol - 1);
-                }
-            }
 
             startingTile = MapManager.Instance.map[gridLocation.Value];
         }

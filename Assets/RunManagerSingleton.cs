@@ -6,22 +6,27 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum Upgrades
+public class AxieUpgrade
 {
-    HP,
-    Skill,
-    Speed,
-    Morale
+    public string axieId;
+    public AtiaBlessing.Blessing upgrade;
 }
+
 
 public class RunManagerSingleton : MonoBehaviour
 {
     static public RunManagerSingleton instance;
 
+    public string userId;
     public int wins;
     public int losses;
     public int coins = 3;
     public Color lifeLostColor;
+    public LandType landType;
+    internal List<bool> resultsBools = new List<bool>();
+    internal List<string> opponents = new List<string>();
+    internal List<UpgradeAugument> globalUpgrades = new List<UpgradeAugument>();
+    internal List<AxieUpgrade> axieUpgrades = new List<AxieUpgrade>();
 
     public TextMeshProUGUI results;
     public TextMeshProUGUI coinsText;
@@ -43,6 +48,7 @@ public class RunManagerSingleton : MonoBehaviour
 
     public void SetResult(bool won)
     {
+        resultsBools.Add(won);
         atiaBlessing.ShowRandomAuguments();
         coins += 3;
         coinsText.text = coins.ToString();
@@ -81,9 +87,10 @@ public class RunManagerSingleton : MonoBehaviour
             return;
         coins--;
         coinsText.text = coins.ToString();
-        switch ((Upgrades)upgrade)
+        globalUpgrades.Add(new UpgradeAugument() { upgrade_id = upgrade });
+        switch ((AtiaBlessing.Blessing)upgrade)
         {
-            case Upgrades.Speed:
+            case AtiaBlessing.Blessing.Increase_Speed:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
                     axieController.stats.speed += 10;
@@ -91,7 +98,7 @@ public class RunManagerSingleton : MonoBehaviour
                 }
 
                 break;
-            case Upgrades.Skill:
+            case AtiaBlessing.Blessing.Increase_Skill:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
                     axieController.stats.skill += 10;
@@ -99,7 +106,7 @@ public class RunManagerSingleton : MonoBehaviour
                 }
 
                 break;
-            case Upgrades.HP:
+            case AtiaBlessing.Blessing.Increase_HP:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
                     axieController.stats.hp += 10;
@@ -107,7 +114,7 @@ public class RunManagerSingleton : MonoBehaviour
                 }
 
                 break;
-            case Upgrades.Morale:
+            case AtiaBlessing.Blessing.Increase_Morale:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
                     axieController.stats.morale += 10;

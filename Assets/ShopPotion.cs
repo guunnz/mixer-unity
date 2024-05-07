@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ShopPotion : MonoBehaviour
 {
-    public Upgrades upgrade;
+    public AtiaBlessing.Blessing upgrade;
 
     public GameObject AtiasBlessing;
 

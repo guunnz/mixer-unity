@@ -14,7 +14,7 @@ static public class AxieStatCalculator
 
     static public float GetHP(GetAxiesExample.Stats stats)
     {
-        float minHp = 3000f;
+        float minHp = 600f;
         //el 27 son la stat mas baja de hp que puede tener un axie, se lo resto para unicamente tener en cuenta los stats extra a eso
         //el 4 es la importancia de estos stats sobrantes, ( si fuera 1, un axie con 61 de hp tendria 300 + (61-27)
         return (minHp + (4f * (stats.hp - 27f))) * 7;

@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AxieIdsWrapper
+public class Opponent
 {
-    public AxieForBackend[] axies;
+    public string user_id;
+    public int landType;
+    public AxieTeamDatabase team;
 }
 
 

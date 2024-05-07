@@ -22,7 +22,7 @@ public enum AxieClass
     Aquatic,
     Mech,
     Dawn,
-    Dusk
+    Dusk,
 }
 
 [System.Serializable]
@@ -216,12 +216,12 @@ namespace Game
 
             if (isEnemy)
             {
-                controller.startingCol = axieForBackend.col;
-                controller.startingRow = axieForBackend.row;
+                controller.startingCol = axieForBackend.position.col;
+                controller.startingRow = axieForBackend.position.row;
                 enemyTeam.AddCharacter(controller);
 
                 List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
-                    .Where(x => axieForBackend.combo.Select(x => (SkillName)x).Contains(x.skillName)).ToList();
+                    .Where(x => axieForBackend.combos.combos_id.Select(x => (SkillName)x).Contains(x.skillName)).ToList();
 
                 controller.axieSkillController.SetAxieSkills(skillsSelected.Select(x => x.skillName).ToList(),
                     skillsSelected.Select(x => x.bodyPart).ToList());

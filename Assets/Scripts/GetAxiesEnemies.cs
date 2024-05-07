@@ -35,20 +35,21 @@ namespace enemies
                 await landBattleTarget.GetScoreAsync(
                     (RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
 
-            AxieIdsWrapper wrapper = JsonConvert.DeserializeObject<AxieIdsWrapper>(json);
-            GetOpponentTeam(wrapper);
+            Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);
+            Debug.Log("Opponent land type is: " + opponent.landType.ToString());
+            GetOpponentTeam(opponent);
         }
 
-        void GetOpponentTeam(AxieIdsWrapper jsonAxieIds)
+        void GetOpponentTeam(Opponent jsonAxieIds)
         {
             graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
-            List<AxieForBackend> axieIds = jsonAxieIds.axies.ToList();
+            List<AxieForBackend> axieIds = jsonAxieIds.team.axie.ToList();
             string combinedQuery = "";
 
             for (int i = 0; i < axieIds.Count; i++)
             {
                 string individualQuery = $@"
-            axie{i}: axie(axieId: ""{axieIds[i].axieid}"") {{
+            axie{i}: axie(axieId: ""{axieIds[i].axie_id}"") {{
                 birthDate
                 name
                 genes
@@ -83,8 +84,7 @@ namespace enemies
             StartCoroutine(RequestGraphQL(combinedQuery, jsonAxieIds, true));
         }
 
-
-        private IEnumerator RequestGraphQL(string query, AxieIdsWrapper axieIdsWrapper, bool isOpponent = false)
+        private IEnumerator RequestGraphQL(string query, Opponent opponent, bool isOpponent = false)
         {
             var request = new Request()
             {
@@ -115,9 +115,10 @@ namespace enemies
                 string responseString = task.Result;
                 if (isOpponent)
                 {
+                    RunManagerSingleton.instance.opponents.Add(opponent.user_id);
                     RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
 
-                    List<AxieEnemy> axieIds = new List<AxieEnemy>();
+                    List<AxieEnemy> axieEnemies = new List<AxieEnemy>();
 
                     // Assuming axieIds is a List<string>
                     AxieEnemy axie1 = axiesData.Data["axie0"];
@@ -125,14 +126,15 @@ namespace enemies
                     AxieEnemy axie3 = axiesData.Data["axie2"];
                     AxieEnemy axie4 = axiesData.Data["axie3"];
                     AxieEnemy axie5 = axiesData.Data["axie4"];
-                    axieIds.Add(axie1);
-                    axieIds.Add(axie2);
-                    axieIds.Add(axie3);
-                    axieIds.Add(axie4);
-                    axieIds.Add(axie5);
+                    axieEnemies.Add(axie1);
+                    axieEnemies.Add(axie2);
+                    axieEnemies.Add(axie3);
+                    axieEnemies.Add(axie4);
+                    axieEnemies.Add(axie5);
 
-                    axieIds = axieIds.OrderBy(x => int.Parse(x.id)).ToList();
-                    StartCoroutine(SpawnAxies(axieIds, axieIdsWrapper, isOpponent));
+                    axieEnemies = axieEnemies.OrderBy(x => int.Parse(x.id)).ToList();
+                    OpponentTeamManager.instance.SetupTeam(opponent, axieEnemies);
+                    StartCoroutine(SpawnAxies(axieEnemies, opponent, isOpponent));
                 }
             }
             catch (System.Exception ex)
@@ -141,14 +143,14 @@ namespace enemies
             }
         }
 
-        IEnumerator SpawnAxies(List<AxieEnemy> axieList, AxieIdsWrapper axieIdsWrapper, bool isOpponent)
+        IEnumerator SpawnAxies(List<AxieEnemy> axieList, Opponent opponent, bool isOpponent)
         {
-            foreach (var VARIABLE in axieList)
+            foreach (var axieEnemy in axieList)
             {
-                AxieForBackend axieForBackend = axieIdsWrapper.axies.Single(x => x.axieid == VARIABLE.id);
-                axieSpawner.SpawnEnemyAxieById(VARIABLE.id, BodyPart.Horn, SkillName.HerosBane,
-                    VARIABLE.axieClass,
-                    VARIABLE.stats, axieForBackend,axieList, isOpponent);
+                AxieForBackend axieForBackend = opponent.team.axie.Single(x => x.axie_id == axieEnemy.id);
+                axieSpawner.SpawnEnemyAxieById(axieEnemy.id, BodyPart.Horn, SkillName.HerosBane,
+                    axieEnemy.axieClass,
+                    axieEnemy.stats, axieForBackend, axieList, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
 

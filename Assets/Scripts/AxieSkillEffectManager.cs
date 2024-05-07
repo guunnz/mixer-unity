@@ -263,7 +263,7 @@ public class AxieSkillEffectManager : MonoBehaviour
             skillEffects.Add(clone);
         }
 
-        SetSkillEffectDuration(skillEffect, statusEffect);
+        SetSkillEffectDuration(clone, statusEffect);
 
         SkillEffectGraphic skillEffectGraphic =
             skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);

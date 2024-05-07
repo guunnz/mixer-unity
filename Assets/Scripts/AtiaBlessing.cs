@@ -5,24 +5,25 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
-public class BlessingAugument
+public class UpgradeAugument
 {
-    public AtiaBlessing.Blessing blessing;
-    public AxieClass axieClass;
+    public int upgrade_id;
+    public List<int> axieClass;
 }
 
 public class AtiaBlessing : MonoBehaviour
 {
     public enum Blessing
     {
-        Increase_HP,
+        Increase_HP = 1,
         Increase_Morale,
         Increase_Speed,
         Increase_Skill,
-        Backdoor
+        Backdoor,
     }
 
     public Team goodTeam;
@@ -35,7 +36,7 @@ public class AtiaBlessing : MonoBehaviour
     public UnityEngine.UI.Button SecondAugument;
     public UnityEngine.UI.Button ThirdAugument;
 
-    private List<BlessingAugument> blessingAugument = new List<BlessingAugument>();
+    public List<UpgradeAugument> blessingAugument = new List<UpgradeAugument>();
 
     public GameObject AugumentSelect;
 
@@ -45,7 +46,8 @@ public class AtiaBlessing : MonoBehaviour
         {
             for (int y = 0; y <= (int)Blessing.Backdoor; y++)
             {
-                blessingAugument.Add(new BlessingAugument() { axieClass = (AxieClass)i, blessing = (Blessing)y });
+                blessingAugument.Add(new UpgradeAugument()
+                    { axieClass = new List<int>() { i }, upgrade_id = y });
             }
         }
     }
@@ -53,62 +55,51 @@ public class AtiaBlessing : MonoBehaviour
     public void ShowRandomAuguments()
     {
         AugumentSelect.SetActive(true);
-        List<AxieController> axieControllers = goodTeam.GetCharactersAll();
-        List<BlessingAugument> blessingAuguments = new List<BlessingAugument>();
+        List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
 
         blessingAuguments.AddRange(blessingAugument);
 
-        BlessingAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+        UpgradeAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         blessingAuguments.Remove(augument1);
-        BlessingAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+        UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         blessingAuguments.Remove(augument2);
-        BlessingAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+        UpgradeAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
         blessingAuguments.Remove(augument3);
-        while (axieControllers.Count(x => x.axieIngameStats.axieClass == augument1.axieClass) == 0)
-        {
-            augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-        }
+
+        augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
         blessingAuguments.Remove(augument2);
 
-
-        while (axieControllers.Count(x => x.axieIngameStats.axieClass == augument2.axieClass) == 0)
-        {
-            augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-        }
+        augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
         blessingAuguments.Remove(augument2);
 
+        augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
-        while (axieControllers.Count(x => x.axieIngameStats.axieClass == augument3.axieClass) == 0)
-        {
-            augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-        }
-
-        if (augument1.blessing != Blessing.Backdoor)
+        if (augument1.upgrade_id != (int)Blessing.Backdoor)
         {
             FirstAugumentText.text = "Increase your " + augument1.axieClass.ToString() + " axies " +
-                                     augument1.blessing.ToString().Replace("_", " ") + " stat by 10";
+                                     augument1.upgrade_id.ToString().Replace("_", " ") + " stat by 10";
         }
         else
         {
             FirstAugumentText.text = "Your " + augument1.axieClass.ToString() + " axies now Backdoor on start";
         }
 
-        if (augument2.blessing != Blessing.Backdoor)
+        if (augument2.upgrade_id != (int)Blessing.Backdoor)
         {
             SecondAugumentText.text = "Increase your " + augument2.axieClass.ToString() + " axies " +
-                                      augument2.blessing.ToString().Replace("_", " ") + " stat by 10";
+                                      augument2.upgrade_id.ToString().Replace("_", " ") + " stat by 10";
         }
         else
         {
             SecondAugumentText.text = "Your " + augument2.axieClass.ToString() + " axies now Backdoor on start";
         }
 
-        if (augument3.blessing != Blessing.Backdoor)
+        if (augument3.upgrade_id != (int)Blessing.Backdoor)
         {
             ThirdAugumentText.text = "Increase your " + augument3.axieClass.ToString() + " axies " +
-                                     augument3.blessing.ToString().Replace("_", " ") + " stat by 10";
+                                     augument3.upgrade_id.ToString().Replace("_", " ") + " stat by 10";
         }
         else
         {
@@ -119,36 +110,69 @@ public class AtiaBlessing : MonoBehaviour
         SecondAugument.onClick.RemoveAllListeners();
         ThirdAugument.onClick.RemoveAllListeners();
 
-        FirstAugument.onClick.AddListener(delegate { AugumentUpgrade(blessingAugument.IndexOf(augument1)); });
-        SecondAugument.onClick.AddListener(delegate { AugumentUpgrade(blessingAugument.IndexOf(augument2)); });
-        ThirdAugument.onClick.AddListener(delegate { AugumentUpgrade(blessingAugument.IndexOf(augument3)); });
+        FirstAugument.onClick.AddListener(delegate { AugumentUpgrade(blessingAugument.IndexOf(augument1), goodTeam); });
+        SecondAugument.onClick.AddListener(delegate
+        {
+            AugumentUpgrade(blessingAugument.IndexOf(augument2), goodTeam);
+        });
+        ThirdAugument.onClick.AddListener(delegate { AugumentUpgrade(blessingAugument.IndexOf(augument3), goodTeam); });
     }
 
-    public void AugumentUpgrade(int indexAugument)
+    public void AugumentUpgrade(int indexAugument, string axieId, Team team)
     {
-        AugumentSelect.SetActive(false);
-        BlessingAugument augument = blessingAugument[indexAugument];
+        UpgradeAugument augument = blessingAugument[indexAugument];
 
-        List<AxieController> axieControllers = goodTeam.GetCharactersAll()
-            .Where(x => x.axieIngameStats.axieClass == augument.axieClass).ToList();
+        AxieController axieControllers = team.GetCharactersAll()
+            .Single(x => x.AxieId.ToString() == axieId);
+
+
+        switch ((Blessing)augument.upgrade_id)
+        {
+            case AtiaBlessing.Blessing.Increase_HP:
+                axieControllers.stats.hp += 10;
+                break;
+            case AtiaBlessing.Blessing.Increase_Morale:
+                axieControllers.stats.morale += 10;
+                break;
+            case AtiaBlessing.Blessing.Increase_Speed:
+                axieControllers.stats.speed += 10;
+                break;
+            case AtiaBlessing.Blessing.Increase_Skill:
+                axieControllers.stats.skill += 10;
+                break;
+            case AtiaBlessing.Blessing.Backdoor:
+                axieControllers.ShrimpOnStart = true;
+                break;
+        }
+    }
+
+    public void AugumentUpgrade(int indexAugument, Team team)
+    {
+        UpgradeAugument augument = blessingAugument[indexAugument];
+
+        List<AxieController> axieControllers = augument.axieClass == null
+            ? team.GetCharactersAll()
+            : team.GetCharactersAll()
+                .Where(x => augument.axieClass.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
+                .ToList();
 
         foreach (var controller in axieControllers)
         {
-            switch (augument.blessing)
+            switch ((Blessing)augument.upgrade_id)
             {
-                case Blessing.Increase_HP:
+                case AtiaBlessing.Blessing.Increase_HP:
                     controller.stats.hp += 10;
                     break;
-                case Blessing.Increase_Morale:
+                case AtiaBlessing.Blessing.Increase_Morale:
                     controller.stats.morale += 10;
                     break;
-                case Blessing.Increase_Speed:
+                case AtiaBlessing.Blessing.Increase_Speed:
                     controller.stats.speed += 10;
                     break;
-                case Blessing.Increase_Skill:
+                case AtiaBlessing.Blessing.Increase_Skill:
                     controller.stats.skill += 10;
                     break;
-                case Blessing.Backdoor:
+                case AtiaBlessing.Blessing.Backdoor:
                     controller.ShrimpOnStart = true;
                     break;
             }
