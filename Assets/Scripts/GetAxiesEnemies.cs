@@ -36,14 +36,14 @@ namespace enemies
                     (RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
 
             Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);
-            Debug.Log("Opponent land type is: " + opponent.landType.ToString());
+            Debug.Log("Opponent land type is: " + opponent.land_type.ToString());
             GetOpponentTeam(opponent);
         }
 
         void GetOpponentTeam(Opponent jsonAxieIds)
         {
             graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
-            List<AxieForBackend> axieIds = jsonAxieIds.team.axie.ToList();
+            List<AxieForBackend> axieIds = jsonAxieIds.axie_team.axie.ToList();
             string combinedQuery = "";
 
             for (int i = 0; i < axieIds.Count; i++)
@@ -133,8 +133,8 @@ namespace enemies
                     axieEnemies.Add(axie5);
 
                     axieEnemies = axieEnemies.OrderBy(x => int.Parse(x.id)).ToList();
-                    OpponentTeamManager.instance.SetupTeam(opponent, axieEnemies);
                     StartCoroutine(SpawnAxies(axieEnemies, opponent, isOpponent));
+                    StartCoroutine(OpponentTeamManager.instance.SetupTeam(opponent, axieEnemies));
                 }
             }
             catch (System.Exception ex)
@@ -147,7 +147,7 @@ namespace enemies
         {
             foreach (var axieEnemy in axieList)
             {
-                AxieForBackend axieForBackend = opponent.team.axie.Single(x => x.axie_id == axieEnemy.id);
+                AxieForBackend axieForBackend = opponent.axie_team.axie.Single(x => x.axie_id == axieEnemy.id);
                 axieSpawner.SpawnEnemyAxieById(axieEnemy.id, BodyPart.Horn, SkillName.HerosBane,
                     axieEnemy.axieClass,
                     axieEnemy.stats, axieForBackend, axieList, isOpponent);

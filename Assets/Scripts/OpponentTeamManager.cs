@@ -27,16 +27,23 @@ public class OpponentTeamManager : MonoBehaviour
         instance = this;
     }
 
-    public void SetupTeam(Opponent opponent, List<GetAxiesEnemies.AxieEnemy> axieEnemyList)
+    public IEnumerator SetupTeam(Opponent opponent, List<GetAxiesEnemies.AxieEnemy> axieEnemyList)
     {
         this.AxieEnemyList = axieEnemyList;
 
-        foreach (var teamUpgrades in opponent.team.team_upgrades)
+        while (badTeam.GetCharactersAll().Count < 5)
         {
-            atiaBlessing.AugumentUpgrade((int)teamUpgrades.upgrade_id, badTeam);
+            yield return null;
         }
 
-        foreach (var axie in opponent.team.axie)
+        foreach (var teamUpgrades in opponent.axie_team.team_upgrades)
+        {
+            atiaBlessing.AugumentUpgrade((int)teamUpgrades.upgrade_id,
+                teamUpgrades.axieClass?.Select(x => (AxieClass)x).ToList(),
+                badTeam);
+        }
+
+        foreach (var axie in opponent.axie_team.axie)
         {
             foreach (var upgrade in axie.upgrades.upgrades_id)
             {

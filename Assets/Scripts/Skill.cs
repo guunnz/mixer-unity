@@ -440,7 +440,7 @@ public class Skill : MonoBehaviour
             GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                 skill.StartFromOrigin ? self.GetPartPosition(BodyPart.Horn) : target.GetPartPosition(BodyPart.Horn),
                 skill.VFXPrefab.transform.rotation,
-                null);
+                this.transform);
 
             VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 

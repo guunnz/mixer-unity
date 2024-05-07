@@ -5,8 +5,8 @@ using UnityEngine;
 public class Opponent
 {
     public string user_id;
-    public int landType;
-    public AxieTeamDatabase team;
+    public int land_type;
+    public AxieTeamDatabase axie_team;
 }
 
 

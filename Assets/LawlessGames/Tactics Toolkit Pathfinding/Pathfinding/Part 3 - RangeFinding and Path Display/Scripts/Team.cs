@@ -118,8 +118,11 @@ public class Team : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P) && this.isGoodTeam)
         {
-            target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
-                GetCharactersAll());
+            for (int i = 0; i <= 13; i++)
+            {
+                target.PostTeam(i,
+                    GetCharactersAll());
+            }
         }
 
         if (Input.GetKey(KeyCode.H)) // Move all characters
@@ -149,14 +152,15 @@ public class Team : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
+                        RunManagerSingleton.instance.goodTeam.GetCharactersAll());
+
                     if (isGoodTeam)
                     {
                         RunManagerSingleton.instance.SetResult(false);
                     }
                     else
                     {
-                        target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
-                            GetCharactersAll());
                         RunManagerSingleton.instance.SetResult(true);
                     }
 

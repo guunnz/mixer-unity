@@ -92,7 +92,7 @@ public class AxieBehavior : MonoBehaviour
                 if (myController.CurrentTarget != null)
                 {
                     if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() &&
-                        !myController.CurrentTarget.badTeam.GetCharacters()
+                        !myController.CurrentTarget.enemyTeam.GetCharacters()
                             .All(x => x.axieSkillEffectManager.IsStenched()))
                     {
                         state = AxieState.Idle;
@@ -145,9 +145,7 @@ public class AxieBehavior : MonoBehaviour
         myController.SkeletonAnim.enabled = false;
         Vector3 positionToMove = Vector3.zero;
 
-        List<OverlayTile> possibleTiles = myController.imGood
-            ? myController.badTeam.GetInRangeTiles(this.myController)
-            : myController.goodTeam.GetInRangeTiles(this.myController);
+        List<OverlayTile> possibleTiles = myController.enemyTeam.GetInRangeTiles(this.myController);
         List<OverlayTile> jumpToTiles =
             possibleTiles.Where(x => x.grid2DLocation.x == (myController.imGood ? 7 : 0)).ToList();
 
@@ -215,7 +213,7 @@ public class AxieBehavior : MonoBehaviour
             if (myController.CurrentTarget != null)
             {
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.CurrentTarget
-                        .badTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
+                        .enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -241,7 +239,7 @@ public class AxieBehavior : MonoBehaviour
             if (myController.CurrentTarget != null)
             {
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.CurrentTarget
-                        .badTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
+                        .enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;

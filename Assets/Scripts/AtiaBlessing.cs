@@ -78,32 +78,35 @@ public class AtiaBlessing : MonoBehaviour
 
         if (augument1.upgrade_id != (int)Blessing.Backdoor)
         {
-            FirstAugumentText.text = "Increase your " + augument1.axieClass.ToString() + " axies " +
-                                     augument1.upgrade_id.ToString().Replace("_", " ") + " stat by 10";
+            FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axieClass[0]).ToString() + " axies " +
+                                     ((Blessing)augument1.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
         }
         else
         {
-            FirstAugumentText.text = "Your " + augument1.axieClass.ToString() + " axies now Backdoor on start";
+            FirstAugumentText.text = "Your " + ((AxieClass)augument1.axieClass[0]).ToString() +
+                                     " axies now Backdoor on start";
         }
 
         if (augument2.upgrade_id != (int)Blessing.Backdoor)
         {
-            SecondAugumentText.text = "Increase your " + augument2.axieClass.ToString() + " axies " +
-                                      augument2.upgrade_id.ToString().Replace("_", " ") + " stat by 10";
+            SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axieClass[0]).ToString() + " axies " +
+                                      ((Blessing)augument2.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
         }
         else
         {
-            SecondAugumentText.text = "Your " + augument2.axieClass.ToString() + " axies now Backdoor on start";
+            SecondAugumentText.text = "Your " + ((AxieClass)augument2.axieClass[0]).ToString() +
+                                      " axies now Backdoor on start";
         }
 
         if (augument3.upgrade_id != (int)Blessing.Backdoor)
         {
-            ThirdAugumentText.text = "Increase your " + augument3.axieClass.ToString() + " axies " +
-                                     augument3.upgrade_id.ToString().Replace("_", " ") + " stat by 10";
+            ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axieClass[0]).ToString() + " axies " +
+                                     ((Blessing)augument3.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
         }
         else
         {
-            ThirdAugumentText.text = "Your " + augument3.axieClass.ToString() + " axies now Backdoor on start";
+            ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axieClass[0]).ToString() +
+                                     " axies now Backdoor on start";
         }
 
         FirstAugument.onClick.RemoveAllListeners();
@@ -146,8 +149,43 @@ public class AtiaBlessing : MonoBehaviour
         }
     }
 
+    public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
+    {
+        UpgradeAugument augument = blessingAugument[indexAugument];
+
+        List<AxieController> axieControllers = axieClasses == null
+            ? team.GetCharactersAll()
+            : team.GetCharactersAll()
+                .Where(x => augument.axieClass.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
+                .ToList();
+
+
+        foreach (var controller in axieControllers)
+        {
+            switch ((Blessing)augument.upgrade_id)
+            {
+                case AtiaBlessing.Blessing.Increase_HP:
+                    controller.stats.hp += 10;
+                    break;
+                case AtiaBlessing.Blessing.Increase_Morale:
+                    controller.stats.morale += 10;
+                    break;
+                case AtiaBlessing.Blessing.Increase_Speed:
+                    controller.stats.speed += 10;
+                    break;
+                case AtiaBlessing.Blessing.Increase_Skill:
+                    controller.stats.skill += 10;
+                    break;
+                case AtiaBlessing.Blessing.Backdoor:
+                    controller.ShrimpOnStart = true;
+                    break;
+            }
+        }
+    }
+
     public void AugumentUpgrade(int indexAugument, Team team)
     {
+        AugumentSelect.SetActive(false);
         UpgradeAugument augument = blessingAugument[indexAugument];
 
         List<AxieController> axieControllers = augument.axieClass == null
