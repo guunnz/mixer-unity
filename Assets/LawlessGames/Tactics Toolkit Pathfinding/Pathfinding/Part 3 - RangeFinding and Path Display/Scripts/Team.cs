@@ -19,7 +19,7 @@ public class Team : MonoBehaviour
     public GameObject IngameOverlay;
     public TextMeshProUGUI YouWinLose;
     public AxieLandBattleTarget target;
-
+    private float resetTimer;
     public bool isGoodTeam;
 
     internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
@@ -116,6 +116,20 @@ public class Team : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.R))
+        {
+            resetTimer += Time.deltaTime;
+        }
+        else if (resetTimer != 0)
+        {
+            resetTimer -= Time.deltaTime;
+        }
+
+        if (resetTimer >= 3)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
         if (battleStarted)
         {
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))

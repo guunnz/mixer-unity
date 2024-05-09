@@ -132,6 +132,11 @@ public class SkillEffect: ICloneable
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
                 Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect);
     }
+    
+    public bool IsOnlyInfiniteBuffsOrDebuff()
+    {
+        return Attack != 0 || Morale != 0 || Speed != 0 || Aroma || Poison || Lethal;
+    }
 }
 
 [System.Serializable]

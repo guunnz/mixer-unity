@@ -189,6 +189,8 @@ public class AxieSkillEffectManager : MonoBehaviour
                 statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
             }
 
+            clone.statusEffect = statusEffect;
+
             switch (statusEffect)
             {
                 case StatusEffectEnum.Aroma:
@@ -264,10 +266,9 @@ public class AxieSkillEffectManager : MonoBehaviour
                     break;
             }
         }
-        else
-        {
-            skillEffects.Add(clone);
-        }
+
+        skillEffects.Add(clone);
+
 
         SetSkillEffectDuration(clone, statusEffect);
 
@@ -354,6 +355,10 @@ public class AxieSkillEffectManager : MonoBehaviour
         {
             duration = 1;
         }
+        else if (skillEffect.IsOnlyInfiniteBuffsOrDebuff())
+        {
+            duration = 999999;
+        }
 
         if (skillEffectDurationList.Any(x => x.effect == statusEffectEnum))
         {
@@ -367,10 +372,9 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public void RemoveStatusEffect(StatusEffectEnum statusEffect)
     {
-        SkillEffect skillEffect = skillEffects.FirstOrDefault(x => x.statusEffect == statusEffect);
         SkillEffectGraphic skillEffectGraphic = skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
-        skillEffects.Remove(skillEffect);
-        skillEffectGraphics.Remove(skillEffectGraphic);
+        skillEffects.RemoveAll(x => x.statusEffect == statusEffect);
+        skillEffectGraphics.RemoveAll(x => x.statusEffect == statusEffect);
         if (skillEffectGraphic != null) Destroy(skillEffectGraphic.gameObject);
     }
 
