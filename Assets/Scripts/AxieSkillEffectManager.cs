@@ -346,19 +346,22 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     private void SetSkillEffectDuration(SkillEffect skillEffect, StatusEffectEnum statusEffectEnum)
     {
+        float duration = skillEffect.skillDuration == 0
+            ? statusEffectEnum == StatusEffectEnum.Stench ? 5 : 999999
+            : skillEffect.skillDuration;
+
+        if (statusEffectEnum == StatusEffectEnum.Stun || statusEffectEnum == StatusEffectEnum.Fear)
+        {
+            duration = 1;
+        }
+
         if (skillEffectDurationList.Any(x => x.effect == statusEffectEnum))
         {
-            skillEffectDurationList.Single(x => x.effect == statusEffectEnum).duration =
-                skillEffect.skillDuration == 0 || !skillEffect.Stun || !skillEffect.Fear
-                    ? statusEffectEnum == StatusEffectEnum.Stench ? 5 : 999999
-                    : skillEffect.skillDuration;
+            skillEffectDurationList.Single(x => x.effect == statusEffectEnum).duration = duration;
         }
         else
         {
-            skillEffectDurationList.Add(new SkillEffectDuration(statusEffectEnum,
-                skillEffect.skillDuration == 0 || !skillEffect.Stun || !skillEffect.Fear
-                    ? statusEffectEnum == StatusEffectEnum.Stench ? 5 : 999999
-                    : skillEffect.skillDuration));
+            skillEffectDurationList.Add(new SkillEffectDuration(statusEffectEnum, duration));
         }
     }
 

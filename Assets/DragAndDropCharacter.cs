@@ -25,6 +25,9 @@ public class DragAndDropCharacter : MonoBehaviour
     void Update()
     {
         // Detect mouse click
+        if (team.battleStarted)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
