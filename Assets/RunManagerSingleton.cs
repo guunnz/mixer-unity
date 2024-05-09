@@ -93,7 +93,7 @@ public class RunManagerSingleton : MonoBehaviour
             case AtiaBlessing.Blessing.Increase_Speed:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
-                    axieController.stats.speed += 10;
+                    axieController.stats.speed += 1;
                     axieController.UpdateStats();
                 }
 
@@ -101,7 +101,7 @@ public class RunManagerSingleton : MonoBehaviour
             case AtiaBlessing.Blessing.Increase_Skill:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
-                    axieController.stats.skill += 10;
+                    axieController.stats.skill += 1;
                     axieController.UpdateStats();
                 }
 
@@ -109,7 +109,7 @@ public class RunManagerSingleton : MonoBehaviour
             case AtiaBlessing.Blessing.Increase_HP:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
-                    axieController.stats.hp += 10;
+                    axieController.stats.hp += 1;
                     axieController.UpdateStats();
                 }
 
@@ -117,7 +117,7 @@ public class RunManagerSingleton : MonoBehaviour
             case AtiaBlessing.Blessing.Increase_Morale:
                 foreach (var axieController in goodTeam.GetCharactersAll())
                 {
-                    axieController.stats.morale += 10;
+                    axieController.stats.morale += 1;
                     axieController.UpdateStats();
                 }
 
