@@ -39,7 +39,13 @@ public class MapManager : MonoBehaviour
             overlayTile.ToggleRectangle(true);
         }
     }
-
+    public void ToggleRectanglesFalse()
+    {
+        foreach (var overlayTile in overlayTiles)
+        {
+            overlayTile.ToggleRectangle(false);
+        }
+    }
     public void GenerateMap()
     {
         map = new Dictionary<Vector2Int, OverlayTile>();

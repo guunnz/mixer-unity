@@ -148,6 +148,7 @@ public class Team : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    MapManager.Instance.ToggleRectangles();
                     target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
                         RunManagerSingleton.instance.goodTeam.GetCharactersAll());
                     foreach (var axieController in RunManagerSingleton.instance.goodTeam.GetCharactersAll())

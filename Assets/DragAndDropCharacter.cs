@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using finished3;
+using UnityEngine.EventSystems;
 
 public class DragAndDropCharacter : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class DragAndDropCharacter : MonoBehaviour
     {
         // Detect mouse click
         if (team.battleStarted)
+            return;
+        
+        if (EventSystem.current.IsPointerOverGameObject())
             return;
 
         if (Input.GetMouseButtonDown(0))

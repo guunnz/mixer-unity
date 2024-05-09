@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Spine.Unity;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 [System.Serializable]
@@ -153,6 +154,8 @@ public class AxieController : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         if (!goodTeam.battleStarted)
             axieBehavior.DoAction(AxieState.Hovered);
     }
