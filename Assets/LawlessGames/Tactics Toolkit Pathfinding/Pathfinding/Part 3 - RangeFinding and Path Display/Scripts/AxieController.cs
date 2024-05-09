@@ -228,6 +228,8 @@ public class AxieController : MonoBehaviour
             statsManagerUI.SetMana((float)Math.Round(axieIngameStats.CurrentEnergy, 2) /
                                    axieSkillController.GetComboCost());
             statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);
+
+            statsManagerUI.SetShield(Mathf.RoundToInt(axieIngameStats.currentShield));
         }
 
         if (axieBehavior.axieState == AxieState.Killed)

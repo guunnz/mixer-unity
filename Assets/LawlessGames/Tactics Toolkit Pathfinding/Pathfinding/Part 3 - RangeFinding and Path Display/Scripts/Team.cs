@@ -114,33 +114,15 @@ public class Team : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && this.isGoodTeam)
-        {
-            for (int i = 0; i <= 13; i++)
-            {
-                target.PostTeam(i,
-                    GetCharactersAll());
-            }
-        }
-
-        if (Input.GetKey(KeyCode.H)) // Move all characters
-        {
-            StartBattle();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
         if (battleStarted)
         {
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
                 BattleOverlay.SetActive(false);
                 YouWinLose.gameObject.SetActive(true);
+
                 if (isGoodTeam)
                 {
                     YouWinLose.text = "You Lost.";
@@ -154,6 +136,11 @@ public class Team : MonoBehaviour
                 {
                     target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
                         RunManagerSingleton.instance.goodTeam.GetCharactersAll());
+                    foreach (var axieController in RunManagerSingleton.instance.goodTeam.GetCharactersAll())
+                    {
+                        axieController.axieIngameStats.currentShield = 0;
+                        axieController.statsManagerUI.SetShield(Mathf.RoundToInt(0));
+                    }
 
                     if (isGoodTeam)
                     {
@@ -177,7 +164,13 @@ public class Team : MonoBehaviour
 
                 return;
             }
+        }
+    }
 
+    void FixedUpdate()
+    {
+        if (battleStarted)
+        {
             foreach (var character in characters)
             {
                 if (character.Key == null)

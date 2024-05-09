@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Shapes;
 using Spine.Unity;
+using TMPro;
 using UnityEngine;
 
 public class StatsManager : MonoBehaviour
@@ -12,6 +13,8 @@ public class StatsManager : MonoBehaviour
     public SpriteRenderer sr;
     private int lastXAxisScale;
     private Transform mainCharacter;
+    public TextMeshProUGUI shield;
+    public GameObject shieldObject;
 
     private void Start()
     {
@@ -59,6 +62,21 @@ public class StatsManager : MonoBehaviour
 
         HPRectangle.Width = mana;
     }
+
+    public void SetShield(int shield)
+    {
+        if (shield <= 0)
+        {
+            shieldObject.SetActive(false);
+        }
+        else
+        {
+            shieldObject.SetActive(true);
+        }
+
+        this.shield.text = shield.ToString();
+    }
+
 
     private void Update()
     {

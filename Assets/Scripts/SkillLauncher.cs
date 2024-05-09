@@ -566,9 +566,14 @@ public class SkillLauncher : MonoBehaviour
             self.axieIngameStats.CurrentEnergy += energyToTransfer;
         }
 
+        // if (skillEffect.GainShield > 0)
+        // {
+        self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
+        // }
         if (skillEffect.GainShield > 0)
         {
-            self.axieIngameStats.currentShield += skillEffect.GainShield * specialEffectExtras.multiplyStatusEffect;
+            self.axieIngameStats.currentShield +=
+                (self.axieIngameStats.currentShield * (skillEffect.GainShield / 100f));
         }
 
         if (skillEffect.GainHPPercentage > 0)

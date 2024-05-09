@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using SimpleGraphQL;
@@ -15,9 +16,25 @@ public class AccountManager : MonoBehaviour
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;
+    public TextMeshProUGUI IncorrectWallet;
+    public GameObject NextStepAfterLogin;
+    public GameObject MainMenu;
+    public GameObject RoninMenu;
+
+    public IEnumerator IncorrectWalletDo()
+    {
+        IncorrectWallet.DOColor(Color.white, 0.2f);
+        yield return new WaitForSeconds(1);
+        IncorrectWallet.DOColor(Color.clear, 0.2f);
+    }
 
     public void LoginAccount()
     {
+        if (!RoninWallet.text.Contains("0x") || RoninWallet.text.Contains(" "))
+        {
+            StartCoroutine(IncorrectWalletDo());
+            return;
+        }
         // string cache = PlayerPrefs.GetString(RoninWallet.text);
         // if (!string.IsNullOrEmpty(cache))
         // {
@@ -108,6 +125,7 @@ public class AccountManager : MonoBehaviour
             string responseString = task.Result;
             // StartCoroutine(SpawnAxies(responseString));
             // PlayerPrefs.SetString(address, responseString);
+
             GetAxiesExample.AxiesData axiesData = JsonUtility.FromJson<GetAxiesExample.AxiesData>(responseString);
             userAxies = axiesData.data.axies;
             userLands = axiesData.data.lands;
@@ -124,10 +142,19 @@ public class AccountManager : MonoBehaviour
                 new GetAxiesExample.Land()
                     { col = "-20", row = "4", landType = LandType.mystic.ToString(), tokenId = "323389" }
             };
+            Invoke("loadLand", 0.2f);
         }
         catch (System.Exception ex)
         {
             Debug.LogError("Error processing response: " + ex.Message);
         }
+    }
+
+    public void loadLand()
+    {
+        RoninMenu.SetActive(false);
+        MainMenu.SetActive(false);
+        NextStepAfterLogin.SetActive(true);
+        LandManager.instance.InitializeLand();
     }
 }

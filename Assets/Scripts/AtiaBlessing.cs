@@ -40,6 +40,7 @@ public class AtiaBlessing : MonoBehaviour
     public GameObject[] rollButtons;
 
     public List<UpgradeAugument> blessingAugument = new List<UpgradeAugument>();
+    private List<UpgradeAugument> blessingAugumentsPurchased = new List<UpgradeAugument>();
 
     public GameObject AugumentSelect;
 
@@ -69,14 +70,13 @@ public class AtiaBlessing : MonoBehaviour
         if (DoOnlyOne)
         {
             List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
-
             blessingAuguments.AddRange(blessingAugument);
+            blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
             UpgradeAugument augument = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
             blessingAuguments.Remove(augument);
             switch (doAugument)
             {
                 case 1:
-                    rollFirst--;
                     if (rollFirst < 0)
                     {
                         rollFirst = 0;
@@ -95,7 +95,7 @@ public class AtiaBlessing : MonoBehaviour
                         FirstAugumentText.text =
                             "Increase your " + ((AxieClass)augument.axieClass[0]).ToString() + " axies " +
                             ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") +
-                            " stat by 10";
+                            " stat by 1";
                     }
                     else
                     {
@@ -105,7 +105,6 @@ public class AtiaBlessing : MonoBehaviour
 
                     break;
                 case 2:
-                    rollSecond--;
                     if (rollSecond < 0)
                     {
                         rollSecond = 0;
@@ -116,7 +115,7 @@ public class AtiaBlessing : MonoBehaviour
                     {
                         SecondAugumentText.text =
                             "Increase your " + ((AxieClass)augument.axieClass[0]).ToString() + " axies " +
-                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
+                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
                     }
                     else
                     {
@@ -133,7 +132,6 @@ public class AtiaBlessing : MonoBehaviour
                     });
                     break;
                 case 3:
-                    rollThird--;
                     if (rollThird < 0)
                     {
                         rollThird = 0;
@@ -144,7 +142,7 @@ public class AtiaBlessing : MonoBehaviour
                     {
                         ThirdAugumentText.text =
                             "Increase your " + ((AxieClass)augument.axieClass[0]).ToString() + " axies " +
-                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
+                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
                     }
                     else
                     {
@@ -171,7 +169,7 @@ public class AtiaBlessing : MonoBehaviour
             List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
 
             blessingAuguments.AddRange(blessingAugument);
-
+            blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
             UpgradeAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
             blessingAuguments.Remove(augument1);
             UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
@@ -192,7 +190,7 @@ public class AtiaBlessing : MonoBehaviour
             if (augument1.upgrade_id != (int)Blessing.Backdoor)
             {
                 FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axieClass[0]).ToString() + " axies " +
-                                         ((Blessing)augument1.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
+                                         ((Blessing)augument1.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
             }
             else
             {
@@ -204,7 +202,7 @@ public class AtiaBlessing : MonoBehaviour
             {
                 SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axieClass[0]).ToString() +
                                           " axies " +
-                                          ((Blessing)augument2.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
+                                          ((Blessing)augument2.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
             }
             else
             {
@@ -215,7 +213,7 @@ public class AtiaBlessing : MonoBehaviour
             if (augument3.upgrade_id != (int)Blessing.Backdoor)
             {
                 ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axieClass[0]).ToString() + " axies " +
-                                         ((Blessing)augument3.upgrade_id).ToString().Replace("_", " ") + " stat by 10";
+                                         ((Blessing)augument3.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
             }
             else
             {
@@ -253,16 +251,16 @@ public class AtiaBlessing : MonoBehaviour
         switch ((Blessing)augument.upgrade_id)
         {
             case AtiaBlessing.Blessing.Increase_HP:
-                axieControllers.stats.hp += 10;
+                axieControllers.stats.hp += 1;
                 break;
             case AtiaBlessing.Blessing.Increase_Morale:
-                axieControllers.stats.morale += 10;
+                axieControllers.stats.morale += 1;
                 break;
             case AtiaBlessing.Blessing.Increase_Speed:
-                axieControllers.stats.speed += 10;
+                axieControllers.stats.speed += 1;
                 break;
             case AtiaBlessing.Blessing.Increase_Skill:
-                axieControllers.stats.skill += 10;
+                axieControllers.stats.skill += 1;
                 break;
             case AtiaBlessing.Blessing.Backdoor:
                 axieControllers.ShrimpOnStart = true;
@@ -286,16 +284,16 @@ public class AtiaBlessing : MonoBehaviour
             switch ((Blessing)augument.upgrade_id)
             {
                 case AtiaBlessing.Blessing.Increase_HP:
-                    controller.stats.hp += 10;
+                    controller.stats.hp += 1;
                     break;
                 case AtiaBlessing.Blessing.Increase_Morale:
-                    controller.stats.morale += 10;
+                    controller.stats.morale += 1;
                     break;
                 case AtiaBlessing.Blessing.Increase_Speed:
-                    controller.stats.speed += 10;
+                    controller.stats.speed += 1;
                     break;
                 case AtiaBlessing.Blessing.Increase_Skill:
-                    controller.stats.skill += 10;
+                    controller.stats.skill += 1;
                     break;
                 case AtiaBlessing.Blessing.Backdoor:
                     controller.ShrimpOnStart = true;
@@ -308,7 +306,7 @@ public class AtiaBlessing : MonoBehaviour
     {
         AugumentSelect.SetActive(false);
         UpgradeAugument augument = blessingAugument[indexAugument];
-
+        blessingAugumentsPurchased.Add(augument);
         List<AxieController> axieControllers = augument.axieClass == null
             ? team.GetCharactersAll()
             : team.GetCharactersAll()
@@ -320,20 +318,20 @@ public class AtiaBlessing : MonoBehaviour
             switch ((Blessing)augument.upgrade_id)
             {
                 case Blessing.Increase_HP_Bug:
-                    controller.stats.hp += 10;
+                    controller.stats.hp += 1;
                     break;
 
                 case AtiaBlessing.Blessing.Increase_HP:
-                    controller.stats.hp += 10;
+                    controller.stats.hp += 1;
                     break;
                 case AtiaBlessing.Blessing.Increase_Morale:
-                    controller.stats.morale += 10;
+                    controller.stats.morale += 1;
                     break;
                 case AtiaBlessing.Blessing.Increase_Speed:
-                    controller.stats.speed += 10;
+                    controller.stats.speed += 1;
                     break;
                 case AtiaBlessing.Blessing.Increase_Skill:
-                    controller.stats.skill += 10;
+                    controller.stats.skill += 1;
                     break;
                 case AtiaBlessing.Blessing.Backdoor:
                     controller.ShrimpOnStart = true;

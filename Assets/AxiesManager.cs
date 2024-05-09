@@ -53,6 +53,8 @@ public class AxiesManager : MonoBehaviour
 
     private void ChooseAxie(string axieId, Axie2dBuilderResult builder)
     {
+      
+        
         if (chosenAxies.Any(x => x == axieId))
         {
             AmountSelected--;
@@ -67,6 +69,10 @@ public class AxiesManager : MonoBehaviour
         }
         else
         {
+            if (AmountSelected >= 5)
+            {
+                return;
+            }
             AmountSelected++;
             foreach (var skeletonGraphic in skeletonGraphics)
             {

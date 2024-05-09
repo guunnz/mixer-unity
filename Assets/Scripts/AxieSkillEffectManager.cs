@@ -11,10 +11,10 @@ using Random = System.Random;
 
 public class SkillEffectDuration
 {
-    public SkillEffect effect;
+    public StatusEffectEnum effect;
     public float duration;
 
-    public SkillEffectDuration(SkillEffect effect, float duration)
+    public SkillEffectDuration(StatusEffectEnum effect, float duration)
     {
         this.effect = effect;
         this.duration = duration;
@@ -31,7 +31,7 @@ public class AxieSkillEffectManager : MonoBehaviour
     public GameObject skillEffectGraphicPrefab;
     public Transform HorizontalLayoutGroup;
     private Transform mainCharacter;
-
+    private List<SkillEffectDuration> durationToRemove = new List<SkillEffectDuration>();
     private int lastXAxisScale;
 
 //
@@ -159,8 +159,14 @@ public class AxieSkillEffectManager : MonoBehaviour
 
             if (skillEffectPair.duration <= 0)
             {
-                RemoveStatusEffect(skillEffectPair.effect.statusEffect);
+                durationToRemove.Add(skillEffectPair);
+                RemoveStatusEffect(skillEffectPair.effect);
             }
+        }
+
+        if (durationToRemove.Count > 0)
+        {
+            skillEffectDurationList.RemoveAll(x => durationToRemove.Contains(x));
         }
     }
 
@@ -340,15 +346,19 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     private void SetSkillEffectDuration(SkillEffect skillEffect, StatusEffectEnum statusEffectEnum)
     {
-        if (skillEffectDurationList.Any(x => x.effect.statusEffect == statusEffectEnum))
+        if (skillEffectDurationList.Any(x => x.effect == statusEffectEnum))
         {
-            skillEffectDurationList.Single(x => x.effect.statusEffect == statusEffectEnum).duration =
-                skillEffect.skillDuration == 0 ? 999999 : skillEffect.skillDuration;
+            skillEffectDurationList.Single(x => x.effect == statusEffectEnum).duration =
+                skillEffect.skillDuration == 0 || !skillEffect.Stun || !skillEffect.Fear
+                    ? statusEffectEnum == StatusEffectEnum.Stench ? 5 : 999999
+                    : skillEffect.skillDuration;
         }
         else
         {
-            skillEffectDurationList.Add(new SkillEffectDuration(skillEffect,
-                skillEffect.skillDuration == 0 ? 999999 : skillEffect.skillDuration));
+            skillEffectDurationList.Add(new SkillEffectDuration(statusEffectEnum,
+                skillEffect.skillDuration == 0 || !skillEffect.Stun || !skillEffect.Fear
+                    ? statusEffectEnum == StatusEffectEnum.Stench ? 5 : 999999
+                    : skillEffect.skillDuration));
         }
     }
 

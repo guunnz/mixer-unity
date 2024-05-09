@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public enum AxieState
@@ -54,6 +56,17 @@ public class AxieBehavior : MonoBehaviour
         else
         {
             AttackAnimation = "attack/melee/normal-attack";
+        }
+    }
+
+    private void Update()
+    {
+        if (this.axieState == AxieState.Stunned)
+        {
+            if (!axieSkillEffectManager.IsStunned())
+            {
+                DoAction(AxieState.Idle);
+            }
         }
     }
 
@@ -220,7 +233,7 @@ public class AxieBehavior : MonoBehaviour
                     yield break;
                 }
             }
-            
+
             if (!myController.axieSkillController.OnAutoAttack())
             {
                 myController.SkeletonAnim.AnimationName = AttackAnimation;
@@ -310,11 +323,9 @@ public class AxieBehavior : MonoBehaviour
                     target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, shieldDamage,
                         myController);
                 }
-
-
             }
-            
-            
+
+
             // myController.axieIngameStats.CurrentEnergy += AxieStatCalculator.GetManaPerAttack(myController.stats);
         }
     }

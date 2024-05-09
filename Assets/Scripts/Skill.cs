@@ -361,7 +361,7 @@ public class Skill : MonoBehaviour
 
     public SkillAction GetDestroyAction()
     {
-        return new SkillAction(delegate { StartCoroutine(Destroy()); }, this.totalDuration + 0.5f);
+        return new SkillAction(delegate { StartCoroutine(Destroy()); }, this.totalDuration + 1.2f);
     }
 
     private void DoDamage()

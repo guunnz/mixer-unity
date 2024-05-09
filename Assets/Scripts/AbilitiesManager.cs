@@ -32,6 +32,8 @@ public class AbilitiesManager : MonoBehaviour
     public TextMeshProUGUI AbilityNameText;
     public TextMeshProUGUI AbilityDescriptionText;
     public TextMeshProUGUI AxieNameText;
+    public TextMeshProUGUI ShieldAbilityText;
+    public TextMeshProUGUI AttackAbilityText;
     public AxieBodyPartsManager skillList;
     public Image HornBodyPart;
     public Image MouthBodyPart;
@@ -154,6 +156,7 @@ public class AbilitiesManager : MonoBehaviour
         bodyPartToSelect.selected = true;
         bodyPartToSelect.order = maxOrder + 1;
 
+
         switch (bodyPartToSelect.BodyPart)
         {
             case BodyPart.Back:
@@ -179,7 +182,11 @@ public class AbilitiesManager : MonoBehaviour
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
                 x.skillName == bodyPartToSelect.SkillName);
-        AbilityDescriptionText.text = ability.description + (ability.isPassive ? " (PASSIVES DO NOT WORK FOR NOW)" : "");
+        AbilityDescriptionText.text = ability.description +
+                                      (ability.isPassive ? " (PASSIVES/BATTLECRIES DO NOT WORK FOR NOW)" : "");
+
+        ShieldAbilityText.text = ability.shield.ToString();
+        AttackAbilityText.text = ability.damage.ToString();
 
         var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 

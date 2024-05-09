@@ -24,6 +24,19 @@ public class LandManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI landTypeName;
     [SerializeField] private TextMeshProUGUI landCoordinates;
 
+    static public LandManager instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+
     public void InitializeLand()
     {
         mapManager.GenerateMap();
