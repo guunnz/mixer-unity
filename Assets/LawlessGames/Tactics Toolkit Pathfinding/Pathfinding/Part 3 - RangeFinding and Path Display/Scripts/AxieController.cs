@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using Random = System.Random;
 
 [System.Serializable]
 public class IngameStats
@@ -20,6 +22,12 @@ public class IngameStats
     public float currentHP;
     public float currentShield;
     public AxieClass axieClass;
+}
+
+public enum AxieMode
+{
+    Battle,
+    Menu
 }
 
 public class AxieController : MonoBehaviour
@@ -46,6 +54,9 @@ public class AxieController : MonoBehaviour
     public int Range = 1;
     public bool ShrimpOnStart;
     internal bool Shrimped = false;
+    public AxieMode mode;
+
+    private float TimerMove = 0f;
 
     public List<AxieController> GetAdjacent()
     {
@@ -166,8 +177,81 @@ public class AxieController : MonoBehaviour
             axieBehavior.DoAction(AxieState.Idle);
     }
 
+    public void ChangeMode(AxieMode mode)
+    {
+        if (mode == AxieMode.Battle)
+        {
+            MoveToRandomPosition(true);
+        }
+        else
+        {
+            statsManagerUI.gameObject.SetActive(false);
+            this.mode = mode;
+        }
+    }
+
+    public float timePerMeter = 1.0f; // Time it takes to move 1 meter
+
+    private void MoveToRandomPosition(bool changingFromMenuToBattle = false)
+    {
+        DOTween.KillAll(this.transform);
+        float targetX =
+            UnityEngine.Random.Range(MapManager.Instance.minMapBounds.x, MapManager.Instance.maxMapBounds.x);
+        float targetY =
+            UnityEngine.Random.Range(MapManager.Instance.minMapBounds.y, MapManager.Instance.maxMapBounds.y);
+
+        if (changingFromMenuToBattle)
+        {
+            targetX = standingOnTile.grid2DLocation.x;
+            targetY = standingOnTile.grid2DLocation.y;
+        }
+
+        Vector3 targetPosition = new Vector3(targetX, 0, targetY);
+
+        transform.localScale = new Vector3(targetX > this.transform.position.x ? -0.2f : 0.2f, transform.localScale.y,
+            transform.localScale.z);
+
+        // Calculate distance to the target position
+        float distance = Vector3.Distance(transform.position, targetPosition);
+
+        // Calculate moveDuration based on distance and timePerMeter
+        float moveDuration = distance * timePerMeter;
+
+        TimerMove = moveDuration + UnityEngine.Random.Range(0, 3f);
+        // Set animation to run
+        SkeletonAnim.AnimationName = "action/run";
+
+        // Move towards the target position using DOTween
+        transform.DOMove(targetPosition, moveDuration)
+            .SetEase(Ease.Linear) // Use linear easing for constant speed
+            .OnComplete(() =>
+            {
+                // Set animation to idle when movement is completed
+                SkeletonAnim.AnimationName = "action/idle/normal";
+                if (changingFromMenuToBattle)
+                {
+                    statsManagerUI.gameObject.SetActive(true);
+                    this.mode = AxieMode.Battle;
+                }
+            });
+    }
+
+    private void Update()
+    {
+        if (mode == AxieMode.Menu)
+        {
+            if (TimerMove <= 0)
+            {
+                MoveToRandomPosition();
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
+        if (mode == AxieMode.Menu)
+            return;
+
         if (goodTeam == null)
             return;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using Spine.Unity;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
+using Random = UnityEngine.Random;
 
 public class AxiesManager : MonoBehaviour
 {
@@ -18,19 +20,36 @@ public class AxiesManager : MonoBehaviour
     public List<SkeletonGraphic> skeletonGraphics = new List<SkeletonGraphic>();
     public List<GetAxiesExample.Axie> currentTeam = new List<GetAxiesExample.Axie>();
     public List<AxieController> axieControllers = new List<AxieController>();
-    public void StartGame()
-    {
-        if (AmountSelected < 5)
-            return;
+    public Team myTeam;
 
-        MapManager.Instance.ToggleRectangles();
+    public void ShowMenuAxies(AxieTeam axieTeam)
+    {
+        LandManager.instance.ChooseLand(axieTeam.landTokenId);
+        myTeam.characters.Clear();
+
+        for (int i = 0; i < axieControllers.Count; i++)
+        {
+            Destroy(axieControllers[i].gameObject);
+        }
+
+        axieControllers.Clear();
         currentTeam = AccountManager.userAxies.results.Where(x => chosenAxies.Contains(x.id)).ToList();
-        foreach (var axie in currentTeam)
+        foreach (var axie in axieTeam.AxieIds)
         {
             AxieController axieController =
                 axieSpawner.ProcessMixer(axie.id, axie.newGenes, false, axie.axieClass, axie.stats, false);
-            
+
+            axieController.ChangeMode(AxieMode.Menu);
             axieControllers.Add(axieController);
+        }
+    }
+
+    public void SetAxiesBattleMode()
+    {
+        MapManager.Instance.ToggleRectangles();
+        foreach (var axieController in myTeam.GetCharactersAll())
+        {
+            axieController.ChangeMode(AxieMode.Battle);
         }
     }
 
@@ -53,8 +72,6 @@ public class AxiesManager : MonoBehaviour
 
     private void ChooseAxie(string axieId, Axie2dBuilderResult builder)
     {
-      
-        
         if (chosenAxies.Any(x => x == axieId))
         {
             AmountSelected--;
@@ -73,6 +90,7 @@ public class AxiesManager : MonoBehaviour
             {
                 return;
             }
+
             AmountSelected++;
             foreach (var skeletonGraphic in skeletonGraphics)
             {

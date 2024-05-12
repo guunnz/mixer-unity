@@ -28,7 +28,7 @@ public class DragAndDropCharacter : MonoBehaviour
         // Detect mouse click
         if (team.battleStarted)
             return;
-        
+
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -41,9 +41,13 @@ public class DragAndDropCharacter : MonoBehaviour
             {
                 if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
                 {
+                    AxieController axieController = selectedCharacter.GetComponent<AxieController>();
+                    
+                    if (axieController.mode == AxieMode.Menu)
+                        return;
+                    
                     selectedCharacter = hit.collider.gameObject;
-
-                    selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.Grabbed);
+                    axieController.axieBehavior.DoAction(AxieState.Grabbed);
                     originalPosition = selectedCharacter.transform.position;
                     originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
                     selectedCharacter.transform.SetParent(mainCamera.transform);

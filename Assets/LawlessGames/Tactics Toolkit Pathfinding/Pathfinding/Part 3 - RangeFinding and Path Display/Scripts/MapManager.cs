@@ -16,6 +16,9 @@ public class MapManager : MonoBehaviour
 
     public Dictionary<Vector2Int, OverlayTile> map;
 
+    internal Vector2 minMapBounds = new Vector2(0, 0);
+    internal Vector2 maxMapBounds = new Vector2(7, 4);
+
     public int width = 12; // Width of the map
     private List<OverlayTile> overlayTiles = new List<OverlayTile>();
     public int depth = 2; // Depth of the map (previously height)
@@ -39,6 +42,7 @@ public class MapManager : MonoBehaviour
             overlayTile.ToggleRectangle(true);
         }
     }
+
     public void ToggleRectanglesFalse()
     {
         foreach (var overlayTile in overlayTiles)
@@ -46,6 +50,7 @@ public class MapManager : MonoBehaviour
             overlayTile.ToggleRectangle(false);
         }
     }
+
     public void GenerateMap()
     {
         map = new Dictionary<Vector2Int, OverlayTile>();
@@ -64,6 +69,8 @@ public class MapManager : MonoBehaviour
                 map.Add(new Vector2Int(x, z), tileScript);
             }
         }
+
+        ToggleRectanglesFalse();
     }
 
     public List<OverlayTile> GetAdjacentTiles(OverlayTile originTile)

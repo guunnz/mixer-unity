@@ -76,9 +76,17 @@ public class LandManager : MonoBehaviour
         ChooseLand();
     }
 
-    public void ChooseLand()
+    public void ChooseLand(string tokenId = null)
     {
-        currentLandType = AccountManager.userLands.results[indexChoosing].LandTypeEnum;
+        if (string.IsNullOrEmpty(tokenId))
+        {
+            currentLandType = AccountManager.userLands.results[indexChoosing].LandTypeEnum;
+        }
+        else
+        {
+            currentLandType = AccountManager.userLands.results.Single(x => x.tokenId == tokenId).LandTypeEnum;
+        }
+
         RunManagerSingleton.instance.landType = currentLandType;
         for (int i = 0; i < landSquares.Length; i++)
         {

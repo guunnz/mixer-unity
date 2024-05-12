@@ -11,11 +11,12 @@ public class Team : MonoBehaviour
 {
     public float speed;
     public int movementRange = 300;
+    
     internal Dictionary<AxieController, CharacterState> characters = new Dictionary<AxieController, CharacterState>();
     private PathFinder pathFinder;
     public Team enemyTeam;
     public bool battleStarted = false;
-    [FormerlySerializedAs("Timer")] public GameObject BattleOverlay;
+    public GameObject BattleOverlay;
     public GameObject IngameOverlay;
     public TextMeshProUGUI YouWinLose;
     public AxieLandBattleTarget target;

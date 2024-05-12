@@ -12,7 +12,7 @@ public class AccountManager : MonoBehaviour
 
     public TMP_InputField RoninWallet;
 
-    // private string address = "0x46571200388f6dce5416e552e28caa7a6833c88e";
+    private string forcedAddress = "0x46571200388f6dce5416e552e28caa7a6833c88e";
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;
@@ -20,6 +20,7 @@ public class AccountManager : MonoBehaviour
     public GameObject NextStepAfterLogin;
     public GameObject MainMenu;
     public GameObject RoninMenu;
+    public bool LoadInstantly = false;
 
     public IEnumerator IncorrectWalletDo()
     {
@@ -28,14 +29,25 @@ public class AccountManager : MonoBehaviour
         IncorrectWallet.DOColor(Color.clear, 0.2f);
     }
 
+    private void Start()
+    {
+        if (LoadInstantly)
+            LoginAccount();
+    }
+
     public void LoginAccount()
     {
+        if (LoadInstantly)
+        {
+            RoninWallet.text = forcedAddress;
+        }
         if (!RoninWallet.text.Contains("0x") || RoninWallet.text.Contains(" "))
         {
             StartCoroutine(IncorrectWalletDo());
             return;
         }
-        // string cache = PlayerPrefs.GetString(RoninWallet.text);
+        // PlayerPrefs.GetString(RoninWallet.text);
+        // string cache = 
         // if (!string.IsNullOrEmpty(cache))
         // {
         //     GetAxiesExample.AxiesData axiesData =
@@ -124,7 +136,7 @@ public class AccountManager : MonoBehaviour
         {
             string responseString = task.Result;
             // StartCoroutine(SpawnAxies(responseString));
-            // PlayerPrefs.SetString(address, responseString);
+            PlayerPrefs.SetString(RoninWallet.text, responseString);
 
             GetAxiesExample.AxiesData axiesData = JsonUtility.FromJson<GetAxiesExample.AxiesData>(responseString);
             userAxies = axiesData.data.axies;
@@ -142,6 +154,8 @@ public class AccountManager : MonoBehaviour
                 new GetAxiesExample.Land()
                     { col = "-20", row = "4", landType = LandType.mystic.ToString(), tokenId = "323389" }
             };
+
+            TeamManager.instance.LoadLastAccountAxies();
             Invoke("loadLand", 0.2f);
         }
         catch (System.Exception ex)
