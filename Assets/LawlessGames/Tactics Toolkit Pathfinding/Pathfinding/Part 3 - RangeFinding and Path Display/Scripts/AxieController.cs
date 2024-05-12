@@ -31,6 +31,7 @@ public class AxieController : MonoBehaviour
     public AxieSkillController axieSkillController;
     public AxieController CurrentTarget;
     public Team enemyTeam;
+    public Team myTeam;
     public AxieBehavior axieBehavior;
     public IngameStats axieIngameStats;
     public OverlayTile standingOnTile;
@@ -118,10 +119,13 @@ public class AxieController : MonoBehaviour
         if (imGood)
         {
             enemyTeam = badTeam;
+            myTeam = goodTeam;
         }
         else
         {
             enemyTeam = goodTeam;
+
+            myTeam = badTeam;
         }
 
         if (this.standingOnTile.grid2DLocation.x >= 4)

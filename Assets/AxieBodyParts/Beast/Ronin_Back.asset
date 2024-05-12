@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Ronin_Back
   m_EditorClassIdentifier: 
   skillName: 63
-  statusEffects:
+  skillEffects:
   - statusEffect: 0
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0

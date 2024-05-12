@@ -152,7 +152,7 @@ public class AbilitiesManager : MonoBehaviour
             .DefaultIfEmpty(0)
             .Max() ?? 0;
 
-        // Set the selected part as the last order
+        // Set the selected part as the last orde
         bodyPartToSelect.selected = true;
         bodyPartToSelect.order = maxOrder + 1;
 

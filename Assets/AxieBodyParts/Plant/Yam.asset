@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 123
   skillEffects:
-  - statusEffect: 0
-    statusApplyType: 0
-    statusApplyTypeIsTarget: 0
+  - statusEffect: 10
+    statusApplyType: 1
+    statusApplyTypeIsTarget: 1
     skillTriggerType: 3
-    isPassive: 0
-    skillDuration: 2
-    PoisonStack: 0
+    isPassive: 1
+    skillDuration: 0
+    PoisonStack: 2
     Attack: 0
     Speed: 0
     Morale: 0
@@ -56,12 +56,14 @@ MonoBehaviour:
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
-    UseSpecialsAsTrigger: 0
+    UseSpecialsAsTrigger: 1
     specialActivationAgainstAxiesList: []
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
-    specialActivactionWhenReceiveDamage: []
+    specialActivactionWhenReceiveDamage:
+    - onlyAbilities: 1
+      axieClass: 0
     lowestHP: 0
     FurthestTarget: 0
     targetHighestEnergy: 0
@@ -93,8 +95,7 @@ MonoBehaviour:
   bodyPart: 5
   prefab: {fileID: 2179489554462401005, guid: 0f1ef7a88a44cfa42a3643808f6dd770, type: 3}
   bodyPartClass: 4
-  damage: 20
-  shield: 30
-  energy: 1
-  description: 'Enemies that attack this axie for the next 2 seconds gain 1 stack
-    of poison '
+  damage: 30
+  shield: 0
+  energy: 0
+  description: When this axie is attacked by an ability apply 10 poison to the attacker

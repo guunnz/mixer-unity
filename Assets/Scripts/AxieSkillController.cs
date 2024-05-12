@@ -28,7 +28,7 @@ public class AxieSkillController : MonoBehaviour
 {
     public List<AxieSkill> skillList = new List<AxieSkill>();
 
-    public AxiePassives passives;
+    public AxiePassives passives = new AxiePassives();
 
     public AxieController self;
 
