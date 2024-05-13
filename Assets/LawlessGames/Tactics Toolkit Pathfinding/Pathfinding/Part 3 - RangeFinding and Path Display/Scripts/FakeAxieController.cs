@@ -34,8 +34,16 @@ public class FakeAxieController : MonoBehaviour
         if (this.grabbed && grabbed)
             return;
         this.grabbed = grabbed;
-        skeletonAnim.AnimationName = "action/idle/random-03";
-        skeletonAnim.loop = true;
+        if (grabbed == false)
+        {
+            skeletonAnim.AnimationName = "action/idle/normal";
+            skeletonAnim.loop = true;
+        }
+        else
+        {
+            skeletonAnim.AnimationName = "action/idle/random-03";
+            skeletonAnim.loop = true;
+        }
     }
 
     private void OnMouseExit()
