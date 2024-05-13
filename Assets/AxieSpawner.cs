@@ -52,7 +52,6 @@ namespace Game
 
         public AxieLandBattleTarget landBattleTarget;
 
-
         public AxieClassObject[] axieClassObjects = new AxieClassObject[] { };
 
         private void Start()
@@ -157,6 +156,29 @@ namespace Game
             }
         }
 
+        public SkeletonDataAsset ProcessMixer(GetAxiesExample.Axie axie)
+        {
+            if (axie.skeletonDataAsset != null)
+            {
+                return axie.skeletonDataAsset;
+            }
+
+            if (string.IsNullOrEmpty(axie.newGenes))
+            {
+                Debug.LogError($"[{axie.id}] genes not found!!!");
+                return null;
+            }
+
+            float scale = 0.007f;
+            var meta = new Dictionary<string, string>();
+
+            var builderResult = builder.BuildSpineFromGene(axie.id, axie.newGenes, meta, scale, false);
+
+            axie.skeletonDataAssetMaterial = builderResult.sharedGraphicMaterial;
+            axie.skeletonDataAsset = builderResult.skeletonDataAsset;
+            return builderResult.skeletonDataAsset;
+        }
+
 
         public Axie2dBuilderResult SimpleProcessMixer(string axieId, string genesStr, bool isGraphic)
         {
@@ -221,7 +243,8 @@ namespace Game
                 enemyTeam.AddCharacter(controller);
 
                 List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
-                    .Where(x => axieForBackend.combos.combos_id.Select(x => (SkillName)x).Contains(x.skillName)).ToList();
+                    .Where(x => axieForBackend.combos.combos_id.Select(x => (SkillName)x).Contains(x.skillName))
+                    .ToList();
 
                 controller.axieSkillController.SetAxieSkills(skillsSelected.Select(x => x.skillName).ToList(),
                     skillsSelected.Select(x => x.bodyPart).ToList());

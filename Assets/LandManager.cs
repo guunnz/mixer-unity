@@ -17,6 +17,7 @@ public class LandManager : MonoBehaviour
 {
     [SerializeField] private int indexChoosing = 0;
     private MaterialTipColorChanger[] landSquares;
+    public GameObject landParent;
     public MapManager mapManager;
     [SerializeField] private List<SpawnableLand> spawnableLands;
     private GameObject currentSpawnedLand;
@@ -105,7 +106,7 @@ public class LandManager : MonoBehaviour
             Destroy(currentSpawnedLand);
         }
 
-        currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab);
+        currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,landParent.transform);
     }
 
     public string CapitalizeFirstLetter(string input)

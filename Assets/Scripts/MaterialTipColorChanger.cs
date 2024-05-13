@@ -31,6 +31,7 @@ public class MaterialTipColorChanger : MonoBehaviour
     public Vector3 genesisColorMin;
     public Vector3 genesisColorMax;
     public OverlayTile tile;
+    public FakeOverlayTile tileFake;
     public bool colorAlreadySet = false;
     private bool floorUp;
     public float floorMoveAmount = 0.1f;
@@ -103,7 +104,7 @@ public class MaterialTipColorChanger : MonoBehaviour
 
         SetTipColor();
 
-        if (tile.beingHovered)
+        if (tile != null && tile.beingHovered || tileFake != null && tileFake.beingHovered)
         {
             float a = Mathf.Sin(Time.time * 4) * 0.0012f;
             Color colorChange = new Color(a, a, a);

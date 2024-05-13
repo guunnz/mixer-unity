@@ -4,10 +4,10 @@ using UnityEngine.EventSystems;
 
 public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public float hoverScale = 1.2f; // Escala a la que crecerá el botón al pasar el mouse
-    public float duration = 0.2f;   // Duración de la animación
+    public float hoverScale = 1.2f; // Scale factor for hover
+    public float duration = 0.2f;   // Duration of the animation
 
-    private Vector3 originalScale;   // Escala original del botón
+    private Vector3 originalScale;   // Original scale of the button
     private RectTransform rectTransform;
 
     void Start()
@@ -16,15 +16,21 @@ public class ButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         originalScale = rectTransform.localScale;
     }
 
-    // Cuando el mouse entra en el botón
+    // When the mouse enters the button
     public void OnPointerEnter(PointerEventData eventData)
     {
-        rectTransform.DOScale(originalScale * hoverScale, duration);
+        // Calculate the new scale equally on all axes
+        Vector3 targetScale = originalScale * hoverScale;
+        Vector3 scaleChange = targetScale - rectTransform.localScale;
+
+        // Apply the scale change using DOTween
+        rectTransform.DOScale(rectTransform.localScale + scaleChange, duration);
     }
 
-    // Cuando el mouse sale del botón
+    // When the mouse exits the button
     public void OnPointerExit(PointerEventData eventData)
     {
+        // Revert back to the original scale
         rectTransform.DOScale(originalScale, duration);
     }
 }

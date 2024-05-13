@@ -225,8 +225,6 @@ public class Team : MonoBehaviour
         OverlayTile startingTile = null;
         if (isGoodTeam)
         {
-            int minRange = isGoodTeam ? 0 : 4;
-            int maxRange = isGoodTeam ? 4 : 8;
             int index = 0;
             while (startingTile == null || startingTile.occupied)
             {

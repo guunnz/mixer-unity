@@ -29,7 +29,7 @@ namespace finished2
 
                 foreach (var tile in GetNeightbourOverlayTiles(currentOverlayTile))
                 {
-                    if (tile.isBlocked || closedList.Contains(tile) || Mathf.Abs(currentOverlayTile.transform.position.z - tile.transform.position.z) > 1)
+                    if (closedList.Contains(tile) || Mathf.Abs(currentOverlayTile.transform.position.z - tile.transform.position.z) > 1)
                     {
                         continue;
                     }

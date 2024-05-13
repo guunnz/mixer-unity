@@ -43,8 +43,6 @@ namespace finished2
                     } else
                     {
                         path = pathFinder.FindPath(character.standingOnTile, tile);
-
-                        tile.gameObject.GetComponent<OverlayTile>().HideTile();
                     }
                 }
             }

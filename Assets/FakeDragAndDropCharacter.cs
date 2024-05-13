@@ -1,33 +1,23 @@
-using System;
 using System.Collections;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using finished3;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragAndDropCharacter : MonoBehaviour
+public class FakeDragAndDropCharacter : MonoBehaviour
 {
     private Camera mainCamera;
     private GameObject selectedCharacter;
-    private Vector3 originalPosition;
-    private OverlayTile originalTile;
-    private List<OverlayTile> allOverlayTiles;
-    private Team team;
+    private List<FakeOverlayTile> allOverlayTiles = new List<FakeOverlayTile>();
+    [SerializeField] private List<FakeAxieController> allCharacters = new List<FakeAxieController>();
 
     void Start()
     {
-        mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
-        team = FindObjectsByType<Team>(FindObjectsSortMode.None)
-            .Single(x => x.isGoodTeam); // Get the MouseController instance
+        mainCamera = Camera.main;
     }
 
     void Update()
     {
-        // Detect mouse click
-        if (team.battleStarted)
-            return;
-
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -40,15 +30,10 @@ public class DragAndDropCharacter : MonoBehaviour
             {
                 if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
                 {
-                    AxieController axieController = selectedCharacter.GetComponent<AxieController>();
-                    
-                    if (axieController.mode == AxieMode.Menu)
-                        return;
-                    
                     selectedCharacter = hit.collider.gameObject;
-                    axieController.axieBehavior.DoAction(AxieState.Grabbed);
-                    originalPosition = selectedCharacter.transform.position;
-                    originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
+                    FakeAxieController axieController = selectedCharacter.GetComponent<FakeAxieController>();
+
+                    axieController.Grab(true);
                     selectedCharacter.transform.SetParent(mainCamera.transform);
                 }
             }
@@ -68,15 +53,14 @@ public class DragAndDropCharacter : MonoBehaviour
         if (selectedCharacter != null && Input.GetMouseButtonUp(0))
         {
             selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-            selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
-            OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
+            var fakeAxieController = selectedCharacter.GetComponent<FakeAxieController>();
+            fakeAxieController.Grab(false);
+            FakeOverlayTile closestTile = GetClosestTile();
 
             if (closestTile == null)
             {
                 selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-                selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
-                MoveCharacterToTile(selectedCharacter.GetComponent<AxieController>(),
-                    selectedCharacter.GetComponent<AxieController>().standingOnTile);
+                MoveCharacterToTile(fakeAxieController, fakeAxieController.standingOnTile);
                 return;
             }
 
@@ -87,61 +71,48 @@ public class DragAndDropCharacter : MonoBehaviour
         }
     }
 
-    private OverlayTile GetClosestTile(Vector3 position)
+    private FakeOverlayTile GetClosestTile()
     {
-        OverlayTile closestTile = null;
+        FakeOverlayTile closestTile = null;
         float minDistance = float.MaxValue;
 
         if (allOverlayTiles.Count == 0)
         {
-            allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
+            allOverlayTiles = FindObjectsOfType<FakeOverlayTile>().ToList();
         }
 
-        OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
-        if (tile == null)
-        {
-            tile = team.GetCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)
-                ?.standingOnTile;
-        }
+        FakeOverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
 
         return tile;
     }
 
-    private void TryPlaceCharacterOnTile(GameObject character, OverlayTile targetTile)
+    private void TryPlaceCharacterOnTile(GameObject character, FakeOverlayTile targetTile)
     {
-        AxieController selectedAxieController = character.GetComponent<AxieController>();
+        FakeAxieController selectedAxieController = character.GetComponent<FakeAxieController>();
 
         if (targetTile.occupied)
         {
-            var allCharacters = team.GetCharacters();
-            AxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
+            FakeAxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
             if (occupyingCharacter != null)
             {
                 SwapCharacters(selectedAxieController, occupyingCharacter);
-                occupyingCharacter.startingCol = occupyingCharacter.standingOnTile.grid2DLocation.y;
-                occupyingCharacter.startingRow = occupyingCharacter.standingOnTile.grid2DLocation.x;
             }
             else
             {
                 MoveCharacterToTile(selectedAxieController, targetTile);
             }
-
-            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
-            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
         }
         else
         {
             MoveCharacterToTile(selectedAxieController, targetTile);
-            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
-            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
         }
     }
 
-    private void SwapCharacters(AxieController characterA, AxieController characterB)
+    private void SwapCharacters(FakeAxieController characterA, FakeAxieController characterB)
     {
-        OverlayTile tileA = characterA.standingOnTile;
-        OverlayTile tileB = characterB.standingOnTile;
+        FakeOverlayTile tileA = characterA.standingOnTile;
+        FakeOverlayTile tileB = characterB.standingOnTile;
 
         // Set the target positions
         Vector3 targetPositionA = tileB.transform.position;
@@ -150,7 +121,6 @@ public class DragAndDropCharacter : MonoBehaviour
         StartCoroutine(MoveCharacter(characterA, targetPositionA));
         StartCoroutine(MoveCharacter(characterB, targetPositionB));
 
-        // Swap the 'standingOnTile' properties of the characters
         characterA.standingOnTile = tileB;
         characterB.standingOnTile = tileA;
 
@@ -175,9 +145,12 @@ public class DragAndDropCharacter : MonoBehaviour
             characterB.transform.localScale = new Vector3(-0.2f, characterB.transform.localScale.y,
                 characterB.transform.localScale.z);
         }
+
+        tileA.currentOccupier = characterB;
+        tileB.currentOccupier = characterA;
     }
 
-    IEnumerator MoveCharacter(AxieController character, Vector3 targetPosition)
+    IEnumerator MoveCharacter(FakeAxieController character, Vector3 targetPosition)
     {
         while (character.transform.position != targetPosition)
         {
@@ -187,10 +160,15 @@ public class DragAndDropCharacter : MonoBehaviour
         }
     }
 
-    private void MoveCharacterToTile(AxieController character, OverlayTile targetTile)
+    private void MoveCharacterToTile(FakeAxieController character, FakeOverlayTile targetTile)
     {
+        character.standingOnTile.occupied = false;
+        character.standingOnTile.currentOccupier = null;
+
         character.transform.position = targetTile.transform.position;
         character.standingOnTile = targetTile;
+        character.standingOnTile.currentOccupier = character;
+        character.standingOnTile.occupied = true;
 
         // Adjust local scale based on grid X value
         if (targetTile.grid2DLocation.x >= 4)
