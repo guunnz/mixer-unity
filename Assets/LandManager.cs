@@ -106,10 +106,11 @@ public class LandManager : MonoBehaviour
             Destroy(currentSpawnedLand);
         }
 
-        currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,landParent.transform);
+        currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
+            landParent.transform);
     }
 
-    public string CapitalizeFirstLetter(string input)
+    static public string CapitalizeFirstLetter(string input)
     {
         if (string.IsNullOrEmpty(input))
         {

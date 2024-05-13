@@ -8,6 +8,8 @@ public class FakeDragAndDropCharacter : MonoBehaviour
 {
     private Camera mainCamera;
     private GameObject selectedCharacter;
+    public Transform AxiesParent;
+    
     private List<FakeOverlayTile> allOverlayTiles = new List<FakeOverlayTile>();
     [SerializeField] private List<FakeAxieController> allCharacters = new List<FakeAxieController>();
 
@@ -66,7 +68,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
 
             TryPlaceCharacterOnTile(selectedCharacter, closestTile);
 
-            selectedCharacter.transform.SetParent(null); // Unparent the character
+            selectedCharacter.transform.SetParent(AxiesParent); // Unparent the character
             selectedCharacter = null; // Reset the selected character
         }
     }

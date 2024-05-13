@@ -1,30 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class AxiePartGraphic
+public class FakeAxieComboManager : MonoBehaviour
 {
-    public BodyPart bodyPart;
-    public AxieClass axieClass;
-    public Sprite bodyPartSprite;
-}
-
-[System.Serializable]
-public class AxieClassGraphic
-{
-    public AxieClass axieClass;
-    public Sprite axieClassSprite;
-}
-
-public class AbilitiesManager : MonoBehaviour
-{
-    public AxiesManager manager;
     public List<SkeletonGraphic> TeamGraphics = new List<SkeletonGraphic>();
     public List<AxiePartGraphic> BodyPartGraphics = new List<AxiePartGraphic>();
     public List<AxieClassGraphic> AxieClassGraphics = new List<AxieClassGraphic>();
@@ -59,19 +41,19 @@ public class AbilitiesManager : MonoBehaviour
     public TextMeshProUGUI SpeedText;
     public TextMeshProUGUI MoraleText;
     public TextMeshProUGUI SkillText;
-    public AxiesManager axiesManager;
+    public FakeAxiesManager axiesManager;
     private GetAxiesExample.Axie currentSelectedAxie;
 
     public void LoadUI()
     {
-        for (int i = 0; i < axiesManager.currentTeam.Count; i++)
+        for (int i = 0; i < axiesManager.instantiatedAxies.Count; i++)
         {
-            string localAxieId = axiesManager.currentTeam[i].id;
+            string localAxieId = axiesManager.instantiatedAxies[i].axie.id;
             SkeletonGraphic localGraphic = TeamGraphics[i];
 
-            localGraphic.skeletonDataAsset = axiesManager.currentTeam[i].skeletonDataAsset;
+            localGraphic.skeletonDataAsset = axiesManager.instantiatedAxies[i].axie.skeletonDataAsset;
             localGraphic.startingAnimation = "action/idle/random-0" + Random.Range(1, 5).ToString();
-            localGraphic.material = axiesManager.currentTeam[i].skeletonDataAssetMaterial;
+            localGraphic.material = axiesManager.instantiatedAxies[i].axie.skeletonDataAssetMaterial;
             localGraphic.Initialize(true);
 
             var parent = localGraphic.transform.parent;
@@ -84,12 +66,11 @@ public class AbilitiesManager : MonoBehaviour
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
         ButtonBackBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Back); });
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
-        for (int i = axiesManager.currentTeam.Count - 1; i >= 0; i--)
+        for (int i = axiesManager.instantiatedAxies.Count - 1; i >= 0; i--)
         {
-            SelectAxie(axiesManager.currentTeam[i].id);
+            SelectAxie(axiesManager.instantiatedAxies[i].axie.id);
         }
     }
-
 
     public void ChoosePart(BodyPart part)
     {
@@ -98,6 +79,11 @@ public class AbilitiesManager : MonoBehaviour
 
         GetAxiesExample.Part bodyPartToSelect =
             currentSelectedAxie.parts.Single(x => x.BodyPart == part);
+
+        // if (currentSelectedAxie.parts.Where(x => x.selected).Contains(bodyPartToSelect))
+        // {
+        //     bodyPartToReplace = null;
+        // }
 
         if (bodyPartToSelect.order == currentSelectedAxie.maxBodyPartAmount)
         {
@@ -186,12 +172,6 @@ public class AbilitiesManager : MonoBehaviour
 
         ShieldAbilityText.text = ability.shield.ToString();
         AttackAbilityText.text = ability.damage.ToString();
-
-        var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
-
-        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
-            .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
-                AxieSelecteds.Select(x => x.BodyPart).ToList());
     }
 
     public void ChoosePartOnlyDo()

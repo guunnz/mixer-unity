@@ -6,9 +6,10 @@ using UnityEngine;
 public class FakeLandManager : MonoBehaviour
 {
     private GameObject currentSpawnedLand;
+    public Transform landParent;
     private MaterialTipColorChanger[] landSquares;
     [SerializeField] private int indexChoosing = 0;
-    private LandType currentLandType = LandType.savannah;
+    internal LandType currentLandType = LandType.savannah;
     internal string currentSelectedLandId;
     [SerializeField] private List<SpawnableLand> spawnableLands;
 
@@ -18,7 +19,9 @@ public class FakeLandManager : MonoBehaviour
 
         if (currentSpawnedLand == null)
         {
-            currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab);
+            currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
+                landParent);
+            
             if (string.IsNullOrEmpty(tokenId))
             {
                 land = AccountManager.userLands.results[indexChoosing];
@@ -72,7 +75,8 @@ public class FakeLandManager : MonoBehaviour
                 Destroy(currentSpawnedLand);
             }
 
-            currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab);
+            currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
+                landParent);
         }
     }
 }

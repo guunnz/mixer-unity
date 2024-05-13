@@ -54,6 +54,19 @@ namespace Game
 
         public AxieClassObject[] axieClassObjects = new AxieClassObject[] { };
 
+        static public AxieSpawner Instance;
+
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+
+            Instance = this;
+        }
+
         private void Start()
         {
             Mixer.Init();

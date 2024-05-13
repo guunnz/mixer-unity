@@ -17,16 +17,23 @@ public class AxieTeam
 {
     public string TeamName;
     public List<GetAxiesExample.Axie> AxieIds;
-    public List<Combos> combos;
-    public List<Position> position;
+    public List<Combos> combos = new List<Combos>();
+    public List<Position> position = new List<Position>();
     public string landTokenId;
+    public LandType landType;
+}
+
+[System.Serializable]
+public class SaveableAxieTeamsWrapper
+{
+    public AxieTeam[] axieTeams;
 }
 
 public class TeamManager : MonoBehaviour
 {
     private string teamsFilePath;
-    private List<AxieTeam> teams;
-    private AxieTeam currentTeam;
+    public List<AxieTeam> teams = new List<AxieTeam>();
+    public AxieTeam currentTeam;
     public AxiesManager axiesManager;
     static public TeamManager instance;
 
@@ -41,67 +48,61 @@ public class TeamManager : MonoBehaviour
         instance = this;
     }
 
+    public void SaveTeams()
+    {
+        string json = JsonUtility.ToJson(new SaveableAxieTeamsWrapper() { axieTeams = teams.ToArray() }, true);
+
+        teamsFilePath = Path.Combine(Application.persistentDataPath,
+            RunManagerSingleton.instance.userId + "axieTeams.json");
+
+        File.WriteAllText(teamsFilePath, json);
+    }
+
     public void LoadLastAccountAxies()
     {
         teamsFilePath = Path.Combine(Application.persistentDataPath,
             RunManagerSingleton.instance.userId + "axieTeams.json");
         teams = LoadTeams();
+        if (teams == null)
+        {
+            teams = new List<AxieTeam>();
+            return;
+        }
+
+        foreach (var axieTeam in teams)
+        {
+            foreach (var axieTeamAxieId in axieTeam.AxieIds)
+            {
+                axieTeamAxieId.LoadGraphicAssets();
+            }
+        }
+
         string selectedTeamName = PlayerPrefs.GetString(PlayerPrefsValues.AxieTeamSelected);
 
         if (!string.IsNullOrEmpty(selectedTeamName))
         {
-            currentTeam = teams.Single(x => x.TeamName == selectedTeamName);
             axiesManager.ShowMenuAxies(currentTeam);
+            currentTeam = teams.Single(x => x.TeamName == selectedTeamName);
         }
-    }
-
-    public void ExitView()
-    {
-    }
-
-    public void CreateAxiesUI()
-    {
-        //CreateAxiesUI with teams;
-    }
-
-    public void SaveTeam(string teamName, List<GetAxiesExample.Axie> teamAxies, string landTokenId)
-    {
-        List<string> teamNames = teams.Select(x => x.TeamName).ToList();
-        if (teamNames.Contains(teamName))
-        {
-            Debug.LogError("Team Already Exists");
-            //NotificationClass.Instance.DoError("Team Already Exists");
-        }
-
-        AxieTeam newTeam = new AxieTeam();
-        newTeam.TeamName = teamName;
-        newTeam.AxieIds = teamAxies;
-        newTeam.landTokenId = landTokenId;
-        teams.Add(newTeam);
-
-        Debug.LogError("Team Saved Successful");
-        CreateAxiesUI();
-        ExitView();
-        //NotificationClass.Instance.DoSuccess("Team Already Exists");
-    }
-
-    public void SelectTeam(int teamIndex)
-    {
-        currentTeam = teams[teamIndex];
-        PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, currentTeam.TeamName);
-        axiesManager.ShowMenuAxies(currentTeam);
     }
 
     private List<AxieTeam> LoadTeams()
     {
-        if (File.Exists(teamsFilePath))
+        try
         {
-            string json = File.ReadAllText(teamsFilePath);
-            return JsonUtility.FromJson<List<AxieTeam>>(json);
+            if (File.Exists(teamsFilePath))
+            {
+                string json = File.ReadAllText(teamsFilePath);
+                return JsonUtility.FromJson<SaveableAxieTeamsWrapper>(json).axieTeams.ToList();
+            }
+            else
+            {
+                return new List<AxieTeam>();
+            }
         }
-        else
+        catch
         {
-            return new List<AxieTeam>();
+            return null;
         }
     }
 }

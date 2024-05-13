@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -22,24 +23,30 @@ public class TeamBuilderManager : MonoBehaviour
     public List<UIListAxie> axieList = new List<UIListAxie>();
 
     private int currentPage = 1;
-
     public TextMeshProUGUI pageText;
-
+    public TMP_InputField teamNameInputField;
     public TeamBuilderMenu currentTeamBuilderMenu;
     float PagesAmount = 0;
     int maxPagesAmount = 0;
     public GameObject TeamLandBuildingUI;
     public GameObject ComboUI;
     public FakeMapManager fakeMap;
+    public FakeAxieComboManager fakeAxieComboManager;
+    public FakeAxiesManager fakeAxiesManager;
+
+    public GameObject CanvasTeams;
+    public GameObject CanvasTeamBulding;
 
     private void OnEnable()
     {
         fakeMap.ToggleRectangles();
     }
+
     private void OnDisable()
     {
         fakeMap.ToggleRectanglesFalse();
     }
+
     public void Start()
     {
         SetMenu(TeamBuilderMenu.Lands, true);
@@ -57,9 +64,59 @@ public class TeamBuilderManager : MonoBehaviour
 
     public void SetComboMenu()
     {
-        SetMenu(TeamBuilderMenu.Combo, false);
+        if (fakeAxiesManager.instantiatedAxies.Count(x => x.renderer.enabled) == 5)
+            SetMenu(TeamBuilderMenu.Combo, false);
+        else
+        {
+            //Error Class, please choose 5 axies.
+        }
     }
 
+    public void Exit()
+    {
+        CanvasTeams.SetActive(true);
+        CanvasTeamBulding.SetActive(false);
+    }
+
+    public void SaveTeam()
+    {
+        if (string.IsNullOrEmpty(teamNameInputField.text))
+        {
+            //NotificationClass.Instance.DoError("Please enter a name for your team.");
+            return;
+        }
+
+        List<string> teamNames = TeamManager.instance.teams.Select(x => x.TeamName).ToList();
+        if (teamNames.Contains(teamNameInputField.text))
+        {
+            Debug.LogError("Team name Already Exists");
+            return;
+            //NotificationClass.Instance.DoError("Team Already Exists");
+        }
+
+        AxieTeam newTeam = new AxieTeam();
+        List<FakeAxieController> fakeAxieControllers = fakeAxiesManager.instantiatedAxies;
+        newTeam.TeamName = teamNameInputField.text;
+        newTeam.AxieIds = fakeAxieControllers.Select(x => new GetAxiesExample.Axie(x.axie)).ToList();
+
+        foreach (var axie in newTeam.AxieIds)
+        {
+            FakeAxieController axieController = fakeAxieControllers.Single(x => x.axie.id == axie.id);
+            newTeam.combos.Add(new Combos()
+                { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() });
+            newTeam.position.Add(new Position()
+            {
+                col = axieController.standingOnTile.grid2DLocation.y,
+                row = axieController.standingOnTile.grid2DLocation.x
+            });
+        }
+
+        newTeam.landTokenId = fakeAxiesManager.fakeLandManager.currentSelectedLandId;
+        newTeam.landType = fakeAxiesManager.fakeLandManager.currentLandType;
+        TeamManager.instance.teams.Add(newTeam);
+        TeamManager.instance.SaveTeams();
+        Exit();
+    }
 
     public void SetMenu(TeamBuilderMenu teamBuilderMenu, bool ResetPage = false)
     {
@@ -96,6 +153,7 @@ public class TeamBuilderManager : MonoBehaviour
     {
         TeamLandBuildingUI.SetActive(false);
         ComboUI.SetActive(true);
+        fakeAxieComboManager.LoadUI();
     }
 
     public void SetAtiaUI()

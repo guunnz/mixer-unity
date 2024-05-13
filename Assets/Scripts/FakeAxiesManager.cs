@@ -12,6 +12,18 @@ public class FakeAxiesManager : MonoBehaviour
     public AxieSpawner axieSpawner;
     public FakeMapManager mapManager;
     public FakeLandManager fakeLandManager;
+    static public FakeAxiesManager instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        instance = this;
+    }
 
     IEnumerator Start()
     {
@@ -60,6 +72,16 @@ public class FakeAxiesManager : MonoBehaviour
         character.standingOnTile = tile;
     }
 
+    public void PositionCharacterOnTile(string axieId, Position position)
+    {
+        FakeOverlayTile tile = mapManager.map[new Vector2Int(position.row, position.col)];
+        FakeAxieController character = instantiatedAxies.Single(x => x.axie != null && x.axie.id == axieId);
+        character.transform.position = tile.transform.position;
+        tile.occupied = true;
+        tile.currentOccupier = character;
+        character.standingOnTile = tile;
+    }
+
     public void ClearAllAxies()
     {
         foreach (var fakeAxieController in instantiatedAxies)
@@ -70,7 +92,7 @@ public class FakeAxiesManager : MonoBehaviour
 
     public void RemoveAxie(string AxieId)
     {
-        var fakeAxieController = instantiatedAxies.Single(x => x.axie.id == AxieId);
+        var fakeAxieController = instantiatedAxies.Single(x => x.axie != null && x.axie.id == AxieId);
         fakeAxieController.renderer.enabled = false;
         fakeAxieController.axie = null;
     }

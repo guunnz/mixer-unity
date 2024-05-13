@@ -41,6 +41,7 @@ public class AccountManager : MonoBehaviour
         {
             RoninWallet.text = forcedAddress;
         }
+
         if (!RoninWallet.text.Contains("0x") || RoninWallet.text.Contains(" "))
         {
             StartCoroutine(IncorrectWalletDo());
@@ -140,6 +141,12 @@ public class AccountManager : MonoBehaviour
 
             GetAxiesExample.AxiesData axiesData = JsonUtility.FromJson<GetAxiesExample.AxiesData>(responseString);
             userAxies = axiesData.data.axies;
+            foreach (var userAxiesResult in userAxies.results)
+            {
+                userAxiesResult.LoadGraphicAssets();
+                userAxiesResult.maxBodyPartAmount = 2;
+            }
+
             userLands = axiesData.data.lands;
             axiesData.data.lands.results = new GetAxiesExample.Land[]
             {
@@ -155,8 +162,8 @@ public class AccountManager : MonoBehaviour
                     { col = "-20", row = "4", landType = LandType.mystic.ToString(), tokenId = "323389" }
             };
 
+            loadLand();
             TeamManager.instance.LoadLastAccountAxies();
-            Invoke("loadLand", 0.2f);
         }
         catch (System.Exception ex)
         {

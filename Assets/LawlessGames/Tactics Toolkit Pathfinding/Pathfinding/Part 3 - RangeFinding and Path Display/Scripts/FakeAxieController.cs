@@ -14,6 +14,7 @@ public class FakeAxieController : MonoBehaviour
     internal FakeOverlayTile standingOnTile;
     internal Renderer renderer;
     internal bool grabbed;
+    internal Combos combos = new Combos();
 
     private void Awake()
     {

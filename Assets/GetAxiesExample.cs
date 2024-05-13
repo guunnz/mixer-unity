@@ -175,9 +175,40 @@ public class GetAxiesExample : MonoBehaviour
 
         public Stats stats;
         public string bodyShape;
+        internal int maxBodyPartAmount = 2;
         public SkeletonDataAsset skeletonDataAsset;
-        public int maxBodyPartAmount = 2;
         public Material skeletonDataAssetMaterial;
+
+        public Axie(Axie axie)
+        {
+            birthDate = axie.birthDate;
+            name = axie.name;
+            genes = axie.genes;
+            newGenes = axie.newGenes;
+            id = axie.id;
+            @class = axie.@class;
+            parts = axie.parts;
+
+            stats = axie.stats;
+            bodyShape = axie.bodyShape;
+            skeletonDataAsset = axie.skeletonDataAsset;
+            skeletonDataAssetMaterial = axie.skeletonDataAssetMaterial;
+            maxBodyPartAmount = 2;
+        }
+
+        public void LoadGraphicAssets()
+        {
+            Axie axie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == this.id);
+            if (axie != null && axie.skeletonDataAsset != null)
+            {
+                this.skeletonDataAsset = axie.skeletonDataAsset;
+                this.skeletonDataAssetMaterial = axie.skeletonDataAssetMaterial;
+            }
+            else
+            {
+                AxieSpawner.Instance.ProcessMixer(this);
+            }
+        }
     }
 
     [System.Serializable]
