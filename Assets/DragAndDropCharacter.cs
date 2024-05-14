@@ -40,12 +40,14 @@ public class DragAndDropCharacter : MonoBehaviour
             {
                 if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
                 {
+                    selectedCharacter = hit.collider.gameObject;
+                    
                     AxieController axieController = selectedCharacter.GetComponent<AxieController>();
                     
                     if (axieController.mode == AxieMode.Menu)
                         return;
                     
-                    selectedCharacter = hit.collider.gameObject;
+         
                     axieController.axieBehavior.DoAction(AxieState.Grabbed);
                     originalPosition = selectedCharacter.transform.position;
                     originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;

@@ -50,6 +50,8 @@ namespace Game
         public GameObject badTeamHP;
         public GameObject axieSkillEffectManager;
 
+        public Transform AxiesParent;
+
         public AxieLandBattleTarget landBattleTarget;
 
         public AxieClassObject[] axieClassObjects = new AxieClassObject[] { };
@@ -267,7 +269,13 @@ namespace Game
                 go.AddComponent<BoxCollider>().isTrigger = true;
                 go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
                 go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
-                goodTeam.AddCharacter(controller);
+
+
+                Position position =
+                    TeamManager.instance.currentTeam.position[
+                        TeamManager.instance.currentTeam.AxieIds.FindIndex(x => x.id == axieId)];
+
+                goodTeam.AddCharacter(controller, new Vector2Int(position.row, position.col));
             }
 
             go.tag = "Character";
@@ -287,6 +295,7 @@ namespace Game
                 Instantiate(axieSkillEffectManager, runtimeSkeletonAnimation.transform)
                     .GetComponent<AxieSkillEffectManager>();
             controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
+            controller.transform.parent = AxiesParent;
             return controller;
         }
 

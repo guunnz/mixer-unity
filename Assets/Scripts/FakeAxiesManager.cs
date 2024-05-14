@@ -75,7 +75,9 @@ public class FakeAxiesManager : MonoBehaviour
     public void PositionCharacterOnTile(string axieId, Position position)
     {
         FakeOverlayTile tile = mapManager.map[new Vector2Int(position.row, position.col)];
-        FakeAxieController character = instantiatedAxies.Single(x => x.axie != null && x.axie.id == axieId);
+        FakeAxieController character = instantiatedAxies.FirstOrDefault(x => x.axie != null && x.axie.id == axieId);
+        if (character == null)
+            return;
         character.transform.position = tile.transform.position;
         tile.occupied = true;
         tile.currentOccupier = character;
@@ -84,9 +86,21 @@ public class FakeAxiesManager : MonoBehaviour
 
     public void ClearAllAxies()
     {
+        int index = 0;
         foreach (var fakeAxieController in instantiatedAxies)
         {
+            if (fakeAxieController.axie == null)
+            {
+                continue;
+            }
+
+            Vector2Int? gridLocation = null;
+            gridLocation = new Vector2Int(0, index);
+            fakeAxieController.standingOnTile = mapManager.map[gridLocation.Value];
+            PositionCharacterOnTile(fakeAxieController.axie.id, new Position() { row = 0, col = gridLocation.Value.y });
             fakeAxieController.renderer.enabled = false;
+            fakeAxieController.axie = null;
+            index++;
         }
     }
 

@@ -80,7 +80,11 @@ public class OverlayTile : MonoBehaviour
 
     private void CheckOccupied()
     {
-        // Assuming you have a static method to get all characters and their current tiles
+        if (currentOccupier == null)
+        {
+            occupied = false;
+            return;
+        }
         var allCharacters = goodTeam.GetCharacters();
         occupied = allCharacters.Any(character => character.standingOnTile == this);
         if (!occupied)

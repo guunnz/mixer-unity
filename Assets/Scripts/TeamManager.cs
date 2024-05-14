@@ -81,8 +81,8 @@ public class TeamManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(selectedTeamName))
         {
-            axiesManager.ShowMenuAxies(currentTeam);
             currentTeam = teams.Single(x => x.TeamName == selectedTeamName);
+            axiesManager.ShowMenuAxies(currentTeam);
         }
     }
 

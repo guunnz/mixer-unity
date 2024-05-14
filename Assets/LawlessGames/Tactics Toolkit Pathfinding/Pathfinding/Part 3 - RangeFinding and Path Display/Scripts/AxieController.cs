@@ -168,7 +168,10 @@ public class AxieController : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         if (!goodTeam.battleStarted)
+        {
+            transform.DOKill();
             axieBehavior.DoAction(AxieState.Hovered);
+        }
     }
 
     private void OnMouseExit()
@@ -190,11 +193,11 @@ public class AxieController : MonoBehaviour
         }
     }
 
-    public float timePerMeter = 1.0f; // Time it takes to move 1 meter
+    public float timePerMeter = 0.8f; // Time it takes to move 1 meter
 
     private void MoveToRandomPosition(bool changingFromMenuToBattle = false)
     {
-        DOTween.KillAll(this.transform);
+        transform.DOKill();
         float targetX =
             UnityEngine.Random.Range(MapManager.Instance.minMapBounds.x, MapManager.Instance.maxMapBounds.x);
         float targetY =
@@ -222,7 +225,7 @@ public class AxieController : MonoBehaviour
         SkeletonAnim.AnimationName = "action/run";
 
         // Move towards the target position using DOTween
-        transform.DOMove(targetPosition, moveDuration)
+        transform.DOMove(targetPosition, changingFromMenuToBattle ? moveDuration / 2.5f : moveDuration)
             .SetEase(Ease.Linear) // Use linear easing for constant speed
             .OnComplete(() =>
             {
@@ -232,17 +235,22 @@ public class AxieController : MonoBehaviour
                 {
                     statsManagerUI.gameObject.SetActive(true);
                     this.mode = AxieMode.Battle;
+                    transform.localScale = new Vector3(-0.2f, transform.localScale.y, transform.localScale.z);
                 }
             });
     }
 
     private void Update()
     {
-        if (mode == AxieMode.Menu)
+        if (mode == AxieMode.Menu && axieBehavior.axieState != AxieState.Hovered)
         {
             if (TimerMove <= 0)
             {
                 MoveToRandomPosition();
+            }
+            else
+            {
+                TimerMove -= Time.deltaTime;
             }
         }
     }

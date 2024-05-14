@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class TeamSelectorUI : MonoBehaviour
@@ -10,6 +11,7 @@ public class TeamSelectorUI : MonoBehaviour
     public GameObject RealAxies;
     public GameObject RealLand;
     public List<TeamItemUI> TeamItems;
+    public TextMeshProUGUI TeamName;
 
     private void OnEnable()
     {
@@ -32,6 +34,26 @@ public class TeamSelectorUI : MonoBehaviour
         FakeUI.SetActive(false);
     }
 
+    public void RefreshUI()
+    {
+        for (int i = 0; i < TeamItems.Count; i++)
+        {
+            if (i < TeamManager.instance.teams.Count)
+            {
+                AxieTeam team = TeamManager.instance.teams[i];
+
+                if (team.TeamName == TeamManager.instance.currentTeam.TeamName)
+                {
+                    TeamName.text = team.TeamName;
+                }
+                else
+                {
+                    TeamItems[i].SelectTeam(false, team);
+                }
+            }
+        }
+    }
+
     public void CreateAxiesUI()
     {
         if (TeamManager.instance.teams.Count == 1)
@@ -39,6 +61,7 @@ public class TeamSelectorUI : MonoBehaviour
             TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
         }
 
+        TeamName.text = TeamManager.instance.currentTeam.TeamName;
         for (int i = 0; i < TeamItems.Count; i++)
         {
             if (i < TeamManager.instance.teams.Count)
@@ -50,6 +73,7 @@ public class TeamSelectorUI : MonoBehaviour
 
                 if (team.TeamName == TeamManager.instance.currentTeam.TeamName)
                 {
+                    TeamName.text = team.TeamName;
                     TeamItems[i].SelectTeam(true, team);
                 }
                 else

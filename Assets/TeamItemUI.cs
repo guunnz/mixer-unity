@@ -20,6 +20,7 @@ public class TeamItemUI : MonoBehaviour
     public List<SkeletonGraphic> skeletonGraphics = new List<SkeletonGraphic>();
     private Button button;
     public AxieTeam currentTeam;
+    public TeamSelectorUI teamSelectorUI;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class TeamItemUI : MonoBehaviour
     public void SetTeamGraphics(AxieTeam axieTeam)
     {
         currentTeam = axieTeam;
+        TeamName.text = axieTeam.TeamName;
         PlotGraphics.sprite = spriteLandList.Single(x => x.landType == axieTeam.landType).landSprite;
         GetAxiesExample.Land land = AccountManager.userLands.results.Single(x => x.tokenId == axieTeam.landTokenId);
         PlotText.text =
@@ -48,11 +50,14 @@ public class TeamItemUI : MonoBehaviour
     {
         if (select)
         {
+            TeamManager.instance.currentTeam = axieTeam;
             PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, axieTeam.TeamName);
 
+            TeamName.text = axieTeam.TeamName;
             StartCoroutine(SelectTeamCoroutine(axieTeam));
 
             SelectedImage.sprite = SelectedSprite;
+            teamSelectorUI.RefreshUI();
         }
         else
         {
@@ -62,12 +67,6 @@ public class TeamItemUI : MonoBehaviour
 
     IEnumerator SelectTeamCoroutine(AxieTeam axieTeam)
     {
-        if (axieTeam != TeamManager.instance.currentTeam)
-        {
-            FakeAxiesManager.instance.ClearAllAxies();
-            yield return new WaitForSeconds(0.1f);
-        }
-
         if (FakeAxiesManager.instance.instantiatedAxies.Select(x => x.axie).ToList()
             .All(x => axieTeam.AxieIds.Contains(x)))
         {
@@ -79,6 +78,10 @@ public class TeamItemUI : MonoBehaviour
         }
         else
         {
+            FakeAxiesManager.instance.ClearAllAxies();
+            FakeLandManager.Instance.ChooseFakeLand(TeamManager.instance.currentTeam.landTokenId);
+            yield return new WaitForSeconds(0.1f);
+
             for (int i = 0; i < axieTeam.AxieIds.Count; i++)
             {
                 var axie = axieTeam.AxieIds[i];

@@ -11,7 +11,7 @@ public class Team : MonoBehaviour
 {
     public float speed;
     public int movementRange = 300;
-    
+
     internal Dictionary<AxieController, CharacterState> characters = new Dictionary<AxieController, CharacterState>();
     private PathFinder pathFinder;
     public Team enemyTeam;
@@ -225,21 +225,7 @@ public class Team : MonoBehaviour
         OverlayTile startingTile = null;
         if (isGoodTeam)
         {
-            int index = 0;
-            while (startingTile == null || startingTile.occupied)
-            {
-                if (gridLocation == null)
-                {
-                    gridLocation = new Vector2Int(0, index);
-                }
-
-                startingTile = MapManager.Instance.map[gridLocation.Value];
-                if (startingTile.occupied)
-                {
-                    gridLocation = null;
-                    index++;
-                }
-            }
+            startingTile = MapManager.Instance.map[gridLocation.Value];
         }
         else
         {

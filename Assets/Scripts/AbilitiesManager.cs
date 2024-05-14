@@ -64,14 +64,14 @@ public class AbilitiesManager : MonoBehaviour
 
     public void LoadUI()
     {
-        for (int i = 0; i < axiesManager.currentTeam.Count; i++)
+        for (int i = 0; i < TeamManager.instance.currentTeam.AxieIds.Count; i++)
         {
-            string localAxieId = axiesManager.currentTeam[i].id;
+            string localAxieId = TeamManager.instance.currentTeam.AxieIds[i].id;
             SkeletonGraphic localGraphic = TeamGraphics[i];
 
-            localGraphic.skeletonDataAsset = axiesManager.currentTeam[i].skeletonDataAsset;
+            localGraphic.skeletonDataAsset = TeamManager.instance.currentTeam.AxieIds[i].skeletonDataAsset;
             localGraphic.startingAnimation = "action/idle/random-0" + Random.Range(1, 5).ToString();
-            localGraphic.material = axiesManager.currentTeam[i].skeletonDataAssetMaterial;
+            localGraphic.material = TeamManager.instance.currentTeam.AxieIds[i].skeletonDataAssetMaterial;
             localGraphic.Initialize(true);
 
             var parent = localGraphic.transform.parent;
@@ -84,9 +84,9 @@ public class AbilitiesManager : MonoBehaviour
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
         ButtonBackBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Back); });
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
-        for (int i = axiesManager.currentTeam.Count - 1; i >= 0; i--)
+        for (int i = TeamManager.instance.currentTeam.AxieIds.Count - 1; i >= 0; i--)
         {
-            SelectAxie(axiesManager.currentTeam[i].id);
+            SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id);
         }
     }
 
@@ -227,7 +227,14 @@ public class AbilitiesManager : MonoBehaviour
                 .Single(x =>
                     x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
                     x.skillName == partObj.SkillName).description;
+            
+            var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
+            
+            axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
+                .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
+                    AxieSelecteds.Select(x => x.BodyPart).ToList());
         }
+        
     }
 
     public void SelectAxie(string axieId)
@@ -268,8 +275,8 @@ public class AbilitiesManager : MonoBehaviour
         }
         else
         {
-            ChoosePart(BodyPart.Horn);
-            ChoosePart(BodyPart.Mouth);
+            axie.parts = TeamManager.instance.currentTeam.AxieIds.Single(x => x.id == axieId).parts;
+            ChoosePartOnlyDo();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,18 @@ public class FakeLandManager : MonoBehaviour
     internal LandType currentLandType = LandType.savannah;
     internal string currentSelectedLandId;
     [SerializeField] private List<SpawnableLand> spawnableLands;
+    static public FakeLandManager Instance;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(Instance);
+            return;
+        }
+
+        Instance = this;
+    }
 
     public void ChooseFakeLand(string tokenId = null)
     {
@@ -21,7 +34,7 @@ public class FakeLandManager : MonoBehaviour
         {
             currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
                 landParent);
-            
+
             if (string.IsNullOrEmpty(tokenId))
             {
                 land = AccountManager.userLands.results[indexChoosing];

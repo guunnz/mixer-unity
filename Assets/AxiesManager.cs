@@ -18,12 +18,17 @@ public class AxiesManager : MonoBehaviour
     private int AmountSelected;
     private List<string> chosenAxies = new List<string>();
     public List<SkeletonGraphic> skeletonGraphics = new List<SkeletonGraphic>();
-    public List<GetAxiesExample.Axie> currentTeam = new List<GetAxiesExample.Axie>();
     public List<AxieController> axieControllers = new List<AxieController>();
     public Team myTeam;
 
     public void ShowMenuAxies(AxieTeam axieTeam)
     {
+        StartCoroutine(IShowMenuAxies(axieTeam));
+    }
+
+    IEnumerator IShowMenuAxies(AxieTeam axieTeam)
+    {
+      
         LandManager.instance.ChooseLand(axieTeam.landTokenId);
         myTeam.characters.Clear();
 
@@ -33,7 +38,7 @@ public class AxiesManager : MonoBehaviour
         }
 
         axieControllers.Clear();
-        currentTeam = AccountManager.userAxies.results.Where(x => chosenAxies.Contains(x.id)).ToList();
+        yield return new WaitForSeconds(0.1f);
         foreach (var axie in axieTeam.AxieIds)
         {
             AxieController axieController =
@@ -50,6 +55,15 @@ public class AxiesManager : MonoBehaviour
         foreach (var axieController in myTeam.GetCharactersAll())
         {
             axieController.ChangeMode(AxieMode.Battle);
+        }
+    }
+    
+    public void SetAxiesMenuMode()
+    {
+        MapManager.Instance.ToggleRectanglesFalse();
+        foreach (var axieController in myTeam.GetCharactersAll())
+        {
+            axieController.ChangeMode(AxieMode.Menu);
         }
     }
 

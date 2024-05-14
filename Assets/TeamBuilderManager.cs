@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public enum TeamBuilderMenu
 {
@@ -33,18 +35,42 @@ public class TeamBuilderManager : MonoBehaviour
     public FakeMapManager fakeMap;
     public FakeAxieComboManager fakeAxieComboManager;
     public FakeAxiesManager fakeAxiesManager;
-
+    public FakeLandManager fakeLandManager;
     public GameObject CanvasTeams;
-    public GameObject CanvasTeamBulding;
+    public bool creatingNewTeam;
 
-    private void OnEnable()
+    public GameObject Container;
+
+    public GameObject AxieStatsContainer;
+    public TextMeshProUGUI AxieHPText;
+    public TextMeshProUGUI AxieMoraleText;
+    public TextMeshProUGUI AxieSkillText;
+    public TextMeshProUGUI AxieSpeedText;
+    public GetAxiesExample.Axie lastAxieChosen;
+    public SkeletonGraphic statsSkeletonGraphic;
+    public Image AxieClassGraphic;
+
+
+    public void Edit()
     {
         fakeMap.ToggleRectangles();
+        Container.SetActive(true);
+        CanvasTeams.SetActive(false);
+        creatingNewTeam = false;
+        teamNameInputField.text = TeamManager.instance.currentTeam.TeamName;
+        SetMenu(TeamBuilderMenu.Axies, true);
     }
 
-    private void OnDisable()
+    public void NewTeam()
     {
-        fakeMap.ToggleRectanglesFalse();
+        CanvasTeams.SetActive(false);
+        fakeLandManager.ChooseFakeLand(AccountManager.userLands.results[0].tokenId);
+        teamNameInputField.text = "";
+        fakeMap.ToggleRectangles();
+        Container.SetActive(true);
+        creatingNewTeam = true;
+        fakeAxiesManager.ClearAllAxies();
+        SetMenu(TeamBuilderMenu.Lands, true);
     }
 
     public void Start()
@@ -74,8 +100,9 @@ public class TeamBuilderManager : MonoBehaviour
 
     public void Exit()
     {
+        fakeMap.ToggleRectanglesFalse();
         CanvasTeams.SetActive(true);
-        CanvasTeamBulding.SetActive(false);
+        Container.SetActive(false);
     }
 
     public void SaveTeam()
@@ -87,7 +114,7 @@ public class TeamBuilderManager : MonoBehaviour
         }
 
         List<string> teamNames = TeamManager.instance.teams.Select(x => x.TeamName).ToList();
-        if (teamNames.Contains(teamNameInputField.text))
+        if (teamNames.Contains(teamNameInputField.text) && creatingNewTeam)
         {
             Debug.LogError("Team name Already Exists");
             return;
@@ -113,7 +140,18 @@ public class TeamBuilderManager : MonoBehaviour
 
         newTeam.landTokenId = fakeAxiesManager.fakeLandManager.currentSelectedLandId;
         newTeam.landType = fakeAxiesManager.fakeLandManager.currentLandType;
-        TeamManager.instance.teams.Add(newTeam);
+        if (teamNames.Contains(teamNameInputField.text) && !creatingNewTeam)
+        {
+            // Retrieve the index of the team with the matching name
+            int index = TeamManager.instance.teams.FindIndex(team => team.TeamName == teamNameInputField.text);
+
+            TeamManager.instance.teams[index] = newTeam;
+        }
+        else
+        {
+            TeamManager.instance.teams.Add(newTeam);
+        }
+
         TeamManager.instance.SaveTeams();
         Exit();
     }
@@ -160,12 +198,60 @@ public class TeamBuilderManager : MonoBehaviour
     {
     }
 
+    public void SetAxieSelected(GetAxiesExample.Axie axie, Sprite classSprite)
+    {
+        AxieClassGraphic.sprite = classSprite;
+        statsSkeletonGraphic.skeletonDataAsset = axie.skeletonDataAsset;
+        statsSkeletonGraphic.material = axie.skeletonDataAssetMaterial;
+        statsSkeletonGraphic.Initialize(true);
+        AxieStatsContainer.SetActive(true);
+        lastAxieChosen = axie;
+        AxieHPText.text = axie.stats.hp.ToString();
+        AxieSkillText.text = axie.stats.skill.ToString();
+        AxieMoraleText.text = axie.stats.morale.ToString();
+        AxieSpeedText.text = axie.stats.speed.ToString();
+    }
+
+    public void SetOtherAxieSelected()
+    {
+        AxieStatsContainer.SetActive(false);
+        for (int i = 0; i < 12; i++)
+        {
+            int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
+            if (indexToSearch < AccountManager.userAxies.results.Length)
+            {
+                if (axieList[i].selected)
+                {
+                    AxieHPText.text = axieList[i].axie.stats.hp.ToString();
+                    AxieSkillText.text = axieList[i].axie.stats.skill.ToString();
+                    AxieMoraleText.text = axieList[i].axie.stats.morale.ToString();
+                    AxieSpeedText.text = axieList[i].axie.stats.speed.ToString();
+                    statsSkeletonGraphic.skeletonDataAsset = axieList[i].axie.skeletonDataAsset;
+                    statsSkeletonGraphic.material = axieList[i].axie.skeletonDataAssetMaterial;
+                    statsSkeletonGraphic.Initialize(true);
+                    AxieStatsContainer.SetActive(true);
+                    return;
+                }
+            }
+        }
+    }
+
     public void SetAxiesUI()
     {
         TeamLandBuildingUI.SetActive(true);
         ComboUI.SetActive(false);
         LandsContent.SetActive(false);
         AxiesContent.SetActive(true);
+        if (lastAxieChosen == null)
+        {
+            if (TeamManager.instance.currentTeam != null)
+            {
+                lastAxieChosen = TeamManager.instance.currentTeam.AxieIds[0];
+            }
+        }
+
+        AxieStatsContainer.SetActive(false);
+
         for (int i = 0; i < 12; i++)
         {
             axieList[i].axie = null;
@@ -176,7 +262,19 @@ public class TeamBuilderManager : MonoBehaviour
                 GetAxiesExample.Axie axie = AccountManager.userAxies.results[indexToSearch];
 
                 axieList[i].axie = axie;
+                if (lastAxieChosen != null && axie.id == lastAxieChosen.id)
+                {
+                    AxieHPText.text = axie.stats.hp.ToString();
+                    AxieSkillText.text = axie.stats.skill.ToString();
+                    AxieMoraleText.text = axie.stats.morale.ToString();
+                    AxieSpeedText.text = axie.stats.speed.ToString();
+                    statsSkeletonGraphic.skeletonDataAsset = axieList[i].axie.skeletonDataAsset;
+                    statsSkeletonGraphic.material = axieList[i].axie.skeletonDataAssetMaterial;
+                    statsSkeletonGraphic.Initialize(true);
+                    AxieStatsContainer.SetActive(true);
+                }
             }
+
 
             axieList[i].Refresh();
         }
