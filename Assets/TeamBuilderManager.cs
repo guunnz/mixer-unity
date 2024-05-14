@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public enum TeamBuilderMenu
@@ -18,6 +20,19 @@ public enum TeamBuilderMenu
 
 public class TeamBuilderManager : MonoBehaviour
 {
+    public enum AxieStatFilter
+    {
+        NoFilter,
+        MoreMorale,
+        MoreHP,
+        MoreSpeed,
+        MoreSkill,
+        LessMorale,
+        LessHP,
+        LessSpeed,
+        LessSkill
+    }
+
     public GameObject LandsContent;
     public GameObject AxiesContent;
 
@@ -50,6 +65,21 @@ public class TeamBuilderManager : MonoBehaviour
     public SkeletonGraphic statsSkeletonGraphic;
     public Image AxieClassGraphic;
 
+    public List<AxieClass> axieClassFilters = new List<AxieClass>();
+    public List<AxieStatFilter> axieStatsFilters = new List<AxieStatFilter>();
+
+    internal delegate void StatsFilterCleared();
+
+    internal event StatsFilterCleared statsfilterClearedEvent;
+
+    internal delegate void ContraryStatsFilterCleared(AxieStatFilter statsFilter);
+
+    internal event ContraryStatsFilterCleared contraryfilterClearedEvent;
+
+    internal delegate void AxieClassFilterCleared();
+
+    internal event AxieClassFilterCleared axieClassfilterClearedEvent;
+
 
     public void Edit()
     {
@@ -71,6 +101,117 @@ public class TeamBuilderManager : MonoBehaviour
         creatingNewTeam = true;
         fakeAxiesManager.ClearAllAxies();
         SetMenu(TeamBuilderMenu.Lands, true);
+    }
+
+    public void ToggleClassFilter(AxieClass axieClass)
+    {
+        if (axieClassFilters.Any(x => x == axieClass))
+        {
+            axieClassFilters.RemoveAll(x => x == axieClass);
+        }
+        else
+        {
+            axieClassFilters.Add(axieClass);
+        }
+
+        SetAxiesUI();
+    }
+
+    public void RemoveAllClassFilter()
+    {
+        axieClassFilters.Clear();
+        axieClassfilterClearedEvent.Invoke();
+        SetAxiesUI();
+    }
+
+    public void RemoveAllStatsFilter()
+    {
+        axieStatsFilters.Clear();
+        statsfilterClearedEvent.Invoke();
+        SetAxiesUI();
+    }
+
+    public void ToggleStatsFilter(AxieStatFilter statFilter)
+    {
+        AxieStatFilter contraryFilter = axieStatsFilters.FirstOrDefault(x =>
+            x != statFilter && statFilter.ToString().Contains(x.ToString().Substring(4)) ||
+            x == statFilter && axieStatsFilters.Contains(statFilter));
+
+        if (contraryFilter != AxieStatFilter.NoFilter)
+        {
+            axieStatsFilters.RemoveAll(x => x == contraryFilter);
+            contraryfilterClearedEvent.Invoke(contraryFilter);
+        }
+        else
+        {
+            axieStatsFilters.Add(statFilter);
+        }
+
+        SetAxiesUI();
+    }
+
+    public List<GetAxiesExample.Axie> GetFilteredList()
+    {
+        List<GetAxiesExample.Axie> axiesList = AccountManager.userAxies.results.ToList();
+
+        if (axieClassFilters.Count != 0)
+        {
+            axiesList = axiesList.Where(x => axieClassFilters.Contains(x.axieClass)).ToList();
+        }
+
+        IOrderedEnumerable<GetAxiesExample.Axie> query = axiesList.OrderBy(x => 0);
+        if (axieStatsFilters.Count != 0)
+        {
+            AxieStatFilter firstFilter = axieStatsFilters.First();
+            if (firstFilter.ToString().Contains("More"))
+            {
+                query = query.OrderByDescending(x => GetFieldValue(x, firstFilter));
+            }
+            else
+            {
+                query = query.OrderBy(x => GetFieldValue(x, firstFilter));
+            }
+
+            for (int i = 1; i < axieStatsFilters.Count; i++)
+            {
+                AxieStatFilter filter = axieStatsFilters[i];
+                if (filter.ToString().Contains("More"))
+                {
+                    query = query.ThenByDescending(x => GetFieldValue(x, filter));
+                }
+                else
+                {
+                    query = query.ThenBy(x => GetFieldValue(x, filter));
+                }
+            }
+        }
+
+        return query.ToList();
+    }
+
+    int GetFieldValue(GetAxiesExample.Axie axie, AxieStatFilter filter)
+    {
+        PropertyInfo property =
+            typeof(GetAxiesExample.Axie).GetProperty("stats");
+
+        if (property != null)
+        {
+            // Get the 'stats' property value
+            var statsObject = property.GetValue(axie);
+
+            if (statsObject != null)
+            {
+                // Get the filter property value
+                PropertyInfo filterProperty = statsObject.GetType().GetProperty(filter.ToString());
+
+                if (filterProperty != null)
+                {
+                    return (int)filterProperty.GetValue(statsObject);
+                }
+            }
+        }
+
+        return 0;
     }
 
     public void Start()
@@ -140,12 +281,9 @@ public class TeamBuilderManager : MonoBehaviour
 
         newTeam.landTokenId = fakeAxiesManager.fakeLandManager.currentSelectedLandId;
         newTeam.landType = fakeAxiesManager.fakeLandManager.currentLandType;
-        if (teamNames.Contains(teamNameInputField.text) && !creatingNewTeam)
+        if (!creatingNewTeam)
         {
-            // Retrieve the index of the team with the matching name
-            int index = TeamManager.instance.teams.FindIndex(team => team.TeamName == teamNameInputField.text);
-
-            TeamManager.instance.teams[index] = newTeam;
+            TeamManager.instance.currentTeam = newTeam;
         }
         else
         {
@@ -252,14 +390,16 @@ public class TeamBuilderManager : MonoBehaviour
 
         AxieStatsContainer.SetActive(false);
 
+        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList();
+
         for (int i = 0; i < 12; i++)
         {
             axieList[i].axie = null;
 
             int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
-            if (indexToSearch < AccountManager.userAxies.results.Length)
+            if (indexToSearch < filteredAxieList.Count)
             {
-                GetAxiesExample.Axie axie = AccountManager.userAxies.results[indexToSearch];
+                GetAxiesExample.Axie axie = filteredAxieList[indexToSearch];
 
                 axieList[i].axie = axie;
                 if (lastAxieChosen != null && axie.id == lastAxieChosen.id)

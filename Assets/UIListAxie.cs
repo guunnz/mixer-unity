@@ -40,14 +40,12 @@ public class UIListAxie : MonoBehaviour
             Refresh(false);
         }
         else
-        {            
+        {
             Refresh(false);
             skeletonGraphic.startingAnimation = "action/idle/normal";
             skeletonGraphic.Initialize(true);
             teamBuilderManager.SetOtherAxieSelected();
         }
-
-      
     }
 
     public void Refresh(bool resetAxie = true)
@@ -66,6 +64,7 @@ public class UIListAxie : MonoBehaviour
         }
 
         selectedImage.enabled = axie != null;
+        axieClassImage.enabled = axie != null;
         if (axie == null)
         {
             this.transform.DOScale(new Vector3(1, 1, 1), 0.3f);
@@ -83,13 +82,13 @@ public class UIListAxie : MonoBehaviour
                     skeletonGraphic.startingAnimation = "action/idle/random-04";
                     skeletonGraphic.Initialize(true);
                 }
-            
+
 
                 this.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), 0.3f);
-                
+
                 selectedImage.color = new Color(1, 1, 1, 1f);
                 selectedImage.sprite = selectedSprite;
-                
+
                 teamBuilderManager.SetAxieSelected(axie, axieClassImage.sprite);
             }
             else

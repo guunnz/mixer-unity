@@ -88,6 +88,26 @@ public class TeamSelectorUI : MonoBehaviour
         }
     }
 
+    public void DeleteTeam()
+    {
+        TeamManager.instance.teams.Remove(TeamManager.instance.currentTeam);
+
+        if (TeamManager.instance.teams.Count > 0)
+        {
+            TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
+
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, TeamManager.instance.teams[0].TeamName);
+        }
+        else
+        {
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, "");
+        }
+
+        TeamManager.instance.SaveTeams();
+
+        CreateAxiesUI();
+    }
+
     public void SelectTeam()
     {
         PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, TeamManager.instance.currentTeam.TeamName);
