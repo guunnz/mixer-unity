@@ -25,11 +25,12 @@ public class AxiesManager : MonoBehaviour
     {
         if (axieTeam == null)
         {
-            axieControllers.Clear();
+            myTeam.characters.Clear();
             for (int i = 0; i < axieControllers.Count; i++)
             {
                 Destroy(axieControllers[i].gameObject);
             }
+            axieControllers.Clear();
             return;
         }
         StartCoroutine(IShowMenuAxies(axieTeam));
