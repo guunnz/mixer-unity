@@ -43,6 +43,8 @@ public class FakeAxieComboManager : MonoBehaviour
     public TextMeshProUGUI SkillText;
     public FakeAxiesManager axiesManager;
     private GetAxiesExample.Axie currentSelectedAxie;
+    public Sprite SelectedSprite;
+    public Sprite DeselectedSprite;
 
     public void LoadUI()
     {
@@ -59,7 +61,7 @@ public class FakeAxieComboManager : MonoBehaviour
             var parent = localGraphic.transform.parent;
             parent.GetComponent<Button>().onClick.RemoveAllListeners();
 
-            parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId); });
+            parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId, parent); });
         }
 
         ButtonHornBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Horn); });
@@ -68,7 +70,7 @@ public class FakeAxieComboManager : MonoBehaviour
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
         for (int i = axiesManager.instantiatedAxies.Count - 1; i >= 0; i--)
         {
-            SelectAxie(axiesManager.instantiatedAxies[i].axie.id);
+            SelectAxie(axiesManager.instantiatedAxies[i].axie.id, TeamGraphics[i].transform.parent);
         }
     }
 
@@ -102,6 +104,10 @@ public class FakeAxieComboManager : MonoBehaviour
         BackBodyPartOrderImage.SetActive(false);
         MouthBodyPartOrderImage.SetActive(false);
         TailBodyPartOrderImage.SetActive(false);
+        ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected && x != bodyPartToSelect))
         {
             if (partObj.order > 1)
@@ -113,18 +119,22 @@ public class FakeAxieComboManager : MonoBehaviour
             {
                 case BodyPart.Back:
                     BackBodyPartOrderText.text = partObj.order + "°";
+                    ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     BackBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Mouth:
                     MouthBodyPartOrderText.text = partObj.order + "°";
+                    ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     MouthBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Horn:
                     HornBodyPartOrderText.text = partObj.order + "°";
+                    ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     HornBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Tail:
                     TailBodyPartOrderText.text = partObj.order + "°";
+                    ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     TailBodyPartOrderImage.SetActive(true);
                     break;
             }
@@ -146,18 +156,22 @@ public class FakeAxieComboManager : MonoBehaviour
         {
             case BodyPart.Back:
                 BackBodyPartOrderText.text = bodyPartToSelect.order + "°";
+                ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                 BackBodyPartOrderImage.SetActive(true);
                 break;
             case BodyPart.Mouth:
                 MouthBodyPartOrderText.text = bodyPartToSelect.order + "°";
+                ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                 MouthBodyPartOrderImage.SetActive(true);
                 break;
             case BodyPart.Horn:
                 HornBodyPartOrderText.text = bodyPartToSelect.order + "°";
+                ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                 HornBodyPartOrderImage.SetActive(true);
                 break;
             case BodyPart.Tail:
                 TailBodyPartOrderText.text = bodyPartToSelect.order + "°";
+                ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                 TailBodyPartOrderImage.SetActive(true);
                 break;
         }
@@ -180,24 +194,34 @@ public class FakeAxieComboManager : MonoBehaviour
         BackBodyPartOrderImage.SetActive(false);
         MouthBodyPartOrderImage.SetActive(false);
         TailBodyPartOrderImage.SetActive(false);
+
+        ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+
         foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected))
         {
             switch (partObj.BodyPart)
             {
                 case BodyPart.Back:
                     BackBodyPartOrderText.text = partObj.order + "°";
+                    ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     BackBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Mouth:
                     MouthBodyPartOrderText.text = partObj.order + "°";
+                    ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     MouthBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Horn:
                     HornBodyPartOrderText.text = partObj.order + "°";
+                    ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     HornBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Tail:
                     TailBodyPartOrderText.text = partObj.order + "°";
+                    ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
                     TailBodyPartOrderImage.SetActive(true);
                     break;
             }
@@ -210,8 +234,14 @@ public class FakeAxieComboManager : MonoBehaviour
         }
     }
 
-    public void SelectAxie(string axieId)
+    public void SelectAxie(string axieId, Transform parent)
     {
+        foreach (var skeletonGraphic in TeamGraphics)
+        {
+            skeletonGraphic.transform.parent.GetComponent<Image>().sprite = DeselectedSprite;
+        }
+
+        parent.GetComponent<Image>().sprite = SelectedSprite;
         GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
 
         axieClassImage.sprite = AxieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;

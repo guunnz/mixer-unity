@@ -2,13 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+
 
 public enum TeamBuilderMenu
 {
@@ -134,13 +132,18 @@ public class TeamBuilderManager : MonoBehaviour
     public void ToggleStatsFilter(AxieStatFilter statFilter)
     {
         AxieStatFilter contraryFilter = axieStatsFilters.FirstOrDefault(x =>
-            x != statFilter && statFilter.ToString().Contains(x.ToString().Substring(4)) ||
-            x == statFilter && axieStatsFilters.Contains(statFilter));
+            x != statFilter && statFilter.ToString().Contains(x.ToString().Substring(4)));
+
 
         if (contraryFilter != AxieStatFilter.NoFilter)
         {
             axieStatsFilters.RemoveAll(x => x == contraryFilter);
             contraryfilterClearedEvent.Invoke(contraryFilter);
+        }
+
+        if (axieStatsFilters.Any(x => x == statFilter && axieStatsFilters.Contains(statFilter)))
+        {
+            axieStatsFilters.RemoveAll(x => x == statFilter);
         }
         else
         {
@@ -165,11 +168,11 @@ public class TeamBuilderManager : MonoBehaviour
             AxieStatFilter firstFilter = axieStatsFilters.First();
             if (firstFilter.ToString().Contains("More"))
             {
-                query = query.OrderByDescending(x => GetFieldValue(x, firstFilter));
+                query = query.OrderByDescending(x => GetFieldValue(x.stats, firstFilter));
             }
             else
             {
-                query = query.OrderBy(x => GetFieldValue(x, firstFilter));
+                query = query.OrderBy(x => GetFieldValue(x.stats, firstFilter));
             }
 
             for (int i = 1; i < axieStatsFilters.Count; i++)
@@ -177,11 +180,11 @@ public class TeamBuilderManager : MonoBehaviour
                 AxieStatFilter filter = axieStatsFilters[i];
                 if (filter.ToString().Contains("More"))
                 {
-                    query = query.ThenByDescending(x => GetFieldValue(x, filter));
+                    query = query.ThenByDescending(x => GetFieldValue(x.stats, filter));
                 }
                 else
                 {
-                    query = query.ThenBy(x => GetFieldValue(x, filter));
+                    query = query.ThenBy(x => GetFieldValue(x.stats, filter));
                 }
             }
         }
@@ -189,26 +192,23 @@ public class TeamBuilderManager : MonoBehaviour
         return query.ToList();
     }
 
-    int GetFieldValue(GetAxiesExample.Axie axie, AxieStatFilter filter)
+    int GetFieldValue(GetAxiesExample.Stats axieStats, AxieStatFilter filter)
     {
-        PropertyInfo property =
-            typeof(GetAxiesExample.Axie).GetProperty("stats");
-
-        if (property != null)
+        // Get the filter property value
+        switch (filter.ToString().Substring(4).ToLower())
         {
-            // Get the 'stats' property value
-            var statsObject = property.GetValue(axie);
-
-            if (statsObject != null)
-            {
-                // Get the filter property value
-                PropertyInfo filterProperty = statsObject.GetType().GetProperty(filter.ToString());
-
-                if (filterProperty != null)
-                {
-                    return (int)filterProperty.GetValue(statsObject);
-                }
-            }
+            case "morale":
+                return axieStats.morale;
+                break;
+            case "skill":
+                return axieStats.skill;
+                break;
+            case "hp":
+                return axieStats.hp;
+                break;
+            case "speed":
+                return axieStats.speed;
+                break;
         }
 
         return 0;
@@ -283,6 +283,8 @@ public class TeamBuilderManager : MonoBehaviour
         newTeam.landType = fakeAxiesManager.fakeLandManager.currentLandType;
         if (!creatingNewTeam)
         {
+            TeamManager.instance.teams
+                [TeamManager.instance.teams.FindIndex(x => x == TeamManager.instance.currentTeam)] = newTeam;
             TeamManager.instance.currentTeam = newTeam;
         }
         else

@@ -62,6 +62,9 @@ public class AbilitiesManager : MonoBehaviour
     public AxiesManager axiesManager;
     private GetAxiesExample.Axie currentSelectedAxie;
 
+    public Sprite SelectedSprite;
+    public Sprite DeselectedSprite;
+
     public void LoadUI()
     {
         for (int i = 0; i < TeamManager.instance.currentTeam.AxieIds.Count; i++)
@@ -76,8 +79,7 @@ public class AbilitiesManager : MonoBehaviour
 
             var parent = localGraphic.transform.parent;
             parent.GetComponent<Button>().onClick.RemoveAllListeners();
-
-            parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId); });
+            parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId, parent); });
         }
 
         ButtonHornBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Horn); });
@@ -86,7 +88,7 @@ public class AbilitiesManager : MonoBehaviour
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
         for (int i = TeamManager.instance.currentTeam.AxieIds.Count - 1; i >= 0; i--)
         {
-            SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id);
+            SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
         }
     }
 
@@ -192,6 +194,31 @@ public class AbilitiesManager : MonoBehaviour
         axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
             .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
                 AxieSelecteds.Select(x => x.BodyPart).ToList());
+
+        ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
+        {
+            ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        }
+
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Back))
+        {
+            ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        }
+
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
+        {
+            ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        }
+
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
+        {
+            ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        }
     }
 
     public void ChoosePartOnlyDo()
@@ -227,18 +254,49 @@ public class AbilitiesManager : MonoBehaviour
                 .Single(x =>
                     x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
                     x.skillName == partObj.SkillName).description;
-            
+
             var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
-            
+
             axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
                 .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
                     AxieSelecteds.Select(x => x.BodyPart).ToList());
+            
+            ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+            ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+            ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+            ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+
+            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
+            {
+                ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+            }
+
+            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Back))
+            {
+                ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+            }
+
+            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
+            {
+                ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+            }
+
+            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
+            {
+                ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+            }
         }
-        
     }
 
-    public void SelectAxie(string axieId)
+    public void SelectAxie(string axieId, Transform parent)
     {
+        foreach (var skeletonGraphic in TeamGraphics)
+        {
+            skeletonGraphic.transform.parent.GetComponent<Image>().sprite = DeselectedSprite;
+        }
+
+        parent.GetComponent<Image>().sprite = SelectedSprite;
+
         GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
 
         axieClassImage.sprite = AxieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
@@ -276,7 +334,16 @@ public class AbilitiesManager : MonoBehaviour
         else
         {
             axie.parts = TeamManager.instance.currentTeam.AxieIds.Single(x => x.id == axieId).parts;
-            ChoosePartOnlyDo();
+
+            if (axie.parts.Count(x => x.selected) == 0)
+            {
+                ChoosePart(BodyPart.Horn);
+                ChoosePart(BodyPart.Mouth);
+            }
+            else
+            {
+                ChoosePartOnlyDo();
+            }
         }
     }
 }
