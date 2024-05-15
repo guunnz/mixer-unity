@@ -60,8 +60,16 @@ public class TeamSelectorUI : MonoBehaviour
         {
             TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
         }
+        else if (TeamManager.instance.teams.Count == 0)
+        {
+            TeamName.text = "";
+            FakeAxiesManager.instance.ClearAllAxies();
+        }
+        else
+        {
+            TeamName.text = TeamManager.instance.currentTeam.TeamName;
+        }
 
-        TeamName.text = TeamManager.instance.currentTeam.TeamName;
         for (int i = 0; i < TeamItems.Count; i++)
         {
             if (i < TeamManager.instance.teams.Count)
@@ -100,6 +108,7 @@ public class TeamSelectorUI : MonoBehaviour
         }
         else
         {
+            TeamManager.instance.currentTeam = null;
             PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, "");
         }
 
@@ -110,7 +119,7 @@ public class TeamSelectorUI : MonoBehaviour
 
     public void SelectTeam()
     {
-        PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, TeamManager.instance.currentTeam.TeamName);
+        PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, TeamManager.instance.currentTeam?.TeamName);
         TeamManager.instance.axiesManager.ShowMenuAxies(TeamManager.instance.currentTeam);
         Exit();
     }
