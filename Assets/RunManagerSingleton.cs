@@ -27,6 +27,7 @@ public class RunManagerSingleton : MonoBehaviour
     internal List<string> opponents = new List<string>();
     internal List<UpgradeAugument> globalUpgrades = new List<UpgradeAugument>();
     internal List<AxieUpgrade> axieUpgrades = new List<AxieUpgrade>();
+    public int score => losses + wins;
 
     public TextMeshProUGUI results;
     public TextMeshProUGUI coinsText;

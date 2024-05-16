@@ -36,19 +36,35 @@ public class OpponentTeamManager : MonoBehaviour
             yield return null;
         }
 
+        int index = 0;
         foreach (var teamUpgrades in opponent.axie_team.team_upgrades)
         {
+            index++;
+            if (index >= RunManagerSingleton.instance.score)
+            {
+                break;
+            }
+
             atiaBlessing.AugumentUpgrade((int)teamUpgrades.upgrade_id,
                 teamUpgrades.axieClass?.Select(x => (AxieClass)x).ToList(),
                 badTeam);
         }
 
+        index = 0;
         foreach (var axie in opponent.axie_team.axie)
         {
             foreach (var upgrade in axie.upgrades.upgrades_id)
             {
+                index++;
+                if (index >= RunManagerSingleton.instance.score)
+                {
+                    break;
+                }
+
                 atiaBlessing.AugumentUpgrade(upgrade, axie.axie_id, badTeam);
             }
+
+            index = 0;
         }
     }
 }

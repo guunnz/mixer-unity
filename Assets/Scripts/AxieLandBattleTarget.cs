@@ -9,6 +9,12 @@ using UnityEngine.Serialization;
 [System.Serializable]
 public class Position
 {
+    public PositionValues[] position_values;
+}
+
+[System.Serializable]
+public class PositionValues
+{
     public int row;
     public int col;
 }
@@ -33,12 +39,14 @@ public class AxieForBackend
     public Position position;
     public AxieUpgrades upgrades;
 }
+
 [System.Serializable]
 public class AxieTeamDatabase
 {
     public AxieForBackend[] axie;
     public UpgradeAugument[] team_upgrades;
 }
+
 [System.Serializable]
 public class Run
 {
@@ -52,8 +60,8 @@ public class Run
 
 public class AxieLandBattleTarget : MonoBehaviour
 {
-    private string postUrl = "https://axielandbattles-teams-api-go.onrender.com/api/v1/run";
-    private string getUrl = "https://axielandbattles-teams-api-go.onrender.com/api/v1/run";
+    private string postUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
+    private string getUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
     private int maxRetries = 5;
 
     public void PostTeam(int score, List<AxieController> axies)
@@ -64,8 +72,12 @@ public class AxieLandBattleTarget : MonoBehaviour
         {
             AxieForBackend axieForBackend = new AxieForBackend();
             axieForBackend.axie_id = axie.AxieId.ToString();
-            axieForBackend.position = new Position()
-                { row = Mathf.Abs(axie.startingRow - 7), col = Mathf.Abs(axie.startingCol - 4) };
+            axieForBackend.position = new Position();
+
+            axieForBackend.position.position_values = new[]
+            {
+                new PositionValues() { row = Mathf.Abs(axie.startingRow - 7), col = Mathf.Abs(axie.startingCol - 4) }
+            };
 
             axieForBackend.upgrades = new AxieUpgrades()
             {
@@ -76,25 +88,25 @@ public class AxieLandBattleTarget : MonoBehaviour
 
             axieForBackend.combos = new Combos()
                 { combos_id = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.skillName).ToArray() };
+
             axieForBackends.Add(axieForBackend);
-        }
 
-
-        Run wrapper = new Run
-        {
-            user_id = RunManagerSingleton.instance.userId,
-            rounds = RunManagerSingleton.instance.resultsBools.ToArray(),
-            score = score,
-            opponents_run_id = RunManagerSingleton.instance.opponents.ToArray(),
-            land_type = (int)RunManagerSingleton.instance.landType,
-            axie_team = new AxieTeamDatabase()
+            Run wrapper = new Run
             {
-                axie = axieForBackends.ToArray(),
-                team_upgrades = RunManagerSingleton.instance.globalUpgrades.ToArray()
-            }
-        };
+                user_id = RunManagerSingleton.instance.userId,
+                rounds = RunManagerSingleton.instance.resultsBools.ToArray(),
+                score = score,
+                opponents_run_id = RunManagerSingleton.instance.opponents.ToArray(),
+                land_type = (int)RunManagerSingleton.instance.landType,
+                axie_team = new AxieTeamDatabase()
+                {
+                    axie = axieForBackends.ToArray(),
+                    team_upgrades = RunManagerSingleton.instance.globalUpgrades.ToArray()
+                }
+            };
 
-        PostScore(JsonUtility.ToJson(wrapper), score);
+            PostScore(JsonUtility.ToJson(wrapper), score);
+        }
     }
 
 // Method to post data

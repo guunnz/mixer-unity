@@ -253,8 +253,10 @@ namespace Game
 
             if (isEnemy)
             {
-                controller.startingCol = axieForBackend.position.col;
-                controller.startingRow = axieForBackend.position.row;
+                controller.startingCol =
+                    axieForBackend.position.position_values[RunManagerSingleton.instance.score].col;
+                controller.startingRow =
+                    axieForBackend.position.position_values[RunManagerSingleton.instance.score].row;
                 enemyTeam.AddCharacter(controller);
 
                 List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
@@ -275,7 +277,9 @@ namespace Game
                     TeamManager.instance.currentTeam.position[
                         TeamManager.instance.currentTeam.AxieIds.FindIndex(x => x.id == axieId)];
 
-                goodTeam.AddCharacter(controller, new Vector2Int(position.row, position.col));
+                goodTeam.AddCharacter(controller,
+                    new Vector2Int(position.position_values[RunManagerSingleton.instance.score].row,
+                        position.position_values[RunManagerSingleton.instance.score].col));
             }
 
             go.tag = "Character";

@@ -272,11 +272,18 @@ public class TeamBuilderManager : MonoBehaviour
             FakeAxieController axieController = fakeAxieControllers.Single(x => x.axie.id == axie.id);
             newTeam.combos.Add(new Combos()
                 { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() });
-            newTeam.position.Add(new Position()
+            Position pos = new Position();
+
+            pos.position_values = new[]
             {
-                col = axieController.standingOnTile.grid2DLocation.y,
-                row = axieController.standingOnTile.grid2DLocation.x
-            });
+                new PositionValues()
+                {
+                    col = axieController.standingOnTile.grid2DLocation.y,
+                    row = axieController.standingOnTile.grid2DLocation.x
+                }
+            };
+
+            newTeam.position.Add(pos);
         }
 
         newTeam.landTokenId = fakeAxiesManager.fakeLandManager.currentSelectedLandId;

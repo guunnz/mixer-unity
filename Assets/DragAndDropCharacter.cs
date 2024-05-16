@@ -41,13 +41,13 @@ public class DragAndDropCharacter : MonoBehaviour
                 if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
                 {
                     selectedCharacter = hit.collider.gameObject;
-                    
+
                     AxieController axieController = selectedCharacter.GetComponent<AxieController>();
-                    
+
                     if (axieController.mode == AxieMode.Menu)
                         return;
-                    
-         
+
+
                     axieController.axieBehavior.DoAction(AxieState.Grabbed);
                     originalPosition = selectedCharacter.transform.position;
                     originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
@@ -94,7 +94,7 @@ public class DragAndDropCharacter : MonoBehaviour
         OverlayTile closestTile = null;
         float minDistance = float.MaxValue;
 
-        if (allOverlayTiles.Count == 0)
+        if (allOverlayTiles == null || allOverlayTiles.Count == 0)
         {
             allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
         }
