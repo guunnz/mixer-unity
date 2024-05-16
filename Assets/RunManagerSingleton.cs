@@ -17,6 +17,7 @@ public class RunManagerSingleton : MonoBehaviour
 {
     static public RunManagerSingleton instance;
 
+    public string runId = "";
     public string userId;
     public int wins;
     public int losses;
@@ -24,8 +25,8 @@ public class RunManagerSingleton : MonoBehaviour
     public Color lifeLostColor;
     public LandType landType;
     internal List<bool> resultsBools = new List<bool>();
-    internal List<string> opponents = new List<string>();
-    internal List<UpgradeAugument> globalUpgrades = new List<UpgradeAugument>();
+    internal string currentOpponent = "";
+    internal List<UpgradeValuesPerRound> globalUpgrades = new List<UpgradeValuesPerRound>();
     internal List<AxieUpgrade> axieUpgrades = new List<AxieUpgrade>();
     public int score => losses + wins;
 
@@ -88,7 +89,14 @@ public class RunManagerSingleton : MonoBehaviour
             return;
         coins--;
         coinsText.text = coins.ToString();
-        globalUpgrades.Add(new UpgradeAugument() { upgrade_id = upgrade });
+
+        if (globalUpgrades.Count <= score)
+        {
+            globalUpgrades.Add(new UpgradeValuesPerRound() { upgrade_values_per_round = new List<UpgradeAugument>() });
+        }
+
+        globalUpgrades[score].upgrade_values_per_round.Add(new UpgradeAugument() { upgrade_id = upgrade });
+
         switch ((AtiaBlessing.Blessing)upgrade)
         {
             case AtiaBlessing.Blessing.Increase_Speed:

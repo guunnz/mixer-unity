@@ -23953,6 +23953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad01d82b8585324eaf34d8d54ea7c88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  runId: 
   userId: 
   wins: 0
   losses: 0
@@ -30631,6 +30632,7 @@ MonoBehaviour:
   FindingOpponent: {fileID: 32604963}
   IngameOverlay: {fileID: 98303637150918788}
   BattleOverlay: {fileID: 1885549446}
+  GoodTeam: {fileID: 1898098267}
   landBattleTarget: {fileID: 1898098270}
   teamToJson: {fileID: 1133128483}
 --- !u!1 &1133882788

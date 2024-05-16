@@ -247,6 +247,14 @@ public class AtiaBlessing : MonoBehaviour
         AxieController axieControllers = team.GetCharactersAll()
             .Single(x => x.AxieId.ToString() == axieId);
 
+        if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
+        {
+            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRound()
+                { upgrade_values_per_round = new List<UpgradeAugument>() });
+        }
+
+        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].upgrade_values_per_round
+            .Add(new UpgradeAugument() { upgrade_id = augument.upgrade_id, axieClass = augument.axieClass });
 
         switch ((Blessing)augument.upgrade_id)
         {
@@ -271,7 +279,14 @@ public class AtiaBlessing : MonoBehaviour
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
     {
         UpgradeAugument augument = blessingAugument[indexAugument];
+        if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
+        {
+            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRound()
+                { upgrade_values_per_round = new List<UpgradeAugument>() });
+        }
 
+        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].upgrade_values_per_round
+            .Add(new UpgradeAugument() { upgrade_id = augument.upgrade_id, axieClass = augument.axieClass });
         List<AxieController> axieControllers = axieClasses == null
             ? team.GetCharactersAll()
             : team.GetCharactersAll()
@@ -307,6 +322,14 @@ public class AtiaBlessing : MonoBehaviour
         AugumentSelect.SetActive(false);
         UpgradeAugument augument = blessingAugument[indexAugument];
         blessingAugumentsPurchased.Add(augument);
+        if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
+        {
+            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRound()
+                { upgrade_values_per_round = new List<UpgradeAugument>() });
+        }
+
+        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].upgrade_values_per_round
+            .Add(new UpgradeAugument() { upgrade_id = augument.upgrade_id, axieClass = augument.axieClass });
         List<AxieController> axieControllers = augument.axieClass == null
             ? team.GetCharactersAll()
             : team.GetCharactersAll()

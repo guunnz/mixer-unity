@@ -250,17 +250,22 @@ public class AbilitiesManager : MonoBehaviour
             }
 
             AbilityNameText.text = partObj.name;
-            AbilityDescriptionText.text = skillList.axieBodyParts
+            AxieBodyPart ability = skillList.axieBodyParts
                 .Single(x =>
                     x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
-                    x.skillName == partObj.SkillName).description;
+                    x.skillName == partObj.SkillName);
+            AbilityDescriptionText.text = ability.description +
+                                          (ability.isPassive ? " (PASSIVES/BATTLECRIES DO NOT WORK FOR NOW)" : "");
+
+            ShieldAbilityText.text = ability.shield.ToString();
+            AttackAbilityText.text = ability.damage.ToString();
 
             var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 
             axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
                 .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
                     AxieSelecteds.Select(x => x.BodyPart).ToList());
-            
+
             ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
             ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
             ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;

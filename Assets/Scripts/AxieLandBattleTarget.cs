@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 [System.Serializable]
 public class Position
 {
-    public PositionValues[] position_values;
+    public PositionValues[] position_values_per_round;
 }
 
 [System.Serializable]
@@ -20,15 +20,27 @@ public class PositionValues
 }
 
 [System.Serializable]
-public class Combos
+public class ComboValuesPerRound
 {
     public int[] combos_id;
+}
+
+[System.Serializable]
+public class Combos
+{
+    public ComboValuesPerRound[] combos_values_per_round;
 }
 
 [System.Serializable]
 public class AxieUpgrades
 {
     public int[] upgrades_id;
+}
+
+[System.Serializable]
+public class UpgradeValuesPerRound
+{
+    public List<UpgradeAugument> upgrade_values_per_round = new List<UpgradeAugument>();
 }
 
 [System.Serializable]
@@ -43,8 +55,8 @@ public class AxieForBackend
 [System.Serializable]
 public class AxieTeamDatabase
 {
-    public AxieForBackend[] axie;
-    public UpgradeAugument[] team_upgrades;
+    public AxieForBackend[] axies;
+    public UpgradeValuesPerRound[] team_upgrades;
 }
 
 [System.Serializable]
@@ -53,7 +65,10 @@ public class Run
     public string user_id;
     public int score;
     public bool[] rounds;
+
+    [FormerlySerializedAs("opponent_run_id")]
     public string[] opponents_run_id;
+
     public int land_type = 0;
     public AxieTeamDatabase axie_team;
 }
@@ -74,9 +89,9 @@ public class AxieLandBattleTarget : MonoBehaviour
             axieForBackend.axie_id = axie.AxieId.ToString();
             axieForBackend.position = new Position();
 
-            axieForBackend.position.position_values = new[]
+            axieForBackend.position.position_values_per_round = new[]
             {
-                new PositionValues() { row = Mathf.Abs(axie.startingRow - 7), col = Mathf.Abs(axie.startingCol - 4) }
+                new PositionValues() { row = axie.startingRow, col = axie.startingCol }
             };
 
             axieForBackend.upgrades = new AxieUpgrades()
@@ -87,36 +102,60 @@ public class AxieLandBattleTarget : MonoBehaviour
             };
 
             axieForBackend.combos = new Combos()
-                { combos_id = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.skillName).ToArray() };
-
-            axieForBackends.Add(axieForBackend);
-
-            Run wrapper = new Run
             {
-                user_id = RunManagerSingleton.instance.userId,
-                rounds = RunManagerSingleton.instance.resultsBools.ToArray(),
-                score = score,
-                opponents_run_id = RunManagerSingleton.instance.opponents.ToArray(),
-                land_type = (int)RunManagerSingleton.instance.landType,
-                axie_team = new AxieTeamDatabase()
+                combos_values_per_round = new[]
                 {
-                    axie = axieForBackends.ToArray(),
-                    team_upgrades = RunManagerSingleton.instance.globalUpgrades.ToArray()
+                    new ComboValuesPerRound()
+                        { combos_id = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.skillName).ToArray() }
                 }
             };
 
-            PostScore(JsonUtility.ToJson(wrapper), score);
+            axieForBackends.Add(axieForBackend);
+        }
+
+        Run wrapper = new Run
+        {
+            user_id = RunManagerSingleton.instance.userId,
+            rounds = RunManagerSingleton.instance.resultsBools.ToArray(),
+            score = score,
+            opponents_run_id = new[] { RunManagerSingleton.instance.currentOpponent },
+            land_type = (int)RunManagerSingleton.instance.landType,
+            axie_team = new AxieTeamDatabase()
+            {
+                axies = axieForBackends.ToArray(),
+                team_upgrades = new UpgradeValuesPerRound[]
+                {
+                    new UpgradeValuesPerRound()
+                    {
+                        upgrade_values_per_round =
+                            RunManagerSingleton.instance.globalUpgrades[score].upgrade_values_per_round
+                    }
+                }
+            }
+        };
+
+        if (RunManagerSingleton.instance.score == 0)
+        {
+            PostScore(JsonUtility.ToJson(wrapper));
+        }
+        else
+        {
+            PutScore(JsonUtility.ToJson(wrapper));
         }
     }
 
 // Method to post data
-    public void PostScore(string jsonData, int score)
+    public void PostScore(string jsonData)
     {
-        StartCoroutine(PostRequest(postUrl, jsonData, maxRetries,
-            score));
+        StartCoroutine(PostRequest(postUrl, jsonData, maxRetries));
     }
 
-    IEnumerator PostRequest(string url, string jsonData, int retries, int score)
+    public void PutScore(string jsonData)
+    {
+        StartCoroutine(PutRequest(postUrl, jsonData, maxRetries));
+    }
+
+    IEnumerator PostRequest(string url, string jsonData, int retries)
     {
         UnityWebRequest webRequest = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
@@ -132,7 +171,32 @@ public class AxieLandBattleTarget : MonoBehaviour
             if (retries > 0)
             {
                 Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
-                StartCoroutine(PostRequest(url, jsonData, retries - 1, score));
+                StartCoroutine(PostRequest(url, jsonData, retries - 1));
+            }
+        }
+        else
+        {
+            RunManagerSingleton.instance.runId = webRequest.downloadHandler.text.Replace("\"", "");
+        }
+    }
+
+    IEnumerator PutRequest(string url, string jsonData, int retries)
+    {
+        UnityWebRequest webRequest = new UnityWebRequest(url + "?id=" + RunManagerSingleton.instance.runId, "PUT");
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(jsonData);
+        webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+
+        yield return webRequest.SendWebRequest();
+
+        if (webRequest.isNetworkError || webRequest.isHttpError)
+        {
+            Debug.LogError(webRequest.error);
+            if (retries > 0)
+            {
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(PutRequest(url, jsonData, retries - 1));
             }
         }
         else
@@ -141,11 +205,10 @@ public class AxieLandBattleTarget : MonoBehaviour
         }
     }
 
-
-// Method to get data as an async Task
+    // Method to get data as an async Task
     public async Task<string> GetScoreAsync(string score)
     {
-        string url = $"{getUrl}?score={score}";
+        string url = $"{getUrl}?score={score}&user_id={RunManagerSingleton.instance.userId}";
         Debug.Log("requested " + url);
         return await GetRequestAsync(url, maxRetries);
     }

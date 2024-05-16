@@ -23,6 +23,8 @@ namespace enemies
         public GameObject IngameOverlay;
         public GameObject BattleOverlay;
 
+        public Team GoodTeam;
+
         public AxieLandBattleTarget landBattleTarget;
 
         public TeamToJSON teamToJson;
@@ -31,6 +33,7 @@ namespace enemies
         {
             FindingOpponent.SetActive(true);
             IngameOverlay.SetActive(false);
+       
             string json =
                 await landBattleTarget.GetScoreAsync(
                     (RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
@@ -43,7 +46,7 @@ namespace enemies
         void GetOpponentTeam(Opponent jsonAxieIds)
         {
             graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
-            List<AxieForBackend> axieIds = jsonAxieIds.axie_team.axie.ToList();
+            List<AxieForBackend> axieIds = jsonAxieIds.axie_team.axies.ToList();
             string combinedQuery = "";
 
             for (int i = 0; i < axieIds.Count; i++)
@@ -115,9 +118,10 @@ namespace enemies
                 string responseString = task.Result;
                 if (isOpponent)
                 {
-                    RunManagerSingleton.instance.opponents.Add(opponent.user_id);
+                    RunManagerSingleton.instance.currentOpponent = opponent.user_id;
                     RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
-
+                    
+                        GoodTeam.PostTeam();
                     List<AxieEnemy> axieEnemies = new List<AxieEnemy>();
 
                     // Assuming axieIds is a List<string>
@@ -147,7 +151,7 @@ namespace enemies
         {
             foreach (var axieEnemy in axieList)
             {
-                AxieForBackend axieForBackend = opponent.axie_team.axie.Single(x => x.axie_id == axieEnemy.id);
+                AxieForBackend axieForBackend = opponent.axie_team.axies.Single(x => x.axie_id == axieEnemy.id);
                 axieSpawner.SpawnEnemyAxieById(axieEnemy.id, BodyPart.Horn, SkillName.HerosBane,
                     axieEnemy.axieClass,
                     axieEnemy.stats, axieForBackend, axieList, isOpponent);

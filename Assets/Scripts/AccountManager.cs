@@ -12,7 +12,7 @@ public class AccountManager : MonoBehaviour
 
     public TMP_InputField RoninWallet;
 
-    private string forcedAddress = "0x46571200388f6dce5416e552e28caa7a6833c88e";
+    private string forcedAddress = "0xb28bcba58cc604a25910a6a7c3f67a39e8ccf056";
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;

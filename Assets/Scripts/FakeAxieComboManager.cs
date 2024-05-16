@@ -227,10 +227,17 @@ public class FakeAxieComboManager : MonoBehaviour
             }
 
             AbilityNameText.text = partObj.name;
-            AbilityDescriptionText.text = skillList.axieBodyParts
+
+            AxieBodyPart ability = skillList.axieBodyParts
                 .Single(x =>
                     x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
-                    x.skillName == partObj.SkillName).description;
+                    x.skillName == partObj.SkillName);
+
+            AbilityDescriptionText.text = ability.description +
+                                          (ability.isPassive ? " (PASSIVES/BATTLECRIES DO NOT WORK FOR NOW)" : "");
+
+            ShieldAbilityText.text = ability.shield.ToString();
+            AttackAbilityText.text = ability.damage.ToString();
         }
     }
 

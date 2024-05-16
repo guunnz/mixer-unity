@@ -115,6 +115,12 @@ public class Team : MonoBehaviour
         }
     }
 
+    internal void PostTeam()
+    {
+        target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
+            RunManagerSingleton.instance.goodTeam.GetCharactersAll());
+    }
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.R))
@@ -150,8 +156,6 @@ public class Team : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     MapManager.Instance.ToggleRectangles();
-                    target.PostTeam(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses,
-                        RunManagerSingleton.instance.goodTeam.GetCharactersAll());
                     foreach (var axieController in RunManagerSingleton.instance.goodTeam.GetCharactersAll())
                     {
                         axieController.axieIngameStats.currentShield = 0;
@@ -229,7 +233,7 @@ public class Team : MonoBehaviour
         }
         else
         {
-            gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+            gridLocation = new Vector2Int(Mathf.Abs(character.startingRow - 7), Mathf.Abs(character.startingCol - 4));
 
 
             startingTile = MapManager.Instance.map[gridLocation.Value];

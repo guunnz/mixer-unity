@@ -214,11 +214,6 @@ public class TeamBuilderManager : MonoBehaviour
         return 0;
     }
 
-    public void Start()
-    {
-        SetMenu(TeamBuilderMenu.Lands, true);
-    }
-
     public void SetAxiesMenu()
     {
         SetMenu(TeamBuilderMenu.Axies, true);
@@ -271,10 +266,16 @@ public class TeamBuilderManager : MonoBehaviour
         {
             FakeAxieController axieController = fakeAxieControllers.Single(x => x.axie.id == axie.id);
             newTeam.combos.Add(new Combos()
-                { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() });
+            {
+                combos_values_per_round = new[]
+                {
+                    new ComboValuesPerRound()
+                        { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
+                }
+            });
             Position pos = new Position();
 
-            pos.position_values = new[]
+            pos.position_values_per_round = new[]
             {
                 new PositionValues()
                 {
