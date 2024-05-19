@@ -11,8 +11,8 @@ using Random = UnityEngine.Random;
 [System.Serializable]
 public class UpgradeAugument
 {
-    public int upgrade_id;
-    public List<int> axieClass;
+    public int id;
+    public List<int> axie_class;
 }
 
 public class AtiaBlessing : MonoBehaviour
@@ -55,7 +55,7 @@ public class AtiaBlessing : MonoBehaviour
             for (int y = 1; y <= (int)Blessing.Backdoor; y++)
             {
                 blessingAugument.Add(new UpgradeAugument()
-                    { axieClass = new List<int>() { i }, upgrade_id = y });
+                    { axie_class = new List<int>() { i }, id = y });
             }
         }
     }
@@ -90,16 +90,16 @@ public class AtiaBlessing : MonoBehaviour
                         AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
                     });
 
-                    if (augument.upgrade_id != (int)Blessing.Backdoor)
+                    if (augument.id != (int)Blessing.Backdoor)
                     {
                         FirstAugumentText.text =
-                            "Increase your " + ((AxieClass)augument.axieClass[0]).ToString() + " axies " +
-                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") +
+                            "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                            ((Blessing)augument.id).ToString().Replace("_", " ") +
                             " stat by 1";
                     }
                     else
                     {
-                        FirstAugumentText.text = "Your " + ((AxieClass)augument.axieClass[0]).ToString() +
+                        FirstAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
                                                  " axies now Backdoor on start";
                     }
 
@@ -111,15 +111,15 @@ public class AtiaBlessing : MonoBehaviour
                         return;
                     }
 
-                    if (augument.upgrade_id != (int)Blessing.Backdoor)
+                    if (augument.id != (int)Blessing.Backdoor)
                     {
                         SecondAugumentText.text =
-                            "Increase your " + ((AxieClass)augument.axieClass[0]).ToString() + " axies " +
-                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
+                            "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                            ((Blessing)augument.id).ToString().Replace("_", " ") + " stat by 1";
                     }
                     else
                     {
-                        SecondAugumentText.text = "Your " + ((AxieClass)augument.axieClass[0]).ToString() +
+                        SecondAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
                                                   " axies now Backdoor on start";
                     }
 
@@ -138,15 +138,15 @@ public class AtiaBlessing : MonoBehaviour
                         return;
                     }
 
-                    if (augument.upgrade_id != (int)Blessing.Backdoor)
+                    if (augument.id != (int)Blessing.Backdoor)
                     {
                         ThirdAugumentText.text =
-                            "Increase your " + ((AxieClass)augument.axieClass[0]).ToString() + " axies " +
-                            ((Blessing)augument.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
+                            "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                            ((Blessing)augument.id).ToString().Replace("_", " ") + " stat by 1";
                     }
                     else
                     {
-                        ThirdAugumentText.text = "Your " + ((AxieClass)augument.axieClass[0]).ToString() +
+                        ThirdAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
                                                  " axies now Backdoor on start";
                     }
 
@@ -187,37 +187,37 @@ public class AtiaBlessing : MonoBehaviour
 
             augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
-            if (augument1.upgrade_id != (int)Blessing.Backdoor)
+            if (augument1.id != (int)Blessing.Backdoor)
             {
-                FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axieClass[0]).ToString() + " axies " +
-                                         ((Blessing)augument1.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
+                FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axie_class[0]).ToString() + " axies " +
+                                         ((Blessing)augument1.id).ToString().Replace("_", " ") + " stat by 1";
             }
             else
             {
-                FirstAugumentText.text = "Your " + ((AxieClass)augument1.axieClass[0]).ToString() +
+                FirstAugumentText.text = "Your " + ((AxieClass)augument1.axie_class[0]).ToString() +
                                          " axies now Backdoor on start";
             }
 
-            if (augument2.upgrade_id != (int)Blessing.Backdoor)
+            if (augument2.id != (int)Blessing.Backdoor)
             {
-                SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axieClass[0]).ToString() +
+                SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
                                           " axies " +
-                                          ((Blessing)augument2.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
+                                          ((Blessing)augument2.id).ToString().Replace("_", " ") + " stat by 1";
             }
             else
             {
-                SecondAugumentText.text = "Your " + ((AxieClass)augument2.axieClass[0]).ToString() +
+                SecondAugumentText.text = "Your " + ((AxieClass)augument2.axie_class[0]).ToString() +
                                           " axies now Backdoor on start";
             }
 
-            if (augument3.upgrade_id != (int)Blessing.Backdoor)
+            if (augument3.id != (int)Blessing.Backdoor)
             {
-                ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axieClass[0]).ToString() + " axies " +
-                                         ((Blessing)augument3.upgrade_id).ToString().Replace("_", " ") + " stat by 1";
+                ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
+                                         ((Blessing)augument3.id).ToString().Replace("_", " ") + " stat by 1";
             }
             else
             {
-                ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axieClass[0]).ToString() +
+                ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axie_class[0]).ToString() +
                                          " axies now Backdoor on start";
             }
 
@@ -249,14 +249,14 @@ public class AtiaBlessing : MonoBehaviour
 
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {
-            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRound()
-                { upgrade_values_per_round = new List<UpgradeAugument>() });
+            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRoundList()
+                { team_upgrades_values_per_round = new List<UpgradeAugument>() });
         }
 
-        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].upgrade_values_per_round
-            .Add(new UpgradeAugument() { upgrade_id = augument.upgrade_id, axieClass = augument.axieClass });
+        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].team_upgrades_values_per_round
+            .Add(new UpgradeAugument() { id = augument.id, axie_class = augument.axie_class });
 
-        switch ((Blessing)augument.upgrade_id)
+        switch ((Blessing)augument.id)
         {
             case AtiaBlessing.Blessing.Increase_HP:
                 axieControllers.stats.hp += 1;
@@ -279,24 +279,17 @@ public class AtiaBlessing : MonoBehaviour
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
     {
         UpgradeAugument augument = blessingAugument[indexAugument];
-        if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
-        {
-            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRound()
-                { upgrade_values_per_round = new List<UpgradeAugument>() });
-        }
 
-        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].upgrade_values_per_round
-            .Add(new UpgradeAugument() { upgrade_id = augument.upgrade_id, axieClass = augument.axieClass });
         List<AxieController> axieControllers = axieClasses == null
             ? team.GetCharactersAll()
             : team.GetCharactersAll()
-                .Where(x => augument.axieClass.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
+                .Where(x => augument.axie_class.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
                 .ToList();
 
 
         foreach (var controller in axieControllers)
         {
-            switch ((Blessing)augument.upgrade_id)
+            switch ((Blessing)augument.id)
             {
                 case AtiaBlessing.Blessing.Increase_HP:
                     controller.stats.hp += 1;
@@ -324,21 +317,21 @@ public class AtiaBlessing : MonoBehaviour
         blessingAugumentsPurchased.Add(augument);
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {
-            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRound()
-                { upgrade_values_per_round = new List<UpgradeAugument>() });
+            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRoundList()
+                { team_upgrades_values_per_round = new List<UpgradeAugument>() });
         }
 
-        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].upgrade_values_per_round
-            .Add(new UpgradeAugument() { upgrade_id = augument.upgrade_id, axieClass = augument.axieClass });
-        List<AxieController> axieControllers = augument.axieClass == null
+        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].team_upgrades_values_per_round
+            .Add(new UpgradeAugument() { id = augument.id, axie_class = augument.axie_class });
+        List<AxieController> axieControllers = augument.axie_class == null
             ? team.GetCharactersAll()
             : team.GetCharactersAll()
-                .Where(x => augument.axieClass.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
+                .Where(x => augument.axie_class.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
                 .ToList();
 
         foreach (var controller in axieControllers)
         {
-            switch ((Blessing)augument.upgrade_id)
+            switch ((Blessing)augument.id)
             {
                 case Blessing.Increase_HP_Bug:
                     controller.stats.hp += 1;

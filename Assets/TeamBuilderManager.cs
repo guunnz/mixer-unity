@@ -245,7 +245,7 @@ public class TeamBuilderManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(teamNameInputField.text))
         {
-            //NotificationClass.Instance.DoError("Please enter a name for your team.");
+            NotificationErrorManager.instance.DoNotification("Please enter a name for your team.");
             return;
         }
 
@@ -253,8 +253,8 @@ public class TeamBuilderManager : MonoBehaviour
         if (teamNames.Contains(teamNameInputField.text) && creatingNewTeam)
         {
             Debug.LogError("Team name Already Exists");
+            NotificationErrorManager.instance.DoNotification("Team name already Exists.");
             return;
-            //NotificationClass.Instance.DoError("Team Already Exists");
         }
 
         AxieTeam newTeam = new AxieTeam();
@@ -265,24 +265,19 @@ public class TeamBuilderManager : MonoBehaviour
         foreach (var axie in newTeam.AxieIds)
         {
             FakeAxieController axieController = fakeAxieControllers.Single(x => x.axie.id == axie.id);
-            newTeam.combos.Add(new Combos()
-            {
-                combos_values_per_round = new[]
-                {
-                    new ComboValuesPerRound()
-                        { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
-                }
-            });
+            newTeam.combos.Add(
+                new Combos()
+                    { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
+            );
             Position pos = new Position();
 
-            pos.position_values_per_round = new[]
-            {
-                new PositionValues()
+            pos =
+                new Position()
                 {
                     col = axieController.standingOnTile.grid2DLocation.y,
                     row = axieController.standingOnTile.grid2DLocation.x
                 }
-            };
+                ;
 
             newTeam.position.Add(pos);
         }

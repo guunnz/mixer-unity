@@ -33,7 +33,7 @@ namespace enemies
         {
             FindingOpponent.SetActive(true);
             IngameOverlay.SetActive(false);
-       
+
             string json =
                 await landBattleTarget.GetScoreAsync(
                     (RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
@@ -120,8 +120,8 @@ namespace enemies
                 {
                     RunManagerSingleton.instance.currentOpponent = opponent.user_id;
                     RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
-                    
-                        GoodTeam.PostTeam();
+
+                    GoodTeam.PostTeam();
                     List<AxieEnemy> axieEnemies = new List<AxieEnemy>();
 
                     // Assuming axieIds is a List<string>
@@ -173,6 +173,7 @@ namespace enemies
             yield return new WaitForSeconds(0.5f);
             Countdown.text = "BATTLE!";
             yield return new WaitForSeconds(0.5f);
+            FightManagerSingleton.Instance.StartFight();
             BattleOverlay.SetActive(true);
             Countdown.gameObject.SetActive(false);
             axieSpawner.enemyTeam.StartBattle();

@@ -54,10 +54,18 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public int PoisonStacks()
     {
-        if (!IsPoisoned())
-            return 0;
+        try
+        {
+            if (!IsPoisoned())
+                return 0;
 
-        return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Poison).Times;
+            return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Poison).Times;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            return 0;
+        }
     }
 
     public bool IsStunned()
@@ -219,6 +227,7 @@ public class AxieSkillEffectManager : MonoBehaviour
                     break;
                 case StatusEffectEnum.Poison:
                     clone.Poison = true;
+                    clone.PoisonStack = 1;
                     break;
                 case StatusEffectEnum.AttackPositive:
                     clone.Attack = 1;
@@ -274,8 +283,38 @@ public class AxieSkillEffectManager : MonoBehaviour
 
         SkillEffectGraphic skillEffectGraphic =
             skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
+        SkillEffect skillEffectCounter = null;
+        switch (statusEffect)
+        {
+            case StatusEffectEnum.AttackNegative:
+                skillEffectCounter =
+                    skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.AttackPositive);
+                break;
+            case StatusEffectEnum.AttackPositive:
+                skillEffectCounter =
+                    skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.AttackNegative);
+                break;
+            case StatusEffectEnum.MoraleNegative:
+                skillEffectCounter =
+                    skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.MoralePositive);
+                break;
+            case StatusEffectEnum.MoralePositive:
+                skillEffectCounter =
+                    skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.MoraleNegative);
+                break;
+            case StatusEffectEnum.SpeedNegative:
+                skillEffectCounter =
+                    skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.SpeedPositive);
+                break;
+            case StatusEffectEnum.SpeedPositive:
+                skillEffectCounter =
+                    skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.SpeedNegative);
+                break;
+            default:
+                break;
+        }
 
-        if (skillEffectGraphic == null)
+        if (skillEffectGraphic == null && skillEffectCounter == null)
         {
             skillEffectGraphic =
                 Instantiate(skillEffectGraphicPrefab, Vector3.zero, Quaternion.identity, HorizontalLayoutGroup)
@@ -293,37 +332,6 @@ public class AxieSkillEffectManager : MonoBehaviour
         }
         else
         {
-            SkillEffect skillEffectCounter = null;
-            switch (statusEffect)
-            {
-                case StatusEffectEnum.AttackNegative:
-                    skillEffectCounter =
-                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.AttackPositive);
-                    break;
-                case StatusEffectEnum.AttackPositive:
-                    skillEffectCounter =
-                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.AttackNegative);
-                    break;
-                case StatusEffectEnum.MoraleNegative:
-                    skillEffectCounter =
-                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.MoralePositive);
-                    break;
-                case StatusEffectEnum.MoralePositive:
-                    skillEffectCounter =
-                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.MoraleNegative);
-                    break;
-                case StatusEffectEnum.SpeedNegative:
-                    skillEffectCounter =
-                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.SpeedPositive);
-                    break;
-                case StatusEffectEnum.SpeedPositive:
-                    skillEffectCounter =
-                        skillEffects.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.SpeedNegative);
-                    break;
-                default:
-                    break;
-            }
-
             if (skillEffectCounter == null)
             {
                 if (skillEffectOnList != null)

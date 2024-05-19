@@ -17,6 +17,11 @@ public class ShopPotion : MonoBehaviour
 
     private bool scaling = false;
 
+    private void OnEnable()
+    {
+        Poping.color = Color.clear;
+    }
+
     private void OnMouseOver()
     {
         if (!scaling)

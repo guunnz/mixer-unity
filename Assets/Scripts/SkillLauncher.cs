@@ -49,9 +49,11 @@ public class SkillLauncher : MonoBehaviour
 
             skill.axieBodyPart = skills[i].bodyPartSO;
             skill.self = self;
+            skill.origin = self.transform;
             skill.@class = skills[i].bodyPartSO.bodyPartClass;
             skill.skeletonAnimation = skeletonAnimation;
             skill.ExtraTimerCast += (1f * i);
+            Debug.Log("Skill performed: " + skills[i].skillName);
             skillActions.AddRange(PerformSkill(skills[i], skill, self, target));
         }
 
@@ -67,6 +69,7 @@ public class SkillLauncher : MonoBehaviour
 
         skill.axieBodyPart = passive.bodyPartSO;
         skill.self = self;
+        skill.origin = self.transform;
         skill.@class = passive.bodyPartSO.bodyPartClass;
         skill.skeletonAnimation = skeletonAnimation;
         skill.ExtraTimerCast++;
@@ -393,203 +396,226 @@ public class SkillLauncher : MonoBehaviour
     private List<AxieController> DoSkillEffect(AxieController self,
         AxieController target, SkillEffect skillEffect, Skill skillInstance, SpecialEffectExtras specialEffectExtras)
     {
-        List<AxieController> statusEffectTargetList = new List<AxieController>();
-        List<AxieController> targetList = new List<AxieController>();
-
-        bool remove = false;
-        bool steal = false;
-        targetList.Add(self.CurrentTarget);
-
-        switch (skillEffect.statusApplyType)
+        try
         {
-            case StatusApplyType.AllAxies:
-                statusEffectTargetList.AddRange(self.goodTeam.GetCharacters());
-                statusEffectTargetList.AddRange(self.badTeam.GetCharacters());
-                break;
-            case StatusApplyType.ApplyAllied:
-            case StatusApplyType.ApplyTeam:
-                statusEffectTargetList.AddRange(self.goodTeam.GetCharacters());
-                break;
-            case StatusApplyType.ApplyEnemyTeam:
-                statusEffectTargetList.AddRange(self.badTeam.GetCharacters());
-                break;
-            case StatusApplyType.ApplySelfAndEnemy:
-                statusEffectTargetList.Add(self);
-                statusEffectTargetList.Add(target);
-                break;
-            case StatusApplyType.ApplyAdjacentTarget:
-                statusEffectTargetList.AddRange(target.GetAdjacent());
-                break;
-            case StatusApplyType.ApplyAdjacentTargetAndTarget:
-                statusEffectTargetList.AddRange(target.GetAdjacent());
-                statusEffectTargetList.Add(target);
-                break;
-            case StatusApplyType.ApplyAdjacentSelfAndSelf:
-                statusEffectTargetList.AddRange(target.GetAdjacent());
-                statusEffectTargetList.Add(self);
-                break;
-            case StatusApplyType.ApplySelf:
-                statusEffectTargetList.Add(self);
-                break;
-            case StatusApplyType.ApplyTarget:
-                statusEffectTargetList.Add(target);
-                break;
-            case StatusApplyType.StealTargetFromSelf:
-                statusEffectTargetList.Add(self);
-                statusEffectTargetList.Add(target);
-                steal = true;
-                break;
-            case StatusApplyType.StealSelfFromTarget:
-                statusEffectTargetList.Add(target);
-                statusEffectTargetList.Add(self);
-                steal = true;
-                break;
-            case StatusApplyType.RemoveSelf:
-                statusEffectTargetList.Add(self);
-                remove = true;
-                break;
-            case StatusApplyType.RemoveTarget:
-                statusEffectTargetList.Add(target);
-                remove = true;
-                break;
-            case StatusApplyType.RemoveSelfAndTarget:
-                statusEffectTargetList.Add(self);
-                statusEffectTargetList.Add(target);
-                remove = true;
-                break;
-        }
+            List<AxieController> statusEffectTargetList = new List<AxieController>();
+            List<AxieController> targetList = new List<AxieController>();
 
-        statusEffectTargetList.RemoveAll(x => x == null);
+            bool remove = false;
+            bool steal = false;
+            targetList.Add(self.CurrentTarget);
 
-        if (skillEffect.statusApplyTypeIsTarget)
-        {
-            targetList = statusEffectTargetList;
-        }
-
-        skillInstance.statusEffectTargetList = statusEffectTargetList;
-
-        if (skillEffect.Prioritize)
-        {
-            if (skillEffect.lowestHP)
+            switch (skillEffect.statusApplyType)
             {
-                AxieController newTarget = statusEffectTargetList.OrderBy(x => x.axieIngameStats.currentHP).First();
-
-                targetList.Clear();
-                targetList.Add(newTarget);
-                self.CurrentTarget = newTarget;
+                case StatusApplyType.AllAxies:
+                    statusEffectTargetList.AddRange(self.goodTeam.GetCharacters());
+                    statusEffectTargetList.AddRange(self.badTeam.GetCharacters());
+                    break;
+                case StatusApplyType.ApplyAllied:
+                case StatusApplyType.ApplyTeam:
+                    statusEffectTargetList.AddRange(self.goodTeam.GetCharacters());
+                    break;
+                case StatusApplyType.ApplyEnemyTeam:
+                    statusEffectTargetList.AddRange(self.badTeam.GetCharacters());
+                    break;
+                case StatusApplyType.ApplySelfAndEnemy:
+                    statusEffectTargetList.Add(self);
+                    statusEffectTargetList.Add(target);
+                    break;
+                case StatusApplyType.ApplyAdjacentTarget:
+                    statusEffectTargetList.AddRange(target.GetAdjacent());
+                    break;
+                case StatusApplyType.ApplyAdjacentTargetAndTarget:
+                    statusEffectTargetList.AddRange(target.GetAdjacent());
+                    statusEffectTargetList.Add(target);
+                    break;
+                case StatusApplyType.ApplyAdjacentSelfAndSelf:
+                    statusEffectTargetList.AddRange(target.GetAdjacent());
+                    statusEffectTargetList.Add(self);
+                    break;
+                case StatusApplyType.ApplySelf:
+                    statusEffectTargetList.Add(self);
+                    break;
+                case StatusApplyType.ApplyTarget:
+                    statusEffectTargetList.Add(target);
+                    break;
+                case StatusApplyType.StealTargetFromSelf:
+                    statusEffectTargetList.Add(self);
+                    statusEffectTargetList.Add(target);
+                    steal = true;
+                    break;
+                case StatusApplyType.StealSelfFromTarget:
+                    statusEffectTargetList.Add(target);
+                    statusEffectTargetList.Add(self);
+                    steal = true;
+                    break;
+                case StatusApplyType.RemoveSelf:
+                    statusEffectTargetList.Add(self);
+                    remove = true;
+                    break;
+                case StatusApplyType.RemoveTarget:
+                    statusEffectTargetList.Add(target);
+                    remove = true;
+                    break;
+                case StatusApplyType.RemoveSelfAndTarget:
+                    statusEffectTargetList.Add(self);
+                    statusEffectTargetList.Add(target);
+                    remove = true;
+                    break;
             }
 
-            if (skillEffect.FurthestTarget)
+            statusEffectTargetList.RemoveAll(x => x == null);
+
+            if (skillEffect.statusApplyTypeIsTarget)
             {
-                AxieController newTarget = self.goodTeam.FindFurthestCharacter(self, statusEffectTargetList);
-                targetList.Clear();
-                targetList.Add(newTarget);
-                if (!skillEffect.RangeAbility)
+                targetList = statusEffectTargetList;
+            }
+
+            skillInstance.statusEffectTargetList = statusEffectTargetList;
+
+            if (skillEffect.Prioritize)
+            {
+                if (skillEffect.lowestHP)
                 {
+                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.currentHP).First();
+
+                    targetList.Clear();
+                    targetList.Add(newTarget);
                     self.CurrentTarget = newTarget;
                 }
-            }
 
-            if (skillEffect.targetHighestEnergy)
-            {
-                AxieController newTarget = statusEffectTargetList.OrderBy(x => x.axieIngameStats.CurrentEnergy)
-                    .First();
-
-                targetList.Clear();
-                targetList.Add(newTarget);
-                if (!skillEffect.RangeAbility)
+                if (skillEffect.FurthestTarget)
                 {
-                    self.CurrentTarget = newTarget;
-                }
-            }
-
-            if (skillEffect.targetHighestSpeed)
-            {
-                AxieController newTarget = statusEffectTargetList.OrderBy(x =>
-                        AxieStatCalculator.GetRealSpeed(target.stats.speed,
-                            target.axieSkillEffectManager.GetSpeedBuff()))
-                    .First();
-
-                targetList.Clear();
-                targetList.Add(newTarget);
-                if (!skillEffect.RangeAbility)
-                {
-                    self.CurrentTarget = newTarget;
-                }
-            }
-
-            if (skillEffect.targetAxieClass)
-            {
-                AxieController newTarget = statusEffectTargetList.First(x =>
-                    target.goodTeam.GetCharacters()
-                        .FirstOrDefault(y => y.axieIngameStats.axieClass == skillEffect.axieClassToTarget));
-                targetList.Clear();
-                targetList.Add(newTarget);
-                if (!skillEffect.RangeAbility)
-                {
-                    self.CurrentTarget = newTarget;
-                }
-            }
-        }
-
-        if (skillEffect.IsOnlyBuffOrDebuff())
-        {
-            if (!steal)
-            {
-                statusEffectTargetList.ForEach(x =>
-                {
-                    for (int i = 0; i < specialEffectExtras.multiplyStatusEffect; i++)
+                    AxieController newTarget =
+                        self.goodTeam.FindFurthestCharacter(self, self.enemyTeam.GetCharacters());
+                    if (newTarget != null)
                     {
-                        skillInstance.AddStatusEffectTargetPair(x.AxieId, new[] { skillEffect }, remove);
+                        targetList.Clear();
+                        targetList.Add(newTarget);
+                        if (!skillEffect.RangeAbility)
+                        {
+                            self.CurrentTarget = newTarget;
+                        }
                     }
-                });
-            }
-            else
-            {
-                AxieController stealer = statusEffectTargetList[0];
-                AxieController gotStolen = statusEffectTargetList[1];
+                }
 
-                List<SkillEffect> skillsToSteal = gotStolen.axieSkillEffectManager.GetAllBuffs();
-
-                skillInstance.AddStatusEffectTargetPair(gotStolen.AxieId, skillsToSteal.ToArray(), true);
-                skillInstance.AddStatusEffectTargetPair(stealer.AxieId, skillsToSteal.ToArray(), false);
-            }
-        }
-
-        if (skillEffect.StealEnergyPercentage > 0)
-        {
-            float energyToTransfer = target.axieIngameStats.CurrentEnergy *
-                                     (skillEffect.StealEnergyPercentage * 0.01f) *
-                                     specialEffectExtras.multiplyStatusEffect;
-
-            target.axieIngameStats.CurrentEnergy -= energyToTransfer;
-            self.axieIngameStats.CurrentEnergy += energyToTransfer;
-        }
-
-        // if (skillEffect.GainShield > 0)
-        // {
-        self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
-        // }
-        if (skillEffect.GainShield > 0)
-        {
-            self.axieIngameStats.currentShield +=
-                (self.axieIngameStats.currentShield * (skillEffect.GainShield / 100f));
-        }
-
-        if (skillEffect.GainHPPercentage > 0)
-        {
-            if (!skillEffect.HPBaseOnDamage)
-            {
-                foreach (var axieController in statusEffectTargetList)
+                if (skillEffect.targetHighestEnergy)
                 {
-                    skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.HP *
-                                                                            (skillEffect.GainHPPercentage * 0.01f)) *
-                                                                           specialEffectExtras.multiplyStatusEffect);
+                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.CurrentEnergy)
+                        .FirstOrDefault();
+                    if (newTarget != null)
+                    {
+                        targetList.Clear();
+                        targetList.Add(newTarget);
+                        if (!skillEffect.RangeAbility)
+                        {
+                            self.CurrentTarget = newTarget;
+                        }
+                    }
+                }
+
+                if (skillEffect.targetHighestSpeed)
+                {
+                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x =>
+                            AxieStatCalculator.GetRealSpeed(x.stats.speed,x.axieSkillEffectManager.GetSpeedBuff()))
+                        .FirstOrDefault();
+                    if (newTarget != null)
+                    {
+                        targetList.Clear();
+                        targetList.Add(newTarget);
+                        if (!skillEffect.RangeAbility)
+                        {
+                            self.CurrentTarget = newTarget;
+                        }
+                    }
+                }
+
+                if (skillEffect.targetAxieClass)
+                {
+                    if (target.goodTeam.GetCharacters().Any(y =>
+                            y.axieIngameStats.axieClass == skillEffect.axieClassToTarget))
+                    {
+                        AxieController newTarget = target.goodTeam.GetCharacters().FirstOrDefault(y =>
+                                y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
+                        if (newTarget != null)
+                        {
+                            targetList.Clear();
+                            targetList.Add(newTarget);
+                            if (!skillEffect.RangeAbility)
+                            {
+                                self.CurrentTarget = newTarget;
+                            }
+                        }
+                    }
                 }
             }
-        }
 
-        return targetList;
+            if (skillEffect.IsOnlyBuffOrDebuff())
+            {
+                if (!steal)
+                {
+                    statusEffectTargetList.ForEach(x =>
+                    {
+                        for (int i = 0; i < specialEffectExtras.multiplyStatusEffect; i++)
+                        {
+                            skillInstance.AddStatusEffectTargetPair(x.AxieId, new[] { skillEffect }, remove);
+                        }
+                    });
+                }
+                else
+                {
+                    AxieController stealer = statusEffectTargetList[0];
+                    AxieController gotStolen = statusEffectTargetList[1];
+
+                    List<SkillEffect> skillsToSteal = gotStolen.axieSkillEffectManager.GetAllBuffs();
+
+                    skillInstance.AddStatusEffectTargetPair(gotStolen.AxieId, skillsToSteal.ToArray(), true);
+                    skillInstance.AddStatusEffectTargetPair(stealer.AxieId, skillsToSteal.ToArray(), false);
+                }
+            }
+
+            if (skillEffect.StealEnergyPercentage > 0)
+            {
+                float energyToTransfer = target.axieIngameStats.CurrentEnergy *
+                                         (skillEffect.StealEnergyPercentage * 0.01f) *
+                                         specialEffectExtras.multiplyStatusEffect;
+
+                target.axieIngameStats.CurrentEnergy -= energyToTransfer;
+                self.axieIngameStats.CurrentEnergy += energyToTransfer;
+            }
+
+            // if (skillEffect.GainShield > 0)
+            // {
+            self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
+            // }
+            if (skillEffect.GainShield > 0)
+            {
+                self.axieIngameStats.currentShield +=
+                    (self.axieIngameStats.currentShield * (skillEffect.GainShield / 100f));
+            }
+
+            if (skillEffect.GainHPPercentage > 0)
+            {
+                if (!skillEffect.HPBaseOnDamage)
+                {
+                    foreach (var axieController in statusEffectTargetList)
+                    {
+                        skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.HP *
+                                                                                   (skillEffect.GainHPPercentage *
+                                                                                       0.01f)) *
+                                                                               specialEffectExtras
+                                                                                   .multiplyStatusEffect);
+                    }
+                }
+            }
+
+            return targetList;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message + " " + skillInstance.name);
+            return null;
+        }
     }
 
     private List<DamagePair> DamageCalculation(AxieSkill skill, Skill skillInstance, AxieController self,
@@ -599,41 +625,48 @@ public class SkillLauncher : MonoBehaviour
         List<DamagePair> damagePairList = new List<DamagePair>();
         foreach (var target in targets)
         {
-            DamagePair dmgPair = new DamagePair();
-
-            dmgPair.axieController = target;
-            dmgPair.damage = Mathf.RoundToInt(skill.bodyPartSO.damage);
-
-            if (skillEffect.DamageEqualsBasicAttack)
+            try
             {
-                dmgPair.damage =
-                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
-            }
+                DamagePair dmgPair = new DamagePair();
 
-            if (skillEffect.ExtraDamagePercentage > 0)
+                dmgPair.axieController = target;
+                dmgPair.damage = Mathf.RoundToInt(skill.bodyPartSO.damage);
+
+                if (skillEffect.DamageEqualsBasicAttack)
+                {
+                    dmgPair.damage =
+                        AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
+                }
+
+                if (skillEffect.ExtraDamagePercentage > 0)
+                {
+                    dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ExtraDamagePercentage * 0.01f));
+                }
+
+                if (skillEffect.HPBaseOnDamage)
+                {
+                    skillInstance.AddHealTargetPair(self.AxieId,
+                        (dmgPair.damage * (skillEffect.GainHPPercentage * 0.01f) *
+                         specialEffectExtras.multiplyStatusEffect));
+                }
+
+                dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
+
+                int damageReduction = target.axieSkillController.passives.DamageReductionAmount;
+
+                if (target.axieSkillEffectManager.IsAromad())
+                {
+                    damageReduction -= 50;
+                }
+
+                dmgPair.damage -= (dmgPair.damage * (damageReduction / 100));
+
+                damagePairList.Add(dmgPair);
+            }
+            catch (Exception e)
             {
-                dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ExtraDamagePercentage * 0.01f));
+                Debug.LogError(e);
             }
-
-            if (skillEffect.HPBaseOnDamage)
-            {
-                skillInstance.AddHealTargetPair(self.AxieId,
-                    (dmgPair.damage * (skillEffect.GainHPPercentage * 0.01f) *
-                     specialEffectExtras.multiplyStatusEffect));
-            }
-
-            dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
-
-            int damageReduction = target.axieSkillController.passives.DamageReductionAmount;
-
-            if (target.axieSkillEffectManager.IsAromad())
-            {
-                damageReduction -= 50;
-            }
-
-            dmgPair.damage -= (dmgPair.damage * (damageReduction / 100));
-
-            damagePairList.Add(dmgPair);
         }
 
         if (self.axieSkillEffectManager.IsJinxed())
@@ -773,6 +806,9 @@ public class SkillLauncher : MonoBehaviour
         List<SkillAction> skillActions = new List<SkillAction>();
         List<DamagePair> damagePairs = new List<DamagePair>();
 
+        if (skill.skillName == SkillName.TheLastOne)
+        {
+        }
 
         foreach (var skillEffect in skill.bodyPartSO.skillEffects)
         {

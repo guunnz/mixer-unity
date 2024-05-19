@@ -191,8 +191,7 @@ public class AbilitiesManager : MonoBehaviour
 
         var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 
-        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
-            .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
+        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController.SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
                 AxieSelecteds.Select(x => x.BodyPart).ToList());
 
         ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;

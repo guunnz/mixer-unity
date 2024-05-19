@@ -44,7 +44,7 @@ MonoBehaviour:
     Aroma: 0
     Stench: 0
     Fragile: 0
-    Poison: 0
+    Poison: 1
     Wombo: 1
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0

@@ -236,7 +236,7 @@ namespace Game
             controller.axieIngameStats.axieId = axieId;
             controller.axieIngameStats.HP = stats.hp * 2;
             controller.axieIngameStats.axieClass = @class;
-
+            controller.imGood = !isEnemy;
             controller.axieIngameStats.MinEnergy = 0;
             controller.axieIngameStats.MaxEnergy = 100;
             controller.axieIngameStats.currentHP = stats.skill;
@@ -254,13 +254,13 @@ namespace Game
             if (isEnemy)
             {
                 controller.startingCol =
-                    axieForBackend.position.position_values_per_round[RunManagerSingleton.instance.score].col;
+                    axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].col;
                 controller.startingRow =
-                    axieForBackend.position.position_values_per_round[RunManagerSingleton.instance.score].row;
+                    axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].row;
                 enemyTeam.AddCharacter(controller);
 
                 List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
-                    .Where(x => axieForBackend.combos.combos_values_per_round[RunManagerSingleton.instance.score]
+                    .Where(x => axieForBackend.combos_values_per_round[RunManagerSingleton.instance.score]
                         .combos_id.Select(x => (SkillName)x).Contains(x.skillName))
                     .ToList();
 
@@ -279,8 +279,8 @@ namespace Game
                         TeamManager.instance.currentTeam.AxieIds.FindIndex(x => x.id == axieId)];
 
                 goodTeam.AddCharacter(controller,
-                    new Vector2Int(position.position_values_per_round[RunManagerSingleton.instance.score].row,
-                        position.position_values_per_round[RunManagerSingleton.instance.score].col));
+                    new Vector2Int(position.row,
+                        position.col));
             }
 
             go.tag = "Character";

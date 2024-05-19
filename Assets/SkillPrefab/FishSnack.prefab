@@ -63,5 +63,5 @@ MonoBehaviour:
   animationToPlay: 36
   axieAnimationTiming: 0
   statusEffectsTiming: 0
-  totalDuration: 0.9
+  totalDuration: 1
   attackAudioTiming: 0

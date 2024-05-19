@@ -37,12 +37,13 @@ public class OpponentTeamManager : MonoBehaviour
         }
 
         int index = 0;
-        foreach (var teamUpgrades in opponent.axie_team.team_upgrades)
+
+        foreach (var teamUpgrades in opponent.axie_team.team_upgrades_values_per_round)
         {
-            foreach (var upgradeAugument in teamUpgrades.upgrade_values_per_round)
+            foreach (var upgrades in teamUpgrades.upgrades_ids)
             {
-                atiaBlessing.AugumentUpgrade((int)upgradeAugument.upgrade_id,
-                    upgradeAugument.axieClass?.Select(x => (AxieClass)x).ToList(),
+                atiaBlessing.AugumentUpgrade((int)upgrades.id,
+                    upgrades.axie_class?.Select(x => (AxieClass)x).ToList(),
                     badTeam);
             }
 
@@ -53,21 +54,26 @@ public class OpponentTeamManager : MonoBehaviour
             }
         }
 
-        index = 0;
-        foreach (var axie in opponent.axie_team.axies)
-        {
-            foreach (var upgrade in axie.upgrades.upgrades_id)
-            {
-                atiaBlessing.AugumentUpgrade(upgrade, axie.axie_id, badTeam);
-
-                index++;
-                if (index >= RunManagerSingleton.instance.score)
-                {
-                    break;
-                }
-            }
-
-            index = 0;
-        }
+        // index = 0;
+        // foreach (var axie in opponent.axie_team.axies)
+        // {
+        //     if (axie.upgrades_values_per_round == null)
+        //         continue;
+        //     foreach (var upgrade in axie.upgrades_values_per_round)
+        //     {
+        //         foreach (var i in upgrade.upgrades_id)
+        //         {
+        //             atiaBlessing.AugumentUpgrade(i, axie.axie_id, badTeam);
+        //
+        //             index++;
+        //             if (index >= RunManagerSingleton.instance.score)
+        //             {
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //
+        //     index = 0;
+        // }
     }
 }

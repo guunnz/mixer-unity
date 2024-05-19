@@ -141,6 +141,7 @@ public class Team : MonoBehaviour
         {
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
+                FightManagerSingleton.Instance.StopFight();
                 BattleOverlay.SetActive(false);
                 YouWinLose.gameObject.SetActive(true);
 

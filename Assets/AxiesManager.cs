@@ -20,6 +20,8 @@ public class AxiesManager : MonoBehaviour
     public List<SkeletonGraphic> skeletonGraphics = new List<SkeletonGraphic>();
     public List<AxieController> axieControllers = new List<AxieController>();
     public Team myTeam;
+    public GameObject CanvasMenu;
+    public GameObject NewGameMenu;
 
     public void ShowMenuAxies(AxieTeam axieTeam)
     {
@@ -30,15 +32,16 @@ public class AxiesManager : MonoBehaviour
             {
                 Destroy(axieControllers[i].gameObject);
             }
+
             axieControllers.Clear();
             return;
         }
+
         StartCoroutine(IShowMenuAxies(axieTeam));
     }
 
     IEnumerator IShowMenuAxies(AxieTeam axieTeam)
     {
-      
         LandManager.instance.ChooseLand(axieTeam.landTokenId);
         myTeam.characters.Clear();
 
@@ -61,13 +64,21 @@ public class AxiesManager : MonoBehaviour
 
     public void SetAxiesBattleMode()
     {
+        if (myTeam.GetCharactersAll().Count == 0)
+        {
+            NotificationErrorManager.instance.DoNotification("Please select a team");
+            return;
+        }
+
+        CanvasMenu.SetActive(false);
+        NewGameMenu.SetActive(true);
         MapManager.Instance.ToggleRectangles();
         foreach (var axieController in myTeam.GetCharactersAll())
         {
             axieController.ChangeMode(AxieMode.Battle);
         }
     }
-    
+
     public void SetAxiesMenuMode()
     {
         MapManager.Instance.ToggleRectanglesFalse();

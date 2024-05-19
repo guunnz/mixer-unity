@@ -169,7 +169,11 @@ public class AxieController : MonoBehaviour
             return;
         if (!goodTeam.battleStarted)
         {
-            transform.DOKill();
+            if (mode == AxieMode.Menu)
+            {
+                transform.DOKill();
+            }
+
             axieBehavior.DoAction(AxieState.Hovered);
         }
     }

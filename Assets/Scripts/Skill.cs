@@ -361,7 +361,7 @@ public class Skill : MonoBehaviour
 
     public SkillAction GetDestroyAction()
     {
-        return new SkillAction(delegate { StartCoroutine(Destroy()); }, this.totalDuration + 1.2f);
+        return new SkillAction(delegate { StartCoroutine(Destroy()); }, this.totalDuration + ExtraTimerCast + 0.5f);
     }
 
     private void DoDamage()
@@ -435,34 +435,59 @@ public class Skill : MonoBehaviour
 
     private void LaunchVFX(SkillVFX skill)
     {
-        foreach (var target in targetList)
+        try
         {
-            GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
-                skill.StartFromOrigin ? self.GetPartPosition(BodyPart.Horn) : target.GetPartPosition(BodyPart.Horn),
-                skill.VFXPrefab.transform.rotation,
-                this.transform);
-
-            VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
-
-            if (changer != null)
+            foreach (var target in targetList)
             {
-                changer.ChangeBasedOnClass(@class);
+                Vector3 pos = skill.VFXPrefab.transform.localPosition;
+                GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                    skill.StartFromOrigin ? self.GetPartPosition(BodyPart.Horn) : target.GetPartPosition(BodyPart.Horn),
+                    skill.VFXPrefab.transform.rotation,
+                    this.transform);
+
+                vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                                 pos.x, vfxSpawned.transform.localPosition.y +
+                                                                        pos.y,
+                    vfxSpawned.transform.localPosition.z +
+                    pos.z);
+
+                VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
+
+                if (changer != null)
+                {
+                    changer.ChangeBasedOnClass(@class);
+                }
+
+                VFXClassSelector classSelector = vfxSpawned.GetComponent<VFXClassSelector>();
+
+                if (classSelector != null)
+                {
+                    classSelector.SetAnimation(self.axieIngameStats.axieClass);
+                }
+
+                if (skill.StartFromOrigin)
+                {
+                    ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                    vfxSpawned.transform.localScale = new Vector3(
+                        origin.transform.localScale.x < 0
+                            ? -vfxSpawned.transform.localScale.x
+                            : vfxSpawned.transform.localScale.x,
+                        vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                    if (origin.transform.localScale.x > 0)
+                    {
+                        vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                    }
+
+                    if (projectileMover != null)
+                        projectileMover.MoveToTarget(target.transform, skill.SkillDuration);
+                }
             }
-
-            VFXClassSelector classSelector = vfxSpawned.GetComponent<VFXClassSelector>();
-
-            if (classSelector != null)
-            {
-                classSelector.SetAnimation(self.axieIngameStats.axieClass);
-            }
-
-            if (skill.StartFromOrigin)
-            {
-                ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
-
-                if (projectileMover != null && self != null)
-                    projectileMover.MoveToTarget(target.GetPartPosition(BodyPart.Horn), skill.SkillDuration);
-            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message + this.axieBodyPart.skillName);
         }
     }
 

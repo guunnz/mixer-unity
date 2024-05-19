@@ -28,8 +28,17 @@ public class FightManagerSingleton : MonoBehaviour
         FightStarted = true;
     }
 
+    public void StopFight()
+    {
+        SecondsOfFight = 0;
+        FightStarted = false;
+    }
+
     private void FixedUpdate()
     {
-        SecondsOfFight += Time.fixedDeltaTime;
+        if (FightStarted)
+        {
+            SecondsOfFight += Time.fixedDeltaTime;
+        }
     }
 }

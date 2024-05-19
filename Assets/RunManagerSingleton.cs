@@ -26,7 +26,7 @@ public class RunManagerSingleton : MonoBehaviour
     public LandType landType;
     internal List<bool> resultsBools = new List<bool>();
     internal string currentOpponent = "";
-    internal List<UpgradeValuesPerRound> globalUpgrades = new List<UpgradeValuesPerRound>();
+    internal List<UpgradeValuesPerRoundList> globalUpgrades = new List<UpgradeValuesPerRoundList>();
     internal List<AxieUpgrade> axieUpgrades = new List<AxieUpgrade>();
     public int score => losses + wins;
 
@@ -92,10 +92,10 @@ public class RunManagerSingleton : MonoBehaviour
 
         if (globalUpgrades.Count <= score)
         {
-            globalUpgrades.Add(new UpgradeValuesPerRound() { upgrade_values_per_round = new List<UpgradeAugument>() });
+            globalUpgrades.Add(new UpgradeValuesPerRoundList() { team_upgrades_values_per_round = new List<UpgradeAugument>() });
         }
 
-        globalUpgrades[score].upgrade_values_per_round.Add(new UpgradeAugument() { upgrade_id = upgrade });
+        globalUpgrades[score].team_upgrades_values_per_round.Add(new UpgradeAugument() { id = upgrade });
 
         switch ((AtiaBlessing.Blessing)upgrade)
         {

@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 123
   skillEffects:
-  - statusEffect: 0
+  - statusEffect: 10
     statusApplyType: 0
     statusApplyTypeIsTarget: 0
     skillTriggerType: 3
     isPassive: 0
     skillDuration: 2
-    PoisonStack: 0
+    PoisonStack: 1
     Attack: 0
     Speed: 0
     Morale: 0

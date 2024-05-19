@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,30 +7,20 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Serialization;
 
-[System.Serializable]
-public class Position
-{
-    public PositionValues[] position_values_per_round;
-}
 
 [System.Serializable]
-public class PositionValues
+public class Position
 {
     public int row;
     public int col;
 }
 
 [System.Serializable]
-public class ComboValuesPerRound
+public class Combos
 {
     public int[] combos_id;
 }
 
-[System.Serializable]
-public class Combos
-{
-    public ComboValuesPerRound[] combos_values_per_round;
-}
 
 [System.Serializable]
 public class AxieUpgrades
@@ -40,23 +31,46 @@ public class AxieUpgrades
 [System.Serializable]
 public class UpgradeValuesPerRound
 {
-    public List<UpgradeAugument> upgrade_values_per_round = new List<UpgradeAugument>();
+    public UpgradeAugument[] upgrades_ids;
+}
+
+
+[System.Serializable]
+public class UpgradeValuesPerRoundList
+{
+    public List<UpgradeAugument> team_upgrades_values_per_round;
+
+
+    public UpgradeAugument[] ToUpgradeValuesPerRoundArray()
+    {
+        return team_upgrades_values_per_round.ToArray();
+    }
 }
 
 [System.Serializable]
 public class AxieForBackend
 {
     public string axie_id;
-    public Combos combos;
-    public Position position;
-    public AxieUpgrades upgrades;
+    public Combos[] combos_values_per_round;
+    public Position[] position_values_per_round;
+    public int[] upgrades_values_per_round;
 }
 
 [System.Serializable]
 public class AxieTeamDatabase
 {
     public AxieForBackend[] axies;
-    public UpgradeValuesPerRound[] team_upgrades;
+    public UpgradeValuesPerRound[] team_upgrades_values_per_round;
+
+    public List<UpgradeValuesPerRound> ToUpgradeValuesPerRoundArray()
+    {
+        return team_upgrades_values_per_round.ToList();
+    }
+}
+
+[System.Serializable]
+public class TeamUpgrades
+{
 }
 
 [System.Serializable]
@@ -66,7 +80,6 @@ public class Run
     public int score;
     public bool[] rounds;
 
-    [FormerlySerializedAs("opponent_run_id")]
     public string[] opponents_run_id;
 
     public int land_type = 0;
@@ -87,27 +100,19 @@ public class AxieLandBattleTarget : MonoBehaviour
         {
             AxieForBackend axieForBackend = new AxieForBackend();
             axieForBackend.axie_id = axie.AxieId.ToString();
-            axieForBackend.position = new Position();
 
-            axieForBackend.position.position_values_per_round = new[]
+
+            axieForBackend.position_values_per_round = new[]
             {
-                new PositionValues() { row = axie.startingRow, col = axie.startingCol }
+                new Position() { row = axie.startingRow, col = axie.startingCol }
             };
 
-            axieForBackend.upgrades = new AxieUpgrades()
-            {
-                upgrades_id = RunManagerSingleton.instance.axieUpgrades
-                    .Where(x => x.axieId == axie.AxieId.ToString())
-                    .Select(x => (int)x.upgrade).ToArray()
-            };
+            axieForBackend.upgrades_values_per_round = Array.Empty<int>();
 
-            axieForBackend.combos = new Combos()
+            axieForBackend.combos_values_per_round = new[]
             {
-                combos_values_per_round = new[]
-                {
-                    new ComboValuesPerRound()
-                        { combos_id = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.skillName).ToArray() }
-                }
+                new Combos()
+                    { combos_id = axie.axieSkillController.GetAxieSkills().Select(x => (int)x.skillName).ToArray() }
             };
 
             axieForBackends.Add(axieForBackend);
@@ -123,12 +128,12 @@ public class AxieLandBattleTarget : MonoBehaviour
             axie_team = new AxieTeamDatabase()
             {
                 axies = axieForBackends.ToArray(),
-                team_upgrades = new UpgradeValuesPerRound[]
+                team_upgrades_values_per_round = new UpgradeValuesPerRound[]
                 {
                     new UpgradeValuesPerRound()
                     {
-                        upgrade_values_per_round =
-                            RunManagerSingleton.instance.globalUpgrades[score].upgrade_values_per_round
+                        upgrades_ids = RunManagerSingleton.instance.globalUpgrades[score]
+                            .ToUpgradeValuesPerRoundArray()
                     }
                 }
             }

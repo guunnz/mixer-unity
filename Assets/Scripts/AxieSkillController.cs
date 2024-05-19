@@ -49,6 +49,20 @@ public class AxieSkillController : MonoBehaviour
         return skillList;
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            CreateTesting();
+        }
+    }
+
+    private void CreateTesting()
+    {
+        SetAxieSkills(SkillLauncher.Instance.skillList.axieBodyParts.Select(x => x.skillName).ToList(),
+            SkillLauncher.Instance.skillList.axieBodyParts.Select(x => x.bodyPart).ToList());
+    }
+
     public List<AxieSkill> GetAxieSkills(AxieSkill exception)
     {
         return skillList.Where(x => x != exception).ToList();

@@ -20,6 +20,19 @@ public class VFXClassSelector : MonoBehaviour
             skinNameString = skinNameString.Replace("aquatic", "aqua");
         }
 
+        switch (axieClass)
+        {
+            case AxieClass.Dusk:
+                skinNameString = AxieClass.Reptile.ToString().ToLower() + skinName;
+                break;
+            case AxieClass.Dawn:
+                skinNameString = AxieClass.Bird.ToString().ToLower() + skinName;
+                break;
+            case AxieClass.Mech:
+                skinNameString = AxieClass.Beast.ToString().ToLower() + skinName;
+                break;
+        }
+
         skeletonGraphic.initialSkinName = skinNameString;
 
         skeletonGraphic.Initialize(true);
