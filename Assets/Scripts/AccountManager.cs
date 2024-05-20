@@ -21,6 +21,7 @@ public class AccountManager : MonoBehaviour
     public GameObject MainMenu;
     public GameObject RoninMenu;
     public bool LoadInstantly = false;
+    private bool loggingIn;
 
     public IEnumerator IncorrectWalletDo()
     {
@@ -37,6 +38,12 @@ public class AccountManager : MonoBehaviour
 
     public void LoginAccount()
     {
+        if (loggingIn)
+        {
+            return;
+        }
+
+        loggingIn = true;
         if (LoadInstantly)
         {
             RoninWallet.text = forcedAddress;

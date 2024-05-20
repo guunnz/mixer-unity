@@ -472,6 +472,12 @@ public class Team : MonoBehaviour
         int distanceToClosestCharacterGrid = 0;
         if (character.CurrentTarget != null)
         {
+            AxieController closestCharacter = FindClosestCharacter(character);
+            if (closestCharacter != null && closestCharacter != character.CurrentTarget)
+            {
+                character.CurrentTarget = closestCharacter;
+            }
+
             state.path = pathFinder.FindPath(character.standingOnTile, character.CurrentTarget.standingOnTile,
                 GetInRangeTiles(character));
             distanceToClosestCharacterGrid =

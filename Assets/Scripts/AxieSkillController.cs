@@ -75,7 +75,7 @@ public class AxieSkillController : MonoBehaviour
     {
         if (self.goodTeam.ChimeraSpawned)
             return;
-        
+
         List<AxieController> myTeam = self.goodTeam.GetCharacters();
         int merryStacks = myTeam.Sum(x => x.axieSkillEffectManager.MerryStacks());
         if (merryStacks != 0 && (merryStacks >= 5) && !self.goodTeam.ChimeraSpawned)
@@ -203,6 +203,7 @@ public class AxieSkillController : MonoBehaviour
 
     public void OnBattleStart()
     {
+        lastActivationTimes.Clear();
         if (!passives.bodyPartList.Any(x =>
                 x.skillEffects.Any(y => y.skillTriggerType == SkillTriggerType.Battlecry)))
         {
