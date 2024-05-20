@@ -52,6 +52,11 @@ public class AxieSkillEffectManager : MonoBehaviour
         return skillEffects.Any(x => x.Poison);
     }
 
+    public bool IsMerry()
+    {
+        return skillEffects.Any(x => x.Merry);
+    }
+    
     public int PoisonStacks()
     {
         try
@@ -60,6 +65,21 @@ public class AxieSkillEffectManager : MonoBehaviour
                 return 0;
 
             return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Poison).Times;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            return 0;
+        }
+    }    
+    
+    public int MerryStacks()
+    {
+        try
+        { 
+            if (!IsMerry())
+                return 0;
+            return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Merry).Times;
         }
         catch (Exception e)
         {

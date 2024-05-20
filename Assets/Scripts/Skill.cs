@@ -304,6 +304,7 @@ public class Skill : MonoBehaviour
     public float totalDuration;
     public float attackAudioTiming;
     internal bool debug;
+    public bool DontPlayAnimation;
 
     public void AddDamageTargetPair(int axieId, float damage, bool onlyShield = false)
     {
@@ -407,6 +408,8 @@ public class Skill : MonoBehaviour
 
     private void PlayAxieAnimation()
     {
+        if (DontPlayAnimation)
+            return;
         string animationName = animationToPlay.ToString();
 
         // Find the last underscore and replace it with a hyphen

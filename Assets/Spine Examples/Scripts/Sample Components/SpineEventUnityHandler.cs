@@ -47,7 +47,7 @@ namespace Spine.Unity.Prototyping {
 		ISkeletonComponent skeletonComponent;
 		IAnimationStateComponent animationStateComponent;
 
-		void Start () {
+		public void SetEvents () {
 			skeletonComponent = skeletonComponent ?? GetComponent<ISkeletonComponent>();
 			if (skeletonComponent == null) return;
 			animationStateComponent = animationStateComponent ?? skeletonComponent as IAnimationStateComponent;

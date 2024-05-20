@@ -21,7 +21,9 @@ public class Team : MonoBehaviour
     public TextMeshProUGUI YouWinLose;
     public AxieLandBattleTarget target;
     private float resetTimer;
+    internal bool ChimeraSpawned;
     public bool isGoodTeam;
+    internal bool battleEnded = false;
 
     internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
 
@@ -74,10 +76,17 @@ public class Team : MonoBehaviour
 
     public void StartBattle()
     {
+        battleEnded = false;
+        ChimeraSpawned = false;
         battleStarted = true;
         foreach (var inRangeTile in FindObjectsOfType<OverlayTile>())
         {
             inRangeTile.ToggleRectangle(false);
+        }
+
+        foreach (var axieController in GetCharacters())
+        {
+            axieController.DoOnStart();
         }
     }
 
@@ -141,6 +150,7 @@ public class Team : MonoBehaviour
         {
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
+                battleEnded = true;
                 FightManagerSingleton.Instance.StopFight();
                 BattleOverlay.SetActive(false);
                 YouWinLose.gameObject.SetActive(true);
@@ -156,6 +166,13 @@ public class Team : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    Chimera[] chimeras = FindObjectsByType<Chimera>(FindObjectsSortMode.None);
+
+                    for (int i = 0; i < chimeras.Length; i++)
+                    {
+                        Destroy(chimeras[i].gameObject);
+                    }
+
                     MapManager.Instance.ToggleRectangles();
                     foreach (var axieController in RunManagerSingleton.instance.goodTeam.GetCharactersAll())
                     {

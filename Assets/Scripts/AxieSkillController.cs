@@ -16,12 +16,16 @@ public class AxieSkill
 public class AxiePassives
 {
     public List<AxieBodyPart> bodyPartList = new List<AxieBodyPart>();
+    public List<AxieBodyPart> bodyPartListReactivation = new List<AxieBodyPart>();
     public bool ImmuneToCriticals;
     public bool AutoattacksIgnoreShield;
     public float AutoattackIncrease;
     public int DamageReductionAmount;
     public int RangedReflectDamageAmount;
     public int MeleeReflectDamageAmount;
+    public bool hasReactivations;
+    public bool MerryActivated = false;
+    public bool hasMerry = false;
 }
 
 public class AxieSkillController : MonoBehaviour
@@ -33,6 +37,8 @@ public class AxieSkillController : MonoBehaviour
     public AxieController self;
 
     private int comboCost;
+
+    private Dictionary<string, float> lastActivationTimes = new Dictionary<string, float>();
 
     public int GetComboCost()
     {
@@ -54,6 +60,79 @@ public class AxieSkillController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             CreateTesting();
+        }
+
+        if (self != null && self.goodTeam != null)
+        {
+            if (self.goodTeam.battleStarted)
+            {
+                Reactivations();
+            }
+        }
+    }
+
+    private void MerryBehavior()
+    {
+        if (self.goodTeam.ChimeraSpawned)
+            return;
+        
+        List<AxieController> myTeam = self.goodTeam.GetCharacters();
+        int merryStacks = myTeam.Sum(x => x.axieSkillEffectManager.MerryStacks());
+        if (merryStacks != 0 && (merryStacks >= 5) && !self.goodTeam.ChimeraSpawned)
+        {
+            foreach (var axieController in myTeam)
+            {
+                axieController.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Merry);
+            }
+
+            AxieBodyPart part =
+                passives.bodyPartListReactivation.First(x => x.skillName == SkillName.Merry);
+
+            self.goodTeam.ChimeraSpawned = true;
+
+            Chimera chimera = Instantiate(part.extraPrefabToInstantiate, this.transform.parent)
+                .GetComponent<Chimera>();
+
+            chimera.transform.position = self.imGood ? new Vector3(0, 0, 0) : new Vector3(7, 0, 0);
+
+            chimera.chimeraTeam = self.goodTeam;
+        }
+    }
+
+    private void Reactivations()
+    {
+        if (passives.hasReactivations)
+        {
+            if (passives.hasMerry)
+            {
+                MerryBehavior();
+            }
+
+            float secondsOfFight = FightManagerSingleton.Instance.SecondsOfFight;
+
+            foreach (var reactivation in passives.bodyPartListReactivation)
+            {
+                int reactivationInterval = reactivation.skillEffects.First().ReactivateEffectEveryXSeconds;
+                if (secondsOfFight >= 1f && (int)Mathf.Floor(secondsOfFight) % reactivationInterval == 0)
+                {
+                    string SkillName = reactivation.skillName.ToString();
+
+                    // Check if the skill was already activated at this time
+                    if (lastActivationTimes.ContainsKey(SkillName) &&
+                        Mathf.Floor(secondsOfFight) <= lastActivationTimes[SkillName])
+                    {
+                        continue; // Skip if already activated at this second
+                    }
+
+                    // Update the last activation time
+                    lastActivationTimes[SkillName] = Mathf.Floor(secondsOfFight);
+
+                    StartCoroutine(
+                        SkillLauncher.Instance.ThrowPassive(
+                            skillList.FirstOrDefault(x => x.skillName == reactivation.skillName), self.SkeletonAnim,
+                            self.CurrentTarget, self));
+                }
+            }
         }
     }
 
@@ -119,6 +198,30 @@ public class AxieSkillController : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    public void OnBattleStart()
+    {
+        if (!passives.bodyPartList.Any(x =>
+                x.skillEffects.Any(y => y.skillTriggerType == SkillTriggerType.Battlecry)))
+        {
+            return;
+        }
+
+        foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
+        {
+            foreach (var skillEffect in bodyPartPassive.skillEffects)
+            {
+                if (skillEffect.skillTriggerType != SkillTriggerType.Battlecry)
+                    continue;
+
+
+                StartCoroutine(
+                    SkillLauncher.Instance.ThrowPassive(
+                        skillList.FirstOrDefault(x => x.skillName == bodyPartPassive.skillName), self.SkeletonAnim,
+                        self.CurrentTarget, self));
+            }
         }
     }
 
@@ -221,6 +324,17 @@ public class AxieSkillController : MonoBehaviour
                     if (skillEffect.InmuneToCriticalStrike)
                     {
                         passives.ImmuneToCriticals = true;
+                    }
+
+                    if (skillEffect.ReactivateEffectEveryXSeconds > 0)
+                    {
+                        passives.hasReactivations = true;
+                        passives.bodyPartListReactivation.Add(skill.bodyPartSO);
+
+                        if (skill.skillName == SkillName.Merry)
+                        {
+                            passives.hasMerry = true;
+                        }
                     }
 
                     passives.MeleeReflectDamageAmount += skillEffect.MeleeReflect;

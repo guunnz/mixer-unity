@@ -67,6 +67,18 @@ public class SkillLauncher : MonoBehaviour
 
         Skill skill = Instantiate(passive.bodyPartSO.prefab).GetComponent<Skill>();
 
+        bool targetWasNull = false;
+        while (self.CurrentTarget == null || target == null)
+        {
+            targetWasNull = true;
+            yield return new WaitForFixedUpdate();
+        }
+
+        if (targetWasNull)
+        {
+            target = self.CurrentTarget;
+        }
+
         skill.axieBodyPart = passive.bodyPartSO;
         skill.self = self;
         skill.origin = self.transform;
@@ -477,7 +489,8 @@ public class SkillLauncher : MonoBehaviour
             {
                 if (skillEffect.lowestHP)
                 {
-                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.currentHP).First();
+                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.currentHP)
+                        .First();
 
                     targetList.Clear();
                     targetList.Add(newTarget);
@@ -501,7 +514,8 @@ public class SkillLauncher : MonoBehaviour
 
                 if (skillEffect.targetHighestEnergy)
                 {
-                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.CurrentEnergy)
+                    AxieController newTarget = self.enemyTeam.GetCharacters()
+                        .OrderBy(x => x.axieIngameStats.CurrentEnergy)
                         .FirstOrDefault();
                     if (newTarget != null)
                     {
@@ -517,7 +531,7 @@ public class SkillLauncher : MonoBehaviour
                 if (skillEffect.targetHighestSpeed)
                 {
                     AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x =>
-                            AxieStatCalculator.GetRealSpeed(x.stats.speed,x.axieSkillEffectManager.GetSpeedBuff()))
+                            AxieStatCalculator.GetRealSpeed(x.stats.speed, x.axieSkillEffectManager.GetSpeedBuff()))
                         .FirstOrDefault();
                     if (newTarget != null)
                     {
@@ -536,7 +550,7 @@ public class SkillLauncher : MonoBehaviour
                             y.axieIngameStats.axieClass == skillEffect.axieClassToTarget))
                     {
                         AxieController newTarget = target.goodTeam.GetCharacters().FirstOrDefault(y =>
-                                y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
+                            y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
                         if (newTarget != null)
                         {
                             targetList.Clear();
@@ -749,9 +763,9 @@ public class SkillLauncher : MonoBehaviour
             List<AxieController> targets = new List<AxieController>();
             if (skillEffect.hasTriggerCondition)
             {
-                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
                 if (FulfillsTriggerCondition(skill, skillInstance, self, target, skillEffect))
                 {
+                    targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
                     if (!multiCasted && skillEffect.MultiCastTimes > 0)
                     {
                         for (int i = 0; i < skillEffect.MultiCastTimes; i++)
@@ -759,6 +773,10 @@ public class SkillLauncher : MonoBehaviour
                             PerformSkill(skill, skillInstance, self, target, true);
                         }
                     }
+                }
+                else
+                {
+                    targets.Add(target);
                 }
 
                 if (skill.bodyPartSO.damage > 0)
@@ -806,20 +824,20 @@ public class SkillLauncher : MonoBehaviour
         List<SkillAction> skillActions = new List<SkillAction>();
         List<DamagePair> damagePairs = new List<DamagePair>();
 
-        if (skill.skillName == SkillName.TheLastOne)
-        {
-        }
 
         foreach (var skillEffect in skill.bodyPartSO.skillEffects)
         {
+            if (skillEffect.isPassive)
+                continue;
             SpecialEffectExtras specialEffectExtras = HandleSpecialEffects(skillEffect, target, skill, self);
 
             List<AxieController> targets = new List<AxieController>();
+
             if (skillEffect.hasTriggerCondition)
             {
-                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
                 if (FulfillsTriggerCondition(skill, skillInstance, self, target, skillEffect))
                 {
+                    targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
                     if (!multiCasted && skillEffect.MultiCastTimes > 0)
                     {
                         for (int i = 0; i < skillEffect.MultiCastTimes; i++)
@@ -827,9 +845,6 @@ public class SkillLauncher : MonoBehaviour
                             PerformSkill(skill, skillInstance, self, target, true);
                         }
                     }
-
-                    if (skillEffect.isPassive)
-                        continue;
                 }
 
                 skillInstance.targetList = targets;
@@ -838,10 +853,11 @@ public class SkillLauncher : MonoBehaviour
             }
             else
             {
-                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
-                skillInstance.targetList = targets;
                 if (skillEffect.isPassive)
                     continue;
+                targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
+                skillInstance.targetList = targets;
+
 
                 if (!multiCasted && skillEffect.MultiCastTimes > 0)
                 {

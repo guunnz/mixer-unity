@@ -1,4 +1,8 @@
-{
+{"skeleton": {
+    "hash": "AfXIiiYcHwr/zJua23dZ8co358A",
+    "spine": "3.8.79"
+},
+
   "bones": [
     {"name": "@root"}, {"name": "@pivot-main", "parent": "@root"}, {"name": "@pivot-back", "parent": "@pivot-main", "x": -0.48, "y": 260.22, "color": "ff0000ff"},
     {"name": "@pivot-center", "parent": "@pivot-back", "x": -0.56, "y": 27.44, "color": "ff0000ff"}, {"name": "body3", "parent": "@pivot-center", "length": 89.67, "rotation": 89.42, "x": -0.58, "y": 0.58},

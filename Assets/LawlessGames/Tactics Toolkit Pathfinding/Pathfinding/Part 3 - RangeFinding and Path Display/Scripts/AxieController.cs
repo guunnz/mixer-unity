@@ -55,7 +55,7 @@ public class AxieController : MonoBehaviour
     public bool ShrimpOnStart;
     internal bool Shrimped = false;
     public AxieMode mode;
-
+    private Vector3 lastMovedPosition;
     private float TimerMove = 0f;
 
     public List<AxieController> GetAdjacent()
@@ -77,6 +77,11 @@ public class AxieController : MonoBehaviour
         {
             return null;
         }
+    }
+
+    public void DoOnStart()
+    {
+        axieSkillController.OnBattleStart();
     }
 
     public Vector3 GetPartPosition(BodyPart part)
@@ -389,9 +394,32 @@ public class AxieController : MonoBehaviour
             }
             else
             {
-                transform.localScale =
-                    new Vector3(CurrentTarget.transform.position.x > this.transform.position.x ? -0.2f : 0.2f,
-                        transform.localScale.y, transform.localScale.z);
+                // Assuming targetX and targetY are defined elsewhere
+
+                // Compare the last moved position with the current position
+                Vector3 currentPosition = transform.position;
+                Vector3 direction = currentPosition - lastMovedPosition;
+
+                // Check if the direction is significant (not negligible)
+                float epsilon = 0.001f;
+                bool moved = direction.magnitude > epsilon;
+
+                // Update the scale based on movement direction or use the target position if there's no significant movement
+                transform.localScale = new Vector3(moved && direction.x > 0 ? -0.2f : 0.2f, transform.localScale.y,
+                    transform.localScale.z);
+
+                // Update the lastMovedPosition
+                if (moved)
+                {
+                    lastMovedPosition = currentPosition;
+                }
+                else
+                {
+                    // If no significant movement, use the target position
+                    transform.localScale =
+                        new Vector3(CurrentTarget.transform.position.x > this.transform.position.x ? -0.2f : 0.2f,
+                            transform.localScale.y, transform.localScale.z);
+                }
             }
 
             SkeletonAnim.loop = true;

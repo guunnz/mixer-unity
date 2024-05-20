@@ -55,9 +55,13 @@ public enum AxieAnimation
 public class AxieBodyPart : ScriptableObject
 {
     public SkillName skillName;
-    [FormerlySerializedAs("statusEffects")] public SkillEffect[] skillEffects;
+
+    [FormerlySerializedAs("statusEffects")]
+    public SkillEffect[] skillEffects;
+
     public BodyPart bodyPart;
     public GameObject prefab; // Prefab can be assigned in the editor if needed
+    public GameObject extraPrefabToInstantiate; // Prefab can be assigned in the editor if needed
     public AxieClass bodyPartClass;
     public float damage;
     public float shield;

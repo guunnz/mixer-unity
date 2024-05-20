@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine.Serialization;
 using System;
 using System.Collections.Generic;
+
 [System.Serializable]
-public class SkillEffect: ICloneable
+public class SkillEffect : ICloneable
 {
     public object Clone()
     {
         return this.MemberwiseClone();
     }
-    
+
     public StatusEffectEnum statusEffect;
     public StatusApplyType statusApplyType;
     public bool statusApplyTypeIsTarget;
@@ -130,9 +131,9 @@ public class SkillEffect: ICloneable
     public bool IsOnlyBuffOrDebuff()
     {
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
-                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect);
+                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry);
     }
-    
+
     public bool IsOnlyInfiniteBuffsOrDebuff()
     {
         return Attack != 0 || Morale != 0 || Speed != 0 || Aroma || Poison || Lethal;

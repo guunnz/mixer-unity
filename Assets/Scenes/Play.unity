@@ -5036,7 +5036,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &146417882
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18666,7 +18666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &612578602
 Transform:
   m_ObjectHideFlags: 0
@@ -20172,7 +20172,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0x46571200388f6dce5416e552e28caa7a6833c88e
+  m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
@@ -33541,7 +33541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1178811816
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -42410,7 +42410,7 @@ MonoBehaviour:
   NextStepAfterLogin: {fileID: 612578601}
   MainMenu: {fileID: 1178811815}
   RoninMenu: {fileID: 2039476079}
-  LoadInstantly: 1
+  LoadInstantly: 0
 --- !u!114 &1546848190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53952,7 +53952,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2039476080
 RectTransform:
   m_ObjectHideFlags: 0
