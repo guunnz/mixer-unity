@@ -299,8 +299,7 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        if (imGood && badTeam.GetCharacters().Count == 0 ||
-            !imGood && goodTeam.GetCharacters().Count == 0)
+        if (badTeam.GetCharacters().Count == 0)
         {
             Shrimped = false;
             axieBehavior.DoAction(AxieState.Victory);
