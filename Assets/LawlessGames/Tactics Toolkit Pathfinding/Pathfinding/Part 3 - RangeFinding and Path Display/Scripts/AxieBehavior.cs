@@ -29,6 +29,7 @@ public class AxieBehavior : MonoBehaviour
     private float AttackSpeed;
     private string AttackAnimation;
     public List<SkillName> SkillList;
+    private Coroutine attackCoroutine;
 
     private IEnumerator Start()
     {
@@ -95,11 +96,17 @@ public class AxieBehavior : MonoBehaviour
         }
 
         OnAction();
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
+
         axieState = state;
         switch (state)
         {
             case AxieState.Attacking:
-                StartCoroutine(TryAttack());
+                attackCoroutine = StartCoroutine(TryAttack());
                 break;
             case AxieState.Casting:
                 if (myController.CurrentTarget != null)

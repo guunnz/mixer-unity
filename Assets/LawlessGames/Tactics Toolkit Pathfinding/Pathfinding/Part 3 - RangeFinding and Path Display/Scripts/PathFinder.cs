@@ -45,7 +45,7 @@ public class PathFinder
 
             foreach (var tile in GetNeightbourOverlayTiles(currentOverlayTile))
             {
-                if ((!isRanged && tile.occupied) || closedList.Contains(tile))
+                if (tile.occupied || closedList.Contains(tile))
                 {
                     continue;
                 }

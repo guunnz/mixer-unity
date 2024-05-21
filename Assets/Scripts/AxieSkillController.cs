@@ -93,7 +93,7 @@ public class AxieSkillController : MonoBehaviour
             Chimera chimera = Instantiate(part.extraPrefabToInstantiate, this.transform.parent)
                 .GetComponent<Chimera>();
 
-            chimera.transform.position = self.imGood ? new Vector3(0, 0, 0) : new Vector3(7, 0, 0);
+            chimera.transform.position = self.imGood ? new Vector3(0, 2, 0) : new Vector3(7, 2, 0);
 
             chimera.chimeraTeam = self.goodTeam;
         }
