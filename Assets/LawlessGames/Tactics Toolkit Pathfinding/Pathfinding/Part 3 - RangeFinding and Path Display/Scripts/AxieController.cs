@@ -126,17 +126,20 @@ public class AxieController : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForFixedUpdate();
-        goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
-        badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
+
 
         axieSkillController.self = this;
 
         if (imGood)
         {
+            goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
+            badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
             enemyTeam = badTeam;
         }
         else
         {
+            goodTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
+            badTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
             enemyTeam = goodTeam;
         }
 
@@ -370,7 +373,8 @@ public class AxieController : MonoBehaviour
         }
 
         if (CurrentTarget != null && state.isMoving == false && CurrentTarget.standingOnTile != null &&
-            standingOnTile != null && GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <= axieIngameStats.Range
+            standingOnTile != null && GetManhattanDistance(this.standingOnTile, CurrentTarget.standingOnTile) <=
+            axieIngameStats.Range
            )
         {
             axieBehavior.DoAction(AxieState.Attacking);
