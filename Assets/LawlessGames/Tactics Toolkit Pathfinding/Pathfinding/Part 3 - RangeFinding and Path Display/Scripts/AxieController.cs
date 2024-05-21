@@ -129,7 +129,17 @@ public class AxieController : MonoBehaviour
 
 
         axieSkillController.self = this;
-
+        
+        if (this.standingOnTile.grid2DLocation.x >= 4)
+        {
+            state = badTeam.GetCharacterState(axieIngameStats.axieId);
+        }
+        else
+        {
+            imGood = true;
+            state = goodTeam.GetCharacterState(axieIngameStats.axieId);
+        }
+        
         if (imGood)
         {
             goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
@@ -143,15 +153,7 @@ public class AxieController : MonoBehaviour
             enemyTeam = goodTeam;
         }
 
-        if (this.standingOnTile.grid2DLocation.x >= 4)
-        {
-            state = badTeam.GetCharacterState(axieIngameStats.axieId);
-        }
-        else
-        {
-            imGood = true;
-            state = goodTeam.GetCharacterState(axieIngameStats.axieId);
-        }
+     
 
         UpdateStats();
         if (imGood)
