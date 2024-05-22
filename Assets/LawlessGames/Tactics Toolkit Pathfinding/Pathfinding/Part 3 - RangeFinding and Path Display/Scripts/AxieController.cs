@@ -125,35 +125,35 @@ public class AxieController : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitForFixedUpdate();
-
-
-        axieSkillController.self = this;
-        
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
-            state = badTeam.GetCharacterState(axieIngameStats.axieId);
+            
         }
         else
         {
             imGood = true;
-            state = goodTeam.GetCharacterState(axieIngameStats.axieId);
         }
-        
+
         if (imGood)
         {
             goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
             badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
-            enemyTeam = badTeam;
         }
         else
         {
             goodTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
             badTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
-            enemyTeam = goodTeam;
         }
 
-     
+        state = goodTeam.GetCharacterState(axieIngameStats.axieId);
+        enemyTeam = goodTeam;
+
+
+        yield return new WaitForFixedUpdate();
+
+
+        axieSkillController.self = this;
+
 
         UpdateStats();
         if (imGood)

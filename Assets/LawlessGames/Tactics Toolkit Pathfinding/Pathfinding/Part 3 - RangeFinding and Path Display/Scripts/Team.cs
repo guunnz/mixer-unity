@@ -308,6 +308,16 @@ public class Team : MonoBehaviour
             {
                 if (distanceToClosestCharacterGrid <= (int)character.axieIngameStats.Range)
                 {
+                    if (state.path == null || state.path.Count == 0)
+                    {
+                        var step = speed * Time.fixedDeltaTime;
+                        if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+                        {
+                            character.transform.position = Vector3.MoveTowards(character.transform.position,
+                                character.standingOnTile.transform.position, step);
+                        }
+                    }
+                    
                     state.isMoving = false;
                     return;
                 }
