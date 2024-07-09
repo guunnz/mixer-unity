@@ -10,9 +10,7 @@ public class AccountManager : MonoBehaviour
 {
     private GraphQLClient graphQLClient;
 
-    public TMP_InputField RoninWallet;
-
-    private string forcedAddress = "0x46571200388f6dce5416e552e28caa7a6833c88e";
+    internal string wallet = "0x46571200388f6dce5416e552e28caa7a6833c88e";
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;
@@ -44,16 +42,7 @@ public class AccountManager : MonoBehaviour
         }
 
         loggingIn = true;
-        if (LoadInstantly)
-        {
-            RoninWallet.text = forcedAddress;
-        }
 
-        if (!RoninWallet.text.Contains("0x") || RoninWallet.text.Contains(" "))
-        {
-            StartCoroutine(IncorrectWalletDo());
-            return;
-        }
         // PlayerPrefs.GetString(RoninWallet.text);
         // string cache = 
         // if (!string.IsNullOrEmpty(cache))
@@ -65,12 +54,12 @@ public class AccountManager : MonoBehaviour
         //     userLands = axiesData.data.lands;
         // }
 
-        RunManagerSingleton.instance.userId = RoninWallet.text;
+        RunManagerSingleton.instance.userId = wallet;
 
         graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
         string query = @"
     query MyQuery {
-      axies(owner: """ + RoninWallet.text + @""") {
+      axies(owner: """ + wallet + @""") {
         results {
           birthDate
           name
@@ -102,7 +91,7 @@ public class AccountManager : MonoBehaviour
           bodyShape
         }
       }
-      lands(owner: {address: """ + RoninWallet.text + @""", ownerships: Owned}) {
+      lands(owner: {address: """ + wallet + @""", ownerships: Owned}) {
         total
         results {
           landType
@@ -144,7 +133,7 @@ public class AccountManager : MonoBehaviour
         {
             string responseString = task.Result;
             // StartCoroutine(SpawnAxies(responseString));
-            PlayerPrefs.SetString(RoninWallet.text, responseString);
+            PlayerPrefs.SetString(wallet, responseString);
 
             GetAxiesExample.AxiesData axiesData = JsonUtility.FromJson<GetAxiesExample.AxiesData>(responseString);
             userAxies = axiesData.data.axies;

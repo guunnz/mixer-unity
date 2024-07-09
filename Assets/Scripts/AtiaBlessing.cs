@@ -240,42 +240,6 @@ public class AtiaBlessing : MonoBehaviour
         }
     }
 
-    public void AugumentUpgrade(int indexAugument, string axieId, Team team)
-    {
-        UpgradeAugument augument = blessingAugument[indexAugument];
-
-        AxieController axieControllers = team.GetCharactersAll()
-            .Single(x => x.AxieId.ToString() == axieId);
-
-        if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
-        {
-            RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRoundList()
-                { team_upgrades_values_per_round = new List<UpgradeAugument>() });
-        }
-
-        RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].team_upgrades_values_per_round
-            .Add(new UpgradeAugument() { id = augument.id, axie_class = augument.axie_class });
-
-        switch ((Blessing)augument.id)
-        {
-            case AtiaBlessing.Blessing.Increase_HP:
-                axieControllers.stats.hp += 1;
-                break;
-            case AtiaBlessing.Blessing.Increase_Morale:
-                axieControllers.stats.morale += 1;
-                break;
-            case AtiaBlessing.Blessing.Increase_Speed:
-                axieControllers.stats.speed += 1;
-                break;
-            case AtiaBlessing.Blessing.Increase_Skill:
-                axieControllers.stats.skill += 1;
-                break;
-            case AtiaBlessing.Blessing.Backdoor:
-                axieControllers.ShrimpOnStart = true;
-                break;
-        }
-    }
-
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
     {
         UpgradeAugument augument = blessingAugument[indexAugument];
