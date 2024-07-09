@@ -24,7 +24,6 @@ public class AxieClassGraphic
 
 public class AbilitiesManager : MonoBehaviour
 {
-    public AxiesManager manager;
     public List<SkeletonGraphic> TeamGraphics = new List<SkeletonGraphic>();
     public List<AxiePartGraphic> BodyPartGraphics = new List<AxiePartGraphic>();
     public List<AxieClassGraphic> AxieClassGraphics = new List<AxieClassGraphic>();

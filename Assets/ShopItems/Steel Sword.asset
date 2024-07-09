@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c3206b5167c484a890ebfc07cb189a, type: 3}
+  m_Name: Steel Sword
+  m_EditorClassIdentifier: 
+  ShopItemName: Steel Sword
+  ShopItemImage: {fileID: -64417332, guid: 5703b7d4247f988479f61ef629685102, type: 3}
+  ItemEffect:
+    statusEffect: 0
+    statusApplyType: 0
+    statusApplyTypeIsTarget: 0
+    skillTriggerType: 0
+    isPassive: 0
+    skillDuration: 0
+    PoisonStack: 0
+    Attack: 0
+    Speed: 0
+    Morale: 0
+    StealEnergyPercentage: 0
+    GainEnergy: 0
+    MeleeReflect: 0
+    RangedReflect: 0
+    GainShield: 0
+    GainHPPercentage: 0
+    HPBaseOnDamage: 0
+    ShieldOnStart: 0
+    IgnoresShield: 0
+    Lethal: 0
+    Merry: 0
+    Gecko: 0
+    Stun: 0
+    Fear: 0
+    Sleep: 0
+    Jinx: 0
+    Chill: 0
+    Aroma: 0
+    Stench: 0
+    Fragile: 0
+    Poison: 0
+    Wombo: 0
+    AlwaysCritical: 0
+    RandomEffectIsDebuff: 0
+    RandomEffectIsBuff: 0
+    ApplyRandomEffect: 0
+    DamageEqualsBasicAttack: 0
+    ExtraDamagePercentage: 0
+    ExtraDamageOnCritical: 0
+    MultiCastTimes: 0
+    InmuneToCriticalStrike: 0
+    ReduceDamagePercentage: 0
+    UseSpecialsAsTrigger: 0
+    specialActivationAgainstAxiesList: []
+    specialActivationIfComboedWithList: []
+    specialActivationWithBodyParts: []
+    specialActivationBasedOnAxiesInBattle: []
+    specialActivactionWhenReceiveDamage: []
+    lowestHP: 0
+    FurthestTarget: 0
+    targetHighestEnergy: 0
+    targetHighestSpeed: 0
+    targetAxieClass: 0
+    axieClassToTarget: 0
+    triggerIfCertainHPTreshold: 0
+    LessThan: 0
+    HPTresholdPercentage: 0
+    ComboAmount: 0
+    LastAxieAliveTeam: 0
+    LastAxieAliveOpponent: 0
+    Shielded: 0
+    OnShieldBreak: 0
+    TargetIsDebuff: 0
+    TargetIsPoisoned: 0
+    SelfIsDebuff: 0
+    RangeTarget: 0
+    ShieldNotBrokenForXSeconds: 0
+    RangeAbility: 0
+    SecondsOfFight: 0
+    AttackStatDifference: 0
+    SpeedStatDifference: 0
+    MoraleStatDifference: 0
+    CurrentHPStatDifference: 0
+    AllowReactivation: 0
+    ReactivateEffectEveryXSeconds: 0
+    arreglabugs: 
+  prefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593, type: 3}
+  description: 
