@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c3206b5167c484a890ebfc07cb189a, type: 3}
   m_Name: KingsBoots
   m_EditorClassIdentifier: 
-  ShopItemName: Iron Shield
-  ShopItemImage: {fileID: -2144879045, guid: cbd3b5c47c4ab254788086ae8d513764, type: 3}
+  ShopItemName: Kings Boots
+  ShopItemImage: {fileID: -190528212, guid: cbd3b5c47c4ab254788086ae8d513764, type: 3}
   ItemEffect:
     statusEffect: 0
     statusApplyType: 0
@@ -92,4 +92,5 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   prefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593, type: 3}
-  description: 
+  description: All your axie stats are increased by 3
+  price: 6

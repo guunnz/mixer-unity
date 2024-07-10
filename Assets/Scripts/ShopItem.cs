@@ -10,4 +10,5 @@ public class ShopItem : ScriptableObject
     public ShopItemEffect ItemEffect;
     public GameObject prefab; // Prefab can be assigned in the editor if needed
     public string description;
+    public int price;
 }

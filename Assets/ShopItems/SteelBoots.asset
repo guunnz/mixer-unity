@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c3206b5167c484a890ebfc07cb189a, type: 3}
   m_Name: SteelBoots
   m_EditorClassIdentifier: 
-  ShopItemName: Iron Shield
+  ShopItemName: Steel Boots
   ShopItemImage: {fileID: -2144879045, guid: cbd3b5c47c4ab254788086ae8d513764, type: 3}
   ItemEffect:
     statusEffect: 0
@@ -92,4 +92,5 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   prefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593, type: 3}
-  description: 
+  description: Your axies gain +5 Speed
+  price: 5

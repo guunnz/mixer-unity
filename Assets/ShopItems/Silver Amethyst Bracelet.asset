@@ -92,4 +92,5 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   prefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593, type: 3}
-  description: 
+  description: All axies gain +1 skill
+  price: 2

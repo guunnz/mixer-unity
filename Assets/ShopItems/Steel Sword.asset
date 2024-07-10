@@ -22,7 +22,7 @@ MonoBehaviour:
     isPassive: 0
     skillDuration: 0
     PoisonStack: 0
-    Attack: 0
+    Attack: 1
     Speed: 0
     Morale: 0
     StealEnergyPercentage: 0
@@ -92,4 +92,5 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   prefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593, type: 3}
-  description: 
+  description: Your axies start the fight with +1 attack
+  price: 5

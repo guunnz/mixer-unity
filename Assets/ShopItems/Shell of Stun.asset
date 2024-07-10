@@ -16,7 +16,7 @@ MonoBehaviour:
   ShopItemImage: {fileID: 1519804479, guid: ca3a6b1db53566949b9bef0a34fbd828, type: 3}
   ItemEffect:
     statusEffect: 0
-    statusApplyType: 0
+    statusApplyType: 12
     statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
@@ -92,4 +92,5 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   prefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593, type: 3}
-  description: 
+  description: On battle start, all opponent axies are stunned
+  price: 6
