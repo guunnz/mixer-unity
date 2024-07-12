@@ -18,14 +18,17 @@ public class AxiePassives
     public List<AxieBodyPart> bodyPartList = new List<AxieBodyPart>();
     public List<AxieBodyPart> bodyPartListReactivation = new List<AxieBodyPart>();
     public bool ImmuneToCriticals;
+    public int HealOnDamageDealt;
     public bool AutoattacksIgnoreShield;
     public float AutoattackIncrease;
     public int DamageReductionAmount;
     public int RangedReflectDamageAmount;
     public int MeleeReflectDamageAmount;
+    public int ExtraArmorHelmet;
     public bool hasReactivations;
     public bool MerryActivated = false;
     public bool hasMerry = false;
+    public bool rangedAlwaysCritical = false;
 }
 
 public class AxieSkillController : MonoBehaviour

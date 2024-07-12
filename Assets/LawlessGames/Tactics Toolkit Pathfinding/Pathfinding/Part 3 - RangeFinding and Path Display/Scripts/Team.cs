@@ -25,6 +25,7 @@ public class Team : MonoBehaviour
     public bool isGoodTeam;
     internal bool battleEnded = false;
 
+    public List<Action> OnBattleStartActions = new List<Action>();
     internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
 
     private void Start()
@@ -87,6 +88,11 @@ public class Team : MonoBehaviour
         foreach (var axieController in GetCharacters())
         {
             axieController.DoOnStart();
+        }
+
+        foreach (var onBattleStartAction in OnBattleStartActions)
+        {
+            onBattleStartAction.Invoke();
         }
     }
 
@@ -311,13 +317,14 @@ public class Team : MonoBehaviour
                     if (state.path == null || state.path.Count == 0)
                     {
                         var step = speed * Time.fixedDeltaTime;
-                        if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+                        if (Vector3.Distance(character.transform.position,
+                                character.standingOnTile.transform.position) > 0.1f)
                         {
                             character.transform.position = Vector3.MoveTowards(character.transform.position,
                                 character.standingOnTile.transform.position, step);
                         }
                     }
-                    
+
                     state.isMoving = false;
                     return;
                 }
@@ -484,7 +491,7 @@ public class Team : MonoBehaviour
         {
             state.path = pathFinder.FindPath(character.standingOnTile, character.CurrentTarget.standingOnTile,
                 GetInRangeTiles(character));
-            
+
             distanceToClosestCharacterGrid =
                 GetManhattanDistance(character.standingOnTile, character.CurrentTarget.standingOnTile);
             if (character.axieIngameStats.Range > 1)
@@ -496,7 +503,7 @@ public class Team : MonoBehaviour
                 }
             }
         }
-        
+
         if (state.path == null || state.path.Count == 0)
         {
             character.transform.position = Vector3.MoveTowards(character.transform.position,

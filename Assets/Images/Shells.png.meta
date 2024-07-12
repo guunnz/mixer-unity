@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -126,12 +139,12 @@ TextureImporter:
       name: Shells_0
       rect:
         serializedVersion: 2
-        x: 44
-        y: 439
-        width: 61
-        height: 62
+        x: 684
+        y: 7002
+        width: 1019
+        height: 1037
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,12 +160,12 @@ TextureImporter:
       name: Shells_1
       rect:
         serializedVersion: 2
-        x: 197
-        y: 440
-        width: 79
-        height: 59
+        x: 3129
+        y: 7016
+        width: 1308
+        height: 988
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,12 +181,12 @@ TextureImporter:
       name: Shells_2
       rect:
         serializedVersion: 2
-        x: 44
-        y: 180
-        width: 63
-        height: 79
+        x: 684
+        y: 2857
+        width: 1050
+        height: 1309
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,12 +202,12 @@ TextureImporter:
       name: Shells_3
       rect:
         serializedVersion: 2
-        x: 191
-        y: 186
-        width: 89
-        height: 68
+        x: 3035
+        y: 2954
+        width: 1466
+        height: 1130
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,12 +223,12 @@ TextureImporter:
       name: Shells_4
       rect:
         serializedVersion: 2
-        x: 360
-        y: 188
-        width: 75
-        height: 62
+        x: 5739
+        y: 2987
+        width: 1243
+        height: 1036
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,33 +244,12 @@ TextureImporter:
       name: Shells_5
       rect:
         serializedVersion: 2
-        x: 494
-        y: 184
-        width: 94
-        height: 71
+        x: 8442
+        y: 2923
+        width: 988
+        height: 1180
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b47417fb5f9cc1d4c89dce909d478ed1
-      internalID: 1519804479
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Shells_6
-      rect:
-        serializedVersion: 2
-        x: 691
-        y: 190
-        width: 57
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -270,15 +262,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shells_7
+      name: Shells_6
       rect:
         serializedVersion: 2
-        x: 40
-        y: 12
-        width: 70
-        height: 61
+        x: 11034
+        y: 3018
+        width: 957
+        height: 988
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -291,15 +283,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shells_8
+      name: Shells_7
       rect:
         serializedVersion: 2
-        x: 208
-        y: 13
-        width: 57
-        height: 59
+        x: 618
+        y: 171
+        width: 1165
+        height: 1020
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -307,6 +299,27 @@ TextureImporter:
       bones: []
       spriteID: e378c1683724678408bb5e8429bec725
       internalID: -910352625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shells_8
+      rect:
+        serializedVersion: 2
+        x: 3320
+        y: 185
+        width: 953
+        height: 989
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 530c82a87f0547e4aa0200df20b11d4d
+      internalID: 1915706454
       vertices: []
       indices: 
       edges: []
@@ -327,10 +340,10 @@ TextureImporter:
       Shells_2: 1723460468
       Shells_3: 1857453258
       Shells_4: -696536718
-      Shells_5: 1519804479
-      Shells_6: 109554538
-      Shells_7: -678462305
-      Shells_8: -910352625
+      Shells_5: 109554538
+      Shells_6: -678462305
+      Shells_7: -910352625
+      Shells_8: 1915706454
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

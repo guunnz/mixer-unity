@@ -119,61 +119,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Food_0
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 406
-        width: 71
-        height: 45
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 50a837979b7e29e4e8650875a69a70c6
-      internalID: 1688412148
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Food_1
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 401
-        width: 70
-        height: 56
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: faf36903c2c2d3e45ae0ff2d815440c4
-      internalID: 1306658294
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Food_2
       rect:
         serializedVersion: 2
-        x: 365
-        y: 401
-        width: 70
-        height: 56
+        x: 666
+        y: 6475
+        width: 1180
+        height: 764
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,12 +160,12 @@ TextureImporter:
       name: Food_3
       rect:
         serializedVersion: 2
-        x: 523
-        y: 400
-        width: 97
-        height: 92
+        x: 3242
+        y: 6394
+        width: 1165
+        height: 940
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,12 +181,12 @@ TextureImporter:
       name: Food_4
       rect:
         serializedVersion: 2
-        x: 687
-        y: 402
-        width: 71
-        height: 53
+        x: 5818
+        y: 6394
+        width: 1164
+        height: 940
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,12 +202,12 @@ TextureImporter:
       name: Food_5
       rect:
         serializedVersion: 2
-        x: 43
-        y: 218
-        width: 71
-        height: 67
+        x: 8344
+        y: 6379
+        width: 1258
+        height: 970
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,12 +223,12 @@ TextureImporter:
       name: Food_6
       rect:
         serializedVersion: 2
-        x: 204
-        y: 219
-        width: 70
-        height: 66
+        x: 10970
+        y: 6411
+        width: 1178
+        height: 892
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,12 +244,12 @@ TextureImporter:
       name: Food_7
       rect:
         serializedVersion: 2
-        x: 369
-        y: 224
-        width: 62
-        height: 55
+        x: 666
+        y: 3466
+        width: 1180
+        height: 1116
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -294,12 +265,12 @@ TextureImporter:
       name: Food_8
       rect:
         serializedVersion: 2
-        x: 530
-        y: 223
-        width: 62
-        height: 58
+        x: 3242
+        y: 3480
+        width: 1165
+        height: 1102
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -315,12 +286,12 @@ TextureImporter:
       name: Food_9
       rect:
         serializedVersion: 2
-        x: 689
-        y: 226
-        width: 67
-        height: 51
+        x: 5883
+        y: 3563
+        width: 1036
+        height: 923
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -336,12 +307,12 @@ TextureImporter:
       name: Food_10
       rect:
         serializedVersion: 2
-        x: 34
-        y: 37
-        width: 88
-        height: 75
+        x: 8458
+        y: 3548
+        width: 1036
+        height: 970
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -357,12 +328,12 @@ TextureImporter:
       name: Food_11
       rect:
         serializedVersion: 2
-        x: 195
-        y: 46
-        width: 88
-        height: 56
+        x: 11002
+        y: 3595
+        width: 1114
+        height: 858
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -378,12 +349,12 @@ TextureImporter:
       name: Food_12
       rect:
         serializedVersion: 2
-        x: 363
-        y: 38
-        width: 74
-        height: 73
+        x: 522
+        y: 571
+        width: 1451
+        height: 1243
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -391,6 +362,48 @@ TextureImporter:
       bones: []
       spriteID: f6def929af4da4f45ab4f1dbf66d3182
       internalID: -1883178545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Food_13
+      rect:
+        serializedVersion: 2
+        x: 3097
+        y: 713
+        width: 1451
+        height: 941
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c76e91b6643c814384f6b9b3b2b5f23
+      internalID: -239047486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Food_14
+      rect:
+        serializedVersion: 2
+        x: 5786
+        y: 586
+        width: 1228
+        height: 1214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 390f3f55a71e30c4c9759443cbf5a2df
+      internalID: -208210291
       vertices: []
       indices: 
       edges: []
@@ -411,6 +424,8 @@ TextureImporter:
       Food_10: 210621231
       Food_11: -277790599
       Food_12: -1883178545
+      Food_13: -239047486
+      Food_14: -208210291
       Food_2: -2146080755
       Food_3: 72227928
       Food_4: 2077450252

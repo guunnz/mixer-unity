@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -126,10 +139,10 @@ TextureImporter:
       name: Gems_0
       rect:
         serializedVersion: 2
-        x: 68
-        y: 63
-        width: 51
-        height: 60
+        x: 1068
+        y: 985
+        width: 856
+        height: 1003
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +160,10 @@ TextureImporter:
       name: Gems_1
       rect:
         serializedVersion: 2
-        x: 229
-        y: 63
-        width: 51
-        height: 60
+        x: 3642
+        y: 985
+        width: 861
+        height: 1007
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +181,10 @@ TextureImporter:
       name: Gems_2
       rect:
         serializedVersion: 2
-        x: 390
-        y: 63
-        width: 51
-        height: 60
+        x: 6219
+        y: 987
+        width: 861
+        height: 1001
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,10 +202,10 @@ TextureImporter:
       name: Gems_3
       rect:
         serializedVersion: 2
-        x: 551
-        y: 63
-        width: 51
-        height: 60
+        x: 8793
+        y: 987
+        width: 862
+        height: 1005
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,10 +223,10 @@ TextureImporter:
       name: Gems_4
       rect:
         serializedVersion: 2
-        x: 707
-        y: 66
-        width: 61
-        height: 55
+        x: 11289
+        y: 1036
+        width: 1020
+        height: 920
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

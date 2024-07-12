@@ -598,10 +598,14 @@ public class SkillLauncher : MonoBehaviour
                 self.axieIngameStats.CurrentEnergy += energyToTransfer;
             }
 
-            // if (skillEffect.GainShield > 0)
-            // {
             self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
-            // }
+
+            if (skillInstance.axieBodyPart.bodyPart == BodyPart.Horn)
+            {
+                self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield *
+                                                      (self.axieSkillController.passives.ExtraArmorHelmet / 100f);
+            }
+
             if (skillEffect.GainShield > 0)
             {
                 self.axieIngameStats.currentShield +=
@@ -696,6 +700,10 @@ public class SkillLauncher : MonoBehaviour
             }
 
             if (skillEffect.AlwaysCritical)
+            {
+                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+            }
+            else if (self.Range >= 2 && self.axieSkillController.passives.rangedAlwaysCritical)
             {
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
             }
