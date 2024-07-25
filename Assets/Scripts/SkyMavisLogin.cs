@@ -14,11 +14,9 @@ public class SkyMavisLogin : MonoBehaviour
     private string clientId = "526fa16c-b86d-4900-b510-88124de910f0";
     private string clientSecret = "qKIFvCTTEYz52C0BuSZq3yXl4bo967Xx";
     private string redirectUri = "http://localhost:3000/login/callback";
-    private string authorizationEndpoint = "https://api-gateway.skymavis.com/oauth2/auth";
-    private string tokenEndpoint = "https://api-gateway.skymavis.com/account/oauth2/token";
-    private string userInfoEndpoint = "https://api-gateway.skymavis.com/account/userinfo";
-    private string apiKey = "LIsOiTwGSx2o5awaJQAfhCy4XDaKcvCu";
-    private string appId = "526fa16c-b86d-4900-b510-88124de910f0";
+    private string authorizationEndpoint = "http://104.196.183.226/api/v1/auth";
+    private string userInfoEndpoint = "http://104.196.183.226/api/v1/user/nfts";
+
     public Button loginButton;
     public Text resultText;
     public AccountManager accountManager;
@@ -40,18 +38,26 @@ public class SkyMavisLogin : MonoBehaviour
 
     private void OnLoginButtonClicked()
     {
-        
-        //GETAUTHURL
-        //SERVER
-        codeVerifier = GenerateCodeVerifier();
-        string codeChallenge = GenerateCodeChallenge(codeVerifier);
+        StartCoroutine(LogIn());
+    }
 
-        string authorizationUrl =
-            $"{authorizationEndpoint}?client_id={clientId}&redirect_uri={Uri.EscapeDataString(redirectUri)}&response_type=code&scope=openid&state={GenerateRandomString(32)}&code_challenge={codeChallenge}&code_challenge_method=S256";
-       //
-       
-       
-       //CIENT
+    public IEnumerator LogIn(int retries = 5)
+    {
+        UnityWebRequest webRequest = new UnityWebRequest(authorizationEndpoint, "GET");
+
+        yield return webRequest.SendWebRequest();
+
+        if (webRequest.isNetworkError || webRequest.isHttpError)
+        {
+            Debug.LogError(webRequest.error);
+            if (retries > 0)
+            {
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(LogIn(retries - 1));
+            }
+        }
+
+        string authorizationUrl = webRequest.downloadHandler.text.Replace("\"", "");
         Application.OpenURL(authorizationUrl);
     }
 
@@ -67,13 +73,13 @@ public class SkyMavisLogin : MonoBehaviour
             {
                 string authorizationCode = request.QueryString["code"];
                 Debug.Log("Authorization code received: " + authorizationCode);
-                
+
                 //ENVIAR AUTH CODE TO BACKEND.
-                
+
                 //SERVER
                 actions.Enqueue(() => StartCoroutine(HandleAuthorizationResponse(authorizationCode)));
                 //SERVER
-                
+
                 string responseString = "<html><body>Login successful! You can close this window.</body></html>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                 response.ContentLength64 = buffer.Length;
@@ -98,107 +104,45 @@ public class SkyMavisLogin : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleAuthorizationResponse(string authorizationCode)
+    private IEnumerator HandleAuthorizationResponse(string authorizationCode, int retries = 5)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("grant_type", "authorization_code");
-        form.AddField("code", authorizationCode);
-        form.AddField("redirect_uri", redirectUri);
-        form.AddField("client_id", clientId);
-        form.AddField("client_secret", clientSecret);
-        form.AddField("code_verifier", codeVerifier);
+        UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "GET");
+        webRequest.SetRequestHeader("auth_code", authorizationCode);
+        yield return webRequest.SendWebRequest();
 
-        UnityWebRequest tokenRequest = UnityWebRequest.Post(tokenEndpoint, form);
-        tokenRequest.SetRequestHeader("X-API-Key", apiKey);
-        tokenRequest.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        yield return tokenRequest.SendWebRequest();
-
-        if (tokenRequest.result != UnityWebRequest.Result.Success)
+        if (webRequest.isNetworkError || webRequest.isHttpError)
         {
-            resultText.text = "Token request failed: " + tokenRequest.error;
-            Debug.LogError("Token request failed: " + tokenRequest.error);
-            Debug.LogError("Token request response: " + tokenRequest.downloadHandler.text);
-            yield break;
+            Debug.LogError(webRequest.error);
+            if (retries > 0)
+            {
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(LogIn(retries - 1));
+            }
         }
 
-        string responseText = tokenRequest.downloadHandler.text;
-        Debug.Log("Token response: " + responseText);
-        var json = JsonUtility.FromJson<OAuthTokenResponse>(responseText);
+        string userInfo = webRequest.downloadHandler.text.Replace("\"", "");
 
-        if (json != null && !string.IsNullOrEmpty(json.access_token))
+
+        if (!string.IsNullOrEmpty(userInfo))
         {
-            accessToken = json.access_token;
-            resultText.text = "Login successful! Token: " + json.access_token;
-            StartCoroutine(GetUserInfo());
+            GetUserInfo(userInfo);
         }
         else
         {
-            resultText.text = "Failed to obtain token.";
-            Debug.LogError("Failed to obtain token. Response: " + responseText);
+            Debug.LogError("Login Failed" + " " + webRequest.downloadHandler.text);
         }
     }
 
-    private IEnumerator GetUserInfo()
+    private void GetUserInfo(string userInfoString)
     {
-        UnityWebRequest request = UnityWebRequest.Get(userInfoEndpoint);
-        request.SetRequestHeader("X-Api-Key", apiKey);
-        request.SetRequestHeader("Authorization", "Bearer " + accessToken);
+        Debug.Log("User info: " + userInfoString);
 
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("User info: " + request.downloadHandler.text);
-            resultText.text = "User info: " + request.downloadHandler.text;
-
-            // Parse the JSON to extract wallet addresses
-            var userInfo = JsonUtility.FromJson<UserInfoResponse>(request.downloadHandler.text);
-            userWallet = userInfo.addr;
-            Debug.Log("User wallet address: " + userWallet);
-            accountManager.wallet = userWallet;
-            accountManager.LoginAccount();
-        }
-        else
-        {
-            Debug.LogError("Error fetching user info: " + request.error);
-            resultText.text = "Error fetching user info: " + request.error;
-        }
-    }
-
-    private string GenerateCodeVerifier()
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
-        var random = new System.Random();
-        var verifier = new char[128];
-        for (int i = 0; i < verifier.Length; i++)
-        {
-            verifier[i] = chars[random.Next(chars.Length)];
-        }
-
-        return new string(verifier);
-    }
-
-    private string GenerateCodeChallenge(string codeVerifier)
-    {
-        using (SHA256 sha256 = SHA256.Create())
-        {
-            byte[] challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
-            return Convert.ToBase64String(challengeBytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
-        }
-    }
-
-    private string GenerateRandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var random = new System.Random();
-        var result = new char[length];
-        for (int i = 0; i < result.Length; i++)
-        {
-            result[i] = chars[random.Next(chars.Length)];
-        }
-
-        return new string(result);
+        // Parse the JSON to extract wallet addresses
+        var userInfo = JsonUtility.FromJson<UserInfoResponse>(userInfoString);
+        userWallet = userInfo.addr;
+        Debug.Log("User wallet address: " + userWallet);
+        accountManager.wallet = userWallet;
+        accountManager.LoginAccount();
     }
 
     [System.Serializable]

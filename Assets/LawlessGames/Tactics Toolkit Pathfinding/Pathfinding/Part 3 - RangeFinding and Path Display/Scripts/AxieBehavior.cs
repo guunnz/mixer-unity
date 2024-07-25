@@ -315,6 +315,9 @@ public class AxieBehavior : MonoBehaviour
                     }
                 }
 
+                myController.axieIngameStats.currentHP +=
+                    attackDamage * myController.axieSkillController.passives.HealOnDamageDealt;
+
                 if (myController.axieSkillController.IgnoresShieldOnAttack())
                 {
                     target.axieIngameStats.currentHP -= attackDamage;

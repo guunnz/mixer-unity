@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -126,10 +139,10 @@ TextureImporter:
       name: Fruits_0
       rect:
         serializedVersion: 2
-        x: 209
-        y: 544
-        width: 65
-        height: 57
+        x: 3323
+        y: 8681
+        width: 1083
+        height: 958
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +160,10 @@ TextureImporter:
       name: Fruits_1
       rect:
         serializedVersion: 2
-        x: 373
-        y: 541
-        width: 60
-        height: 61
+        x: 5947
+        y: 8635
+        width: 1003
+        height: 1019
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +181,10 @@ TextureImporter:
       name: Fruits_2
       rect:
         serializedVersion: 2
-        x: 53
-        y: 288
-        width: 55
-        height: 68
+        x: 825
+        y: 4586
+        width: 923
+        height: 1133
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,10 +202,10 @@ TextureImporter:
       name: Fruits_3
       rect:
         serializedVersion: 2
-        x: 52
-        y: 36
-        width: 56
-        height: 71
+        x: 810
+        y: 569
+        width: 940
+        height: 1165
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,10 +223,10 @@ TextureImporter:
       name: Fruits_4
       rect:
         serializedVersion: 2
-        x: 207
-        y: 38
-        width: 69
-        height: 69
+        x: 3289
+        y: 587
+        width: 1149
+        height: 1147
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

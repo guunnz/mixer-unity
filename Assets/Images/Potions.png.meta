@@ -119,6 +119,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -126,10 +139,10 @@ TextureImporter:
       name: Potions_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 366
-        width: 68
-        height: 69
+        x: 428
+        y: 5833
+        width: 1129
+        height: 1150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,10 +160,10 @@ TextureImporter:
       name: Potions_1
       rect:
         serializedVersion: 2
-        x: 196
-        y: 369
-        width: 52
-        height: 65
+        x: 3116
+        y: 5880
+        width: 873
+        height: 1085
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,10 +181,10 @@ TextureImporter:
       name: Potions_2
       rect:
         serializedVersion: 2
-        x: 350
-        y: 366
-        width: 68
-        height: 69
+        x: 5578
+        y: 5832
+        width: 1134
+        height: 1151
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -189,10 +202,10 @@ TextureImporter:
       name: Potions_3
       rect:
         serializedVersion: 2
-        x: 519
-        y: 369
-        width: 53
-        height: 64
+        x: 8280
+        y: 5880
+        width: 894
+        height: 1069
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -210,10 +223,10 @@ TextureImporter:
       name: Potions_4
       rect:
         serializedVersion: 2
-        x: 672
-        y: 366
-        width: 68
-        height: 69
+        x: 10730
+        y: 5833
+        width: 1132
+        height: 1150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,10 +244,10 @@ TextureImporter:
       name: Potions_5
       rect:
         serializedVersion: 2
-        x: 28
-        y: 189
-        width: 68
-        height: 69
+        x: 428
+        y: 3004
+        width: 1129
+        height: 1146
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -252,10 +265,10 @@ TextureImporter:
       name: Potions_6
       rect:
         serializedVersion: 2
-        x: 197
-        y: 192
-        width: 53
-        height: 64
+        x: 3130
+        y: 3052
+        width: 893
+        height: 1064
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -273,10 +286,10 @@ TextureImporter:
       name: Potions_7
       rect:
         serializedVersion: 2
-        x: 350
-        y: 189
-        width: 68
-        height: 69
+        x: 5578
+        y: 3000
+        width: 1134
+        height: 1150
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -294,10 +307,10 @@ TextureImporter:
       name: Potions_8
       rect:
         serializedVersion: 2
-        x: 511
-        y: 189
-        width: 68
-        height: 69
+        x: 8155
+        y: 3004
+        width: 1132
+        height: 1146
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -315,10 +328,10 @@ TextureImporter:
       name: Potions_9
       rect:
         serializedVersion: 2
-        x: 680
-        y: 192
-        width: 53
-        height: 64
+        x: 10860
+        y: 3052
+        width: 890
+        height: 1064
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -336,10 +349,10 @@ TextureImporter:
       name: Potions_10
       rect:
         serializedVersion: 2
-        x: 28
-        y: 12
-        width: 68
-        height: 69
+        x: 428
+        y: 172
+        width: 1129
+        height: 1146
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -357,10 +370,10 @@ TextureImporter:
       name: Potions_11
       rect:
         serializedVersion: 2
-        x: 197
-        y: 15
-        width: 53
-        height: 64
+        x: 3130
+        y: 219
+        width: 893
+        height: 1069
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -378,10 +391,10 @@ TextureImporter:
       name: Potions_12
       rect:
         serializedVersion: 2
-        x: 350
-        y: 12
-        width: 68
-        height: 69
+        x: 5578
+        y: 172
+        width: 1134
+        height: 1146
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

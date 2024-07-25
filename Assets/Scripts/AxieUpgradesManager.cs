@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AxieUpgradesManager : MonoBehaviour
 {
-    public void SetUpgrade(AtiaBlessing.Blessing upgradeId)
+    public void SetUpgrade(AtiaBlessing.BuffEffect upgradeId)
     {
         
     }

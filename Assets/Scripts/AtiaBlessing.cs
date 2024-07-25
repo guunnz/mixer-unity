@@ -17,7 +17,7 @@ public class UpgradeAugument
 
 public class AtiaBlessing : MonoBehaviour
 {
-    public enum Blessing
+    public enum BuffEffect
     {
         Increase_HP_Bug = 0,
         Increase_HP = 1,
@@ -25,6 +25,68 @@ public class AtiaBlessing : MonoBehaviour
         Increase_Speed,
         Increase_Skill,
         Backdoor,
+        Amethyst,
+        CompositeBow,
+        DeluxeFriedRice,
+        DeluxeRamen,
+        Diamond,
+        Donut,
+        Emerald,
+        FruitNVegetablesSalad,
+        GoldAmethystNecklace,
+        GoldDiamondNecklace,
+        GoldEmeraldNecklace,
+        GoldRubyNecklace,
+        GoldTopazNecklace,
+        GoldenBook,
+        GoldenSphere,
+        GrilledLambChop,
+        HoneyCarrotSoup,
+        HoneyRoastedChicken,
+        IronArmor,
+        IronChainmail,
+        IronHelmet,
+        IronShield,
+        KingsBoots,
+        LargeEnergyPotion,
+        LargeHastePotion,
+        LargePotionOfResistance,
+        LargePotionOfShield,
+        MeatPie,
+        MediumHastePotion,
+        MediumPotionOfShield,
+        MoonSphere,
+        PlatinumLantern,
+        PumpkinPie,
+        Ramen,
+        RosyHarp,
+        Ruby,
+        RubyBook,
+        ShellOfBlinding,
+        ShellOfBurn,
+        ShellOfDistraction,
+        ShellOfMediumAreaDamage,
+        ShellOfMediumConcentratedDamage,
+        ShellOfShock,
+        ShellOfSilence,
+        ShellOfSlow,
+        ShellOfStun,
+        SilverAmethystBracelet,
+        SilverDiamondBracelet,
+        SilverEmeraldBracelet,
+        SilverRubyBracelet,
+        SilverTopazBracelet,
+        SteakNFries,
+        SteelArrow,
+        SteelHammer,
+        SteelSword,
+        SteelArmor,
+        SteelChainmail,
+        SteelBoots,
+        SteelHelmet,
+        SteelShield,
+        ThreeWondersShoes,
+        Topaz
     }
 
     public Team goodTeam;
@@ -52,7 +114,7 @@ public class AtiaBlessing : MonoBehaviour
     {
         for (int i = 0; i <= (int)AxieClass.Dusk; i++)
         {
-            for (int y = 1; y <= (int)Blessing.Backdoor; y++)
+            for (int y = 1; y <= (int)BuffEffect.Backdoor; y++)
             {
                 blessingAugument.Add(new UpgradeAugument()
                     { axie_class = new List<int>() { i }, id = y });
@@ -90,12 +152,12 @@ public class AtiaBlessing : MonoBehaviour
                         AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
                     });
 
-                    if (augument.id != (int)Blessing.Backdoor)
+                    if (augument.id != (int)BuffEffect.Backdoor)
                     {
                         FirstAugumentText.text =
                             "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                            ((Blessing)augument.id).ToString().Replace("_", " ") +
-                            " stat by 1";
+                            ((BuffEffect)augument.id).ToString().Replace("_", " ") +
+                            " stat by 3";
                     }
                     else
                     {
@@ -111,11 +173,11 @@ public class AtiaBlessing : MonoBehaviour
                         return;
                     }
 
-                    if (augument.id != (int)Blessing.Backdoor)
+                    if (augument.id != (int)BuffEffect.Backdoor)
                     {
                         SecondAugumentText.text =
                             "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                            ((Blessing)augument.id).ToString().Replace("_", " ") + " stat by 1";
+                            ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
                     }
                     else
                     {
@@ -138,11 +200,11 @@ public class AtiaBlessing : MonoBehaviour
                         return;
                     }
 
-                    if (augument.id != (int)Blessing.Backdoor)
+                    if (augument.id != (int)BuffEffect.Backdoor)
                     {
                         ThirdAugumentText.text =
                             "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                            ((Blessing)augument.id).ToString().Replace("_", " ") + " stat by 1";
+                            ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
                     }
                     else
                     {
@@ -187,10 +249,10 @@ public class AtiaBlessing : MonoBehaviour
 
             augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
-            if (augument1.id != (int)Blessing.Backdoor)
+            if (augument1.id != (int)BuffEffect.Backdoor)
             {
                 FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axie_class[0]).ToString() + " axies " +
-                                         ((Blessing)augument1.id).ToString().Replace("_", " ") + " stat by 1";
+                                         ((BuffEffect)augument1.id).ToString().Replace("_", " ") + " stat by 3";
             }
             else
             {
@@ -198,11 +260,11 @@ public class AtiaBlessing : MonoBehaviour
                                          " axies now Backdoor on start";
             }
 
-            if (augument2.id != (int)Blessing.Backdoor)
+            if (augument2.id != (int)BuffEffect.Backdoor)
             {
                 SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
                                           " axies " +
-                                          ((Blessing)augument2.id).ToString().Replace("_", " ") + " stat by 1";
+                                          ((BuffEffect)augument2.id).ToString().Replace("_", " ") + " stat by 3";
             }
             else
             {
@@ -210,10 +272,10 @@ public class AtiaBlessing : MonoBehaviour
                                           " axies now Backdoor on start";
             }
 
-            if (augument3.id != (int)Blessing.Backdoor)
+            if (augument3.id != (int)BuffEffect.Backdoor)
             {
                 ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
-                                         ((Blessing)augument3.id).ToString().Replace("_", " ") + " stat by 1";
+                                         ((BuffEffect)augument3.id).ToString().Replace("_", " ") + " stat by 3";
             }
             else
             {
@@ -253,21 +315,21 @@ public class AtiaBlessing : MonoBehaviour
 
         foreach (var controller in axieControllers)
         {
-            switch ((Blessing)augument.id)
+            switch ((BuffEffect)augument.id)
             {
-                case AtiaBlessing.Blessing.Increase_HP:
-                    controller.stats.hp += 1;
+                case AtiaBlessing.BuffEffect.Increase_HP:
+                    controller.stats.hp += 3;
                     break;
-                case AtiaBlessing.Blessing.Increase_Morale:
-                    controller.stats.morale += 1;
+                case AtiaBlessing.BuffEffect.Increase_Morale:
+                    controller.stats.morale += 3;
                     break;
-                case AtiaBlessing.Blessing.Increase_Speed:
-                    controller.stats.speed += 1;
+                case AtiaBlessing.BuffEffect.Increase_Speed:
+                    controller.stats.speed += 3;
                     break;
-                case AtiaBlessing.Blessing.Increase_Skill:
-                    controller.stats.skill += 1;
+                case AtiaBlessing.BuffEffect.Increase_Skill:
+                    controller.stats.skill += 3;
                     break;
-                case AtiaBlessing.Blessing.Backdoor:
+                case AtiaBlessing.BuffEffect.Backdoor:
                     controller.ShrimpOnStart = true;
                     break;
             }
@@ -295,25 +357,25 @@ public class AtiaBlessing : MonoBehaviour
 
         foreach (var controller in axieControllers)
         {
-            switch ((Blessing)augument.id)
+            switch ((BuffEffect)augument.id)
             {
-                case Blessing.Increase_HP_Bug:
+                case BuffEffect.Increase_HP_Bug:
                     controller.stats.hp += 1;
                     break;
 
-                case AtiaBlessing.Blessing.Increase_HP:
+                case AtiaBlessing.BuffEffect.Increase_HP:
                     controller.stats.hp += 1;
                     break;
-                case AtiaBlessing.Blessing.Increase_Morale:
+                case AtiaBlessing.BuffEffect.Increase_Morale:
                     controller.stats.morale += 1;
                     break;
-                case AtiaBlessing.Blessing.Increase_Speed:
+                case AtiaBlessing.BuffEffect.Increase_Speed:
                     controller.stats.speed += 1;
                     break;
-                case AtiaBlessing.Blessing.Increase_Skill:
+                case AtiaBlessing.BuffEffect.Increase_Skill:
                     controller.stats.skill += 1;
                     break;
-                case AtiaBlessing.Blessing.Backdoor:
+                case AtiaBlessing.BuffEffect.Backdoor:
                     controller.ShrimpOnStart = true;
                     break;
             }
