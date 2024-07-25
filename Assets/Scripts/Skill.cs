@@ -6,6 +6,7 @@ using finished3;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Serialization;
+using DG.Tweening;
 
 [System.Serializable]
 public class SkillVFX
@@ -14,6 +15,16 @@ public class SkillVFX
     public GameObject VFXPrefab;
     public bool StartFromOrigin;
     public float SkillDuration;
+    public DotweenAnimationSkill AnimationMove;
+}
+
+[System.Serializable]
+public class DotweenAnimationSkill
+{
+    public bool EnableDotweenAnimation;
+    public Vector3 StartFromExtra;
+    public Vector3 GoTo;
+    public float Time;
 }
 
 public enum BodyPart
@@ -448,11 +459,20 @@ public class Skill : MonoBehaviour
                     skill.VFXPrefab.transform.rotation,
                     this.transform);
 
+           
+
                 vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
                                                                  pos.x, vfxSpawned.transform.localPosition.y +
                                                                         pos.y,
                     vfxSpawned.transform.localPosition.z +
                     pos.z);
+                
+                if (skill.AnimationMove.EnableDotweenAnimation)
+                {
+                    vfxSpawned.transform.localPosition += skill.AnimationMove.StartFromExtra;
+                    vfxSpawned.transform.DOLocalMove(vfxSpawned.transform.localPosition + skill.AnimationMove.GoTo,
+                        skill.AnimationMove.Time);
+                }
 
                 VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
@@ -533,18 +553,29 @@ public class Skill : MonoBehaviour
             {
                 if (timer >= skill.ActivateTiming)
                 {
+                    
                     Vector3 pos = skill.VFXPrefab.transform.localPosition;
                     GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                         skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                         skill.VFXPrefab.transform.rotation,
                         this.transform);
 
+                    
+           
+                    
                     vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
                                                                      pos.x, vfxSpawned.transform.localPosition.y +
                                                                             pos.y,
                         vfxSpawned.transform.localPosition.z +
                         pos.z);
 
+                    if (skill.AnimationMove.EnableDotweenAnimation)
+                    {
+                        vfxSpawned.transform.localPosition += skill.AnimationMove.StartFromExtra;
+                        vfxSpawned.transform.DOLocalMove(vfxSpawned.transform.localPosition + skill.AnimationMove.GoTo,
+                            skill.AnimationMove.Time);
+                    }
+                     
                     VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
                     if (changer != null)
