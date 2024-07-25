@@ -232,12 +232,7 @@ public class AxieBehavior : MonoBehaviour
         {
             if (myController.CurrentTarget != null)
             {
-<<<<<<< HEAD
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam
-                        .GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
-=======
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
->>>>>>> main
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -262,12 +257,7 @@ public class AxieBehavior : MonoBehaviour
 
             if (myController.CurrentTarget != null)
             {
-<<<<<<< HEAD
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam
-                        .GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
-=======
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
->>>>>>> main
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
