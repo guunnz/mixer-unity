@@ -1,0 +1,46 @@
+{
+"skeleton": {
+	"hash": "e91EVRsHfmhiZFxj1prd52HErok",
+	"spine": "3.8.79",
+	"x": -212,
+	"y": -371,
+	"width": 424,
+	"height": 742,
+	"images": "./images/",
+	"audio": "/Users/Redness/Google Drive/Axie/Asset/Members/Duy/Spine/fx-3.8/old-fx/castings/bite"
+},
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "1", "bone": "root", "attachment": "1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"1": {
+				"1": { "width": 424, "height": 742 },
+				"2": { "width": 473, "height": 565 },
+				"3": { "x": -9.71, "y": -6.87, "width": 455, "height": 457 },
+				"4": { "x": -12.38, "y": -13.88, "width": 447, "height": 362 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"1": {
+				"attachment": [
+					{ "name": "1" },
+					{ "time": 0.0667, "name": "2" },
+					{ "time": 0.1333, "name": "3" },
+					{ "time": 0.2, "name": "4" },
+					{ "time": 0.3333, "name": null }
+				]
+			}
+		}
+	}
+}
+}

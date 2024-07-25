@@ -1,0 +1,48 @@
+{
+"skeleton": {
+	"hash": "Ysdgqq5uCMxdFvgUEk9+FyhthKo",
+	"spine": "3.8.79",
+	"x": -142.98,
+	"y": -150.24,
+	"width": 267,
+	"height": 327,
+	"images": "./images/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "wind-swirl-1", "bone": "root", "attachment": "wind-swirl-1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"wind-swirl-1": {
+				"wind-swirl-1": { "x": -9.48, "y": 13.26, "width": 267, "height": 327 },
+				"wind-swirl-2": { "x": -23.09, "y": 27.2, "width": 411, "height": 538 },
+				"wind-swirl-3": { "x": -22.76, "y": 28.91, "width": 485, "height": 606 },
+				"wind-swirl-4": { "x": -22.92, "y": 30.68, "width": 502, "height": 601 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"wind-swirl-1": {
+				"attachment": [
+					{ "name": null },
+					{ "time": 0.0333, "name": "wind-swirl-1" },
+					{ "time": 0.0667, "name": "wind-swirl-2" },
+					{ "time": 0.1, "name": "wind-swirl-3" },
+					{ "time": 0.1333, "name": "wind-swirl-4" },
+					{ "time": 0.1667, "name": null },
+					{ "time": 0.2, "name": null }
+				]
+			}
+		}
+	}
+}
+}

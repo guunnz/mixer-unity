@@ -1,0 +1,48 @@
+
+smoke-small-a.png
+size: 195,261
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+smoke-small-a-1
+  rotate: false
+  xy: 103, 2
+  size: 83, 45
+  orig: 83, 45
+  offset: 0, 0
+  index: -1
+smoke-small-a-2
+  rotate: true
+  xy: 118, 49
+  size: 100, 71
+  orig: 100, 71
+  offset: 0, 0
+  index: -1
+smoke-small-a-3
+  rotate: false
+  xy: 2, 164
+  size: 116, 95
+  orig: 116, 95
+  offset: 0, 0
+  index: -1
+smoke-small-a-4
+  rotate: false
+  xy: 2, 7
+  size: 99, 60
+  orig: 99, 60
+  offset: 0, 0
+  index: -1
+smoke-small-a-5
+  rotate: true
+  xy: 120, 151
+  size: 108, 73
+  orig: 108, 73
+  offset: 0, 0
+  index: -1
+smoke-small-a-6
+  rotate: false
+  xy: 2, 69
+  size: 114, 93
+  orig: 114, 93
+  offset: 0, 0
+  index: -1

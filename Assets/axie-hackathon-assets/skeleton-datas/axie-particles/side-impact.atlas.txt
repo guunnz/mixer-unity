@@ -1,0 +1,174 @@
+
+side-impact.png
+size: 475,971
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+aqua-side-impact-1
+  rotate: true
+  xy: 366, 657
+  size: 155, 105
+  orig: 155, 105
+  offset: 0, 0
+  index: -1
+aqua-side-impact-2
+  rotate: false
+  xy: 168, 274
+  size: 164, 117
+  orig: 164, 117
+  offset: 0, 0
+  index: -1
+aqua-side-impact-3
+  rotate: false
+  xy: 2, 597
+  size: 175, 100
+  orig: 175, 100
+  offset: 0, 0
+  index: -1
+aqua-side-impact-4
+  rotate: false
+  xy: 2, 699
+  size: 180, 88
+  orig: 180, 88
+  offset: 0, 0
+  index: -1
+beast-side-impact-1
+  rotate: false
+  xy: 2, 59
+  size: 155, 105
+  orig: 155, 105
+  offset: 0, 0
+  index: -1
+beast-side-impact-2
+  rotate: true
+  xy: 334, 159
+  size: 164, 117
+  orig: 164, 117
+  offset: 0, 0
+  index: -1
+beast-side-impact-3
+  rotate: false
+  xy: 178, 495
+  size: 174, 100
+  orig: 174, 100
+  offset: 0, 0
+  index: -1
+beast-side-impact-4
+  rotate: false
+  xy: 184, 699
+  size: 180, 88
+  orig: 180, 88
+  offset: 0, 0
+  index: -1
+bird-side-impact-1
+  rotate: false
+  xy: 2, 166
+  size: 155, 105
+  orig: 155, 105
+  offset: 0, 0
+  index: -1
+bird-side-impact-2
+  rotate: true
+  xy: 354, 325
+  size: 164, 118
+  orig: 164, 118
+  offset: 0, 0
+  index: -1
+bird-side-impact-3
+  rotate: false
+  xy: 2, 495
+  size: 174, 100
+  orig: 174, 100
+  offset: 0, 0
+  index: -1
+bird-side-impact-4
+  rotate: false
+  xy: 184, 880
+  size: 180, 89
+  orig: 180, 89
+  offset: 0, 0
+  index: -1
+bug-side-impact-1
+  rotate: true
+  xy: 366, 814
+  size: 155, 105
+  orig: 155, 105
+  offset: 0, 0
+  index: -1
+bug-side-impact-2
+  rotate: true
+  xy: 355, 491
+  size: 164, 118
+  orig: 164, 118
+  offset: 0, 0
+  index: -1
+bug-side-impact-3
+  rotate: false
+  xy: 179, 597
+  size: 174, 100
+  orig: 174, 100
+  offset: 0, 0
+  index: -1
+bug-side-impact-4
+  rotate: false
+  xy: 2, 880
+  size: 180, 89
+  orig: 180, 89
+  offset: 0, 0
+  index: -1
+plant-side-impact-1
+  rotate: true
+  xy: 334, 2
+  size: 155, 105
+  orig: 155, 105
+  offset: 0, 0
+  index: -1
+plant-side-impact-2
+  rotate: false
+  xy: 2, 273
+  size: 164, 118
+  orig: 164, 118
+  offset: 0, 0
+  index: -1
+plant-side-impact-3
+  rotate: false
+  xy: 2, 393
+  size: 174, 100
+  orig: 174, 100
+  offset: 0, 0
+  index: -1
+plant-side-impact-4
+  rotate: false
+  xy: 2, 789
+  size: 180, 89
+  orig: 180, 89
+  offset: 0, 0
+  index: -1
+reptile-side-impact-1
+  rotate: false
+  xy: 159, 48
+  size: 155, 105
+  orig: 155, 105
+  offset: 0, 0
+  index: -1
+reptile-side-impact-2
+  rotate: false
+  xy: 168, 155
+  size: 164, 117
+  orig: 164, 117
+  offset: 0, 0
+  index: -1
+reptile-side-impact-3
+  rotate: false
+  xy: 178, 393
+  size: 174, 100
+  orig: 174, 100
+  offset: 0, 0
+  index: -1
+reptile-side-impact-4
+  rotate: false
+  xy: 184, 789
+  size: 180, 89
+  orig: 180, 89
+  offset: 0, 0
+  index: -1

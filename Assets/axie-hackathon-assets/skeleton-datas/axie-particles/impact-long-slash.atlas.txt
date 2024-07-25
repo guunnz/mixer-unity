@@ -1,0 +1,83 @@
+
+impact-long-slash.png
+size: 515,530
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+long-slash-1
+  rotate: false
+  xy: 362, 164
+  size: 120, 28
+  orig: 151, 52
+  offset: 16, 12
+  index: -1
+long-slash-10
+  rotate: false
+  xy: 260, 2
+  size: 234, 91
+  orig: 267, 120
+  offset: 17, 15
+  index: -1
+long-slash-11
+  rotate: false
+  xy: 324, 457
+  size: 189, 71
+  orig: 223, 104
+  offset: 17, 16
+  index: -1
+long-slash-2
+  rotate: true
+  xy: 282, 158
+  size: 239, 78
+  orig: 270, 113
+  offset: 15, 17
+  index: -1
+long-slash-3
+  rotate: true
+  xy: 362, 194
+  size: 261, 69
+  orig: 294, 98
+  offset: 16, 13
+  index: -1
+long-slash-4
+  rotate: false
+  xy: 274, 95
+  size: 225, 61
+  orig: 255, 89
+  offset: 16, 15
+  index: -1
+long-slash-5
+  rotate: true
+  xy: 433, 218
+  size: 237, 67
+  orig: 270, 95
+  offset: 17, 14
+  index: -1
+long-slash-6
+  rotate: false
+  xy: 2, 399
+  size: 320, 129
+  orig: 353, 158
+  offset: 16, 15
+  index: -1
+long-slash-7
+  rotate: false
+  xy: 2, 251
+  size: 278, 146
+  orig: 311, 175
+  offset: 16, 14
+  index: -1
+long-slash-8
+  rotate: false
+  xy: 2, 120
+  size: 270, 129
+  orig: 302, 159
+  offset: 15, 14
+  index: -1
+long-slash-9
+  rotate: false
+  xy: 2, 8
+  size: 256, 110
+  orig: 287, 140
+  offset: 16, 15
+  index: -1

@@ -1,0 +1,62 @@
+
+tail-whip.png
+size: 482,293
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tail-whip-1
+  rotate: false
+  xy: 243, 9
+  size: 227, 45
+  orig: 256, 72
+  offset: 15, 14
+  index: -1
+tail-whip-2
+  rotate: false
+  xy: 2, 172
+  size: 370, 53
+  orig: 400, 79
+  offset: 16, 13
+  index: -1
+tail-whip-3
+  rotate: false
+  xy: 2, 227
+  size: 374, 64
+  orig: 403, 90
+  offset: 16, 13
+  index: -1
+tail-whip-4
+  rotate: false
+  xy: 2, 110
+  size: 297, 60
+  orig: 327, 86
+  offset: 17, 13
+  index: -1
+tail-whip-5
+  rotate: true
+  xy: 378, 91
+  size: 200, 50
+  orig: 230, 76
+  offset: 17, 13
+  index: -1
+tail-whip-6
+  rotate: false
+  xy: 2, 2
+  size: 239, 52
+  orig: 269, 78
+  offset: 17, 13
+  index: -1
+tail-whip-7
+  rotate: true
+  xy: 430, 66
+  size: 225, 50
+  orig: 254, 76
+  offset: 15, 13
+  index: -1
+tail-whip-8
+  rotate: false
+  xy: 2, 56
+  size: 278, 52
+  orig: 311, 78
+  offset: 17, 13
+  index: -1
