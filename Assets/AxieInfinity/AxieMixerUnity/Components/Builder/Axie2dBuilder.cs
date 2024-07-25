@@ -27,28 +27,31 @@ namespace AxieMixer.Unity
 
         public int GetSampleColorVariant(AxieCore.AxieMixer.CharacterClass characterClass, int colorValue)
         {
-            var lst = axieMixerMaterials.GetGenesStuff(AxieFormType.Normal).axieSkinColors.Where(x => x.@class == characterClass && x.skin == 0).ToList();
+            var lst = axieMixerMaterials.GetGenesStuff(AxieFormType.Normal).axieSkinColors
+                .Where(x => x.@class == characterClass && x.skin == 0).ToList();
             var axieSkinColor = lst[colorValue % lst.Count];
             return axieMixerMaterials.GetGenesStuff(AxieFormType.Normal).axieSkinColors.IndexOf(axieSkinColor);
         }
 
-        public Axie2dBuilderResult BuildSpineAdultCombo(Dictionary<string, string> adultCombo, byte colorVariant, float scale, bool isGraphic = false)
+        public Axie2dBuilderResult BuildSpineAdultCombo(Dictionary<string, string> adultCombo, byte colorVariant,
+            float scale, bool isGraphic = false)
         {
             var accessories = adultCombo.Where(x => x.Key.StartsWith("accessory-")).ToList();
-            foreach(var p in accessories)
+            foreach (var p in accessories)
             {
                 string accessorySlot = p.Key.Replace("accessory-", "body-");
                 string accessoryName = p.Value.Replace("accessory-", "body-");
                 adultCombo[accessorySlot] = accessoryName;
             }
+
             var axieGenesStuff = axieMixerMaterials.GetGenesStuff(AxieFormType.Normal);
             Axie2dBuilderResult builderResult = new Axie2dBuilderResult();
             builderResult.adultCombo = adultCombo;
             var axieMixerStuff = axieMixerMaterials.GetMixerStuff(AxieFormType.Normal);
-            
+
             List<(BoneComboType, byte, byte)> colorVariants = new List<(BoneComboType, byte, byte)>();
             int partColorShift = axieGenesStuff.GetAxieColorPartShift(colorVariant);
-            for (int i = 0;i < (int)BoneComboType.count;i++)
+            for (int i = 0; i < (int)BoneComboType.count; i++)
             {
                 BoneComboType boneType = (BoneComboType)i;
                 byte shiftValue = 0;
@@ -56,11 +59,13 @@ namespace AxieMixer.Unity
                 {
                     shiftValue = 2;
                 }
+
                 colorVariants.Add((boneType, colorVariant, shiftValue));
             }
+
             var jMixed = axieMixerStuff.GenerateAssetLite(adultCombo, colorVariants, "");
             var skeletonDataAsset = CreateMixedSkeletonDataAsset(jMixed, scale, isGraphic);
-            
+
             if (skeletonDataAsset == null)
             {
                 builderResult.error = "GenerateAsset Failed";
@@ -70,10 +75,12 @@ namespace AxieMixer.Unity
                 builderResult.skeletonDataAsset = skeletonDataAsset;
                 builderResult.sharedGraphicMaterial = axieMixerMaterials.GetSampleGraphicMaterial(AxieFormType.Normal);
             }
+
             return builderResult;
         }
 
-        public Axie2dBuilderResult BuildSpineFromGene(string axieId, string genesStr, Dictionary<string, string> meta, float scale, bool isGraphic = false)
+        public Axie2dBuilderResult BuildSpineFromGene(string axieId, string genesStr, Dictionary<string, string> meta,
+            float scale, bool isGraphic = false)
         {
             var axieGenesStuff = axieMixerMaterials.GetGenesStuff(AxieFormType.Normal);
 
@@ -81,23 +88,28 @@ namespace AxieMixer.Unity
             {
                 genesStr = genesStr.Substring(2);
             }
+
             string finalGenes512 = genesStr;
             if (finalGenes512.Length < 128)
             {
                 finalGenes512 = finalGenes512.PadLeft(128, '0');
             }
-            System.Numerics.BigInteger.TryParse(finalGenes512, System.Globalization.NumberStyles.HexNumber, null, out var genes);
+
+            System.Numerics.BigInteger.TryParse(finalGenes512, System.Globalization.NumberStyles.HexNumber, null,
+                out var genes);
             var bodyStructure = axieGenesStuff.GetAxieBodyStructure512(genes);
 
             return BuildSpineFromGene(axieId, bodyStructure, meta, scale, isGraphic);
         }
 
-        public Axie2dBuilderResult BuildSpineFromGene(string axieId, string genesStr, float scale, bool isGraphic = false)
+        public Axie2dBuilderResult BuildSpineFromGene(string axieId, string genesStr, float scale,
+            bool isGraphic = false)
         {
             return BuildSpineFromGene(axieId, genesStr, new Dictionary<string, string>(), scale, isGraphic);
         }
 
-        public Axie2dBuilderResult BuildSpineFromGene(string axieId, AxieBodyStructure bodyStructure, Dictionary<string, string> meta, float scale, bool isGraphic = false)
+        public Axie2dBuilderResult BuildSpineFromGene(string axieId, AxieBodyStructure bodyStructure,
+            Dictionary<string, string> meta, float scale, bool isGraphic = false)
         {
             var axieGenesStuff = axieMixerMaterials.GetGenesStuff(AxieFormType.Normal);
             var adultCombo = axieGenesStuff.GetAdultCombo(bodyStructure);
@@ -105,18 +117,28 @@ namespace AxieMixer.Unity
             {
                 axieId = axieId.PadLeft(axieId.Length + (7 - axieId.Length) / 2);
             }
+
+            Debug.Log(JsonUtility.ToJson(adultCombo));
             adultCombo.Add("body-id", axieId);
-            foreach(var p in meta)
+            foreach (var p in meta)
             {
                 if (!adultCombo.ContainsKey(p.Key))
                 {
                     adultCombo.Add(p.Key, p.Value);
                 }
             }
+
+            // Loop to print each key-value pair in the adultCombo dictionary
+            foreach (var item in adultCombo)
+            {
+                Debug.Log($"{item.Key}: {item.Value}");
+            }
+
             byte colorVariant = (byte)axieGenesStuff.GetAxieColorVariant(bodyStructure);
 
             return BuildSpineAdultCombo(adultCombo, colorVariant, scale, isGraphic);
         }
+
 
         SkeletonDataAsset CreateMixedSkeletonDataAsset(MixedSkeletonData mixed, float scale, bool isGraphic)
         {
@@ -141,7 +163,8 @@ namespace AxieMixer.Unity
                 //phuongnk - cheat to call internal function
                 skeletonDataAsset.skeletonJSON = new TextAsset();
                 Type thisType = skeletonDataAsset.GetType();
-                var theMethod = thisType.GetMethod("InitializeWithData", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                var theMethod = thisType.GetMethod("InitializeWithData",
+                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
                 theMethod.Invoke(skeletonDataAsset, new object[] { loadedSkeletonData });
 
                 return skeletonDataAsset;
@@ -150,6 +173,7 @@ namespace AxieMixer.Unity
             {
                 Debug.LogError(ex.ToString());
             }
+
             return null;
         }
     }

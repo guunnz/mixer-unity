@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class Team : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class Team : MonoBehaviour
     public bool isGoodTeam;
     internal bool battleEnded = false;
 
+    public List<Action> OnBattleStartActions = new List<Action>();
     internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
 
     private void Start()
@@ -76,6 +78,28 @@ public class Team : MonoBehaviour
 
     public void StartBattle()
     {
+
+        int randomMusic = Random.Range(0, 5);
+
+        switch (randomMusic)
+        {
+            case 0:
+                MusicManager.Instance.PlayMusic(MusicTrack.Shldslep);
+                break;
+            case 1:
+                MusicManager.Instance.PlayMusic(MusicTrack.GO);
+                break;
+            case 2:
+                MusicManager.Instance.PlayMusic(MusicTrack.PunchiEpic);
+                break;
+            case 3:
+                MusicManager.Instance.PlayMusic(MusicTrack.NeeEtheAhPehro);
+                break;
+            case 4:
+                MusicManager.Instance.PlayMusic(MusicTrack.Laingved);
+                break;
+        }
+        
         battleEnded = false;
         ChimeraSpawned = false;
         battleStarted = true;
@@ -87,6 +111,11 @@ public class Team : MonoBehaviour
         foreach (var axieController in GetCharacters())
         {
             axieController.DoOnStart();
+        }
+
+        foreach (var onBattleStartAction in OnBattleStartActions)
+        {
+            onBattleStartAction.Invoke();
         }
     }
 
@@ -188,7 +217,8 @@ public class Team : MonoBehaviour
                     {
                         RunManagerSingleton.instance.SetResult(true);
                     }
-
+                    
+                    
                     YouWinLose.gameObject.SetActive(false);
                     if (isGoodTeam)
                     {
@@ -311,13 +341,14 @@ public class Team : MonoBehaviour
                     if (state.path == null || state.path.Count == 0)
                     {
                         var step = speed * Time.fixedDeltaTime;
-                        if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+                        if (Vector3.Distance(character.transform.position,
+                                character.standingOnTile.transform.position) > 0.1f)
                         {
                             character.transform.position = Vector3.MoveTowards(character.transform.position,
                                 character.standingOnTile.transform.position, step);
                         }
                     }
-                    
+
                     state.isMoving = false;
                     return;
                 }
@@ -484,7 +515,7 @@ public class Team : MonoBehaviour
         {
             state.path = pathFinder.FindPath(character.standingOnTile, character.CurrentTarget.standingOnTile,
                 GetInRangeTiles(character));
-            
+
             distanceToClosestCharacterGrid =
                 GetManhattanDistance(character.standingOnTile, character.CurrentTarget.standingOnTile);
             if (character.axieIngameStats.Range > 1)
@@ -496,7 +527,7 @@ public class Team : MonoBehaviour
                 }
             }
         }
-        
+
         if (state.path == null || state.path.Count == 0)
         {
             character.transform.position = Vector3.MoveTowards(character.transform.position,

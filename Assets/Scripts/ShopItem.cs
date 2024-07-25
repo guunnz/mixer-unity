@@ -6,9 +6,10 @@ using UnityEngine.Serialization;
 public class ShopItem : ScriptableObject
 {
     public string ShopItemName;
+    public AtiaBlessing.BuffEffect ItemEffectName;
     public Sprite ShopItemImage;
     public ShopItemEffect ItemEffect;
-    public GameObject prefab; // Prefab can be assigned in the editor if needed
+    public GameObject shopPrefab; // Prefab can be assigned in the editor if needed
     public string description;
     public int price;
 }

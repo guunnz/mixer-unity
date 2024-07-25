@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c3206b5167c484a890ebfc07cb189a, type: 3}
+  m_Name: Emerald
+  m_EditorClassIdentifier: 
+  ShopItemName: Emerald
+  ItemEffectName: 12
+  ShopItemImage: {fileID: 1734917157, guid: fa5af1d1354b92f4cab71e34b599503d, type: 3}
+  ItemEffect:
+    SecondsOfFight: 0
+    OnBattleStart: 0
+  shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
+    type: 3}
+  description: Rolls now cost 2 coins - You start with 15 coins each round
+  price: 4

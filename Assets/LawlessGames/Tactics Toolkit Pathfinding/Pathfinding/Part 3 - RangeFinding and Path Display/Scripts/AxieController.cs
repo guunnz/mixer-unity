@@ -126,8 +126,6 @@ public class AxieController : MonoBehaviour
 
     private IEnumerator Start()
     {
-<<<<<<< HEAD
-=======
         yield return new WaitForFixedUpdate();
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
@@ -146,7 +144,6 @@ public class AxieController : MonoBehaviour
             myTeam = badTeam;
         }
 
->>>>>>> main
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
             

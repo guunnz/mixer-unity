@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using SimpleGraphQL;
+using UnityEngine.SceneManagement;
 
 public class AccountManager : MonoBehaviour
 {
@@ -30,8 +31,22 @@ public class AccountManager : MonoBehaviour
 
     private void Start()
     {
-        if (LoadInstantly)
+        string lastWallet = PlayerPrefs.GetString("LastWallet");
+        if (!string.IsNullOrEmpty(lastWallet))
             LoginAccount();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetString("LastWallet", "");
     }
 
     public void LoginAccount()
@@ -41,6 +56,7 @@ public class AccountManager : MonoBehaviour
             return;
         }
 
+        string lastWallet = PlayerPrefs.GetString("LastWallet");
         loggingIn = true;
 
         // PlayerPrefs.GetString(RoninWallet.text);
@@ -53,6 +69,15 @@ public class AccountManager : MonoBehaviour
         //     userAxies = axiesData.data.axies;
         //     userLands = axiesData.data.lands;
         // }
+
+        if (!string.IsNullOrEmpty(lastWallet))
+        {
+            wallet = lastWallet;
+            RunManagerSingleton.instance.userId = wallet;
+
+            LoadAssets(PlayerPrefs.GetString(wallet));
+            return;
+        }
 
         RunManagerSingleton.instance.userId = wallet;
 
@@ -129,11 +154,16 @@ public class AccountManager : MonoBehaviour
             yield break;
         }
 
+        LoadAssets(task.Result);
+    }
+
+    public void LoadAssets(string responseString)
+    {
         try
         {
-            string responseString = task.Result;
             // StartCoroutine(SpawnAxies(responseString));
             PlayerPrefs.SetString(wallet, responseString);
+            PlayerPrefs.SetString("LastWallet", wallet);
 
             GetAxiesExample.AxiesData axiesData = JsonUtility.FromJson<GetAxiesExample.AxiesData>(responseString);
             userAxies = axiesData.data.axies;
@@ -144,22 +174,8 @@ public class AccountManager : MonoBehaviour
             }
 
             userLands = axiesData.data.lands;
-            axiesData.data.lands.results = new GetAxiesExample.Land[]
-            {
-                new GetAxiesExample.Land()
-                    { col = "-10", row = "10", landType = LandType.savannah.ToString(), tokenId = "12313232" },
-                new GetAxiesExample.Land()
-                    { col = "-13", row = "13", landType = LandType.arctic.ToString(), tokenId = "12332" },
-                new GetAxiesExample.Land()
-                    { col = "-1", row = "5", landType = LandType.forest.ToString(), tokenId = "1231322" },
-                new GetAxiesExample.Land()
-                    { col = "-1", row = "7", landType = LandType.genesis.ToString(), tokenId = "13232" },
-                new GetAxiesExample.Land()
-                    { col = "-20", row = "4", landType = LandType.mystic.ToString(), tokenId = "323389" }
-            };
-
             loadLand();
-            TeamManager.instance.LoadLastAccountAxies();
+            // TeamManager.instance.LoadLastAccountAxies();
         }
         catch (System.Exception ex)
         {

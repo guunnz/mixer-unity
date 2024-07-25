@@ -56,7 +56,7 @@ public class AxieSkillEffectManager : MonoBehaviour
     {
         return skillEffects.Any(x => x.Merry);
     }
-    
+
     public int PoisonStacks()
     {
         try
@@ -71,12 +71,12 @@ public class AxieSkillEffectManager : MonoBehaviour
             Debug.LogError(e.Message);
             return 0;
         }
-    }    
-    
+    }
+
     public int MerryStacks()
     {
         try
-        { 
+        {
             if (!IsMerry())
                 return 0;
             return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Merry).Times;
@@ -203,6 +203,12 @@ public class AxieSkillEffectManager : MonoBehaviour
         return skillEffects.Where(x => x.isPassive == false).ToList();
     }
 
+    public bool StatusEffectIsBuff(StatusEffectEnum statusEffect)
+    {
+        return statusEffect == StatusEffectEnum.SpeedPositive || statusEffect == StatusEffectEnum.AttackPositive ||
+               statusEffect == StatusEffectEnum.MoralePositive;
+    }
+
     public void AddStatusEffect(SkillEffect skillEffect)
     {
         StatusEffectEnum statusEffect = skillEffect.statusEffect;
@@ -211,11 +217,30 @@ public class AxieSkillEffectManager : MonoBehaviour
         {
             Debug.LogWarning("Setting random effect");
             statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
-
-            while (statusEffect == StatusEffectEnum.Sleep || statusEffect == StatusEffectEnum.Fragile)
+            if (skillEffect.RandomEffectIsBuff)
             {
-                statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+                while (statusEffect == StatusEffectEnum.Sleep || statusEffect == StatusEffectEnum.Fragile ||
+                       !StatusEffectIsBuff(statusEffect))
+                {
+                    statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+                }
             }
+            else if (skillEffect.RandomEffectIsDebuff)
+            {
+                while (statusEffect == StatusEffectEnum.Sleep || statusEffect == StatusEffectEnum.Fragile ||
+                       StatusEffectIsBuff(statusEffect))
+                {
+                    statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+                }
+            }
+            else
+            {
+                while (statusEffect == StatusEffectEnum.Sleep || statusEffect == StatusEffectEnum.Fragile)
+                {
+                    statusEffect = (StatusEffectEnum)UnityEngine.Random.Range(1, (int)StatusEffectEnum.Merry);
+                }
+            }
+
 
             clone.statusEffect = statusEffect;
 
