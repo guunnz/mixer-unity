@@ -99,7 +99,6 @@ namespace AxieMixer.Unity
                 out var genes);
             var bodyStructure = axieGenesStuff.GetAxieBodyStructure512(genes);
 
-            Debug.Log(JsonUtility.ToJson(bodyStructure.parts));
             return BuildSpineFromGene(axieId, bodyStructure, meta, scale, isGraphic);
         }
 
@@ -119,6 +118,7 @@ namespace AxieMixer.Unity
                 axieId = axieId.PadLeft(axieId.Length + (7 - axieId.Length) / 2);
             }
 
+            Debug.Log(JsonUtility.ToJson(adultCombo));
             adultCombo.Add("body-id", axieId);
             foreach (var p in meta)
             {
@@ -128,10 +128,17 @@ namespace AxieMixer.Unity
                 }
             }
 
+            // Loop to print each key-value pair in the adultCombo dictionary
+            foreach (var item in adultCombo)
+            {
+                Debug.Log($"{item.Key}: {item.Value}");
+            }
+
             byte colorVariant = (byte)axieGenesStuff.GetAxieColorVariant(bodyStructure);
 
             return BuildSpineAdultCombo(adultCombo, colorVariant, scale, isGraphic);
         }
+
 
         SkeletonDataAsset CreateMixedSkeletonDataAsset(MixedSkeletonData mixed, float scale, bool isGraphic)
         {

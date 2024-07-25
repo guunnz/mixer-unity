@@ -104,6 +104,15 @@ public class RunManagerSingleton : MonoBehaviour
             }
         }
 
+        if (wins == 11 || losses == 2)
+        {
+            MusicManager.Instance.PlayMusic(MusicTrack.NojyHypehu);
+        }
+        else
+        {
+            MusicManager.Instance.PlayMusic(MusicTrack.Ridthabus);
+        }
+
         results.text = wins.ToString();
 
         for (int i = 0; i < losses; i++)

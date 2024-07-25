@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class Team : MonoBehaviour
 {
@@ -77,6 +78,28 @@ public class Team : MonoBehaviour
 
     public void StartBattle()
     {
+
+        int randomMusic = Random.Range(0, 5);
+
+        switch (randomMusic)
+        {
+            case 0:
+                MusicManager.Instance.PlayMusic(MusicTrack.Shldslep);
+                break;
+            case 1:
+                MusicManager.Instance.PlayMusic(MusicTrack.GO);
+                break;
+            case 2:
+                MusicManager.Instance.PlayMusic(MusicTrack.PunchiEpic);
+                break;
+            case 3:
+                MusicManager.Instance.PlayMusic(MusicTrack.NeeEtheAhPehro);
+                break;
+            case 4:
+                MusicManager.Instance.PlayMusic(MusicTrack.Laingved);
+                break;
+        }
+        
         battleEnded = false;
         ChimeraSpawned = false;
         battleStarted = true;
@@ -194,7 +217,8 @@ public class Team : MonoBehaviour
                     {
                         RunManagerSingleton.instance.SetResult(true);
                     }
-
+                    
+                    
                     YouWinLose.gameObject.SetActive(false);
                     if (isGoodTeam)
                     {

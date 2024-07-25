@@ -30,6 +30,7 @@ public class FightManagerSingleton : MonoBehaviour
 
     public void StopFight()
     {
+        MusicManager.Instance.FadeOut(0.5f);
         SecondsOfFight = 0;
         FightStarted = false;
     }
