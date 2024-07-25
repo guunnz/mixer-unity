@@ -14,8 +14,8 @@ public class SkyMavisLogin : MonoBehaviour
     private string clientId = "526fa16c-b86d-4900-b510-88124de910f0";
     private string clientSecret = "qKIFvCTTEYz52C0BuSZq3yXl4bo967Xx";
     private string redirectUri = "http://localhost:3000/login/callback";
-    private string authorizationEndpoint = "http://104.196.183.226/api/v1/auth";
-    private string userInfoEndpoint = "http://104.196.183.226/api/v1/user/nfts";
+    private string authorizationEndpoint = "http://34.73.111.101/api/v1/auth";
+    private string userInfoEndpoint = "http://34.73.111.101/api/v1/user/nfts";
 
     public Button loginButton;
     public Text resultText;
