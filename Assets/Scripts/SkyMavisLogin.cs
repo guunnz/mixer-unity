@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
+using System.Numerics;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,8 +11,6 @@ using UnityEngine.UI;
 
 public class SkyMavisLogin : MonoBehaviour
 {
-    private string clientId = "526fa16c-b86d-4900-b510-88124de910f0";
-    private string clientSecret = "qKIFvCTTEYz52C0BuSZq3yXl4bo967Xx";
     private string redirectUri = "http://localhost:3000/login/callback";
     private string authorizationEndpoint = "http://34.73.111.101/api/v1/auth";
     private string userInfoEndpoint = "http://34.73.111.101/api/v1/user/nfts";
@@ -28,6 +26,7 @@ public class SkyMavisLogin : MonoBehaviour
 
     private void Start()
     {
+        PartFinder.LoadFromResources();
         loginButton.onClick.AddListener(OnLoginButtonClicked);
 
         httpListener = new HttpListener();
@@ -43,22 +42,35 @@ public class SkyMavisLogin : MonoBehaviour
 
     public IEnumerator LogIn(int retries = 5)
     {
-        UnityWebRequest webRequest = new UnityWebRequest(authorizationEndpoint, "GET");
-
-        yield return webRequest.SendWebRequest();
-
-        if (webRequest.isNetworkError || webRequest.isHttpError)
+        using (UnityWebRequest www = new UnityWebRequest(authorizationEndpoint, "GET"))
         {
-            Debug.LogError(webRequest.error);
-            if (retries > 0)
+            DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+            www.downloadHandler = dH;
+            www.SetRequestHeader("Content-Type", "application/json");
+            yield return www.Send();
+
+            if (www.isNetworkError)
             {
-                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
-                StartCoroutine(LogIn(retries - 1));
+                Debug.LogError(www.error);
+                if (retries > 0)
+                {
+                    Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                    StartCoroutine(LogIn(retries - 1));
+                }
+            }
+            else
+            {
+                Debug.Log(www.ToString());
+                Debug.Log(www.downloadHandler.text);
+                string authorizationUrl = JsonUtility.FromJson<AuthorizationJSON>(www.downloadHandler.text).authUrl;
+                Application.OpenURL(authorizationUrl);
             }
         }
+    }
 
-        string authorizationUrl = webRequest.downloadHandler.text.Replace("\"", "");
-        Application.OpenURL(authorizationUrl);
+    public struct AuthorizationJSON
+    {
+        public string authUrl;
     }
 
     private void StartHttpListener(object state)
@@ -74,11 +86,7 @@ public class SkyMavisLogin : MonoBehaviour
                 string authorizationCode = request.QueryString["code"];
                 Debug.Log("Authorization code received: " + authorizationCode);
 
-                //ENVIAR AUTH CODE TO BACKEND.
-
-                //SERVER
                 actions.Enqueue(() => StartCoroutine(HandleAuthorizationResponse(authorizationCode)));
-                //SERVER
 
                 string responseString = "<html><body>Login successful! You can close this window.</body></html>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
@@ -108,6 +116,8 @@ public class SkyMavisLogin : MonoBehaviour
     {
         UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "GET");
         webRequest.SetRequestHeader("auth_code", authorizationCode);
+        DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+        webRequest.downloadHandler = dH;
         yield return webRequest.SendWebRequest();
 
         if (webRequest.isNetworkError || webRequest.isHttpError)
@@ -120,8 +130,7 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
 
-        string userInfo = webRequest.downloadHandler.text.Replace("\"", "");
-
+        string userInfo = webRequest.downloadHandler.text;
 
         if (!string.IsNullOrEmpty(userInfo))
         {
@@ -135,26 +144,103 @@ public class SkyMavisLogin : MonoBehaviour
 
     private void GetUserInfo(string userInfoString)
     {
-        Debug.Log("User info: " + userInfoString);
-
-        // Parse the JSON to extract wallet addresses
-        var userInfo = JsonUtility.FromJson<UserInfoResponse>(userInfoString);
-        userWallet = userInfo.addr;
-        Debug.Log("User wallet address: " + userWallet);
-        accountManager.wallet = userWallet;
-        accountManager.LoginAccount();
+        if (accountManager != null)
+        {
+            accountManager.LoginAccount(userInfoString);
+        }
     }
 
     [System.Serializable]
-    private class OAuthTokenResponse
-    {
-        public string access_token;
-    }
-
-    [System.Serializable]
-    private class UserInfoResponse
+    public struct UserInfo
     {
         public string addr;
+        public string email;
+        public string name;
+        public string roninAddress;
+    }
+
+    [System.Serializable]
+    public struct RawMetadata
+    {
+        public string external_url;
+        public string genes;
+        public long id;
+        public string image;
+        public string name;
+        public Properties properties;
+        public string title;
+    }
+
+    [System.Serializable]
+    public struct Properties
+    {
+        public long axie_id;
+        public string back_id;
+        public long birthdate;
+        public string bodyshape;
+        public int breed_count;
+        public string @class;
+        public string ears_id;
+        public string eyes_id;
+        public string horn_id;
+        public long matron_id;
+        public string mouth_id;
+        public int num_japan;
+        public int num_mystic;
+        public int num_shiny;
+        public int num_summer;
+        public int num_xmas;
+        public string primary_color;
+        public int pureness;
+        public int purity;
+        public long sire_id;
+        public int stage;
+        public string tail_id;
+        public string col;
+        public string row;
+        public string land_type;
+    }
+
+    [System.Serializable]
+    public struct Item
+    {
+        public string contractAddress;
+        public long createdAtBlock;
+        public string createdAtBlockTime;
+        public RawMetadata rawMetadata;
+        public string tokenId;
+        public string tokenName;
+        public string tokenStandard;
+        public string tokenSymbol;
+        public string tokenURI;
+        public long updatedAtBlock;
+        public string updatedAtBlockTime;
+    }
+
+    [System.Serializable]
+    public struct Result
+    {
+        public List<Item> items;
+        public Paging paging;
+    }
+
+    [System.Serializable]
+    public struct Paging
+    {
+        public int total;
+    }
+
+    [System.Serializable]
+    public struct NftsResponse
+    {
+        public Result result;
+    }
+
+    [System.Serializable]
+    public struct Root
+    {
+        public UserInfo userInfo;
+        public NftsResponse nftsResponse;
     }
 
     private void OnDestroy()

@@ -217,10 +217,15 @@ public class AxieController : MonoBehaviour
     {
         if (mode == AxieMode.Battle)
         {
+            TimerMove = 10000f;
             MoveToRandomPosition(true);
         }
         else
         {
+            if (this.mode == AxieMode.Battle)
+            {
+                TimerMove = UnityEngine.Random.Range(2.5f, 10f);
+            }
             statsManagerUI.gameObject.SetActive(false);
             this.mode = mode;
         }

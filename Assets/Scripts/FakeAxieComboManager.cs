@@ -181,8 +181,7 @@ public class FakeAxieComboManager : MonoBehaviour
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
                 x.skillName == bodyPartToSelect.SkillName);
-        AbilityDescriptionText.text = ability.description +
-                                      (ability.isPassive ? " (PASSIVES/BATTLECRIES DO NOT WORK FOR NOW)" : "");
+        AbilityDescriptionText.text = ability.description;
 
         ShieldAbilityText.text = ability.shield.ToString();
         AttackAbilityText.text = ability.damage.ToString();
@@ -233,8 +232,7 @@ public class FakeAxieComboManager : MonoBehaviour
                     x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
                     x.skillName == partObj.SkillName);
 
-            AbilityDescriptionText.text = ability.description +
-                                          (ability.isPassive ? " (PASSIVES/BATTLECRIES DO NOT WORK FOR NOW)" : "");
+            AbilityDescriptionText.text = ability.description;
 
             ShieldAbilityText.text = ability.shield.ToString();
             AttackAbilityText.text = ability.damage.ToString();

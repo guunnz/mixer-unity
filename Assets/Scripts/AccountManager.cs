@@ -29,11 +29,12 @@ public class AccountManager : MonoBehaviour
         IncorrectWallet.DOColor(Color.clear, 0.2f);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitForSeconds(0.1f);
         string lastWallet = PlayerPrefs.GetString("LastWallet");
         if (!string.IsNullOrEmpty(lastWallet))
-            LoginAccount();
+            LoginAccount(PlayerPrefs.GetString(wallet));
     }
 
     private void Update()
@@ -44,138 +45,102 @@ public class AccountManager : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
-    {
-        PlayerPrefs.SetString("LastWallet", "");
-    }
-
-    public void LoginAccount()
+    public void LoginAccount(string userInfoResponse)
     {
         if (loggingIn)
         {
             return;
         }
 
-        string lastWallet = PlayerPrefs.GetString("LastWallet");
+        Debug.Log("User info: " + userInfoResponse);
+
+        SkyMavisLogin.Root userInfo = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfoResponse);
+
         loggingIn = true;
 
-        // PlayerPrefs.GetString(RoninWallet.text);
-        // string cache = 
-        // if (!string.IsNullOrEmpty(cache))
-        // {
-        //     GetAxiesExample.AxiesData axiesData =
-        //         JsonUtility.FromJson<GetAxiesExample.AxiesData>(PlayerPrefs.GetString(address));
-        //
-        //     userAxies = axiesData.data.axies;
-        //     userLands = axiesData.data.lands;
-        // }
+        RunManagerSingleton.instance.userId = userInfo.userInfo.addr;
 
-        if (!string.IsNullOrEmpty(lastWallet))
-        {
-            wallet = lastWallet;
-            RunManagerSingleton.instance.userId = wallet;
-
-            LoadAssets(PlayerPrefs.GetString(wallet));
-            return;
-        }
-
-        RunManagerSingleton.instance.userId = wallet;
-
-        graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
-        string query = @"
-    query MyQuery {
-      axies(owner: """ + wallet + @""") {
-        results {
-          birthDate
-          name
-          genes
-          newGenes
-          id
-          class
-          parts {
-            class
-            id
-            name
-            type
-            abilities {
-              attack
-              attackType
-              name
-              id
-              effectIconUrl
-              defense
-              backgroundUrl
-            }
-          }
-          stats {
-            speed
-            skill
-            morale
-            hp
-          }
-          bodyShape
-        }
-      }
-      lands(owner: {address: """ + wallet + @""", ownerships: Owned}) {
-        total
-        results {
-          landType
-          tokenId
-          col
-          row
-        }
-      }
-    }";
-        StartCoroutine(RequestGraphQL(query));
+        PlayerPrefs.SetString(wallet, userInfoResponse);
+        LoadAssets(userInfo.nftsResponse);
     }
 
-    private IEnumerator RequestGraphQL(string query)
-    {
-        var request = new Request
-        {
-            Query = query
-        };
 
-        var headers = new Dictionary<string, string>
-        {
-            { "X-API-Key", apiKey }
-        };
-
-        var task = graphQLClient.Send(request, null, headers);
-
-        while (!task.IsCompleted)
-        {
-            yield return null;
-        }
-
-        if (task.Exception != null)
-        {
-            Debug.LogError("GraphQL Error: " + task.Exception.Message);
-            yield break;
-        }
-
-        LoadAssets(task.Result);
-    }
-
-    public void LoadAssets(string responseString)
+    public void LoadAssets(SkyMavisLogin.NftsResponse nftsResponse)
     {
         try
         {
-            // StartCoroutine(SpawnAxies(responseString));
-            PlayerPrefs.SetString(wallet, responseString);
             PlayerPrefs.SetString("LastWallet", wallet);
 
-            GetAxiesExample.AxiesData axiesData = JsonUtility.FromJson<GetAxiesExample.AxiesData>(responseString);
-            userAxies = axiesData.data.axies;
+            List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
+            List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
+
+            foreach (var nft in nftsResponse.result.items)
+            {
+                if (nft.tokenSymbol.ToUpper() == "AXIE" && nft.rawMetadata.genes != "0x0")
+                {
+                    GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
+
+                    axie.genes = nft.rawMetadata.genes;
+                    axie.maxBodyPartAmount = 2;
+                    axie.@class = nft.rawMetadata.properties.@class;
+                    axie.id = nft.tokenId.ToString();
+                    axie.name = nft.rawMetadata.name;
+                    axie.birthDate = nft.rawMetadata.properties.birthdate;
+                    axie.newGenes = nft.rawMetadata.genes;
+                    axie.bodyShape = nft.rawMetadata.properties.bodyshape;
+
+                    axie.stats = AxieGeneUtils.GetStatsByGenes(axie.genes);
+
+                    List<string> partsClasses = AxieGeneUtils.GetAxiePartsClasses(axie.genes);
+                    List<string> partsAbilities = AxieGeneUtils.ParsePartIdsFromHex(axie.genes);
+
+                    List<GetAxiesExample.Part> axieParts = new List<GetAxiesExample.Part>();
+
+                    GetAxiesExample.Part horn = new GetAxiesExample.Part(partsClasses[2],
+                        nft.rawMetadata.properties.horn_id, "horn", 0, false, partsAbilities[2]);
+                    GetAxiesExample.Part tail = new GetAxiesExample.Part(partsClasses[5],
+                        nft.rawMetadata.properties.tail_id, "tail", 0, false, partsAbilities[5]);
+                    GetAxiesExample.Part back = new GetAxiesExample.Part(partsClasses[4],
+                        nft.rawMetadata.properties.back_id, "back", 0, false, partsAbilities[4]);
+                    GetAxiesExample.Part mouth = new GetAxiesExample.Part(partsClasses[3],
+                        nft.rawMetadata.properties.mouth_id, "mouth", 0, false, partsAbilities[3]);
+
+                    axieParts.Add(horn);
+                    axieParts.Add(tail);
+                    axieParts.Add(back);
+                    axieParts.Add(mouth);
+
+                    axie.parts = axieParts.ToArray();
+
+                    axies.Add(axie);
+                }
+                else if (nft.tokenSymbol.ToUpper() == "LAND")
+                {
+                    GetAxiesExample.Land land = new GetAxiesExample.Land();
+
+                    land.tokenId = nft.tokenId;
+                    land.landType = nft.rawMetadata.properties.land_type;
+                    land.col = nft.rawMetadata.properties.col;
+                    land.row = nft.rawMetadata.properties.row;
+                    lands.Add(land);
+                }
+            }
+
+
+            userAxies = new GetAxiesExample.Axies();
+
+            userAxies.results = axies.ToArray();
+
             foreach (var userAxiesResult in userAxies.results)
             {
                 userAxiesResult.LoadGraphicAssets();
                 userAxiesResult.maxBodyPartAmount = 2;
             }
 
-            userLands = axiesData.data.lands;
+            userLands = new GetAxiesExample.Lands();
+            userLands.results = lands.ToArray();
             loadLand();
-            // TeamManager.instance.LoadLastAccountAxies();
+            TeamManager.instance.LoadLastAccountAxies();
         }
         catch (System.Exception ex)
         {

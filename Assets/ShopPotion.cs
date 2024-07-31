@@ -35,7 +35,7 @@ public class ShopPotion : MonoBehaviour
     {
         Poping.text = item.description;
         ItemName.text = item.name;
-        ItemCost.text = item.price.ToString();
+        ItemCost.text = Math.Floor(item.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage / 100f).ToString();
         itemImage.sprite = item.ShopItemImage;
         ItemEffect = item.ItemEffectName;
     }

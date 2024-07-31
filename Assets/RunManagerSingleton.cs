@@ -24,7 +24,7 @@ public class EconomyPassive
         ItemCostPercentage =
             100; //If this 50 for example. means that every item is 50% discount. if it is 70, means every item is 30% discount
 
-    public int FreeRerollEveryXRounds = 0;
+    public int FreeRerollEveryXRolls = 0;
 }
 
 public class RoundsPassives
@@ -41,12 +41,18 @@ public class RunManagerSingleton : MonoBehaviour
     public string userId;
     public int wins;
     public int losses;
-    public int coins = 3;
+    public int coins = 10;
     public Color lifeLostColor;
     public LandType landType;
     internal List<bool> resultsBools = new List<bool>();
     internal string currentOpponent = "";
-    internal List<UpgradeValuesPerRoundList> globalUpgrades = new List<UpgradeValuesPerRoundList>();
+
+    internal List<UpgradeValuesPerRoundList> globalUpgrades = new List<UpgradeValuesPerRoundList>()
+    {
+        new UpgradeValuesPerRoundList()
+            { team_upgrades_values_per_round = new List<UpgradeAugument>() }
+    };
+
     internal List<AxieUpgrade> axieUpgrades = new List<AxieUpgrade>();
 
     public EconomyPassive economyPassive = new EconomyPassive();
@@ -58,6 +64,8 @@ public class RunManagerSingleton : MonoBehaviour
     public Image[] lives;
     public Team goodTeam;
     public AtiaBlessing atiaBlessing;
+    private float skere;
+    private int MaxCoinsThisRound = 10;
 
     private void Awake()
     {
@@ -72,9 +80,11 @@ public class RunManagerSingleton : MonoBehaviour
 
     public void SetResult(bool won)
     {
+        skere = 0;
         resultsBools.Add(won);
         atiaBlessing.ShowRandomAuguments();
         coins += economyPassive.CoinsOnStart + economyPassive.ExtraCoinsPerRound;
+        MaxCoinsThisRound = coins;
         economyPassive.RollsThisRound = 0;
         coinsText.text = coins.ToString();
         if (won)
@@ -132,8 +142,17 @@ public class RunManagerSingleton : MonoBehaviour
 
     public bool BuyUpgrade(ShopItem upgrade)
     {
-        if (coins < upgrade.price)
+        int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
+                                    100f);
+        if ((int)(skere / 1.3245f + coins) != MaxCoinsThisRound)
+        {
+            Debug.LogError("CHEATING");
+        }
+
+        if (coins < price)
             return false;
+
+        skere += price * 1.3245f;
 
         if (globalUpgrades.Count <= score)
         {
@@ -144,7 +163,16 @@ public class RunManagerSingleton : MonoBehaviour
         globalUpgrades[score].team_upgrades_values_per_round
             .Add(new UpgradeAugument() { id = (int)upgrade.ItemEffectName });
 
+        RemoveCoins((int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
+                                    100f));
+
         ShopItemsManager.instance.DoUpgrade(upgrade.ItemEffectName, goodTeam);
+
+        foreach (var axieController in goodTeam.GetCharactersAll())
+        {
+            axieController.UpdateStats();
+        }
+
         return true;
     }
 }

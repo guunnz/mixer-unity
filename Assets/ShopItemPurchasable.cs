@@ -32,6 +32,7 @@ public class ShopItemPurchasable : MonoBehaviour
     {
         Sold.gameObject.SetActive(false);
         sold = false;
+        shopItem = item;
         Poping.text = item.description;
         ItemName.text = item.ShopItemName;
         ItemCost.text = item.price.ToString();

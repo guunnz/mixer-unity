@@ -13745,8 +13745,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ec2a385e71fcc46981857c8211fb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalSprite: {fileID: 21300000, guid: aa3ccdd0edf30504b8ed8d6c008a0469, type: 3}
-  clickedSprite: {fileID: 21300000, guid: f9ee90d44acb23242bab5a50f5d1f049, type: 3}
+  normalSprite: {fileID: 21300000, guid: f042b9937c5312a4ab5ccb92ac2180bc, type: 3}
+  clickedSprite: {fileID: 21300000, guid: f042b9937c5312a4ab5ccb92ac2180bc, type: 3}
   offsetY: 0
 --- !u!114 &439235321
 MonoBehaviour:
@@ -24192,7 +24192,7 @@ MonoBehaviour:
   userId: 
   wins: 0
   losses: 0
-  coins: 3
+  coins: 10
   lifeLostColor: {r: 0.46226418, g: 0.11180385, b: 0.102483094, a: 1}
   landType: 0
   results: {fileID: 5246151006956345486}
@@ -41304,7 +41304,7 @@ MonoBehaviour:
   NextStepAfterLogin: {fileID: 612578601}
   MainMenu: {fileID: 1178811815}
   RoninMenu: {fileID: 2039476079}
-  LoadInstantly: 0
+  LoadInstantly: 1
 --- !u!114 &1546848190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41606,7 +41606,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2be31f429bd1a464a9c3289967323bca, type: 2}
   - {fileID: 11400000, guid: aea19715a24374041b44ccfa6b11ae7a, type: 2}
   FreezeMode: 0
-  FrozenCursor: {fileID: 1070588392}
+  FrozenCursor: {fileID: 439235318}
   Pot1Pos: {fileID: 792187820}
   Pot2Pos: {fileID: 628523750}
 --- !u!82 &1546848196
@@ -41621,7 +41621,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8462a269fcb4caf4eac3398487ac9574, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -56693,7 +56693,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,

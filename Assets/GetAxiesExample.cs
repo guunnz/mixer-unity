@@ -16,119 +16,10 @@ public class GetAxiesExample : MonoBehaviour
     public int spawnCountMax = 0;
     public TeamToJSON teamToJson;
 
-    void Start()
-    {
-        graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
-        string query = @"
-        query MyQuery {
-          axies(owner: """ + address + @""") {
-            results {
-              birthDate
-              name
-              genes
-              id
-              class
-              parts {
-                class
-                id
-                name
-                type
-                abilities {
-                  attack
-                  attackType
-                  name
-                  id
-                  effectIconUrl
-                  defense
-                  backgroundUrl
-                }
-              }
-              stats {
-                speed
-                skill
-                morale
-                hp
-              }
-              bodyShape
-            }
-          }
-          lands(owner: {address: """ + address + @""", ownerships: Owned}) {
-            total
-            results {
-              landType
-              tokenId
-            }
-          }
-        }";
-        StartCoroutine(RequestGraphQL(query));
-    }
-
-    private IEnumerator RequestGraphQL(string query)
-    {
-        var request = new Request
-        {
-            Query = query
-        };
-
-        var headers = new Dictionary<string, string>
-        {
-            { "X-API-Key", apiKey }
-        };
-
-        var task = graphQLClient.Send(request, null, headers);
-
-        while (!task.IsCompleted)
-        {
-            yield return null;
-        }
-
-        if (task.Exception != null)
-        {
-            Debug.LogError("GraphQL Error: " + task.Exception.Message);
-            yield break;
-        }
-
-        try
-        {
-            string responseString = task.Result;
-            StartCoroutine(SpawnAxies(responseString));
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError("Error processing response: " + ex.Message);
-        }
-    }
-
-    IEnumerator SpawnAxies(string response)
-    {
-        var axiesData = JsonUtility.FromJson<AxiesData>(response);
-        var axiesResults = axiesData.data.axies.results;
-
-        Axie bird = axiesResults[0];
-        Axie beast = axiesResults[1];
-        Axie dusk = axiesResults[2];
-        Axie plant = axiesResults[3];
-        Axie aqua = axiesResults[4];
-
-        List<string> axieIds = new List<string>();
-
-        axieIds.Add(bird.id);
-        axieIds.Add(beast.id);
-        axieIds.Add(dusk.id);
-        axieIds.Add(plant.id);
-        axieIds.Add(aqua.id);
-        yield break;
-    }
 
     public void SetAddress(string newAddress)
     {
         address = newAddress;
-    }
-
-    [System.Serializable]
-    public class AxiesData
-    {
-        public Data data;
     }
 
     [System.Serializable]
@@ -196,6 +87,10 @@ public class GetAxiesExample : MonoBehaviour
             maxBodyPartAmount = 2;
         }
 
+        public Axie()
+        {
+        }
+
         public void LoadGraphicAssets()
         {
             Axie axie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == this.id);
@@ -219,14 +114,65 @@ public class GetAxiesExample : MonoBehaviour
         public string name;
         public string type;
         public int order;
+        public string abilityName;
         public AxieClass partClass => (AxieClass)Enum.Parse(typeof(AxieClass), @class, true);
         public BodyPart BodyPart => (BodyPart)Enum.Parse(typeof(BodyPart), type, true);
-
-        public SkillName SkillName =>
-            (SkillName)Enum.Parse(typeof(SkillName), name.Replace(" ", "").Replace("'", ""), true);
-
-        public Ability[] abilities;
+        public SkillName SkillName;
         public bool selected;
+
+        public Part(string @class, string name, string type, int order, bool selected, string abilityId)
+        {
+            this.@class = @class;
+            this.name = ProcessDisplaySkillName(name);
+            this.abilityName = ProcessSkillName(name);
+            this.type = type;
+            this.order = order;
+            this.selected = selected;
+            
+            if (type.ToLower() == "eyes" || type.ToLower() == "ears")
+                return;
+
+            // Attempt to parse the SkillName
+            try
+            {
+                SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
+            }
+            catch
+            {
+                // Fetch the original part name from PartFinder and retry parsing
+                string originalPartName = PartFinder.GetOriginalPartId(abilityId);
+                this.abilityName = ProcessSkillName(originalPartName);
+                SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
+            }
+        }
+
+        private string ProcessSkillName(string partName)
+        {
+            // Remove the prefix up to and including the first '-'
+            int dashIndex = partName.IndexOf('-');
+            string processedName = (dashIndex == -1) ? partName : partName.Substring(dashIndex + 1);
+
+            // Remove all remaining '-' and convert to the correct format for enum parsing
+            processedName = processedName.Replace("-", "").Replace(" ", "");
+
+            return processedName;
+        }
+
+        private string ProcessDisplaySkillName(string partName)
+        {
+            // Remove the prefix up to and including the first '-'
+            int dashIndex = partName.IndexOf('-');
+            string processedName = (dashIndex == -1) ? partName : partName.Substring(dashIndex + 1);
+
+            // Replace all remaining '-' with a space
+            processedName = processedName.Replace("-", " ");
+
+            // Capitalize the first letter of each word
+            processedName =
+                System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(processedName.ToLower());
+
+            return processedName;
+        }
     }
 
     [System.Serializable]

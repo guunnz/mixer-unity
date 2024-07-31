@@ -7,7 +7,7 @@ public class ShopManager : MonoBehaviour
 {
     static public ShopManager instance;
     private RunManagerSingleton rm;
-    private int RollCost;
+    private int RollCost = 1;
     public TextMeshProUGUI RollCostText;
     public ShopItemPurchasable[] Potions;
     public ShopItemPurchasable[] Items;
@@ -73,9 +73,13 @@ public class ShopManager : MonoBehaviour
             RollCost = 0;
         }
         else if (rm.economyPassive.RollsFreePerRound != 0 &&
-                 rm.economyPassive.RollsThisRound % rm.economyPassive.RollsFreePerRound == 0)
+                 rm.economyPassive.RollsThisRound % rm.economyPassive.FreeRerollEveryXRolls == 0)
         {
             RollCost = 0;
+        }
+        else
+        {
+            RollCost = rm.economyPassive.RollCost;
         }
 
         RollCostText.text = RollCost.ToString();

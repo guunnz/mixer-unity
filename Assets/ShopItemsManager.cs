@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using UnityEngine;
 
@@ -494,7 +495,7 @@ public class ShopItemsManager : MonoBehaviour
 
     public void Amethyst(Team team)
     {
-        RunManagerSingleton.instance.economyPassive.FreeRerollEveryXRounds = 3;
+        RunManagerSingleton.instance.economyPassive.FreeRerollEveryXRolls = 3;
     }
 
 

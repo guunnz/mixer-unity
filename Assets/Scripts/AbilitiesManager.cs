@@ -298,13 +298,27 @@ public class AbilitiesManager : MonoBehaviour
 
         parent.GetComponent<Image>().sprite = SelectedSprite;
 
+        
+
         GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
 
+        if (RunManagerSingleton.instance.goodTeam.GetCharactersAll().Count > 0)
+        {
+            AxieController axieFromTeam = RunManagerSingleton.instance.goodTeam.GetCharactersAll().Single(x => x.AxieId.ToString() == axieId);
+            HealthText.text = axieFromTeam.stats.hp.ToString();
+            SpeedText.text = axieFromTeam.stats.speed.ToString();
+            SkillText.text = axieFromTeam.stats.skill.ToString();
+            MoraleText.text = axieFromTeam.stats.morale.ToString();
+        }
+        else
+        {
+            HealthText.text = axie.stats.hp.ToString();
+            SpeedText.text = axie.stats.speed.ToString();
+            SkillText.text = axie.stats.skill.ToString();
+            MoraleText.text = axie.stats.morale.ToString();
+        }
         axieClassImage.sprite = AxieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
-        HealthText.text = axie.stats.hp.ToString();
-        SpeedText.text = axie.stats.speed.ToString();
-        SkillText.text = axie.stats.skill.ToString();
-        MoraleText.text = axie.stats.morale.ToString();
+
         AxieNameText.text = axie.name;
 
         currentSelectedAxie = axie;

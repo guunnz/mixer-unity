@@ -1,0 +1,1121 @@
+[
+  {"part_id": "eyes-zeal", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "beast", "special_genes": null, "type": "eyes", "name": "Zeal", "ability_id": "beast-eyes-02"},
+  {
+    "part_id": "eyes-calico-zeal",
+    "part_type": "eyes",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "beast",
+    "special_genes": "mystic",
+    "type": "eyes",
+    "name": "Calico Zeal",
+    "ability_id": "beast-eyes-02"
+  },
+  {
+    "part_id": "eyes-little-peas", "part_type": "eyes", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "eyes", "name": "Little Peas", "ability_id": "beast-eyes-04"
+  },
+  {
+    "part_id": "eyes-snowflakes", "part_type": "eyes", "part_value": 4, "part_skin": 4, "class": "beast", "special_genes": "xmas", "type": "eyes", "name": "Snowflakes", "ability_id": "beast-eyes-04"
+  },
+  {"part_id": "eyes-puppy", "part_type": "eyes", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "eyes", "name": "Puppy", "ability_id": "beast-eyes-08"},
+  {"part_id": "eyes-chubby", "part_type": "eyes", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "eyes", "name": "Chubby", "ability_id": "beast-eyes-10"},
+  {"part_id": "ears-nyan", "part_type": "ears", "part_value": 2, "part_skin": 0, "class": "beast", "special_genes": null, "type": "ears", "name": "Nyan", "ability_id": "beast-ears-02"},
+  {
+    "part_id": "ears-pointy-nyan",
+    "part_type": "ears",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "beast",
+    "special_genes": "mystic",
+    "type": "ears",
+    "name": "Pointy Nyan",
+    "ability_id": "beast-ears-02"
+  },
+  {"part_id": "ears-coca", "part_type": "ears", "part_value": 2, "part_skin": 6, "class": "beast", "special_genes": "summer-2022", "type": "ears", "name": "Coca", "ability_id": "beast-ears-02"},
+  {
+    "part_id": "ears-coca-shiny",
+    "part_type": "ears",
+    "part_value": 2,
+    "part_skin": 9,
+    "class": "beast",
+    "special_genes": "summer-2022",
+    "type": "ears",
+    "name": "Coca Shiny",
+    "ability_id": "beast-ears-02"
+  },
+  {
+    "part_id": "ears-nut-cracker", "part_type": "ears", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "ears", "name": "Nut Cracker", "ability_id": "beast-ears-04"
+  },
+  {
+    "part_id": "ears-innocent-lamb",
+    "part_type": "ears",
+    "part_value": 6,
+    "part_skin": 0,
+    "class": "beast",
+    "special_genes": null,
+    "type": "ears",
+    "name": "Innocent Lamb",
+    "ability_id": "beast-ears-06"
+  },
+  {
+    "part_id": "ears-merry-lamb", "part_type": "ears", "part_value": 6, "part_skin": 4, "class": "beast", "special_genes": "xmas", "type": "ears", "name": "Merry Lamb", "ability_id": "beast-ears-06"
+  },
+  {"part_id": "ears-zen", "part_type": "ears", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "ears", "name": "Zen", "ability_id": "beast-ears-08"},
+  {"part_id": "ears-puppy", "part_type": "ears", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "ears", "name": "Puppy", "ability_id": "beast-ears-10"},
+  {"part_id": "ears-belieber", "part_type": "ears", "part_value": 12, "part_skin": 0, "class": "beast", "special_genes": null, "type": "ears", "name": "Belieber", "ability_id": "beast-ears-12"},
+  {"part_id": "back-ronin", "part_type": "back", "part_value": 2, "part_skin": 0, "class": "beast", "special_genes": null, "type": "back", "name": "Ronin", "ability_id": "beast-back-02"},
+  {"part_id": "back-hasagi", "part_type": "back", "part_value": 2, "part_skin": 1, "class": "beast", "special_genes": "mystic", "type": "back", "name": "Hasagi", "ability_id": "beast-back-02"},
+  {"part_id": "back-hero", "part_type": "back", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "back", "name": "Hero", "ability_id": "beast-back-04"},
+  {"part_id": "back-jaguar", "part_type": "back", "part_value": 6, "part_skin": 0, "class": "beast", "special_genes": null, "type": "back", "name": "Jaguar", "ability_id": "beast-back-06"},
+  {
+    "part_id": "back-risky-beast", "part_type": "back", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "back", "name": "Risky Beast", "ability_id": "beast-back-08"
+  },
+  {"part_id": "back-hamaya", "part_type": "back", "part_value": 8, "part_skin": 3, "class": "beast", "special_genes": "japan", "type": "back", "name": "Hamaya", "ability_id": "beast-back-08"},
+  {"part_id": "back-timber", "part_type": "back", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "back", "name": "Timber", "ability_id": "beast-back-10"},
+  {"part_id": "back-furball", "part_type": "back", "part_value": 12, "part_skin": 0, "class": "beast", "special_genes": null, "type": "back", "name": "Furball", "ability_id": "beast-back-12"},
+  {
+    "part_id": "back-beach-ball",
+    "part_type": "back",
+    "part_value": 12,
+    "part_skin": 6,
+    "class": "beast",
+    "special_genes": "summer-2022",
+    "type": "back",
+    "name": "Beach Ball",
+    "ability_id": "beast-back-12"
+  },
+  {
+    "part_id": "back-beach-ball-shiny",
+    "part_type": "back",
+    "part_value": 12,
+    "part_skin": 9,
+    "class": "beast",
+    "special_genes": "summer-2022",
+    "type": "back",
+    "name": "Beach Ball Shiny",
+    "ability_id": "beast-back-12"
+  },
+  {
+    "part_id": "horn-little-branch",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 0,
+    "class": "beast",
+    "special_genes": null,
+    "type": "horn",
+    "name": "Little Branch",
+    "ability_id": "beast-horn-02"
+  },
+  {
+    "part_id": "horn-winter-branch",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "beast",
+    "special_genes": "mystic",
+    "type": "horn",
+    "name": "Winter Branch",
+    "ability_id": "beast-horn-02"
+  },
+  {"part_id": "horn-imp", "part_type": "horn", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "horn", "name": "Imp", "ability_id": "beast-horn-04"},
+  {"part_id": "horn-kendama", "part_type": "horn", "part_value": 4, "part_skin": 3, "class": "beast", "special_genes": "japan", "type": "horn", "name": "Kendama", "ability_id": "beast-horn-04"},
+  {"part_id": "horn-merry", "part_type": "horn", "part_value": 6, "part_skin": 0, "class": "beast", "special_genes": null, "type": "horn", "name": "Merry", "ability_id": "beast-horn-06"},
+  {"part_id": "horn-pocky", "part_type": "horn", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "horn", "name": "Pocky", "ability_id": "beast-horn-08"},
+  {"part_id": "horn-umaibo", "part_type": "horn", "part_value": 8, "part_skin": 3, "class": "beast", "special_genes": "japan", "type": "horn", "name": "Umaibo", "ability_id": "beast-horn-08"},
+  {"part_id": "horn-dual-blade", "part_type": "horn", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "horn", "name": "Dual Blade", "ability_id": "beast-horn-10"},
+  {"part_id": "horn-arco", "part_type": "horn", "part_value": 12, "part_skin": 0, "class": "beast", "special_genes": null, "type": "horn", "name": "Arco", "ability_id": "beast-horn-12"},
+  {"part_id": "tail-cottontail", "part_type": "tail", "part_value": 2, "part_skin": 0, "class": "beast", "special_genes": null, "type": "tail", "name": "Cottontail", "ability_id": "beast-tail-02"},
+  {
+    "part_id": "tail-sakura-cottontail",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "beast",
+    "special_genes": "mystic",
+    "type": "tail",
+    "name": "Sakura Cottontail",
+    "ability_id": "beast-tail-02"
+  },
+  {
+    "part_id": "tail-cotton-candy",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 6,
+    "class": "beast",
+    "special_genes": "summer-2022",
+    "type": "tail",
+    "name": "Cotton Candy",
+    "ability_id": "beast-tail-02"
+  },
+  {
+    "part_id": "tail-cotton-candy-shiny",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 9,
+    "class": "beast",
+    "special_genes": "summer-2022",
+    "type": "tail",
+    "name": "Cotton Candy Shiny",
+    "ability_id": "beast-tail-02"
+  },
+  {"part_id": "tail-rice", "part_type": "tail", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "tail", "name": "Rice", "ability_id": "beast-tail-04"},
+  {"part_id": "tail-shiba", "part_type": "tail", "part_value": 6, "part_skin": 0, "class": "beast", "special_genes": null, "type": "tail", "name": "Shiba", "ability_id": "beast-tail-06"},
+  {"part_id": "tail-hare", "part_type": "tail", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "tail", "name": "Hare", "ability_id": "beast-tail-08"},
+  {
+    "part_id": "tail-nut-cracker", "part_type": "tail", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "tail", "name": "Nut Cracker", "ability_id": "beast-tail-10"
+  },
+  {"part_id": "tail-gerbil", "part_type": "tail", "part_value": 12, "part_skin": 0, "class": "beast", "special_genes": null, "type": "tail", "name": "Gerbil", "ability_id": "beast-tail-12"},
+  {
+    "part_id": "mouth-nut-cracker",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 0,
+    "class": "beast",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Nut Cracker",
+    "ability_id": "beast-mouth-02"
+  },
+  {
+    "part_id": "mouth-skull-cracker",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "beast",
+    "special_genes": "mystic",
+    "type": "mouth",
+    "name": "Skull Cracker",
+    "ability_id": "beast-mouth-02"
+  },
+  {"part_id": "mouth-goda", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Goda", "ability_id": "beast-mouth-04"},
+  {
+    "part_id": "mouth-axie-kiss", "part_type": "mouth", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Axie Kiss", "ability_id": "beast-mouth-08"
+  },
+  {
+    "part_id": "mouth-confident", "part_type": "mouth", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Confident", "ability_id": "beast-mouth-10"
+  },
+  {"part_id": "mouth-mosquito", "part_type": "mouth", "part_value": 2, "part_skin": 0, "class": "bug", "special_genes": null, "type": "mouth", "name": "Mosquito", "ability_id": "bug-mouth-02"},
+  {
+    "part_id": "mouth-feasting-mosquito",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "bug",
+    "special_genes": "mystic",
+    "type": "mouth",
+    "name": "Feasting Mosquito",
+    "ability_id": "bug-mouth-02"
+  },
+  {"part_id": "mouth-pincer", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "bug", "special_genes": null, "type": "mouth", "name": "Pincer", "ability_id": "bug-mouth-04"},
+  {"part_id": "mouth-cute-bunny", "part_type": "mouth", "part_value": 8, "part_skin": 0, "class": "bug", "special_genes": null, "type": "mouth", "name": "Cute Bunny", "ability_id": "bug-mouth-08"},
+  {"part_id": "mouth-kawaii", "part_type": "mouth", "part_value": 8, "part_skin": 3, "class": "bug", "special_genes": "japan", "type": "mouth", "name": "Kawaii", "ability_id": "bug-mouth-08"},
+  {
+    "part_id": "mouth-square-teeth",
+    "part_type": "mouth",
+    "part_value": 10,
+    "part_skin": 0,
+    "class": "bug",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Square Teeth",
+    "ability_id": "bug-mouth-10"
+  },
+  {"part_id": "horn-lagging", "part_type": "horn", "part_value": 2, "part_skin": 0, "class": "bug", "special_genes": null, "type": "horn", "name": "Lagging", "ability_id": "bug-horn-02"},
+  {
+    "part_id": "horn-laggingggggg", "part_type": "horn", "part_value": 2, "part_skin": 1, "class": "bug", "special_genes": "mystic", "type": "horn", "name": "Laggingggggg", "ability_id": "bug-horn-02"
+  },
+  {"part_id": "horn-antenna", "part_type": "horn", "part_value": 4, "part_skin": 0, "class": "bug", "special_genes": null, "type": "horn", "name": "Antenna", "ability_id": "bug-horn-04"},
+  {"part_id": "horn-caterpillars", "part_type": "horn", "part_value": 6, "part_skin": 0, "class": "bug", "special_genes": null, "type": "horn", "name": "Caterpillars", "ability_id": "bug-horn-06"},
+  {"part_id": "horn-pliers", "part_type": "horn", "part_value": 8, "part_skin": 0, "class": "bug", "special_genes": null, "type": "horn", "name": "Pliers", "ability_id": "bug-horn-08"},
+  {"part_id": "horn-parasite", "part_type": "horn", "part_value": 10, "part_skin": 0, "class": "bug", "special_genes": null, "type": "horn", "name": "Parasite", "ability_id": "bug-horn-10"},
+  {"part_id": "horn-p4r451t3", "part_type": "horn", "part_value": 10, "part_skin": 2, "class": "bug", "special_genes": "bionic", "type": "horn", "name": "P4R451T3", "ability_id": "bug-horn-10"},
+  {"part_id": "horn-leaf-bug", "part_type": "horn", "part_value": 12, "part_skin": 0, "class": "bug", "special_genes": null, "type": "horn", "name": "Leaf Bug", "ability_id": "bug-horn-12"},
+  {"part_id": "tail-ant", "part_type": "tail", "part_value": 2, "part_skin": 0, "class": "bug", "special_genes": null, "type": "tail", "name": "Ant", "ability_id": "bug-tail-02"},
+  {"part_id": "tail-fire-ant", "part_type": "tail", "part_value": 2, "part_skin": 1, "class": "bug", "special_genes": "mystic", "type": "tail", "name": "Fire Ant", "ability_id": "bug-tail-02"},
+  {"part_id": "tail-twin-tail", "part_type": "tail", "part_value": 4, "part_skin": 0, "class": "bug", "special_genes": null, "type": "tail", "name": "Twin Tail", "ability_id": "bug-tail-04"},
+  {"part_id": "tail-fish-snack", "part_type": "tail", "part_value": 6, "part_skin": 0, "class": "bug", "special_genes": null, "type": "tail", "name": "Fish Snack", "ability_id": "bug-tail-06"},
+  {"part_id": "tail-maki", "part_type": "tail", "part_value": 6, "part_skin": 3, "class": "bug", "special_genes": "japan", "type": "tail", "name": "Maki", "ability_id": "bug-tail-06"},
+  {"part_id": "tail-gravel-ant", "part_type": "tail", "part_value": 8, "part_skin": 0, "class": "bug", "special_genes": null, "type": "tail", "name": "Gravel Ant", "ability_id": "bug-tail-08"},
+  {"part_id": "tail-pupae", "part_type": "tail", "part_value": 10, "part_skin": 0, "class": "bug", "special_genes": null, "type": "tail", "name": "Pupae", "ability_id": "bug-tail-10"},
+  {
+    "part_id": "tail-thorny-caterpillar",
+    "part_type": "tail",
+    "part_value": 12,
+    "part_skin": 0,
+    "class": "bug",
+    "special_genes": null,
+    "type": "tail",
+    "name": "Thorny Caterpillar",
+    "ability_id": "bug-tail-12"
+  },
+  {"part_id": "back-snail-shell", "part_type": "back", "part_value": 2, "part_skin": 0, "class": "bug", "special_genes": null, "type": "back", "name": "Snail Shell", "ability_id": "bug-back-02"},
+  {
+    "part_id": "back-starry-shell", "part_type": "back", "part_value": 2, "part_skin": 1, "class": "bug", "special_genes": "mystic", "type": "back", "name": "Starry Shell", "ability_id": "bug-back-02"
+  },
+  {"part_id": "back-garish-worm", "part_type": "back", "part_value": 4, "part_skin": 0, "class": "bug", "special_genes": null, "type": "back", "name": "Garish Worm", "ability_id": "bug-back-04"},
+  {"part_id": "back-candy-canes", "part_type": "back", "part_value": 4, "part_skin": 4, "class": "bug", "special_genes": "xmas", "type": "back", "name": "Candy Canes", "ability_id": "bug-back-04"},
+  {"part_id": "back-buzz-buzz", "part_type": "back", "part_value": 6, "part_skin": 0, "class": "bug", "special_genes": null, "type": "back", "name": "Buzz Buzz", "ability_id": "bug-back-06"},
+  {"part_id": "back-sandal", "part_type": "back", "part_value": 8, "part_skin": 0, "class": "bug", "special_genes": null, "type": "back", "name": "Sandal", "ability_id": "bug-back-08"},
+  {"part_id": "back-scarab", "part_type": "back", "part_value": 10, "part_skin": 0, "class": "bug", "special_genes": null, "type": "back", "name": "Scarab", "ability_id": "bug-back-10"},
+  {"part_id": "back-spiky-wing", "part_type": "back", "part_value": 12, "part_skin": 0, "class": "bug", "special_genes": null, "type": "back", "name": "Spiky Wing", "ability_id": "bug-back-12"},
+  {"part_id": "ears-larva", "part_type": "ears", "part_value": 2, "part_skin": 0, "class": "bug", "special_genes": null, "type": "ears", "name": "Larva", "ability_id": "bug-ears-02"},
+  {"part_id": "ears-vector", "part_type": "ears", "part_value": 2, "part_skin": 1, "class": "bug", "special_genes": "mystic", "type": "ears", "name": "Vector", "ability_id": "bug-ears-02"},
+  {"part_id": "ears-beetle-spike", "part_type": "ears", "part_value": 4, "part_skin": 0, "class": "bug", "special_genes": null, "type": "ears", "name": "Beetle Spike", "ability_id": "bug-ears-04"},
+  {
+    "part_id": "ears-ear-breathing", "part_type": "ears", "part_value": 6, "part_skin": 0, "class": "bug", "special_genes": null, "type": "ears", "name": "Ear Breathing", "ability_id": "bug-ears-06"
+  },
+  {"part_id": "ears-leaf-bug", "part_type": "ears", "part_value": 8, "part_skin": 0, "class": "bug", "special_genes": null, "type": "ears", "name": "Leaf Bug", "ability_id": "bug-ears-08"},
+  {"part_id": "ears-tassels", "part_type": "ears", "part_value": 10, "part_skin": 0, "class": "bug", "special_genes": null, "type": "ears", "name": "Tassels", "ability_id": "bug-ears-10"},
+  {"part_id": "ears-earwing", "part_type": "ears", "part_value": 12, "part_skin": 0, "class": "bug", "special_genes": null, "type": "ears", "name": "Earwing", "ability_id": "bug-ears-12"},
+  {"part_id": "ears-mon", "part_type": "ears", "part_value": 12, "part_skin": 3, "class": "bug", "special_genes": "japan", "type": "ears", "name": "Mon", "ability_id": "bug-ears-12"},
+  {"part_id": "eyes-bookworm", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "bug", "special_genes": null, "type": "eyes", "name": "Bookworm", "ability_id": "bug-eyes-02"},
+  {
+    "part_id": "eyes-broken-bookworm",
+    "part_type": "eyes",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "bug",
+    "special_genes": "mystic",
+    "type": "eyes",
+    "name": "Broken Bookworm",
+    "ability_id": "bug-eyes-02"
+  },
+  {"part_id": "eyes-neo", "part_type": "eyes", "part_value": 4, "part_skin": 0, "class": "bug", "special_genes": null, "type": "eyes", "name": "Neo", "ability_id": "bug-eyes-04"},
+  {
+    "part_id": "eyes-flower-sunglasses",
+    "part_type": "eyes",
+    "part_value": 4,
+    "part_skin": 6,
+    "class": "bug",
+    "special_genes": "summer-2022",
+    "type": "eyes",
+    "name": "Flower Sunglasses",
+    "ability_id": "bug-eyes-04"
+  },
+  {
+    "part_id": "eyes-flower-sunglasses-shiny",
+    "part_type": "eyes",
+    "part_value": 4,
+    "part_skin": 9,
+    "class": "bug",
+    "special_genes": "summer-2022",
+    "type": "eyes",
+    "name": "Flower Sunglasses Shiny",
+    "ability_id": "bug-eyes-04"
+  },
+  {"part_id": "eyes-nerdy", "part_type": "eyes", "part_value": 8, "part_skin": 0, "class": "bug", "special_genes": null, "type": "eyes", "name": "Nerdy", "ability_id": "bug-eyes-08"},
+  {"part_id": "eyes-kotaro?", "part_type": "eyes", "part_value": 10, "part_skin": 0, "class": "bug", "special_genes": null, "type": "eyes", "name": "Kotaro?", "ability_id": "bug-eyes-10"},
+  {
+    "part_id": "eyes-sleepless", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "eyes", "name": "Sleepless", "ability_id": "aquatic-eyes-02"
+  },
+  {
+    "part_id": "eyes-insomnia", "part_type": "eyes", "part_value": 2, "part_skin": 1, "class": "aquatic", "special_genes": "mystic", "type": "eyes", "name": "Insomnia", "ability_id": "aquatic-eyes-02"
+  },
+  {"part_id": "eyes-yen", "part_type": "eyes", "part_value": 2, "part_skin": 3, "class": "aquatic", "special_genes": "japan", "type": "eyes", "name": "Yen", "ability_id": "aquatic-eyes-02"},
+  {"part_id": "eyes-clear", "part_type": "eyes", "part_value": 4, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "eyes", "name": "Clear", "ability_id": "aquatic-eyes-04"},
+  {"part_id": "eyes-gero", "part_type": "eyes", "part_value": 8, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "eyes", "name": "Gero", "ability_id": "aquatic-eyes-08"},
+  {
+    "part_id": "eyes-telescope", "part_type": "eyes", "part_value": 10, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "eyes", "name": "Telescope", "ability_id": "aquatic-eyes-10"
+  },
+  {"part_id": "mouth-lam", "part_type": "mouth", "part_value": 2, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "mouth", "name": "Lam", "ability_id": "aquatic-mouth-02"},
+  {
+    "part_id": "mouth-lam-handsome",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "aquatic",
+    "special_genes": "mystic",
+    "type": "mouth",
+    "name": "Lam Handsome",
+    "ability_id": "aquatic-mouth-02"
+  },
+  {
+    "part_id": "mouth-catfish", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "mouth", "name": "Catfish", "ability_id": "aquatic-mouth-04"
+  },
+  {
+    "part_id": "mouth-risky-fish",
+    "part_type": "mouth",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "aquatic",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Risky Fish",
+    "ability_id": "aquatic-mouth-08"
+  },
+  {
+    "part_id": "mouth-bubble-fish",
+    "part_type": "mouth",
+    "part_value": 8,
+    "part_skin": 6,
+    "class": "aquatic",
+    "special_genes": "summer-2022",
+    "type": "mouth",
+    "name": "Bubble Fish",
+    "ability_id": "aquatic-mouth-08"
+  },
+  {
+    "part_id": "mouth-bubble-fish-shiny",
+    "part_type": "mouth",
+    "part_value": 8,
+    "part_skin": 9,
+    "class": "aquatic",
+    "special_genes": "summer-2022",
+    "type": "mouth",
+    "name": "Bubble Fish Shiny",
+    "ability_id": "aquatic-mouth-08"
+  },
+  {
+    "part_id": "mouth-piranha", "part_type": "mouth", "part_value": 10, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "mouth", "name": "Piranha", "ability_id": "aquatic-mouth-10"
+  },
+  {
+    "part_id": "mouth-geisha", "part_type": "mouth", "part_value": 10, "part_skin": 3, "class": "aquatic", "special_genes": "japan", "type": "mouth", "name": "Geisha", "ability_id": "aquatic-mouth-10"
+  },
+  {
+    "part_id": "horn-babylonia", "part_type": "horn", "part_value": 2, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "horn", "name": "Babylonia", "ability_id": "aquatic-horn-02"
+  },
+  {
+    "part_id": "horn-candy-babylonia",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "aquatic",
+    "special_genes": "mystic",
+    "type": "horn",
+    "name": "Candy Babylonia",
+    "ability_id": "aquatic-horn-02"
+  },
+  {
+    "part_id": "horn-teal-shell", "part_type": "horn", "part_value": 4, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "horn", "name": "Teal Shell", "ability_id": "aquatic-horn-04"
+  },
+  {
+    "part_id": "horn-clamshell", "part_type": "horn", "part_value": 6, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "horn", "name": "Clamshell", "ability_id": "aquatic-horn-06"
+  },
+  {"part_id": "horn-anemone", "part_type": "horn", "part_value": 8, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "horn", "name": "Anemone", "ability_id": "aquatic-horn-08"},
+  {"part_id": "horn-oranda", "part_type": "horn", "part_value": 10, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "horn", "name": "Oranda", "ability_id": "aquatic-horn-10"},
+  {
+    "part_id": "horn-shoal-star",
+    "part_type": "horn",
+    "part_value": 12,
+    "part_skin": 0,
+    "class": "aquatic",
+    "special_genes": null,
+    "type": "horn",
+    "name": "Shoal Star",
+    "ability_id": "aquatic-horn-12"
+  },
+  {
+    "part_id": "horn-5h04l-5t4r",
+    "part_type": "horn",
+    "part_value": 12,
+    "part_skin": 2,
+    "class": "aquatic",
+    "special_genes": "bionic",
+    "type": "horn",
+    "name": "5H04L-5T4R",
+    "ability_id": "aquatic-horn-12"
+  },
+  {"part_id": "ears-nimo", "part_type": "ears", "part_value": 2, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "ears", "name": "Nimo", "ability_id": "aquatic-ears-02"},
+  {
+    "part_id": "ears-red-nimo", "part_type": "ears", "part_value": 2, "part_skin": 1, "class": "aquatic", "special_genes": "mystic", "type": "ears", "name": "Red Nimo", "ability_id": "aquatic-ears-02"
+  },
+  {"part_id": "ears-tiny-fan", "part_type": "ears", "part_value": 4, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "ears", "name": "Tiny Fan", "ability_id": "aquatic-ears-04"},
+  {
+    "part_id": "ears-bubblemaker",
+    "part_type": "ears",
+    "part_value": 6,
+    "part_skin": 0,
+    "class": "aquatic",
+    "special_genes": null,
+    "type": "ears",
+    "name": "Bubblemaker",
+    "ability_id": "aquatic-ears-06"
+  },
+  {"part_id": "ears-inkling", "part_type": "ears", "part_value": 8, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "ears", "name": "Inkling", "ability_id": "aquatic-ears-08"},
+  {"part_id": "ears-gill", "part_type": "ears", "part_value": 10, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "ears", "name": "Gill", "ability_id": "aquatic-ears-10"},
+  {"part_id": "ears-seaslug", "part_type": "ears", "part_value": 12, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "ears", "name": "Seaslug", "ability_id": "aquatic-ears-12"},
+  {"part_id": "tail-koi", "part_type": "tail", "part_value": 2, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "tail", "name": "Koi", "ability_id": "aquatic-tail-02"},
+  {
+    "part_id": "tail-kuro-koi", "part_type": "tail", "part_value": 2, "part_skin": 1, "class": "aquatic", "special_genes": "mystic", "type": "tail", "name": "Kuro Koi", "ability_id": "aquatic-tail-02"
+  },
+  {
+    "part_id": "tail-koinobori",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 3,
+    "class": "aquatic",
+    "special_genes": "japan",
+    "type": "tail",
+    "name": "Koinobori",
+    "ability_id": "aquatic-tail-02"
+  },
+  {"part_id": "tail-nimo", "part_type": "tail", "part_value": 4, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "tail", "name": "Nimo", "ability_id": "aquatic-tail-04"},
+  {"part_id": "tail-tadpole", "part_type": "tail", "part_value": 6, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "tail", "name": "Tadpole", "ability_id": "aquatic-tail-06"},
+  {"part_id": "tail-ranchu", "part_type": "tail", "part_value": 8, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "tail", "name": "Ranchu", "ability_id": "aquatic-tail-08"},
+  {"part_id": "tail-navaga", "part_type": "tail", "part_value": 10, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "tail", "name": "Navaga", "ability_id": "aquatic-tail-10"},
+  {"part_id": "tail-shrimp", "part_type": "tail", "part_value": 12, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "tail", "name": "Shrimp", "ability_id": "aquatic-tail-12"},
+  {"part_id": "back-hermit", "part_type": "back", "part_value": 2, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "back", "name": "Hermit", "ability_id": "aquatic-back-02"},
+  {
+    "part_id": "back-crystal-hermit",
+    "part_type": "back",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "aquatic",
+    "special_genes": "mystic",
+    "type": "back",
+    "name": "Crystal Hermit",
+    "ability_id": "aquatic-back-02"
+  },
+  {
+    "part_id": "back-blue-moon", "part_type": "back", "part_value": 4, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "back", "name": "Blue Moon", "ability_id": "aquatic-back-04"
+  },
+  {"part_id": "back-goldfish", "part_type": "back", "part_value": 6, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "back", "name": "Goldfish", "ability_id": "aquatic-back-06"},
+  {"part_id": "back-sponge", "part_type": "back", "part_value": 8, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "back", "name": "Sponge", "ability_id": "aquatic-back-08"},
+  {"part_id": "back-anemone", "part_type": "back", "part_value": 10, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "back", "name": "Anemone", "ability_id": "aquatic-back-10"},
+  {"part_id": "back-perch", "part_type": "back", "part_value": 12, "part_skin": 0, "class": "aquatic", "special_genes": null, "type": "back", "name": "Perch", "ability_id": "aquatic-back-12"},
+  {"part_id": "ears-pink-cheek", "part_type": "ears", "part_value": 2, "part_skin": 0, "class": "bird", "special_genes": null, "type": "ears", "name": "Pink Cheek", "ability_id": "bird-ears-02"},
+  {
+    "part_id": "ears-heart-cheek", "part_type": "ears", "part_value": 2, "part_skin": 1, "class": "bird", "special_genes": "mystic", "type": "ears", "name": "Heart Cheek", "ability_id": "bird-ears-02"
+  },
+  {"part_id": "ears-early-bird", "part_type": "ears", "part_value": 4, "part_skin": 0, "class": "bird", "special_genes": null, "type": "ears", "name": "Early Bird", "ability_id": "bird-ears-04"},
+  {"part_id": "ears-owl", "part_type": "ears", "part_value": 6, "part_skin": 0, "class": "bird", "special_genes": null, "type": "ears", "name": "Owl", "ability_id": "bird-ears-06"},
+  {"part_id": "ears-peace-maker", "part_type": "ears", "part_value": 8, "part_skin": 0, "class": "bird", "special_genes": null, "type": "ears", "name": "Peace Maker", "ability_id": "bird-ears-08"},
+  {"part_id": "ears-curly", "part_type": "ears", "part_value": 10, "part_skin": 0, "class": "bird", "special_genes": null, "type": "ears", "name": "Curly", "ability_id": "bird-ears-10"},
+  {"part_id": "ears-risky-bird", "part_type": "ears", "part_value": 12, "part_skin": 0, "class": "bird", "special_genes": null, "type": "ears", "name": "Risky Bird", "ability_id": "bird-ears-12"},
+  {"part_id": "ears-karimata", "part_type": "ears", "part_value": 12, "part_skin": 3, "class": "bird", "special_genes": "japan", "type": "ears", "name": "Karimata", "ability_id": "bird-ears-12"},
+  {"part_id": "tail-swallow", "part_type": "tail", "part_value": 2, "part_skin": 0, "class": "bird", "special_genes": null, "type": "tail", "name": "Swallow", "ability_id": "bird-tail-02"},
+  {
+    "part_id": "tail-snowy-swallow",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "bird",
+    "special_genes": "mystic",
+    "type": "tail",
+    "name": "Snowy Swallow",
+    "ability_id": "bird-tail-02"
+  },
+  {"part_id": "tail-feather-fan", "part_type": "tail", "part_value": 4, "part_skin": 0, "class": "bird", "special_genes": null, "type": "tail", "name": "Feather Fan", "ability_id": "bird-tail-04"},
+  {
+    "part_id": "tail-the-last-one", "part_type": "tail", "part_value": 6, "part_skin": 0, "class": "bird", "special_genes": null, "type": "tail", "name": "The Last One", "ability_id": "bird-tail-06"
+  },
+  {"part_id": "tail-cloud", "part_type": "tail", "part_value": 8, "part_skin": 0, "class": "bird", "special_genes": null, "type": "tail", "name": "Cloud", "ability_id": "bird-tail-08"},
+  {
+    "part_id": "tail-granmas-fan", "part_type": "tail", "part_value": 10, "part_skin": 0, "class": "bird", "special_genes": null, "type": "tail", "name": "Granma's Fan", "ability_id": "bird-tail-10"
+  },
+  {"part_id": "tail-omatsuri", "part_type": "tail", "part_value": 10, "part_skin": 3, "class": "bird", "special_genes": "japan", "type": "tail", "name": "Omatsuri", "ability_id": "bird-tail-10"},
+  {"part_id": "tail-post-fight", "part_type": "tail", "part_value": 12, "part_skin": 0, "class": "bird", "special_genes": null, "type": "tail", "name": "Post Fight", "ability_id": "bird-tail-12"},
+  {"part_id": "back-balloon", "part_type": "back", "part_value": 2, "part_skin": 0, "class": "bird", "special_genes": null, "type": "back", "name": "Balloon", "ability_id": "bird-back-02"},
+  {
+    "part_id": "back-starry-balloon",
+    "part_type": "back",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "bird",
+    "special_genes": "mystic",
+    "type": "back",
+    "name": "Starry Balloon",
+    "ability_id": "bird-back-02"
+  },
+  {"part_id": "back-cupid", "part_type": "back", "part_value": 4, "part_skin": 0, "class": "bird", "special_genes": null, "type": "back", "name": "Cupid", "ability_id": "bird-back-04"},
+  {"part_id": "back-origami", "part_type": "back", "part_value": 4, "part_skin": 3, "class": "bird", "special_genes": "japan", "type": "back", "name": "Origami", "ability_id": "bird-back-04"},
+  {"part_id": "back-raven", "part_type": "back", "part_value": 6, "part_skin": 0, "class": "bird", "special_genes": null, "type": "back", "name": "Raven", "ability_id": "bird-back-06"},
+  {"part_id": "back-pigeon-post", "part_type": "back", "part_value": 8, "part_skin": 0, "class": "bird", "special_genes": null, "type": "back", "name": "Pigeon Post", "ability_id": "bird-back-08"},
+  {"part_id": "back-kingfisher", "part_type": "back", "part_value": 10, "part_skin": 0, "class": "bird", "special_genes": null, "type": "back", "name": "Kingfisher", "ability_id": "bird-back-10"},
+  {"part_id": "back-tri-feather", "part_type": "back", "part_value": 12, "part_skin": 0, "class": "bird", "special_genes": null, "type": "back", "name": "Tri Feather", "ability_id": "bird-back-12"},
+  {"part_id": "horn-eggshell", "part_type": "horn", "part_value": 2, "part_skin": 0, "class": "bird", "special_genes": null, "type": "horn", "name": "Eggshell", "ability_id": "bird-horn-02"},
+  {
+    "part_id": "horn-golden-shell",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "bird",
+    "special_genes": "mystic",
+    "type": "horn",
+    "name": "Golden Shell",
+    "ability_id": "bird-horn-02"
+  },
+  {"part_id": "horn-cuckoo", "part_type": "horn", "part_value": 4, "part_skin": 0, "class": "bird", "special_genes": null, "type": "horn", "name": "Cuckoo", "ability_id": "bird-horn-04"},
+  {"part_id": "horn-trump", "part_type": "horn", "part_value": 6, "part_skin": 0, "class": "bird", "special_genes": null, "type": "horn", "name": "Trump", "ability_id": "bird-horn-06"},
+  {"part_id": "horn-kestrel", "part_type": "horn", "part_value": 8, "part_skin": 0, "class": "bird", "special_genes": null, "type": "horn", "name": "Kestrel", "ability_id": "bird-horn-08"},
+  {"part_id": "horn-wing-horn", "part_type": "horn", "part_value": 10, "part_skin": 0, "class": "bird", "special_genes": null, "type": "horn", "name": "Wing Horn", "ability_id": "bird-horn-10"},
+  {
+    "part_id": "horn-feather-spear",
+    "part_type": "horn",
+    "part_value": 12,
+    "part_skin": 0,
+    "class": "bird",
+    "special_genes": null,
+    "type": "horn",
+    "name": "Feather Spear",
+    "ability_id": "bird-horn-12"
+  },
+  {
+    "part_id": "horn-spruce-spear",
+    "part_type": "horn",
+    "part_value": 12,
+    "part_skin": 4,
+    "class": "bird",
+    "special_genes": "xmas",
+    "type": "horn",
+    "name": "Spruce Spear",
+    "ability_id": "bird-horn-12"
+  },
+  {
+    "part_id": "mouth-doubletalk", "part_type": "mouth", "part_value": 2, "part_skin": 0, "class": "bird", "special_genes": null, "type": "mouth", "name": "Doubletalk", "ability_id": "bird-mouth-02"
+  },
+  {
+    "part_id": "mouth-mr-doubletalk",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "bird",
+    "special_genes": "mystic",
+    "type": "mouth",
+    "name": "Mr. Doubletalk",
+    "ability_id": "bird-mouth-02"
+  },
+  {
+    "part_id": "mouth-peace-maker", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "bird", "special_genes": null, "type": "mouth", "name": "Peace Maker", "ability_id": "bird-mouth-04"
+  },
+  {
+    "part_id": "mouth-hungry-bird", "part_type": "mouth", "part_value": 8, "part_skin": 0, "class": "bird", "special_genes": null, "type": "mouth", "name": "Hungry Bird", "ability_id": "bird-mouth-08"
+  },
+  {
+    "part_id": "mouth-little-owl", "part_type": "mouth", "part_value": 10, "part_skin": 0, "class": "bird", "special_genes": null, "type": "mouth", "name": "Little Owl", "ability_id": "bird-mouth-10"
+  },
+  {"part_id": "eyes-mavis", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "bird", "special_genes": null, "type": "eyes", "name": "Mavis", "ability_id": "bird-eyes-02"},
+  {"part_id": "eyes-sky-mavis", "part_type": "eyes", "part_value": 2, "part_skin": 1, "class": "bird", "special_genes": "mystic", "type": "eyes", "name": "Sky Mavis", "ability_id": "bird-eyes-02"},
+  {"part_id": "eyes-lucas", "part_type": "eyes", "part_value": 4, "part_skin": 0, "class": "bird", "special_genes": null, "type": "eyes", "name": "Lucas", "ability_id": "bird-eyes-04"},
+  {"part_id": "eyes-icy-gaze", "part_type": "eyes", "part_value": 4, "part_skin": 5, "class": "bird", "special_genes": "xmas-2019", "type": "eyes", "name": "Icy Gaze", "ability_id": "bird-eyes-04"},
+  {"part_id": "eyes-little-owl", "part_type": "eyes", "part_value": 8, "part_skin": 0, "class": "bird", "special_genes": null, "type": "eyes", "name": "Little Owl", "ability_id": "bird-eyes-08"},
+  {"part_id": "eyes-robin", "part_type": "eyes", "part_value": 10, "part_skin": 0, "class": "bird", "special_genes": null, "type": "eyes", "name": "Robin", "ability_id": "bird-eyes-10"},
+  {"part_id": "eyes-gecko", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "eyes", "name": "Gecko", "ability_id": "reptile-eyes-02"},
+  {
+    "part_id": "eyes-crimson-gecko",
+    "part_type": "eyes",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "reptile",
+    "special_genes": "mystic",
+    "type": "eyes",
+    "name": "Crimson Gecko",
+    "ability_id": "reptile-eyes-02"
+  },
+  {"part_id": "eyes-tricky", "part_type": "eyes", "part_value": 4, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "eyes", "name": "Tricky", "ability_id": "reptile-eyes-04"},
+  {"part_id": "eyes-scar", "part_type": "eyes", "part_value": 8, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "eyes", "name": "Scar", "ability_id": "reptile-eyes-08"},
+  {
+    "part_id": "eyes-dokuganryu",
+    "part_type": "eyes",
+    "part_value": 8,
+    "part_skin": 3,
+    "class": "reptile",
+    "special_genes": "japan",
+    "type": "eyes",
+    "name": "Dokuganryu",
+    "ability_id": "reptile-eyes-08"
+  },
+  {"part_id": "eyes-topaz", "part_type": "eyes", "part_value": 10, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "eyes", "name": "Topaz", "ability_id": "reptile-eyes-10"},
+  {"part_id": "eyes-kabuki", "part_type": "eyes", "part_value": 10, "part_skin": 3, "class": "reptile", "special_genes": "japan", "type": "eyes", "name": "Kabuki", "ability_id": "reptile-eyes-10"},
+  {
+    "part_id": "mouth-toothless-bite",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Toothless Bite",
+    "ability_id": "reptile-mouth-02"
+  },
+  {
+    "part_id": "mouth-venom-bite",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "reptile",
+    "special_genes": "mystic",
+    "type": "mouth",
+    "name": "Venom Bite",
+    "ability_id": "reptile-mouth-02"
+  },
+  {"part_id": "mouth-kotaro", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "mouth", "name": "Kotaro", "ability_id": "reptile-mouth-04"},
+  {
+    "part_id": "mouth-razor-bite",
+    "part_type": "mouth",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Razor Bite",
+    "ability_id": "reptile-mouth-08"
+  },
+  {
+    "part_id": "mouth-tiny-turtle",
+    "part_type": "mouth",
+    "part_value": 10,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Tiny Turtle",
+    "ability_id": "reptile-mouth-10"
+  },
+  {
+    "part_id": "mouth-dango", "part_type": "mouth", "part_value": 10, "part_skin": 3, "class": "reptile", "special_genes": "japan", "type": "mouth", "name": "Dango", "ability_id": "reptile-mouth-10"
+  },
+  {
+    "part_id": "mouth-tiny-carrot",
+    "part_type": "mouth",
+    "part_value": 10,
+    "part_skin": 5,
+    "class": "reptile",
+    "special_genes": "xmas-2019",
+    "type": "mouth",
+    "name": "Tiny Carrot",
+    "ability_id": "reptile-mouth-10"
+  },
+  {"part_id": "ears-pogona", "part_type": "ears", "part_value": 2, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "ears", "name": "Pogona", "ability_id": "reptile-ears-02"},
+  {
+    "part_id": "ears-deadly-pogona",
+    "part_type": "ears",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "reptile",
+    "special_genes": "mystic",
+    "type": "ears",
+    "name": "Deadly Pogona",
+    "ability_id": "reptile-ears-02"
+  },
+  {"part_id": "ears-friezard", "part_type": "ears", "part_value": 4, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "ears", "name": "Friezard", "ability_id": "reptile-ears-04"},
+  {
+    "part_id": "ears-curved-spine",
+    "part_type": "ears",
+    "part_value": 6,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "ears",
+    "name": "Curved Spine",
+    "ability_id": "reptile-ears-06"
+  },
+  {
+    "part_id": "ears-small-frill",
+    "part_type": "ears",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "ears",
+    "name": "Small Frill",
+    "ability_id": "reptile-ears-08"
+  },
+  {"part_id": "ears-swirl", "part_type": "ears", "part_value": 10, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "ears", "name": "Swirl", "ability_id": "reptile-ears-10"},
+  {"part_id": "ears-sidebarb", "part_type": "ears", "part_value": 12, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "ears", "name": "Sidebarb", "ability_id": "reptile-ears-12"},
+  {
+    "part_id": "back-bone-sail", "part_type": "back", "part_value": 2, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "back", "name": "Bone Sail", "ability_id": "reptile-back-02"
+  },
+  {
+    "part_id": "back-rugged-sail",
+    "part_type": "back",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "reptile",
+    "special_genes": "mystic",
+    "type": "back",
+    "name": "Rugged Sail",
+    "ability_id": "reptile-back-02"
+  },
+  {
+    "part_id": "back-tri-spikes", "part_type": "back", "part_value": 4, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "back", "name": "Tri Spikes", "ability_id": "reptile-back-04"
+  },
+  {
+    "part_id": "back-green-thorns",
+    "part_type": "back",
+    "part_value": 6,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "back",
+    "name": "Green Thorns",
+    "ability_id": "reptile-back-06"
+  },
+  {
+    "part_id": "back-indian-star",
+    "part_type": "back",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "back",
+    "name": "Indian Star",
+    "ability_id": "reptile-back-08"
+  },
+  {
+    "part_id": "back-1nd14n-5t4r",
+    "part_type": "back",
+    "part_value": 8,
+    "part_skin": 2,
+    "class": "reptile",
+    "special_genes": "bionic",
+    "type": "back",
+    "name": "1ND14N-5T4R",
+    "ability_id": "reptile-back-08"
+  },
+  {
+    "part_id": "back-frozen-bucket",
+    "part_type": "back",
+    "part_value": 8,
+    "part_skin": 5,
+    "class": "reptile",
+    "special_genes": "xmas-2019",
+    "type": "back",
+    "name": "Frozen Bucket",
+    "ability_id": "reptile-back-08"
+  },
+  {"part_id": "back-red-ear", "part_type": "back", "part_value": 10, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "back", "name": "Red Ear", "ability_id": "reptile-back-10"},
+  {
+    "part_id": "back-turtle-buoy",
+    "part_type": "back",
+    "part_value": 10,
+    "part_skin": 6,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "back",
+    "name": "Turtle Buoy",
+    "ability_id": "reptile-back-10"
+  },
+  {
+    "part_id": "back-turtle-buoy-shiny",
+    "part_type": "back",
+    "part_value": 10,
+    "part_skin": 9,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "back",
+    "name": "Turtle Buoy Shiny",
+    "ability_id": "reptile-back-10"
+  },
+  {"part_id": "back-croc", "part_type": "back", "part_value": 12, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "back", "name": "Croc", "ability_id": "reptile-back-12"},
+  {
+    "part_id": "tail-wall-gecko", "part_type": "tail", "part_value": 2, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "tail", "name": "Wall Gecko", "ability_id": "reptile-tail-02"
+  },
+  {
+    "part_id": "tail-escaped-gecko",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "reptile",
+    "special_genes": "mystic",
+    "type": "tail",
+    "name": "Escaped Gecko",
+    "ability_id": "reptile-tail-02"
+  },
+  {"part_id": "tail-iguana", "part_type": "tail", "part_value": 4, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "tail", "name": "Iguana", "ability_id": "reptile-tail-04"},
+  {
+    "part_id": "tail-tiny-dino", "part_type": "tail", "part_value": 6, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "tail", "name": "Tiny Dino", "ability_id": "reptile-tail-06"
+  },
+  {
+    "part_id": "tail-fir-trunk",
+    "part_type": "tail",
+    "part_value": 6,
+    "part_skin": 5,
+    "class": "reptile",
+    "special_genes": "xmas-2019",
+    "type": "tail",
+    "name": "Fir Trunk",
+    "ability_id": "reptile-tail-06"
+  },
+  {
+    "part_id": "tail-snake-jar", "part_type": "tail", "part_value": 8, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "tail", "name": "Snake Jar", "ability_id": "reptile-tail-08"
+  },
+  {
+    "part_id": "tail-december-surprise",
+    "part_type": "tail",
+    "part_value": 8,
+    "part_skin": 4,
+    "class": "reptile",
+    "special_genes": "xmas",
+    "type": "tail",
+    "name": "December Surprise",
+    "ability_id": "reptile-tail-08"
+  },
+  {"part_id": "tail-gila", "part_type": "tail", "part_value": 10, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "tail", "name": "Gila", "ability_id": "reptile-tail-10"},
+  {
+    "part_id": "tail-grass-snake",
+    "part_type": "tail",
+    "part_value": 12,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "tail",
+    "name": "Grass Snake",
+    "ability_id": "reptile-tail-12"
+  },
+  {"part_id": "horn-unko", "part_type": "horn", "part_value": 2, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "horn", "name": "Unko", "ability_id": "reptile-horn-02"},
+  {
+    "part_id": "horn-pinku-unko",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "reptile",
+    "special_genes": "mystic",
+    "type": "horn",
+    "name": "Pinku Unko",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-watermelon-ice-cream",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 6,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "horn",
+    "name": "Watermelon Ice Cream",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-strawberry-ice-cream",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 7,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "horn",
+    "name": "Strawberry Ice Cream",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-vanilla-ice-cream",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 8,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "horn",
+    "name": "Vanilla Ice Cream",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-watermelon-ice-cream-shiny",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 9,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "horn",
+    "name": "Watermelon Ice Cream Shiny",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-strawberry-ice-cream-shiny",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 10,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "horn",
+    "name": "Strawberry Ice Cream Shiny",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-vanilla-ice-cream-shiny",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 11,
+    "class": "reptile",
+    "special_genes": "summer-2022",
+    "type": "horn",
+    "name": "Vanilla Ice Cream Shiny",
+    "ability_id": "reptile-horn-02"
+  },
+  {
+    "part_id": "horn-scaly-spear",
+    "part_type": "horn",
+    "part_value": 4,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "horn",
+    "name": "Scaly Spear",
+    "ability_id": "reptile-horn-04"
+  },
+  {"part_id": "horn-cerastes", "part_type": "horn", "part_value": 6, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "horn", "name": "Cerastes", "ability_id": "reptile-horn-06"},
+  {
+    "part_id": "horn-scaly-spoon",
+    "part_type": "horn",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "reptile",
+    "special_genes": null,
+    "type": "horn",
+    "name": "Scaly Spoon",
+    "ability_id": "reptile-horn-08"
+  },
+  {"part_id": "horn-incisor", "part_type": "horn", "part_value": 10, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "horn", "name": "Incisor", "ability_id": "reptile-horn-10"},
+  {"part_id": "horn-bumpy", "part_type": "horn", "part_value": 12, "part_skin": 0, "class": "reptile", "special_genes": null, "type": "horn", "name": "Bumpy", "ability_id": "reptile-horn-12"},
+  {"part_id": "tail-carrot", "part_type": "tail", "part_value": 2, "part_skin": 0, "class": "plant", "special_genes": null, "type": "tail", "name": "Carrot", "ability_id": "plant-tail-02"},
+  {
+    "part_id": "tail-namek-carrot",
+    "part_type": "tail",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "plant",
+    "special_genes": "mystic",
+    "type": "tail",
+    "name": "Namek Carrot",
+    "ability_id": "plant-tail-02"
+  },
+  {"part_id": "tail-cattail", "part_type": "tail", "part_value": 4, "part_skin": 0, "class": "plant", "special_genes": null, "type": "tail", "name": "Cattail", "ability_id": "plant-tail-04"},
+  {"part_id": "tail-hatsune", "part_type": "tail", "part_value": 6, "part_skin": 0, "class": "plant", "special_genes": null, "type": "tail", "name": "Hatsune", "ability_id": "plant-tail-06"},
+  {"part_id": "tail-yam", "part_type": "tail", "part_value": 8, "part_skin": 0, "class": "plant", "special_genes": null, "type": "tail", "name": "Yam", "ability_id": "plant-tail-08"},
+  {
+    "part_id": "tail-potato-leaf", "part_type": "tail", "part_value": 10, "part_skin": 0, "class": "plant", "special_genes": null, "type": "tail", "name": "Potato Leaf", "ability_id": "plant-tail-10"
+  },
+  {"part_id": "tail-hot-butt", "part_type": "tail", "part_value": 12, "part_skin": 0, "class": "plant", "special_genes": null, "type": "tail", "name": "Hot Butt", "ability_id": "plant-tail-12"},
+  {"part_id": "mouth-serious", "part_type": "mouth", "part_value": 2, "part_skin": 0, "class": "plant", "special_genes": null, "type": "mouth", "name": "Serious", "ability_id": "plant-mouth-02"},
+  {
+    "part_id": "mouth-humorless",
+    "part_type": "mouth",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "plant",
+    "special_genes": "mystic",
+    "type": "mouth",
+    "name": "Humorless",
+    "ability_id": "plant-mouth-02"
+  },
+  {"part_id": "mouth-zigzag", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "plant", "special_genes": null, "type": "mouth", "name": "Zigzag", "ability_id": "plant-mouth-04"},
+  {"part_id": "mouth-rudolph", "part_type": "mouth", "part_value": 4, "part_skin": 4, "class": "plant", "special_genes": "xmas", "type": "mouth", "name": "Rudolph", "ability_id": "plant-mouth-04"},
+  {
+    "part_id": "mouth-herbivore", "part_type": "mouth", "part_value": 8, "part_skin": 0, "class": "plant", "special_genes": null, "type": "mouth", "name": "Herbivore", "ability_id": "plant-mouth-08"
+  },
+  {
+    "part_id": "mouth-silence-whisper",
+    "part_type": "mouth",
+    "part_value": 10,
+    "part_skin": 0,
+    "class": "plant",
+    "special_genes": null,
+    "type": "mouth",
+    "name": "Silence Whisper",
+    "ability_id": "plant-mouth-10"
+  },
+  {"part_id": "eyes-papi", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "plant", "special_genes": null, "type": "eyes", "name": "Papi", "ability_id": "plant-eyes-02"},
+  {
+    "part_id": "eyes-dreamy-papi",
+    "part_type": "eyes",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "plant",
+    "special_genes": "mystic",
+    "type": "eyes",
+    "name": "Dreamy Papi",
+    "ability_id": "plant-eyes-02"
+  },
+  {"part_id": "eyes-confused", "part_type": "eyes", "part_value": 4, "part_skin": 0, "class": "plant", "special_genes": null, "type": "eyes", "name": "Confused", "ability_id": "plant-eyes-04"},
+  {
+    "part_id": "eyes-cucumber-slice",
+    "part_type": "eyes",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "plant",
+    "special_genes": null,
+    "type": "eyes",
+    "name": "Cucumber Slice",
+    "ability_id": "plant-eyes-08"
+  },
+  {"part_id": "eyes-blossom", "part_type": "eyes", "part_value": 10, "part_skin": 0, "class": "plant", "special_genes": null, "type": "eyes", "name": "Blossom", "ability_id": "plant-eyes-10"},
+  {"part_id": "ears-leafy", "part_type": "ears", "part_value": 2, "part_skin": 0, "class": "plant", "special_genes": null, "type": "ears", "name": "Leafy", "ability_id": "plant-ears-02"},
+  {
+    "part_id": "ears-the-last-leaf",
+    "part_type": "ears",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "plant",
+    "special_genes": "mystic",
+    "type": "ears",
+    "name": "The Last Leaf",
+    "ability_id": "plant-ears-02"
+  },
+  {"part_id": "ears-clover", "part_type": "ears", "part_value": 4, "part_skin": 0, "class": "plant", "special_genes": null, "type": "ears", "name": "Clover", "ability_id": "plant-ears-04"},
+  {"part_id": "ears-rosa", "part_type": "ears", "part_value": 6, "part_skin": 0, "class": "plant", "special_genes": null, "type": "ears", "name": "Rosa", "ability_id": "plant-ears-06"},
+  {"part_id": "ears-sakura", "part_type": "ears", "part_value": 8, "part_skin": 0, "class": "plant", "special_genes": null, "type": "ears", "name": "Sakura", "ability_id": "plant-ears-08"},
+  {"part_id": "ears-maiko", "part_type": "ears", "part_value": 8, "part_skin": 3, "class": "plant", "special_genes": "japan", "type": "ears", "name": "Maiko", "ability_id": "plant-ears-08"},
+  {"part_id": "ears-hollow", "part_type": "ears", "part_value": 10, "part_skin": 0, "class": "plant", "special_genes": null, "type": "ears", "name": "Hollow", "ability_id": "plant-ears-10"},
+  {
+    "part_id": "ears-pinecones",
+    "part_type": "ears",
+    "part_value": 10,
+    "part_skin": 5,
+    "class": "plant",
+    "special_genes": "xmas-2019",
+    "type": "ears",
+    "name": "Pinecones",
+    "ability_id": "plant-ears-10"
+  },
+  {"part_id": "ears-lotus", "part_type": "ears", "part_value": 12, "part_skin": 0, "class": "plant", "special_genes": null, "type": "ears", "name": "Lotus", "ability_id": "plant-ears-12"},
+  {"part_id": "back-turnip", "part_type": "back", "part_value": 2, "part_skin": 0, "class": "plant", "special_genes": null, "type": "back", "name": "Turnip", "ability_id": "plant-back-02"},
+  {
+    "part_id": "back-pink-turnip",
+    "part_type": "back",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "plant",
+    "special_genes": "mystic",
+    "type": "back",
+    "name": "Pink Turnip",
+    "ability_id": "plant-back-02"
+  },
+  {"part_id": "back-shiitake", "part_type": "back", "part_value": 4, "part_skin": 0, "class": "plant", "special_genes": null, "type": "back", "name": "Shiitake", "ability_id": "plant-back-04"},
+  {"part_id": "back-yakitori", "part_type": "back", "part_value": 4, "part_skin": 3, "class": "plant", "special_genes": "japan", "type": "back", "name": "Yakitori", "ability_id": "plant-back-04"},
+  {"part_id": "back-bidens", "part_type": "back", "part_value": 6, "part_skin": 0, "class": "plant", "special_genes": null, "type": "back", "name": "Bidens", "ability_id": "plant-back-06"},
+  {
+    "part_id": "back-watering-can", "part_type": "back", "part_value": 8, "part_skin": 0, "class": "plant", "special_genes": null, "type": "back", "name": "Watering Can", "ability_id": "plant-back-08"
+  },
+  {"part_id": "back-mint", "part_type": "back", "part_value": 10, "part_skin": 0, "class": "plant", "special_genes": null, "type": "back", "name": "Mint", "ability_id": "plant-back-10"},
+  {"part_id": "back-pumpkin", "part_type": "back", "part_value": 12, "part_skin": 0, "class": "plant", "special_genes": null, "type": "back", "name": "Pumpkin", "ability_id": "plant-back-12"},
+  {
+    "part_id": "horn-bamboo-shoot", "part_type": "horn", "part_value": 2, "part_skin": 0, "class": "plant", "special_genes": null, "type": "horn", "name": "Bamboo Shoot", "ability_id": "plant-horn-02"
+  },
+  {
+    "part_id": "horn-golden-bamboo-shoot",
+    "part_type": "horn",
+    "part_value": 2,
+    "part_skin": 1,
+    "class": "plant",
+    "special_genes": "mystic",
+    "type": "horn",
+    "name": "Golden Bamboo Shoot",
+    "ability_id": "plant-horn-02"
+  },
+  {"part_id": "horn-beech", "part_type": "horn", "part_value": 4, "part_skin": 0, "class": "plant", "special_genes": null, "type": "horn", "name": "Beech", "ability_id": "plant-horn-04"},
+  {"part_id": "horn-yorishiro", "part_type": "horn", "part_value": 4, "part_skin": 3, "class": "plant", "special_genes": "japan", "type": "horn", "name": "Yorishiro", "ability_id": "plant-horn-04"},
+  {"part_id": "horn-rose-bud", "part_type": "horn", "part_value": 6, "part_skin": 0, "class": "plant", "special_genes": null, "type": "horn", "name": "Rose Bud", "ability_id": "plant-horn-06"},
+  {
+    "part_id": "horn-strawberry-shortcake",
+    "part_type": "horn",
+    "part_value": 8,
+    "part_skin": 0,
+    "class": "plant",
+    "special_genes": null,
+    "type": "horn",
+    "name": "Strawberry Shortcake",
+    "ability_id": "plant-horn-08"
+  },
+  {"part_id": "horn-cactus", "part_type": "horn", "part_value": 10, "part_skin": 0, "class": "plant", "special_genes": null, "type": "horn", "name": "Cactus", "ability_id": "plant-horn-10"},
+  {
+    "part_id": "horn-santas-gift",
+    "part_type": "horn",
+    "part_value": 10,
+    "part_skin": 5,
+    "class": "plant",
+    "special_genes": "xmas-2019",
+    "type": "horn",
+    "name": "Santa's Gift",
+    "ability_id": "plant-horn-10"
+  },
+  {"part_id": "horn-watermelon", "part_type": "horn", "part_value": 12, "part_skin": 0, "class": "plant", "special_genes": null, "type": "horn", "name": "Watermelon", "ability_id": "plant-horn-12"}
+]

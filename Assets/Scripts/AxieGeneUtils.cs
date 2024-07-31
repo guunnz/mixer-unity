@@ -102,7 +102,7 @@ public class AxieGeneUtils
         Bit512 = 512,
     }
 
-    const HexType hexType = HexType.Bit256;
+    const HexType hexType = HexType.Bit512;
     //GeneBinGroup geneBinGroup;
 
     public static List<string> ParsePartIdsFromHex(string hex)
@@ -323,13 +323,36 @@ public class AxieGeneUtils
 
 
         return (
-            iHP * 6 + 150,
+            iHP,
             iSpeed,
             iSkill,
             iMorale
         );
     }
+
+    public static List<string> GetAxiePartsClasses(string genes)
+    {
+        List<string> parts = AxieGeneUtils.ParsePartIdsFromHex(genes);
+
+        // Extracting parts before the hyphen
+        List<string> extractedParts = parts.Select(part => part.Split('-')[0]).ToList();
+        return extractedParts;
+    }
+
+    public static  GetAxiesExample.Stats GetStatsByGenes(string genes)
+    {
+        List<string> parts = AxieGeneUtils.ParsePartIdsFromHex(genes);
+
+        // Extracting parts before the hyphen
+        List<string> extractedParts = parts.Select(part => part.Split('-')[0]).ToList();
+
+        var stats = AxieGeneUtils.GetStats(extractedParts); // Update this line if needed to pass the correct parts
+
+        return new GetAxiesExample.Stats()
+            { hp = stats.Item1, speed = stats.Item2, skill = stats.Item3, morale = stats.Item4 };
+    }
 }
+
 
 public static class StringExtensions
 {

@@ -15,21 +15,12 @@ MonoBehaviour:
   skillName: 123
   skillEffects:
   - statusEffect: 10
-<<<<<<< HEAD
     statusApplyType: 0
     statusApplyTypeIsTarget: 0
     skillTriggerType: 3
     isPassive: 0
     skillDuration: 2
     PoisonStack: 1
-=======
-    statusApplyType: 1
-    statusApplyTypeIsTarget: 1
-    skillTriggerType: 3
-    isPassive: 1
-    skillDuration: 0
-    PoisonStack: 2
->>>>>>> main
     Attack: 0
     Speed: 0
     Morale: 0
