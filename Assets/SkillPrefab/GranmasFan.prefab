@@ -45,18 +45,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxToThrow:
-  - ActivateTiming: 0.5
+  - ActivateTiming: 0.35
     VFXPrefab: {fileID: 7273749349598979535, guid: 99ab48176997c2f4cb024243d9f52c85,
       type: 3}
     StartFromOrigin: 1
-    SkillDuration: 0.3
-  - ActivateTiming: 0.9
-    VFXPrefab: {fileID: 3047134845596052306, guid: 9084c54bd3d2547498e9c4aeb1c77aec,
+    SkillDuration: 0.15
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
+  - ActivateTiming: 0.6
+    VFXPrefab: {fileID: 1576508625749478, guid: a619fc9eccbe6d242a5a7f82bbb584be,
       type: 3}
     StartFromOrigin: 0
     SkillDuration: 0.4
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   animationToPlay: 39
   axieAnimationTiming: 0
   statusEffectsTiming: 0
-  totalDuration: 1.1
+  totalDuration: 0.75
   attackAudioTiming: 0
+  DontPlayAnimation: 0

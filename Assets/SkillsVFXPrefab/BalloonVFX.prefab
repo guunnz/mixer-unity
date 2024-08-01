@@ -120,4 +120,4 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   _animationName: cast
   loop: 0
-  timeScale: 1.5
+  timeScale: 2.5

@@ -606,7 +606,7 @@ public class Skill : MonoBehaviour
                         }
 
                         if (projectileMover != null)
-                            projectileMover.MoveToTarget(this.target, skill.SkillDuration);
+                            projectileMover.MoveToTarget(this.target, skill.SkillDuration+.1f);
                     }
                 }
             }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1133412504546022753}
   - component: {fileID: 7779078594319462066}
   m_Layer: 0
-  m_Name: Tadpole
+  m_Name: TadPole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,18 +45,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxToThrow:
-  - ActivateTiming: 0
-    VFXPrefab: {fileID: 5533293548336109487, guid: 6563a7708f1facb4c8184080446f28f1,
+  - ActivateTiming: 0.2
+    VFXPrefab: {fileID: 5533293548336109487, guid: 7aa0c6a9c57f36246b5e117305097317,
       type: 3}
     StartFromOrigin: 1
     SkillDuration: 0.3
-  - ActivateTiming: 0.3
-    VFXPrefab: {fileID: 3080438502371652594, guid: 82231976e41e96140bacdd995a018ed8,
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
+  - ActivateTiming: 0.6
+    VFXPrefab: {fileID: 1817797803601600, guid: 46e56f62e4ff899488d1b27766d1eb6d,
       type: 3}
     StartFromOrigin: 0
     SkillDuration: 0.5
-  animationToPlay: 3
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
+  animationToPlay: 6
   axieAnimationTiming: 0
   statusEffectsTiming: 0
-  totalDuration: 0.5
+  totalDuration: 0.7
   attackAudioTiming: 0
+  DontPlayAnimation: 0

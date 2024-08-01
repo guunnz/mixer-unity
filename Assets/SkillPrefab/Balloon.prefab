@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxToThrow:
   - ActivateTiming: 0.35
-    VFXPrefab: {fileID: 1905436362935654, guid: 8aef96ed1a5a9fe46a2566f828bdb17c,
+    VFXPrefab: {fileID: 3336155854778058564, guid: 0c3baf9b3e536db4ab3bf6541e7fce44,
       type: 3}
     StartFromOrigin: 0
     SkillDuration: 1
@@ -55,9 +55,8 @@ MonoBehaviour:
       StartFromExtra: {x: 0, y: 1.2, z: 1.2}
       GoTo: {x: 0, y: -2, z: -2}
       Time: 1
-  - ActivateTiming: 0.733
-    VFXPrefab: {fileID: 1817797803601600, guid: 99afa4e0cc6081544b902bc2775cd9fc,
-      type: 3}
+  - ActivateTiming: 0.79
+    VFXPrefab: {fileID: 123268, guid: 15ae0bd79216cc740aff5de7e2f65b8e, type: 3}
     StartFromOrigin: 0
     SkillDuration: 0.167
     AnimationMove:
