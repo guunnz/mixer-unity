@@ -4858,6 +4858,7 @@ GameObject:
   - component: {fileID: 19825070}
   - component: {fileID: 19985118}
   - component: {fileID: 2766581680820134343}
+  - component: {fileID: 2537757195203759160}
   m_Layer: 0
   m_Name: RiskyFishVFXBuff
   m_TagString: Untagged
@@ -9791,6 +9792,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2537757195203759160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628ef9b0c7e4fd24db54868035e11237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomPercent: 10
 --- !u!1 &1099344919378908
 GameObject:
   m_ObjectHideFlags: 0

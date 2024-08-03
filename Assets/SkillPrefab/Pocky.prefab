@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 489240768068986823}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,13 +45,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfxToThrow:
-  - ActivateTiming: 0.3
-    VFXPrefab: {fileID: 8102753335854976861, guid: 311313742c0c09d4d931b1e5b999fc49,
-      type: 3}
-    StartFromOrigin: 1
+  - ActivateTiming: 0.45
+    VFXPrefab: {fileID: 102696, guid: 185035e4680c4b344b62bf5ace4674b8, type: 3}
+    StartFromOrigin: 0
     SkillDuration: 0.733
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   animationToPlay: 25
   axieAnimationTiming: 0
   statusEffectsTiming: 0
   totalDuration: 0.8
   attackAudioTiming: 0
+  DontPlayAnimation: 0

@@ -56,8 +56,7 @@ MonoBehaviour:
       GoTo: {x: 0, y: 0, z: 0}
       Time: 0
   - ActivateTiming: 0.9
-    VFXPrefab: {fileID: 804883920830582702, guid: 5a73bc7e0f96a304a833dc96a6be87c2,
-      type: 3}
+    VFXPrefab: {fileID: 139844, guid: bd9cbf3a6ae77524788b4bbdb5422498, type: 3}
     StartFromOrigin: 0
     SkillDuration: 1
     AnimationMove:

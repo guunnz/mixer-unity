@@ -20,7 +20,6 @@ public class ProjectileMover : MonoBehaviour
             Debug.LogError("Target is not set.");
             return;
         }
-
         Invoke("Destroy", duration + 0.15f);
 
         // Cancel the existing tween if it's still running
@@ -32,7 +31,7 @@ public class ProjectileMover : MonoBehaviour
         Vector3 startPosition = transform.position;
         Vector3 endPosition = target.position;
 
-        tween = DOTween.To(() => 0f, value =>
+        tween = DOTween.To(() => .01f, value =>
         {
             if (target != null)
                 endPosition = target.position;
@@ -58,7 +57,6 @@ public class ProjectileMover : MonoBehaviour
 
         Vector3 startPosition = transform.position;
         Vector3 endPosition = target;
-
         tween = DOTween.To(() => 0f, value =>
         {
             float height = trajectoryCurve.Evaluate(value);

@@ -98,6 +98,7 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 3
   prefab: {fileID: 3133670662096343493, guid: e50305f2adbcb4e43ab09ee788a6375c, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 0
   damage: 105
   shield: 40

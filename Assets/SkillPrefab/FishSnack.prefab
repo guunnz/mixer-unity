@@ -46,22 +46,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxToThrow:
   - ActivateTiming: 0.4
-    VFXPrefab: {fileID: 6956100692228829456, guid: 837e65fbe8247a9459850484bd99e367,
-      type: 3}
+    VFXPrefab: {fileID: 104240, guid: afaa5e50193589145b3cc1d5c84cf5e8, type: 3}
     StartFromOrigin: 0
     SkillDuration: 0
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   - ActivateTiming: 0.5
-    VFXPrefab: {fileID: 6956100692228829456, guid: 837e65fbe8247a9459850484bd99e367,
-      type: 3}
+    VFXPrefab: {fileID: 104240, guid: afaa5e50193589145b3cc1d5c84cf5e8, type: 3}
     StartFromOrigin: 0
     SkillDuration: 0
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   - ActivateTiming: 0.6
-    VFXPrefab: {fileID: 6956100692228829456, guid: 837e65fbe8247a9459850484bd99e367,
-      type: 3}
+    VFXPrefab: {fileID: 104240, guid: afaa5e50193589145b3cc1d5c84cf5e8, type: 3}
     StartFromOrigin: 0
     SkillDuration: 0
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   animationToPlay: 36
   axieAnimationTiming: 0
   statusEffectsTiming: 0
   totalDuration: 1
   attackAudioTiming: 0
+  DontPlayAnimation: 0
