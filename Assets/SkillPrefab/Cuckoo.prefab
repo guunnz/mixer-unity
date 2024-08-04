@@ -47,7 +47,7 @@ MonoBehaviour:
   vfxToThrow:
   - ActivateTiming: 0.2
     VFXPrefab: {fileID: 145256, guid: 351115fec2b50904aaeb012dff7c9e8f, type: 3}
-    StartFromOrigin: 0
+    StartFromOrigin: 1
     SkillDuration: 0.833
     AnimationMove:
       EnableDotweenAnimation: 0
