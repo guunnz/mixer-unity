@@ -46,12 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxToThrow:
   - ActivateTiming: 0.5
-    VFXPrefab: {fileID: 8102753335854976861, guid: 311313742c0c09d4d931b1e5b999fc49,
-      type: 3}
-    StartFromOrigin: 1
+    VFXPrefab: {fileID: 112506, guid: 625fd74b8294443449d2aded4ac87947, type: 3}
+    StartFromOrigin: 0
     SkillDuration: 0.833
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   animationToPlay: 37
   axieAnimationTiming: 0
   statusEffectsTiming: 0
   totalDuration: 0.833
   attackAudioTiming: 0
+  DontPlayAnimation: 0

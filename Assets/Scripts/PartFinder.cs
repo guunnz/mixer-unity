@@ -33,10 +33,18 @@ public static class PartFinder
         partsData = JsonUtility.FromJson<PartsData>("{\"parts\":" + jsonData + "}");
     }
 
-    public static string GetOriginalPartId(string abilityId)
+    public static string GetOriginalPartId(string abilityId, string partName)
     {
         var matchedParts = partsData.parts.Where(p => p.ability_id == abilityId).ToList();
         var originalPart = matchedParts.FirstOrDefault(p => string.IsNullOrEmpty(p.special_genes));
+
+        if (originalPart == null)
+        {
+            originalPart = matchedParts.FirstOrDefault(p => p.name.ToLower() == partName);
+            abilityId = originalPart.ability_id;
+            matchedParts = partsData.parts.Where(p => p.ability_id == abilityId).ToList();
+            originalPart = matchedParts.FirstOrDefault(p => string.IsNullOrEmpty(p.special_genes));
+        }
 
         return originalPart?.part_id ?? "No original part found";
     }

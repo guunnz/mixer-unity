@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2179489554462401005
+--- !u!1 &8593578658295523109
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7429045975319698421}
-  - component: {fileID: 5544408446350871265}
+  - component: {fileID: 5206423924341413831}
+  - component: {fileID: 1433551083429219915}
   m_Layer: 0
-  m_Name: Watermelon
+  m_Name: SilenceWhisper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7429045975319698421
+--- !u!4 &5206423924341413831
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2179489554462401005}
+  m_GameObject: {fileID: 8593578658295523109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.0932848, y: 2.967022, z: -8.352276}
@@ -32,13 +32,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5544408446350871265
+--- !u!114 &1433551083429219915
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2179489554462401005}
+  m_GameObject: {fileID: 8593578658295523109}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24482be902b2e4444a03c66aa57da3c6, type: 3}
@@ -46,28 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxToThrow:
   - ActivateTiming: 0
-    VFXPrefab: {fileID: 8710617312601893163, guid: 170d005002888c140a804ca12c486b83,
-      type: 3}
-    StartFromOrigin: 0
-    SkillDuration: 0.833
+    VFXPrefab: {fileID: 185744, guid: b88a52d0de3924c4db6011de30ecccd0, type: 3}
+    StartFromOrigin: 1
+    SkillDuration: 0
     AnimationMove:
       EnableDotweenAnimation: 0
       StartFromExtra: {x: 0, y: 0, z: 0}
       GoTo: {x: 0, y: 0, z: 0}
       Time: 0
-  - ActivateTiming: 0.5
-    VFXPrefab: {fileID: 5290070807105371901, guid: 793724a73daf1814f9890afbf8cac95f,
-      type: 3}
-    StartFromOrigin: 0
-    SkillDuration: 0.833
-    AnimationMove:
-      EnableDotweenAnimation: 0
-      StartFromExtra: {x: 0, y: 0, z: 0}
-      GoTo: {x: 0, y: 0, z: 0}
-      Time: 0
-  animationToPlay: 2
+  animationToPlay: 12
   axieAnimationTiming: 0
   statusEffectsTiming: 0
-  totalDuration: 1
+  totalDuration: 0.6
   attackAudioTiming: 0
   DontPlayAnimation: 0

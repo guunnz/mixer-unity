@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5d0078e723b4bbc204125e4e7071, type: 3}
   m_Name: Rose Bud
   m_EditorClassIdentifier: 
-  skillName: 31
+  skillName: 115
   skillEffects:
   - statusEffect: 0
     statusApplyType: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 2
   prefab: {fileID: 8593578658295523109, guid: 18041e17ccf3b9c47b62742b06420fb0, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 4
   damage: 0
   shield: 40

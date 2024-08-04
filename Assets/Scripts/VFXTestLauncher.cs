@@ -17,6 +17,8 @@ public class VFXTestLauncher : MonoBehaviour
         {
             AxieBodyPart part =
                 skillList.axieBodyParts.FirstOrDefault(x => x.skillName == skillToCast);
+
+                Debug.Log(skillToCast);
             
             Skill skill = Instantiate(part.prefab).GetComponent<Skill>();
 

@@ -50,8 +50,23 @@ MonoBehaviour:
       type: 3}
     StartFromOrigin: 0
     SkillDuration: 0.733
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
+  - ActivateTiming: 0.3
+    VFXPrefab: {fileID: 127072, guid: 7f45705f5f30d8a45af0fc2eb8c8998a, type: 3}
+    StartFromOrigin: 0
+    SkillDuration: 0.733
+    AnimationMove:
+      EnableDotweenAnimation: 0
+      StartFromExtra: {x: 0, y: 0, z: 0}
+      GoTo: {x: 0, y: 0, z: 0}
+      Time: 0
   animationToPlay: 19
   axieAnimationTiming: 0
   statusEffectsTiming: 0
   totalDuration: 0.733
   attackAudioTiming: 0
+  DontPlayAnimation: 0

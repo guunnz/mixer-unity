@@ -91,7 +91,8 @@ MonoBehaviour:
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
   bodyPart: 2
-  prefab: {fileID: 489240768068986823, guid: 3f808c9919a77ef4d8c7cc46be268840, type: 3}
+  prefab: {fileID: 2179489554462401005, guid: 47af3f65940215c4aa7e8cfb4464b148, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 3
   damage: 20
   shield: 40

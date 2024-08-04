@@ -139,8 +139,9 @@ public class GetAxiesExample : MonoBehaviour
             }
             catch
             {
+                Debug.Log(name);
                 // Fetch the original part name from PartFinder and retry parsing
-                string originalPartName = PartFinder.GetOriginalPartId(abilityId);
+                string originalPartName = PartFinder.GetOriginalPartId(abilityId, name);
                 this.abilityName = ProcessSkillName(originalPartName);
                 SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
             }
