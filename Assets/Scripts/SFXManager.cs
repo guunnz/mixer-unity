@@ -15,6 +15,8 @@ public enum SFXType
     Hit,
     Explosion,
     Buy,
+    Lost,
+    Win,
     // Add more SFX types as needed
 }
 
@@ -64,7 +66,7 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(SFXType type)
+    public void PlaySFX(SFXType type, float volume = 0.1f, bool randomizePitch = true)
     {
         if (sfxLibrary.ContainsKey(type))
         {
@@ -73,9 +75,17 @@ public class SFXManager : MonoBehaviour
             {
                 source.clip = sfxLibrary[type];
                 // Set the pitch with a random variation of 10%
-                source.pitch = 1.0f + UnityEngine.Random.Range(-0.1f, 0.1f);
+                if (randomizePitch)
+                {
+                    source.pitch = 1.0f + UnityEngine.Random.Range(-0.1f, 0.1f);
+
+                }
+                else
+                {
+                    source.pitch = 1;
+                }
                 // Set the volume to maximum
-                source.volume = .1f;
+                source.volume = volume;
                 source.Play();
             }
         }

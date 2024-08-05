@@ -29,10 +29,6 @@ public class SkyMavisLogin : MonoBehaviour
         PartFinder.LoadFromResources();
         loginButton.onClick.AddListener(OnLoginButtonClicked);
 
-        httpListener = new HttpListener();
-        httpListener.Prefixes.Add("http://localhost:3000/");
-        httpListener.Start();
-        ThreadPool.QueueUserWorkItem(StartHttpListener);
     }
 
     private void OnLoginButtonClicked()
@@ -42,6 +38,11 @@ public class SkyMavisLogin : MonoBehaviour
 
     public IEnumerator LogIn(int retries = 5)
     {
+        httpListener = new HttpListener();
+        httpListener.Prefixes.Add("http://localhost:3000/");
+        httpListener.Start();
+        ThreadPool.QueueUserWorkItem(StartHttpListener);
+
         using (UnityWebRequest www = new UnityWebRequest(authorizationEndpoint, "GET"))
         {
             DownloadHandlerBuffer dH = new DownloadHandlerBuffer();

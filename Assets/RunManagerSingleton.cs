@@ -98,6 +98,7 @@ public class RunManagerSingleton : MonoBehaviour
             wins++;
             if (wins >= 12)
             {
+                MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
                 Debug.Log("YOU WON THE RUN");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 return;
@@ -108,13 +109,14 @@ public class RunManagerSingleton : MonoBehaviour
             losses++;
             if (losses >= 3)
             {
+                MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
                 Debug.LogError("YOU LOST THE RUN");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 return;
             }
         }
 
-   
+
 
         results.text = wins.ToString();
 
@@ -128,6 +130,8 @@ public class RunManagerSingleton : MonoBehaviour
 
     public void RemoveCoins(int coinsAmount)
     {
+        skere += coinsAmount * 1.3245f;
+
         coins -= coinsAmount;
 
         coinsText.text = coins.ToString();
@@ -137,20 +141,21 @@ public class RunManagerSingleton : MonoBehaviour
     {
         int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
                                     100f);
-        if ((int)(skere / 1.3245f + coins) != MaxCoinsThisRound)
-        {
-            Debug.LogError("CHEATING");
-        }
-        SFXManager.instance.PlaySFX(SFXType.Buy);
+
         if (coins < price)
             return false;
 
-        skere += price * 1.3245f;
+        if ((int)(Math.Round(skere / 1.3245f, 5) + coins) != MaxCoinsThisRound)
+        {
+            Debug.LogError("CHEATING");
+        }
+
+        SFXManager.instance.PlaySFX(SFXType.Buy);
 
         if (globalUpgrades.Count <= score)
         {
             globalUpgrades.Add(new UpgradeValuesPerRoundList()
-                { team_upgrades_values_per_round = new List<UpgradeAugument>() });
+            { team_upgrades_values_per_round = new List<UpgradeAugument>() });
         }
 
         globalUpgrades[score].team_upgrades_values_per_round

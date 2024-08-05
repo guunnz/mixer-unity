@@ -120,10 +120,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void SteelSword(Team team)
     {
-        var axies = team.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.GetCharactersAll();
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
@@ -270,14 +270,14 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfStun(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.enemyTeam.GetCharactersAll();
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 1 });
+                { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 2 });
             }
         };
 
@@ -286,10 +286,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfSilence(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.enemyTeam.GetCharactersAll();
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
@@ -302,10 +302,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfShock(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.enemyTeam.GetCharactersAll();
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
@@ -318,54 +318,77 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfMediumConcentratedDamage(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.HP);
 
-        Action action = () => { axies.First().axieIngameStats.currentHP *= 0.5f; };
+        Action action = () =>
+        {
+            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.HP);
+            axies.First().axieIngameStats.currentHP *= 0.5f;
+        };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void MediumPotionOfShield(Team team)
     {
-        var axies = team.GetCharactersAll();
 
-        Action action = () => { axies.ForEach(x => x.axieIngameStats.currentShield += 50f); };
+        Action action = () =>
+        {
+
+            var axies = team.GetCharactersAll();
+            axies.ForEach(x => x.axieIngameStats.currentShield += 50f);
+        };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void MediumHastePotion(Team team)
     {
-        var axies = team.GetCharactersAll();
 
-        Action action = () => { axies.ForEach(x => x.stats.speed += 3); };
+        Action action = () =>
+        {
+
+            var axies = team.GetCharactersAll();
+            axies.ForEach(x => x.stats.speed += 3);
+        };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void LargeHastePotion(Team team)
     {
-        var axies = team.GetCharactersAll();
 
-        Action action = () => { axies.ForEach(x => x.stats.speed += 6); };
+        Action action = () =>
+        {
+
+            var axies = team.GetCharactersAll();
+            axies.ForEach(x => x.stats.speed += 6);
+        };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void LargeEnergyPotion(Team team)
     {
-        var axies = team.GetCharactersAll();
 
-        Action action = () => { axies.ForEach(x => x.stats.skill += 6); };
+        Action action = () =>
+        {
+
+            var axies = team.GetCharactersAll();
+            axies.ForEach(x => x.stats.skill += 6);
+        };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void LargePotionOfShield(Team team)
     {
-        var axies = team.GetCharactersAll();
 
-        Action action = () => { axies.ForEach(x => x.axieIngameStats.currentShield += 100f); };
+        Action action = () =>
+        {
+
+            var axies = team.GetCharactersAll();
+            axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
+        };
 
         team.OnBattleStartActions.Add(action);
     }
@@ -394,19 +417,25 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfMediumAreaDamage(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll();
 
-        Action action = () => { axies.ForEach(x => x.axieIngameStats.currentHP *= .9f); };
+
+        Action action = () =>
+        {
+
+            var axies = team.enemyTeam.GetCharactersAll();
+            axies.ForEach(x => x.axieIngameStats.currentHP *= .9f);
+        };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void ShellOfDistraction(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.HP);
 
         Action action = () =>
         {
+            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.HP);
+
             axies.First().axieSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.Stench, Stench = true });
         };
@@ -416,10 +445,23 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfBurn(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.enemyTeam.GetCharactersAll();
+            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            { statusEffect = StatusEffectEnum.Fear }));
+        };
+
+        team.OnBattleStartActions.Add(action);
+    }
+
+    public void ShellOfBlinding(Team team)
+    {
+
+        Action action = () =>
+        {
+            var axies = team.enemyTeam.GetCharactersAll();
             axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.Poison, Poison = true, PoisonStack = 1 }));
         };
@@ -429,10 +471,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void ShellOfSlow(Team team)
     {
-        var axies = team.enemyTeam.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.enemyTeam.GetCharactersAll();
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
@@ -447,10 +489,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void MoonSphere(Team team)
     {
-        var axies = team.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.GetCharactersAll();
             axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.None, RandomEffectIsBuff = true, skillDuration = 1 }));
         };
@@ -460,10 +502,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void RubyBook(Team team)
     {
-        var axies = team.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.GetCharactersAll();
             axies.ForEach(x => x.axieIngameStats.CurrentEnergy = x.axieIngameStats.MaxEnergy * .3f);
         };
 
@@ -592,10 +634,10 @@ public class ShopItemsManager : MonoBehaviour
 
     public void GoldenBook(Team team)
     {
-        var axies = team.GetCharactersAll();
 
         Action action = () =>
         {
+            var axies = team.GetCharactersAll();
             axies.ForEach(x => x.axieIngameStats.CurrentEnergy = x.axieIngameStats.MaxEnergy * .5f);
         };
 

@@ -79,6 +79,12 @@ public class MusicManager : MonoBehaviour
         StartCoroutine(FadeOutMusic(duration));
     }
 
+    public void Stop()
+    {
+        audioSource.Stop();
+        audioSource.volume = 0;
+    }
+
     private IEnumerator FadeMusic(MusicTrack newTrack, float duration)
     {
         if (audioSource.isPlaying)

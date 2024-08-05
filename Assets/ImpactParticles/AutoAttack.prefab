@@ -131,6 +131,7 @@ MonoBehaviour:
   - {fileID: 2555007544578321580}
   - {fileID: 2555007544578308394}
   - {fileID: 2555007544578396530}
+  - {fileID: 2555007544578302346}
 --- !u!114 &8908321942443863640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,6 +603,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomPercent: 10
+--- !u!198 &2555007544578302346 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19825404, guid: e85f4a610ef9e5b4aa9cedce76136489,
+    type: 3}
+  m_PrefabInstance: {fileID: 2555007544563524470}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &2555007544578308394 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 19831388, guid: e85f4a610ef9e5b4aa9cedce76136489,

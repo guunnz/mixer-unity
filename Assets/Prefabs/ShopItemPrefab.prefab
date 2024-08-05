@@ -281,8 +281,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1059255441
+  m_SortingOrder: 5000
   m_TargetDisplay: 0
 --- !u!114 &4571853937328693627
 MonoBehaviour:
@@ -725,6 +725,7 @@ MonoBehaviour:
   sold: 0
   Frozen: 0
   FreezeGraphics: {fileID: 3649322789799370121}
+  PreventSetOnStart: 0
 --- !u!1 &7884864740163041051
 GameObject:
   m_ObjectHideFlags: 0

@@ -81,24 +81,28 @@ public class Team : MonoBehaviour
 
         int randomMusic = Random.Range(0, 5);
 
-        switch (randomMusic)
+        if (isGoodTeam)
         {
-            case 0:
-                MusicManager.Instance.PlayMusic(MusicTrack.Shldslep);
-                break;
-            case 1:
-                MusicManager.Instance.PlayMusic(MusicTrack.GO);
-                break;
-            case 2:
-                MusicManager.Instance.PlayMusic(MusicTrack.PunchiEpic);
-                break;
-            case 3:
-                MusicManager.Instance.PlayMusic(MusicTrack.NeeEtheAhPehro);
-                break;
-            case 4:
-                MusicManager.Instance.PlayMusic(MusicTrack.Laingved);
-                break;
+            switch (randomMusic)
+            {
+                case 0:
+                    MusicManager.Instance.PlayMusic(MusicTrack.Shldslep);
+                    break;
+                case 1:
+                    MusicManager.Instance.PlayMusic(MusicTrack.GO);
+                    break;
+                case 2:
+                    MusicManager.Instance.PlayMusic(MusicTrack.PunchiEpic);
+                    break;
+                case 3:
+                    MusicManager.Instance.PlayMusic(MusicTrack.NeeEtheAhPehro);
+                    break;
+                case 4:
+                    MusicManager.Instance.PlayMusic(MusicTrack.Laingved);
+                    break;
+            }
         }
+
 
         battleEnded = false;
         ChimeraSpawned = false;
@@ -179,6 +183,7 @@ public class Team : MonoBehaviour
         {
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
+
                 battleEnded = true;
                 FightManagerSingleton.Instance.StopFight();
                 BattleOverlay.SetActive(false);
@@ -186,10 +191,15 @@ public class Team : MonoBehaviour
 
                 if (isGoodTeam)
                 {
+                    SFXManager.instance.PlaySFX(SFXType.Lost, 0.3f, false);
+
+                    MusicManager.Instance.Stop();
                     YouWinLose.text = "You Lost.";
                 }
                 else
                 {
+                    SFXManager.instance.PlaySFX(SFXType.Win, 0.3f, false);
+                    MusicManager.Instance.Stop();
                     YouWinLose.text = "You Win!";
                 }
 

@@ -247,12 +247,14 @@ public class AxieBehavior : MonoBehaviour
                     myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / AttackSpeed;
             }
 
+  
+
+            yield return new WaitForSecondsRealtime(AttackSpeed/2f);
+
             if (myController.Range > 1)
                 AutoAttackMaNAGER.instance.SpawnProjectile(myController.transform,
                     myController.CurrentTarget.transform, myController.axieIngameStats.axieClass);
-
-            yield return new WaitForSecondsRealtime(AttackSpeed/2f);
-            if (myController.Range <= 1)
+            else
             {
                 AutoAttackMaNAGER.instance.SpawnAttack(myController.CurrentTarget.transform, myController.axieIngameStats.axieClass);
             }

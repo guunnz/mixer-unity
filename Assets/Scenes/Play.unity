@@ -41756,6 +41756,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 27a8700127d8b7c4db11ba8db913bade, type: 3}
   - type: 3
     clip: {fileID: 8300000, guid: df6e4ba5bdae4344789961f13a18ada3, type: 3}
+  - type: 5
+    clip: {fileID: 8300000, guid: 9e38649f043d84d458f42226d9c6a843, type: 3}
+  - type: 4
+    clip: {fileID: 8300000, guid: bdebdd0713160594ca9c66a8e83cdd6c, type: 3}
 --- !u!1 &1563938151
 GameObject:
   m_ObjectHideFlags: 0
