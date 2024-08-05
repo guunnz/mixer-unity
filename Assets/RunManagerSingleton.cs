@@ -114,14 +114,7 @@ public class RunManagerSingleton : MonoBehaviour
             }
         }
 
-        if (wins == 11 || losses == 2)
-        {
-            MusicManager.Instance.PlayMusic(MusicTrack.NojyHypehu);
-        }
-        else
-        {
-            MusicManager.Instance.PlayMusic(MusicTrack.Ridthabus);
-        }
+   
 
         results.text = wins.ToString();
 
@@ -148,7 +141,7 @@ public class RunManagerSingleton : MonoBehaviour
         {
             Debug.LogError("CHEATING");
         }
-
+        SFXManager.instance.PlaySFX(SFXType.Buy);
         if (coins < price)
             return false;
 

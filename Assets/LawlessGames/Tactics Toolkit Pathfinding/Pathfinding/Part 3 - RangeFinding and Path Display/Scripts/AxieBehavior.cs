@@ -247,14 +247,16 @@ public class AxieBehavior : MonoBehaviour
                     myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / AttackSpeed;
             }
 
-            if (myController.axieIngameStats.axieClass == AxieClass.Bird ||
-                myController.axieIngameStats.axieClass == AxieClass.Dusk ||
-                myController.axieIngameStats.axieClass == AxieClass.Bug)
-                AutoAttackMaNAGER.instance.SpawnProjectileBird(myController.transform,
-                    myController.CurrentTarget.transform);
+            if (myController.Range > 1)
+                AutoAttackMaNAGER.instance.SpawnProjectile(myController.transform,
+                    myController.CurrentTarget.transform, myController.axieIngameStats.axieClass);
 
-            yield return new WaitForSecondsRealtime(AttackSpeed);
-
+            yield return new WaitForSecondsRealtime(AttackSpeed/2f);
+            if (myController.Range <= 1)
+            {
+                AutoAttackMaNAGER.instance.SpawnAttack(myController.CurrentTarget.transform, myController.axieIngameStats.axieClass);
+            }
+            yield return new WaitForSecondsRealtime(AttackSpeed / 2f);
             if (myController.CurrentTarget != null)
             {
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))

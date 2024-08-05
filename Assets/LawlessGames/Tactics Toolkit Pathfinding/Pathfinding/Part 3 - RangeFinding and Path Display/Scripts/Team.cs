@@ -99,7 +99,7 @@ public class Team : MonoBehaviour
                 MusicManager.Instance.PlayMusic(MusicTrack.Laingved);
                 break;
         }
-        
+
         battleEnded = false;
         ChimeraSpawned = false;
         battleStarted = true;
@@ -217,8 +217,8 @@ public class Team : MonoBehaviour
                     {
                         RunManagerSingleton.instance.SetResult(true);
                     }
-                    
-                    
+
+
                     YouWinLose.gameObject.SetActive(false);
                     if (isGoodTeam)
                     {
@@ -338,16 +338,16 @@ public class Team : MonoBehaviour
             {
                 if (distanceToClosestCharacterGrid <= (int)character.axieIngameStats.Range)
                 {
-                    if (state.path == null || state.path.Count == 0)
+                    state.path = null;
+
+                    var step = speed * Time.fixedDeltaTime;
+                    if (Vector3.Distance(character.transform.position,
+                            character.standingOnTile.transform.position) > 0.1f)
                     {
-                        var step = speed * Time.fixedDeltaTime;
-                        if (Vector3.Distance(character.transform.position,
-                                character.standingOnTile.transform.position) > 0.1f)
-                        {
-                            character.transform.position = Vector3.MoveTowards(character.transform.position,
-                                character.standingOnTile.transform.position, step);
-                        }
+                        character.transform.position = Vector3.MoveTowards(character.transform.position,
+                            character.standingOnTile.transform.position, step);
                     }
+
 
                     state.isMoving = false;
                     return;

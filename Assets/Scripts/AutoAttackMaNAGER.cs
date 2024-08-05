@@ -8,6 +8,7 @@ public class AutoAttackMaNAGER : MonoBehaviour
     static public AutoAttackMaNAGER instance;
 
     public GameObject ProjectileBird;
+    public GameObject MeleeAttack;
 
     private void Awake()
     {
@@ -20,11 +21,21 @@ public class AutoAttackMaNAGER : MonoBehaviour
         instance = this;
     }
 
-    public void SpawnProjectileBird(Transform fromPos, Transform targetPos)
+    public void SpawnProjectile(Transform fromPos, Transform targetPos, AxieClass @class)
     {
         ProjectileMover projectileMover =
             Instantiate(ProjectileBird, fromPos.transform.position, ProjectileBird.transform.rotation, null)
                 .GetComponent<ProjectileMover>();
+
+        projectileMover.GetComponent<ProjectileColor>().SetColor(@class);
         projectileMover.MoveToTarget(targetPos, 0.56f);
+    }
+
+    public void SpawnAttack(Transform targetPos, AxieClass @class)
+    {
+        MeleeAttack attack = Instantiate(MeleeAttack, targetPos.transform.position, Quaternion.identity, null)
+                .GetComponent<MeleeAttack>();
+
+        attack.gameObject.GetComponent<ProjectileColor>().SetColor(@class);
     }
 }

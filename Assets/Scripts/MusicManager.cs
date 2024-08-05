@@ -102,18 +102,20 @@ public class MusicManager : MonoBehaviour
         }
 
         audioSource.Stop();
-        audioSource.volume = startVolume;
+        audioSource.volume = 0;
     }
 
     private IEnumerator FadeInMusic(float duration)
     {
-        float targetVolume = 1.0f;
+        float targetVolume = .2f;
         audioSource.volume = 0;
 
-        while (audioSource.volume < targetVolume)
+        while (audioSource.volume < targetVolume - 0.04)
         {
             audioSource.volume += targetVolume * Time.deltaTime / duration;
             yield return null;
         }
+
+        audioSource.volume = targetVolume;
     }
 }

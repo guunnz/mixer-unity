@@ -40,7 +40,8 @@ public static class PartFinder
 
         if (originalPart == null)
         {
-            originalPart = matchedParts.FirstOrDefault(p => p.name.ToLower() == partName);
+            matchedParts = partsData.parts.Where(p => p.name.ToLower() == partName.ToLower()).ToList();
+            originalPart = matchedParts.FirstOrDefault(p => p.name.ToLower() == partName.ToLower());
             abilityId = originalPart.ability_id;
             matchedParts = partsData.parts.Where(p => p.ability_id == abilityId).ToList();
             originalPart = matchedParts.FirstOrDefault(p => string.IsNullOrEmpty(p.special_genes));

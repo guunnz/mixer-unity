@@ -14,6 +14,7 @@ public enum SFXType
     Jump,
     Hit,
     Explosion,
+    Buy,
     // Add more SFX types as needed
 }
 
@@ -24,6 +25,18 @@ public class SFXManager : MonoBehaviour
     private Dictionary<SFXType, AudioClip> sfxLibrary;
     private List<AudioSource> audioSourcePool;
     private int poolSize = 10; // Adjust pool size based on expected needs
+    static public SFXManager instance;
+
+    private void Start()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            return;
+        }
+        Destroy(this.gameObject);
+
+    }
 
     private void Awake()
     {
@@ -59,6 +72,10 @@ public class SFXManager : MonoBehaviour
             if (source != null)
             {
                 source.clip = sfxLibrary[type];
+                // Set the pitch with a random variation of 10%
+                source.pitch = 1.0f + UnityEngine.Random.Range(-0.1f, 0.1f);
+                // Set the volume to maximum
+                source.volume = .1f;
                 source.Play();
             }
         }

@@ -157,7 +157,7 @@ namespace enemies
                     axieEnemy.stats, axieForBackend, axieList, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
-
+            MusicManager.Instance.FadeOut(1);
             while (axieSpawner.enemyTeam.GetCharacters().Count != 5)
             {
                 yield return null;

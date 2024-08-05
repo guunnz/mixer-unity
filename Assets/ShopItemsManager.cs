@@ -127,7 +127,7 @@ public class ShopItemsManager : MonoBehaviour
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                    { statusEffect = StatusEffectEnum.AttackPositive, Attack = 1, skillDuration = 99999 });
+                { statusEffect = StatusEffectEnum.AttackPositive, Attack = 1, skillDuration = 99999 });
             }
         };
 
@@ -139,6 +139,13 @@ public class ShopItemsManager : MonoBehaviour
         var axies = team.GetCharactersAll();
 
         axies.ForEach(axie => { axie.stats.morale += 3; });
+    }
+
+    public void SteelBoots(Team team)
+    {
+        var axies = team.GetCharactersAll();
+
+        axies.ForEach(axie => { axie.stats.speed += 3; });
     }
 
     public void SteelArrow(Team team)
@@ -250,7 +257,7 @@ public class ShopItemsManager : MonoBehaviour
         foreach (var axieController in axies)
         {
             axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.AttackPositive, Attack = 3 });
+            { statusEffect = StatusEffectEnum.AttackPositive, Attack = 3 });
         }
     }
 
@@ -270,7 +277,7 @@ public class ShopItemsManager : MonoBehaviour
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                    { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 1 });
+                { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 1 });
             }
         };
 
@@ -286,7 +293,7 @@ public class ShopItemsManager : MonoBehaviour
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                    { statusEffect = StatusEffectEnum.SpeedNegative, Speed = -1, skillDuration = 1 });
+                { statusEffect = StatusEffectEnum.SpeedNegative, Speed = -1, skillDuration = 1 });
             }
         };
 
@@ -302,7 +309,7 @@ public class ShopItemsManager : MonoBehaviour
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                    { statusEffect = StatusEffectEnum.None, ApplyRandomEffect = true, skillDuration = 1 });
+                { statusEffect = StatusEffectEnum.None, ApplyRandomEffect = true, skillDuration = 1 });
             }
         };
 
@@ -370,6 +377,14 @@ public class ShopItemsManager : MonoBehaviour
         axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 20);
     }
 
+
+    public void SteelArmor(Team team)
+    {
+        var axies = team.GetCharactersAll();
+
+        axies.ForEach(x => x.axieSkillController.passives.MeleeReflectDamageAmount += 20);
+    }
+
     public void MeatPie(Team team)
     {
         var axies = team.GetCharactersAll();
@@ -393,7 +408,7 @@ public class ShopItemsManager : MonoBehaviour
         Action action = () =>
         {
             axies.First().axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.Stench, Stench = true });
+            { statusEffect = StatusEffectEnum.Stench, Stench = true });
         };
 
         team.OnBattleStartActions.Add(action);
@@ -406,24 +421,29 @@ public class ShopItemsManager : MonoBehaviour
         Action action = () =>
         {
             axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.Poison, Poison = true, PoisonStack = 1 }));
+            { statusEffect = StatusEffectEnum.Poison, Poison = true, PoisonStack = 1 }));
         };
 
         team.OnBattleStartActions.Add(action);
     }
 
-    public void ShellOfBlinding(Team team)
+    public void ShellOfSlow(Team team)
     {
         var axies = team.enemyTeam.GetCharactersAll();
 
         Action action = () =>
         {
-            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.Fear, Fear = true, skillDuration = 1 }));
+            foreach (var axieController in axies)
+            {
+                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                { statusEffect = StatusEffectEnum.SpeedNegative });
+            }
         };
 
         team.OnBattleStartActions.Add(action);
     }
+
+
 
     public void MoonSphere(Team team)
     {
@@ -432,7 +452,7 @@ public class ShopItemsManager : MonoBehaviour
         Action action = () =>
         {
             axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.None, RandomEffectIsBuff = true, skillDuration = 1 }));
+            { statusEffect = StatusEffectEnum.None, RandomEffectIsBuff = true, skillDuration = 1 }));
         };
 
         team.OnBattleStartActions.Add(action);

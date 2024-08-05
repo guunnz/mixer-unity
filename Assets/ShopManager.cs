@@ -39,6 +39,14 @@ public class ShopManager : MonoBehaviour
 
     public void SetShop()
     {
+        if (RunManagerSingleton.instance.wins == 11 || RunManagerSingleton.instance.losses == 2)
+        {
+            MusicManager.Instance.PlayMusic(MusicTrack.NojyHypehu);
+        }
+        else
+        {
+            MusicManager.Instance.PlayMusic(MusicTrack.Ridthabus);
+        }
         if (rm == null)
         {
             rm = RunManagerSingleton.instance;
@@ -50,7 +58,7 @@ public class ShopManager : MonoBehaviour
 
     public void PressRollShop()
     {
-        if (RunManagerSingleton.instance.coins < rm.economyPassive.RollCost)
+        if (RunManagerSingleton.instance.coins < RollCost)
             return;
 
         if (indexesRolled.Count >= 6)
@@ -58,7 +66,7 @@ public class ShopManager : MonoBehaviour
             indexesRolled = new List<int>();
         }
 
-        RunManagerSingleton.instance.RemoveCoins(rm.economyPassive.RollCost);
+        RunManagerSingleton.instance.RemoveCoins(RollCost);
 
         RunManagerSingleton.instance.economyPassive.RollsThisRound++;
 
@@ -72,8 +80,8 @@ public class ShopManager : MonoBehaviour
         {
             RollCost = 0;
         }
-        else if (rm.economyPassive.RollsFreePerRound != 0 &&
-                 rm.economyPassive.RollsThisRound % rm.economyPassive.FreeRerollEveryXRolls == 0)
+        else if (rm.economyPassive.RollsFreePerRound != 0 && rm.economyPassive.RollsThisRound == 0 || rm.economyPassive.RollsThisRound != 0 &&
+                 rm.economyPassive.FreeRerollEveryXRolls != 0 && rm.economyPassive.RollsThisRound % rm.economyPassive.FreeRerollEveryXRolls == 0)
         {
             RollCost = 0;
         }
