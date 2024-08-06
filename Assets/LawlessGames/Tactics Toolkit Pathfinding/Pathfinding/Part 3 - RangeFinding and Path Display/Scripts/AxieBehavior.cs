@@ -111,9 +111,8 @@ public class AxieBehavior : MonoBehaviour
             case AxieState.Casting:
                 if (myController.CurrentTarget != null)
                 {
-                    if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() &&
-                        !myController.enemyTeam.GetCharacters()
-                            .All(x => x.axieSkillEffectManager.IsStenched()))
+                    var characters = myController.CurrentTarget.myTeam.GetCharacters();
+                    if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                     {
                         state = AxieState.Idle;
                         axieState = state;
@@ -232,7 +231,8 @@ public class AxieBehavior : MonoBehaviour
         {
             if (myController.CurrentTarget != null)
             {
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
+                var characters = myController.CurrentTarget.myTeam.GetCharacters();
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -261,7 +261,8 @@ public class AxieBehavior : MonoBehaviour
             yield return new WaitForSecondsRealtime(AttackSpeed / 2f);
             if (myController.CurrentTarget != null)
             {
-                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && !myController.enemyTeam.GetCharacters().All(x => x.axieSkillEffectManager.IsStenched()))
+                var characters = myController.CurrentTarget.myTeam.GetCharacters();
+                if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
                     myController.CurrentTarget = null;
@@ -275,7 +276,7 @@ public class AxieBehavior : MonoBehaviour
 
             if (axieSkillEffectManager.IsFeared())
             {
-                Debug.Log("Missed!");
+                //Debug.Log("Missed!");
             }
             else
             {

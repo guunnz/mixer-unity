@@ -78,7 +78,7 @@ public class Team : MonoBehaviour
 
     public void StartBattle()
     {
-
+        this.GetCharactersAll().ForEach(x => x.axieIngameStats.CurrentEnergy = 0);
         int randomMusic = Random.Range(0, 5);
 
         if (isGoodTeam)
@@ -184,24 +184,29 @@ public class Team : MonoBehaviour
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
 
-                battleEnded = true;
-                FightManagerSingleton.Instance.StopFight();
-                BattleOverlay.SetActive(false);
-                YouWinLose.gameObject.SetActive(true);
-
-                if (isGoodTeam)
+                if (!battleEnded)
                 {
-                    SFXManager.instance.PlaySFX(SFXType.Lost, 0.3f, false);
+                    battleEnded = true;
+                    FightManagerSingleton.Instance.StopFight();
+                    BattleOverlay.SetActive(false);
+                    YouWinLose.gameObject.SetActive(true);
 
-                    MusicManager.Instance.Stop();
-                    YouWinLose.text = "You Lost.";
+                    if (isGoodTeam)
+                    {
+                        Debug.Log("SFX PLAYED");
+                        SFXManager.instance.PlaySFX(SFXType.Lost, 0.12f, false);
+                        MusicManager.Instance.Stop();
+                        YouWinLose.text = "You Lost.";
+                    }
+                    else
+                    {
+                        Debug.Log("SFX PLAYED");
+                        SFXManager.instance.PlaySFX(SFXType.Win, 0.12f, false);
+                        MusicManager.Instance.Stop();
+                        YouWinLose.text = "You Win!";
+                    }
                 }
-                else
-                {
-                    SFXManager.instance.PlaySFX(SFXType.Win, 0.3f, false);
-                    MusicManager.Instance.Stop();
-                    YouWinLose.text = "You Win!";
-                }
+
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -416,7 +421,7 @@ public class Team : MonoBehaviour
         float minTransformDistance = float.MaxValue;
 
         var characters = enemyTeam.GetCharacters();
-        if (!characters.All(x => x.axieSkillEffectManager.IsStenched()))
+        if (characters.Any(x => x.axieSkillEffectManager.IsStenched()))
         {
             characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
         }

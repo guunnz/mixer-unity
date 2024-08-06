@@ -70,7 +70,7 @@ public enum SkillName
     Cactus,
     Kendama,
     LittleBranch,
-    Rosebud,
+    RosebudUNUSED,
     Beech,
     Arco,
     Shoal,

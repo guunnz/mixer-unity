@@ -39,7 +39,6 @@ public class MusicManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -113,7 +112,7 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator FadeInMusic(float duration)
     {
-        float targetVolume = .2f;
+        float targetVolume = 0.06f;
         audioSource.volume = 0;
 
         while (audioSource.volume < targetVolume - 0.04)

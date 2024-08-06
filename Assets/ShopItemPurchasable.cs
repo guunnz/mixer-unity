@@ -35,7 +35,7 @@ public class ShopItemPurchasable : MonoBehaviour
         shopItem = item;
         Poping.text = item.description;
         ItemName.text = item.ShopItemName;
-        ItemCost.text = item.price.ToString();
+        ItemCost.text = Math.Floor(item.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage / 100f).ToString();
         itemImage.sprite = item.ShopItemImage;
         ItemEffect = item.ItemEffectName;
     }

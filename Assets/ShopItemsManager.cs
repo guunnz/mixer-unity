@@ -293,7 +293,7 @@ public class ShopItemsManager : MonoBehaviour
             foreach (var axieController in axies)
             {
                 axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-                { statusEffect = StatusEffectEnum.SpeedNegative, Speed = -1, skillDuration = 1 });
+                { statusEffect = StatusEffectEnum.Jinx });
             }
         };
 
@@ -565,7 +565,7 @@ public class ShopItemsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.Range += 2; });
+        axies.ForEach(axie => { axie.Range += 2; axie.axieIngameStats.Range += 2; });
     }
 
     public void GoldEmeraldNecklace(Team team)

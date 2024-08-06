@@ -66,7 +66,7 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(SFXType type, float volume = 0.1f, bool randomizePitch = true)
+    public void PlaySFX(SFXType type, float volume = 0.06f, bool randomizePitch = true)
     {
         if (sfxLibrary.ContainsKey(type))
         {
@@ -77,7 +77,7 @@ public class SFXManager : MonoBehaviour
                 // Set the pitch with a random variation of 10%
                 if (randomizePitch)
                 {
-                    source.pitch = 1.0f + UnityEngine.Random.Range(-0.1f, 0.1f);
+                    source.pitch = 1.0f + UnityEngine.Random.Range(-0.3f, 0.3f);
 
                 }
                 else

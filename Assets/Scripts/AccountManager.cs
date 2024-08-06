@@ -27,9 +27,16 @@ public class AccountManager : MonoBehaviour
         IncorrectWallet.DOColor(Color.white, 0.2f);
         yield return new WaitForSeconds(1);
         IncorrectWallet.DOColor(Color.clear, 0.2f);
+
+    }
+ 
+
+    private void Start()
+    {
+        StartCoroutine(PerformLogin());
     }
 
-    private IEnumerator Start()
+    private IEnumerator PerformLogin()
     {
         yield return new WaitForSeconds(0.1f);
         string lastWallet = PlayerPrefs.GetString("LastWallet");
@@ -37,13 +44,6 @@ public class AccountManager : MonoBehaviour
             LoginAccount(PlayerPrefs.GetString(wallet));
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            SceneManager.LoadScene(0);
-        }
-    }
 
     public void LoginAccount(string userInfoResponse)
     {
@@ -138,6 +138,15 @@ public class AccountManager : MonoBehaviour
             }
 
             userLands = new GetAxiesExample.Lands();
+
+            GetAxiesExample.Land f2pLand = new GetAxiesExample.Land();
+
+            f2pLand.tokenId = "11111111";
+            f2pLand.landType = "axiepark";
+            f2pLand.col = "0";
+            f2pLand.row = "0";
+            lands.Add(f2pLand);
+
             userLands.results = lands.ToArray();
             loadLand();
             TeamManager.instance.LoadLastAccountAxies();

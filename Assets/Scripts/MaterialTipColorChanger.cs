@@ -9,7 +9,8 @@ public enum LandType
     forest,
     arctic,
     mystic,
-    genesis
+    genesis,
+    axiepark
 }
 
 public class MaterialTipColorChanger : MonoBehaviour
@@ -80,6 +81,7 @@ public class MaterialTipColorChanger : MonoBehaviour
                         RandomRange(arcticColorMin.z, arcticColorMax.z));
                     break;
                 case LandType.forest:
+                case LandType.axiepark:
                     color = new Color(RandomRange(forestColorMin.x, forestColorMax.x),
                         RandomRange(forestColorMin.y, forestColorMax.y),
                         RandomRange(forestColorMin.z, forestColorMax.z));

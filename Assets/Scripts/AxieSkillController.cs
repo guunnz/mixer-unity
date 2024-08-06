@@ -60,11 +60,6 @@ public class AxieSkillController : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            CreateTesting();
-        }
-
         if (self != null && self.goodTeam != null)
         {
             if (self.goodTeam.battleStarted)

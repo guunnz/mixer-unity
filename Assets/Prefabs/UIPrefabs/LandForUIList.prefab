@@ -145,11 +145,14 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: 83bd110addf3d9b42bdc9b9fa655dfd3, type: 3}
   - landType: 4
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
+  - landType: 5
+    landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
   land:
     landType: 
     tokenId: 
     col: 
     row: 
+  teamBuilderManager: {fileID: 0}
   landImage: {fileID: 7566430961767311501}
   selectedImage: {fileID: 6938242360524411563}
   selectedSprite: {fileID: 21300000, guid: 76a58eebf00cc3c468c57a6f09bb5712, type: 3}

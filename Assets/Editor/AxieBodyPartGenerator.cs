@@ -48,7 +48,7 @@ public static class AxieBodyPartsGenerator
             { SkillName.Cactus, BodyPart.Horn },
             { SkillName.Kendama, BodyPart.Horn },
             { SkillName.LittleBranch, BodyPart.Horn },
-            { SkillName.Rosebud, BodyPart.Horn },
+            { SkillName.RoseBud, BodyPart.Horn },
             { SkillName.Beech, BodyPart.Horn },
             { SkillName.Arco, BodyPart.Horn },
             { SkillName.Shoal, BodyPart.Horn },
