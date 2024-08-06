@@ -67,10 +67,12 @@ namespace Game
             }
 
             Instance = this;
+
         }
 
         private void Start()
         {
+            Mixer.initialized = false;
             Mixer.Init();
         }
 
@@ -110,7 +112,6 @@ namespace Game
                 {
                     JObject jResult = JObject.Parse(result);
                     string genesStr = (string)jResult["data"]["axie"]["newGenes"];
-                    Debug.Log(genesStr);
                     ProcessMixer(axieId, genesStr, USE_GRAPHIC, @class, stats, axieForBackend, axieEnemies, isOpponent);
                 }
             }

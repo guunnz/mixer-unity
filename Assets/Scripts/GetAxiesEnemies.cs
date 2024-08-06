@@ -198,7 +198,6 @@ namespace enemies
             public string Genes { get; set; }
             public string id { get; set; }
             public string Class { get; set; }
-
             public AxieClass axieClass => (AxieClass)Enum.Parse(typeof(AxieClass), Class);
             public List<GetAxiesExample.Part> Parts { get; set; }
             public GetAxiesExample.Stats stats { get; set; }

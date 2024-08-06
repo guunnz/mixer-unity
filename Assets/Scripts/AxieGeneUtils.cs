@@ -107,52 +107,62 @@ public class AxieGeneUtils
 
     public static List<string> ParsePartIdsFromHex(string hex)
     {
-        string hexBin = "";
-        hex = hex.Replace("0x", "");
-        hexBin = String.Join(String.Empty,
-            hex.Select(
-                c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')
-            )
-        );
-        hexBin = hexBin.PadLeft(hexType == HexType.Bit256 ? 256 : 512, '0');
-        GeneBinGroup geneBinGroup = new GeneBinGroup
+        try
         {
-            cls = hexType == HexType.Bit256
-                ? hexBin.Substring(0, 4)
-                : hexBin.Substring(0, 5),
-            region = hexType == HexType.Bit256
-                ? hexBin.Substring(8, 5)
-                : hexBin.Substring(22, 18),
-            xMas = hexType == HexType.Bit256 ? hexBin.Substring(22, 12) : "",
-            eyes = hexType == HexType.Bit256
-                ? hexBin.Substring(64, 32)
-                : hexBin.Substring(149, 43),
-            mouth = hexType == HexType.Bit256
-                ? hexBin.Substring(96, 32)
-                : hexBin.Substring(213, 43),
-            ears = hexType == HexType.Bit256
-                ? hexBin.Substring(128, 32)
-                : hexBin.Substring(277, 43),
-            horn = hexType == HexType.Bit256
-                ? hexBin.Substring(160, 32)
-                : hexBin.Substring(341, 43),
-            back = hexType == HexType.Bit256
-                ? hexBin.Substring(192, 32)
-                : hexBin.Substring(405, 43),
-            tail = hexType == HexType.Bit256
-                ? hexBin.Substring(224, 32)
-                : hexBin.Substring(469, 43),
-        };
+            string hexBin = "";
+            hex = hex.Replace("0x", "");
+            hexBin = String.Join(String.Empty,
+                hex.Select(
+                    c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')
+                )
+            );
+            hexBin = hexBin.PadLeft(hexType == HexType.Bit256 ? 256 : 512, '0');
+            GeneBinGroup geneBinGroup = new GeneBinGroup
+            {
+                cls = hexType == HexType.Bit256
+                    ? hexBin.Substring(0, 4)
+                    : hexBin.Substring(0, 5),
+                region = hexType == HexType.Bit256
+                    ? hexBin.Substring(8, 5)
+                    : hexBin.Substring(22, 18),
+                xMas = hexType == HexType.Bit256 ? hexBin.Substring(22, 12) : "",
+                eyes = hexType == HexType.Bit256
+                    ? hexBin.Substring(64, 32)
+                    : hexBin.Substring(149, 43),
+                mouth = hexType == HexType.Bit256
+                    ? hexBin.Substring(96, 32)
+                    : hexBin.Substring(213, 43),
+                ears = hexType == HexType.Bit256
+                    ? hexBin.Substring(128, 32)
+                    : hexBin.Substring(277, 43),
+                horn = hexType == HexType.Bit256
+                    ? hexBin.Substring(160, 32)
+                    : hexBin.Substring(341, 43),
+                back = hexType == HexType.Bit256
+                    ? hexBin.Substring(192, 32)
+                    : hexBin.Substring(405, 43),
+                tail = hexType == HexType.Bit256
+                    ? hexBin.Substring(224, 32)
+                    : hexBin.Substring(469, 43),
+            };
 
-        Cls cls = parsePartClass(geneBinGroup.cls);
-        List<string> lst = new List<string>();
-        lst.Add(parsePart(geneBinGroup, geneBinGroup.eyes, PartType.eyes));
-        lst.Add(parsePart(geneBinGroup, geneBinGroup.ears, PartType.ears));
-        lst.Add(parsePart(geneBinGroup, geneBinGroup.horn, PartType.horn));
-        lst.Add(parsePart(geneBinGroup, geneBinGroup.mouth, PartType.mouth));
-        lst.Add(parsePart(geneBinGroup, geneBinGroup.back, PartType.back));
-        lst.Add(parsePart(geneBinGroup, geneBinGroup.tail, PartType.tail));
-        return lst;
+            Cls cls = parsePartClass(geneBinGroup.cls);
+            List<string> lst = new List<string>();
+            lst.Add(parsePart(geneBinGroup, geneBinGroup.eyes, PartType.eyes));
+            lst.Add(parsePart(geneBinGroup, geneBinGroup.ears, PartType.ears));
+            lst.Add(parsePart(geneBinGroup, geneBinGroup.horn, PartType.horn));
+            lst.Add(parsePart(geneBinGroup, geneBinGroup.mouth, PartType.mouth));
+            lst.Add(parsePart(geneBinGroup, geneBinGroup.back, PartType.back));
+            lst.Add(parsePart(geneBinGroup, geneBinGroup.tail, PartType.tail));
+            return lst;
+
+        }
+        catch (Exception ex)
+        {
+            return null;
+            Debug.LogError(ex.Message);
+            Debug.Log("Parse ID From Hex");
+        }
     }
 
     private static Cls parsePartClass(string bin)
@@ -339,7 +349,7 @@ public class AxieGeneUtils
         return extractedParts;
     }
 
-    public static  GetAxiesExample.Stats GetStatsByGenes(string genes)
+    public static GetAxiesExample.Stats GetStatsByGenes(string genes)
     {
         List<string> parts = AxieGeneUtils.ParsePartIdsFromHex(genes);
 
@@ -349,7 +359,7 @@ public class AxieGeneUtils
         var stats = AxieGeneUtils.GetStats(extractedParts); // Update this line if needed to pass the correct parts
 
         return new GetAxiesExample.Stats()
-            { hp = stats.Item1, speed = stats.Item2, skill = stats.Item3, morale = stats.Item4 };
+        { hp = stats.Item1, speed = stats.Item2, skill = stats.Item3, morale = stats.Item4 };
     }
 }
 

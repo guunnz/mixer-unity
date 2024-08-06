@@ -7,7 +7,6 @@ public class InitializationSystem : MonoBehaviour
 {
     void Start()
     {
-        Mixer.initialized = false;
         Mixer.Init();
     }
 }

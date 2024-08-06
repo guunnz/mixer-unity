@@ -2,7 +2,6 @@
 using System.Linq;
 using AxieCore.AxieMixer;
 using Spine.Unity;
-using System;
 using UnityEngine;
 
 namespace AxieMixer.Unity {
@@ -21,7 +20,9 @@ namespace AxieMixer.Unity {
             public IAxieGenesStuff axieGenesStuff;
             public IAxieMixerStuff axieMixerStuff;
             public Material sampleGraphicMaterial;
+            public Material sampleGraphicLinearMaterial;
             public Dictionary<string, Material> materials = new Dictionary<string, Material>();
+            public Dictionary<string, Material> variantMaterials = new Dictionary<string, Material>();
         }
         SingleStuff[ ] stuffs = new SingleStuff[(int)AxieFormType.Count];
 
@@ -44,6 +45,23 @@ namespace AxieMixer.Unity {
         {
             if (stuffs[(int)formType] == null) return null;
             return stuffs[(int)formType].sampleGraphicMaterial;
+        }
+
+        public Material GetSampleLinearGraphicMaterial(AxieFormType formType, byte colorVariant, byte colorShift)
+        {
+            if (stuffs[(int)formType] == null) return null;
+            var stuff = stuffs[(int)formType];
+            string key = $"linear_{colorVariant}-{colorShift}";
+            Material ret;
+            if(stuff.variantMaterials.TryGetValue(key, out ret))
+            {
+                return ret;
+            }
+            ret = new Material(stuffs[(int)formType].sampleGraphicLinearMaterial);
+            ret.SetFloat("_ColorVariant", colorVariant);
+            ret.SetFloat("_ColorShift", colorShift);
+            stuff.variantMaterials.Add(key, ret);
+            return ret;
         }
 
         public IAxieGenesStuff GetGenesStuff(AxieFormType formType) {
@@ -93,7 +111,15 @@ namespace AxieMixer.Unity {
                 UnityEngine.Assertions.Assert.IsTrue(materials.Count == 1);
                 sampleGraphicMaterial = materials[0];
             }
-        
+
+            Material sampleGraphicLinearMaterial = null;
+            if (baseMaterials.TryGetValue("graphic-linear", out var baseGraphicLinearMaterial))
+            {
+                List<Material> materials = LoadMaterials(atlasStuffSingle, baseGraphicLinearMaterial);
+                UnityEngine.Assertions.Assert.IsTrue(materials.Count == 1);
+                sampleGraphicLinearMaterial = materials[0];
+            }
+
             stuffs[(int)formType] = new SingleStuff
             {
                 atlasStuffs = atlasStuffs,
@@ -102,6 +128,7 @@ namespace AxieMixer.Unity {
                 axieGenesStuff = axieGenesStuff,
                 axieMixerStuff = axieMixerStuff,
                 sampleGraphicMaterial = sampleGraphicMaterial,
+                sampleGraphicLinearMaterial = sampleGraphicLinearMaterial,
                 materials = baseMaterials
             };
         }
@@ -109,13 +136,10 @@ namespace AxieMixer.Unity {
         static List<Material> LoadMaterials(SplatAtlasStuff atlasStuff, Material baseMaterial)
         {
             List<Material> materials = new List<Material>();
+            string atlasStr = atlasStuff.atlasAssetText;
+            atlasStr = atlasStr.Replace("\r", "");
 
-            // Handle both Unix and Windows line endings
-            string[] texList = atlasStuff.atlasAssetText.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
-                                                        .Where(x => x.Contains(".png"))
-                                                        .Select(x => x.Replace(".png", ""))
-                                                        .ToArray();
-
+            string[] texList = atlasStr.Split('\n').Where(x => x.Contains(".png")).Select(x => x.Replace(".png", "")).ToArray();
             foreach (var texName in texList)
             {
                 var material = new Material(baseMaterial);
@@ -125,6 +149,7 @@ namespace AxieMixer.Unity {
                     material.SetTexture(texKey, p.Value);
                 }
                 materials.Add(material);
+
             }
             return materials;
         }
