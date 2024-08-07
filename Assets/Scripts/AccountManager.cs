@@ -33,11 +33,11 @@ public class AccountManager : MonoBehaviour
 
     private void Start()
     {
-        //if (loggingIn)
-        //{
+        if (loggingIn)
+        {
             loggingIn = false;
             StartCoroutine(PerformLogin());
-        //}
+        }
     }
 
     private IEnumerator PerformLogin()
