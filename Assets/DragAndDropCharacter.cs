@@ -49,6 +49,7 @@ public class DragAndDropCharacter : MonoBehaviour
                     }
 
 
+                    SFXManager.instance.PlaySFX(SFXType.GrabAxie);
                     axieController.axieBehavior.DoAction(AxieState.Grabbed);
                     originalPosition = selectedCharacter.transform.position;
                     originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
@@ -74,6 +75,7 @@ public class DragAndDropCharacter : MonoBehaviour
             selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
             OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
 
+            SFXManager.instance.PlaySFX(SFXType.GrabAxie,0.12f);
             if (closestTile == null)
             {
                 selectedCharacter.GetComponent<BoxCollider>().enabled = true;

@@ -33,6 +33,7 @@ public class ShopManager : MonoBehaviour
 
     public void ToggleFreezeMode()
     {
+        SFXManager.instance.PlaySFX(SFXType.Freeze,0.1f);
         FreezeMode = !FreezeMode;
         FrozenCursor.SetActive(!FrozenCursor.activeSelf);
     }
@@ -65,6 +66,8 @@ public class ShopManager : MonoBehaviour
         {
             indexesRolled = new List<int>();
         }
+
+        SFXManager.instance.PlaySFX(SFXType.Roll, 0.1f);
 
         RunManagerSingleton.instance.RemoveCoins(RollCost);
 

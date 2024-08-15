@@ -17,6 +17,12 @@ public enum SFXType
     Buy,
     Lost,
     Win,
+    Roll,
+    Freeze,
+    UIButtonCancel,
+    UIButtonTap,
+    UIButtonConfirm,
+    GrabAxie
     // Add more SFX types as needed
 }
 

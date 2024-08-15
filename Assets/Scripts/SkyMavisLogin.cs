@@ -1,3 +1,5 @@
+using AxieCore.SimpleJSON;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -12,8 +14,12 @@ using UnityEngine.UI;
 public class SkyMavisLogin : MonoBehaviour
 {
     private string redirectUri = "http://localhost:3000/login/callback";
-    private string authorizationEndpoint = "http://34.73.111.101/api/v1/auth";
-    private string userInfoEndpoint = "http://34.73.111.101/api/v1/user/nfts";
+    private string authorizationEndpoint = "http://34.73.111.101/api/v1/auth/url";
+    private string userInfoEndpoint = "http://34.73.111.101/api/v1/auth/login";
+    private string refreshUserInfoEndpoint = "http://34.73.111.101/api/v1/auth/refresh";
+    private string NFTsUserInfoEndpoint = "http://34.73.111.101/api/v1/user/nfts";
+
+    private AuthToken authToken;
 
     public Button loginButton;
     public Text resultText;
@@ -28,7 +34,21 @@ public class SkyMavisLogin : MonoBehaviour
     {
         PartFinder.LoadFromResources();
         loginButton.onClick.AddListener(OnLoginButtonClicked);
+        string auth = PlayerPrefs.GetString("Auth");
 
+        if (!string.IsNullOrEmpty(auth))
+        {
+            authToken = JsonConvert.DeserializeObject<AuthToken>(auth);
+
+            if (authToken.IsExpired())
+            {
+                StartCoroutine(RefreshToken(3, true));
+            }
+            else
+            {
+                StartCoroutine(GetNFTS());
+            }
+        }
     }
 
     private void OnLoginButtonClicked()
@@ -115,7 +135,7 @@ public class SkyMavisLogin : MonoBehaviour
 
     private IEnumerator HandleAuthorizationResponse(string authorizationCode, int retries = 5)
     {
-        UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "GET");
+        UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "POST");
         webRequest.SetRequestHeader("auth_code", authorizationCode);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
@@ -131,6 +151,29 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
 
+        authToken = JsonConvert.DeserializeObject<AuthToken>(webRequest.downloadHandler.text);
+        PlayerPrefs.SetString("Auth", webRequest.downloadHandler.text);
+        StartCoroutine(GetNFTS());
+    }
+
+    private IEnumerator GetNFTS(int retries = 5)
+    {
+        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint, "GET");
+        webRequest.SetRequestHeader("access_token", authToken.AccessToken);
+        DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+        webRequest.downloadHandler = dH;
+        yield return webRequest.SendWebRequest();
+
+        if (webRequest.isNetworkError || webRequest.isHttpError)
+        {
+            Debug.LogError(webRequest.error);
+            if (retries > 0)
+            {
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(GetNFTS(retries - 1));
+            }
+        }
+
         string userInfo = webRequest.downloadHandler.text;
 
         if (!string.IsNullOrEmpty(userInfo))
@@ -142,6 +185,68 @@ public class SkyMavisLogin : MonoBehaviour
             Debug.LogError("Login Failed" + " " + webRequest.downloadHandler.text);
         }
     }
+
+    public IEnumerator RefreshToken(int retries = 3, bool getNfts = false)
+    {
+        UnityWebRequest webRequest = new UnityWebRequest(refreshUserInfoEndpoint, "POST");
+        webRequest.SetRequestHeader("refresh_token", authToken.RefreshToken);
+        DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+        webRequest.downloadHandler = dH;
+        yield return webRequest.SendWebRequest();
+
+        if (webRequest.isNetworkError || webRequest.isHttpError)
+        {
+            Debug.LogError(webRequest.error);
+            if (retries > 0)
+            {
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(RefreshToken(retries - 1));
+            }
+        }
+
+        authToken = JsonUtility.FromJson<AuthToken>(webRequest.downloadHandler.text);
+
+        if (getNfts)
+        {
+            StartCoroutine(GetNFTS());
+        }
+    }
+
+    [System.Serializable]
+    public class AuthToken
+    {
+        [JsonProperty("access_token")]
+        public string AccessToken { get; set; }
+
+        [JsonProperty("expires_in")]
+        public int ExpiresIn { get; set; }
+
+        [JsonProperty("id_token")]
+        public string IdToken { get; set; }
+
+        [JsonProperty("refresh_token")]
+        public string RefreshToken { get; set; }
+
+        [JsonProperty("scope")]
+        public string Scope { get; set; }
+
+        [JsonProperty("token_type")]
+        public string TokenType { get; set; }
+
+        private DateTime issueTime;
+
+        public AuthToken()
+        {
+            this.issueTime = DateTime.UtcNow;
+        }
+
+        public bool IsExpired()
+        {
+            // Check if the current UTC time is greater than the issue time plus the seconds valid.
+            return DateTime.UtcNow >= issueTime.AddSeconds(ExpiresIn);
+        }
+    }
+
 
     private void GetUserInfo(string userInfoString)
     {

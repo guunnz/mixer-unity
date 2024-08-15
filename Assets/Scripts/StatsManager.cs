@@ -15,10 +15,11 @@ public class StatsManager : MonoBehaviour
     private Transform mainCharacter;
     public TextMeshProUGUI shield;
     public GameObject shieldObject;
+    BoneFollower boneFollower;
 
     private void Start()
     {
-        BoneFollower boneFollower = this.gameObject.AddComponent<BoneFollower>();
+        boneFollower = this.gameObject.AddComponent<BoneFollower>();
 
         if (boneFollower.skeletonRenderer == null)
             boneFollower.skeletonRenderer = transform.parent.GetComponent<SkeletonRenderer>();
@@ -45,6 +46,7 @@ public class StatsManager : MonoBehaviour
 
     public void SetMana(float mana)
     {
+
         if (mana > 1)
         {
             mana = 1;
@@ -55,6 +57,7 @@ public class StatsManager : MonoBehaviour
 
     public void SetHP(float mana)
     {
+
         if (mana > 1)
         {
             mana = 1;
@@ -65,6 +68,7 @@ public class StatsManager : MonoBehaviour
 
     public void SetShield(int shield)
     {
+
         if (shield <= 0)
         {
             shieldObject.SetActive(false);

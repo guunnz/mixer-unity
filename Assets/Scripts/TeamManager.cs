@@ -53,7 +53,7 @@ public class TeamManager : MonoBehaviour
         string json = JsonUtility.ToJson(new SaveableAxieTeamsWrapper() { axieTeams = teams.ToArray() }, true);
 
         teamsFilePath = Path.Combine(Application.persistentDataPath,
-            RunManagerSingleton.instance.userId + "axieTeams2.json");
+            RunManagerSingleton.instance.userId + "axieTeams3.json");
 
         File.WriteAllText(teamsFilePath, json);
     }
@@ -61,7 +61,7 @@ public class TeamManager : MonoBehaviour
     public void LoadLastAccountAxies()
     {
         teamsFilePath = Path.Combine(Application.persistentDataPath,
-            RunManagerSingleton.instance.userId + "axieTeams2.json");
+            RunManagerSingleton.instance.userId + "axieTeams3.json");
         teams = LoadTeams();
         if (teams == null)
         {

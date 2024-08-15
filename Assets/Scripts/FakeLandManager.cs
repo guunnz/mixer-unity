@@ -10,10 +10,12 @@ public class FakeLandManager : MonoBehaviour
     public Transform landParent;
     private MaterialTipColorChanger[] landSquares;
     [SerializeField] private int indexChoosing = 0;
-    internal LandType currentLandType = LandType.savannah;
+    [SerializeField] public LandType currentLandType = LandType.savannah;
     internal string currentSelectedLandId;
     [SerializeField] private List<SpawnableLand> spawnableLands;
     static public FakeLandManager Instance;
+
+    [SerializeField] private bool InitializeOnStart;
 
     private void Awake()
     {
@@ -26,14 +28,66 @@ public class FakeLandManager : MonoBehaviour
         Instance = this;
     }
 
-    public void ChooseFakeLand(string tokenId = null)
+    private void Start()
+    {
+        if (InitializeOnStart)
+        {
+            InstantiateLandType();
+        }
+    }
+
+    public void InstantiateLandType()
     {
         GetAxiesExample.Land land = null;
 
         if (currentSpawnedLand == null)
         {
             currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
+            landParent);
+
+            landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
+            for (int i = 0; i < landSquares.Length; i++)
+            {
+                MaterialTipColorChanger materialTipColorChanger = landSquares[i];
+                materialTipColorChanger.landType = currentLandType;
+                string tokenIdSubstring = "11111111";
+                int tokenIdInt = int.Parse(tokenIdSubstring);
+                materialTipColorChanger.SetRandomSeed(
+                    tokenIdInt / (i + 1));
+                materialTipColorChanger.colorAlreadySet = false;
+            }
+        }
+        else
+        {
+            landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
+            RunManagerSingleton.instance.landType = currentLandType;
+            for (int i = 0; i < landSquares.Length; i++)
+            {
+                MaterialTipColorChanger materialTipColorChanger = landSquares[i];
+                materialTipColorChanger.landType = currentLandType;
+                string tokenIdSubstring = "111111111";
+                int tokenIdInt = int.Parse(tokenIdSubstring);
+                materialTipColorChanger.SetRandomSeed(tokenIdInt / (i + 1));
+                materialTipColorChanger.colorAlreadySet = false;
+            }
+
+            if (currentSpawnedLand != null)
+            {
+                Destroy(currentSpawnedLand);
+            }
+
+            currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
                 landParent);
+        }
+    }
+
+    public void ChooseFakeLand(string tokenId = null)
+    {
+        GetAxiesExample.Land land = null;
+
+        if (currentSpawnedLand == null)
+        {
+
 
             if (string.IsNullOrEmpty(tokenId))
             {
@@ -45,6 +99,9 @@ public class FakeLandManager : MonoBehaviour
                 land = AccountManager.userLands.results.Single(x => x.tokenId == tokenId);
                 currentLandType = land.LandTypeEnum;
             }
+
+            currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
+            landParent);
 
             currentSelectedLandId = land.tokenId;
             landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);

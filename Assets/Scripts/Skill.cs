@@ -34,7 +34,8 @@ public enum BodyPart
     Horn,
     Mouth,
     Back,
-    Tail
+    Tail,
+    None
 }
 
 public enum SkillName

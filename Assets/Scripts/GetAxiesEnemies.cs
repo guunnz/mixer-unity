@@ -29,14 +29,22 @@ namespace enemies
 
         public TeamToJSON teamToJson;
 
+
+        public BattleDataLoader battleDataLoader;
+
         public async void GetEnemy()
         {
             FindingOpponent.SetActive(true);
             IngameOverlay.SetActive(false);
-
-            string json =
-                await landBattleTarget.GetScoreAsync(
-                    (RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
+            string json = "";
+            if (AccountManager.TestMode)
+            {
+                json = battleDataLoader.GetTestRandomOpponent(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses);
+            }
+            else
+            {
+                json = await landBattleTarget.GetScoreAsync((RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
+            }
 
             Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);
             Debug.Log("Opponent land type is: " + opponent.land_type.ToString());
@@ -121,7 +129,8 @@ namespace enemies
                     RunManagerSingleton.instance.currentOpponent = opponent.user_id;
                     RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
 
-                    GoodTeam.PostTeam();
+                    if (!AccountManager.TestMode)
+                        GoodTeam.PostTeam();
                     List<AxieEnemy> axieEnemies = new List<AxieEnemy>();
 
                     // Assuming axieIds is a List<string>
@@ -149,19 +158,31 @@ namespace enemies
 
         IEnumerator SpawnAxies(List<AxieEnemy> axieList, Opponent opponent, bool isOpponent)
         {
+
+            if (AccountManager.TestMode)
+            {
+                axieList = TestTool.Instance.GetEnemyAxies(axieList);
+            }
+
+
             foreach (var axieEnemy in axieList)
             {
                 AxieForBackend axieForBackend = opponent.axie_team.axies.Single(x => x.axie_id == axieEnemy.id);
-                axieSpawner.SpawnEnemyAxieById(axieEnemy.id, BodyPart.Horn, SkillName.HerosBane,
+                axieSpawner.SpawnEnemyAxieById(axieEnemy.id,
                     axieEnemy.axieClass,
-                    axieEnemy.stats, axieForBackend, axieList, isOpponent);
+                    axieEnemy.stats, axieForBackend, axieList, axieEnemy, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
+
+            //If test mode
+            //Grab testing values of abilities, stats and 
+
             MusicManager.Instance.FadeOut(1);
             while (axieSpawner.enemyTeam.GetCharacters().Count != 5)
             {
                 yield return null;
             }
+
 
             FindingOpponent.gameObject.SetActive(false);
             Countdown.gameObject.SetActive(true);
@@ -174,6 +195,12 @@ namespace enemies
             Countdown.text = "BATTLE!";
             yield return new WaitForSeconds(0.5f);
             FightManagerSingleton.Instance.StartFight();
+
+            if (AccountManager.TestMode)
+            {
+                TestTool.Instance.SetEnemyAxiesStatuses();
+                TestTool.Instance.SetAllyAxiesStatuses();
+            }
             BattleOverlay.SetActive(true);
             Countdown.gameObject.SetActive(false);
             axieSpawner.enemyTeam.StartBattle();
@@ -202,6 +229,8 @@ namespace enemies
             public List<GetAxiesExample.Part> Parts { get; set; }
             public GetAxiesExample.Stats stats { get; set; }
             public string BodyShape { get; set; }
+
+            public Dictionary<string, string> cursedMeta = new Dictionary<string, string>();
         }
     }
 }

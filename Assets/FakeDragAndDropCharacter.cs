@@ -34,7 +34,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
                 {
                     selectedCharacter = hit.collider.gameObject;
                     FakeAxieController axieController = selectedCharacter.GetComponent<FakeAxieController>();
-
+                    SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
                     axieController.Grab(true);
                     selectedCharacter.transform.SetParent(mainCamera.transform);
                 }
@@ -58,7 +58,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
             var fakeAxieController = selectedCharacter.GetComponent<FakeAxieController>();
             fakeAxieController.Grab(false);
             FakeOverlayTile closestTile = GetClosestTile();
-
+            SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
             if (closestTile == null)
             {
                 selectedCharacter.GetComponent<BoxCollider>().enabled = true;

@@ -16,7 +16,7 @@ public class FakeMapManager : MonoBehaviour
     public int width = 12; // Width of the map
     private List<FakeOverlayTile> overlayTiles = new List<FakeOverlayTile>();
     public int depth = 2; // Depth of the map (previously height)
-    
+    public bool InitializeOnStart;
 
     public void ToggleRectangles()
     {
@@ -31,6 +31,14 @@ public class FakeMapManager : MonoBehaviour
         foreach (var overlayTile in overlayTiles)
         {
             overlayTile.ToggleRectangle(false);
+        }
+    }
+
+    private void Start()
+    {
+        if (InitializeOnStart)
+        {
+            GenerateFakeMap();
         }
     }
 

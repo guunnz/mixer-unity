@@ -245,7 +245,7 @@ public class FakeAxieComboManager : MonoBehaviour
         {
             skeletonGraphic.transform.parent.GetComponent<Image>().sprite = DeselectedSprite;
         }
-
+        SFXManager.instance.PlaySFX(SFXType.UIButtonTap, 0.12f, true);
         parent.GetComponent<Image>().sprite = SelectedSprite;
         GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
 

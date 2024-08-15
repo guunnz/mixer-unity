@@ -53,6 +53,7 @@ public class AxieController : MonoBehaviour
     public Team badTeam;
     internal bool imGood;
     public int Range = 1;
+    public string Genes;
     public bool ShrimpOnStart;
     internal bool Shrimped = false;
     public AxieMode mode;
@@ -146,7 +147,7 @@ public class AxieController : MonoBehaviour
 
         if (this.standingOnTile.grid2DLocation.x >= 4)
         {
-            
+
         }
         else
         {

@@ -298,7 +298,7 @@ public class AbilitiesManager : MonoBehaviour
 
         parent.GetComponent<Image>().sprite = SelectedSprite;
 
-        
+        SFXManager.instance.PlaySFX(SFXType.UIButtonTap, 0.12f, true);
 
         GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
 

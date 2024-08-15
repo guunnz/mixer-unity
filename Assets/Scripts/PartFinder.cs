@@ -40,14 +40,44 @@ public static class PartFinder
 
         if (originalPart == null)
         {
-            matchedParts = partsData.parts.Where(p => p.name.ToLower() == partName.ToLower()).ToList();
-            originalPart = matchedParts.FirstOrDefault(p => p.name.ToLower() == partName.ToLower());
+            matchedParts = partsData.parts.Where(p => p.name.ToLower().Replace(" ", "") == partName.ToLower().Replace(" ", "")).ToList();
+            originalPart = matchedParts.FirstOrDefault(p => p.name.ToLower().Replace(" ", "") == partName.ToLower().Replace(" ", ""));
             abilityId = originalPart.ability_id;
             matchedParts = partsData.parts.Where(p => p.ability_id == abilityId).ToList();
             originalPart = matchedParts.FirstOrDefault(p => string.IsNullOrEmpty(p.special_genes));
         }
 
         return originalPart?.part_id ?? "No original part found";
+    }
+
+    public static Part GetOriginalPartIdTesting(string partName, string bodypart = "")
+    {
+        partName = partName.ToLower().Replace(" ", "");
+        bodypart = bodypart.ToLower();
+
+        Part originalPart = partsData.parts
+            .FirstOrDefault(p => p.name.ToLower().Replace(" ", "") == partName &&
+                                 (string.IsNullOrEmpty(bodypart) || p.part_type.ToLower() == bodypart) &&
+                                 string.IsNullOrEmpty(p.special_genes));
+
+        if (originalPart == null)
+        {
+            originalPart = partsData.parts
+                .Where(p => p.name.ToLower().Replace(" ", "") == partName &&
+                            (string.IsNullOrEmpty(bodypart) || p.part_type.ToLower() == bodypart))
+                .FirstOrDefault();
+
+            if (originalPart != null)
+            {
+                string abilityId = originalPart.ability_id;
+
+                originalPart = partsData.parts
+                    .FirstOrDefault(p => p.ability_id == abilityId &&
+                                         string.IsNullOrEmpty(p.special_genes));
+            }
+        }
+
+        return originalPart;
     }
 
     // Static method to load JSON from Resources and initialize PartFinder

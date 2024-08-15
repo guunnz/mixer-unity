@@ -81,6 +81,7 @@ public class ShopItemPurchasable : MonoBehaviour
 
         if (ShopManager.instance.FreezeMode)
         {
+            SFXManager.instance.PlaySFX(SFXType.Freeze);
             this.Frozen = !this.Frozen;
             FreezeGraphics.SetActive(!FreezeGraphics.activeSelf);
             return;
