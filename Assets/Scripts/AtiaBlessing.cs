@@ -117,7 +117,7 @@ public class AtiaBlessing : MonoBehaviour
             for (int y = 1; y <= (int)BuffEffect.Backdoor; y++)
             {
                 blessingAugument.Add(new UpgradeAugument()
-                    { axie_class = new List<int>() { i }, id = y });
+                { axie_class = new List<int>() { i }, id = y });
             }
         }
     }
@@ -304,36 +304,45 @@ public class AtiaBlessing : MonoBehaviour
 
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
     {
-        UpgradeAugument augument = blessingAugument[indexAugument];
-
-        List<AxieController> axieControllers = axieClasses == null
-            ? team.GetCharactersAll()
-            : team.GetCharactersAll()
-                .Where(x => augument.axie_class.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
-                .ToList();
-
-
-        foreach (var controller in axieControllers)
+        //TODO: Do items shop
+        try
         {
-            switch ((BuffEffect)augument.id)
+            UpgradeAugument augument = blessingAugument[indexAugument];
+
+            List<AxieController> axieControllers = axieClasses == null
+                ? team.GetCharactersAll()
+                : team.GetCharactersAll()
+                    .Where(x => augument.axie_class.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
+                    .ToList();
+
+
+            foreach (var controller in axieControllers)
             {
-                case AtiaBlessing.BuffEffect.Increase_HP:
-                    controller.stats.hp += 3;
-                    break;
-                case AtiaBlessing.BuffEffect.Increase_Morale:
-                    controller.stats.morale += 3;
-                    break;
-                case AtiaBlessing.BuffEffect.Increase_Speed:
-                    controller.stats.speed += 3;
-                    break;
-                case AtiaBlessing.BuffEffect.Increase_Skill:
-                    controller.stats.skill += 3;
-                    break;
-                case AtiaBlessing.BuffEffect.Backdoor:
-                    controller.ShrimpOnStart = true;
-                    break;
+                switch ((BuffEffect)augument.id)
+                {
+                    case AtiaBlessing.BuffEffect.Increase_HP:
+                        controller.stats.hp += 3;
+                        break;
+                    case AtiaBlessing.BuffEffect.Increase_Morale:
+                        controller.stats.morale += 3;
+                        break;
+                    case AtiaBlessing.BuffEffect.Increase_Speed:
+                        controller.stats.speed += 3;
+                        break;
+                    case AtiaBlessing.BuffEffect.Increase_Skill:
+                        controller.stats.skill += 3;
+                        break;
+                    case AtiaBlessing.BuffEffect.Backdoor:
+                        controller.ShrimpOnStart = true;
+                        break;
+                }
             }
         }
+        catch (Exception ex)
+        {
+            Debug.Log("Please code me");
+        }
+
     }
 
     public void AugumentUpgrade(int indexAugument, Team team)
@@ -344,7 +353,7 @@ public class AtiaBlessing : MonoBehaviour
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {
             RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRoundList()
-                { team_upgrades_values_per_round = new List<UpgradeAugument>() });
+            { team_upgrades_values_per_round = new List<UpgradeAugument>() });
         }
 
         RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].team_upgrades_values_per_round

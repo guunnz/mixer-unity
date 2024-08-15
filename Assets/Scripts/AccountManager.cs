@@ -29,12 +29,6 @@ public class AccountManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         IncorrectWallet.DOColor(Color.clear, 0.2f);
     }
-
-    private void OnApplicationQuit()
-    {
-        TestMode = false;
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F11))
@@ -45,6 +39,11 @@ public class AccountManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        loggingIn = false;
+        TestMode = false;
+    }
 
     private void Start()
     {

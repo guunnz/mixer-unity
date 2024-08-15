@@ -20,7 +20,7 @@ public class MapManager : MonoBehaviour
     internal Vector2 maxMapBounds = new Vector2(7, 4);
 
     public int width = 12; // Width of the map
-    private List<OverlayTile> overlayTiles = new List<OverlayTile>();
+    internal List<OverlayTile> overlayTiles = new List<OverlayTile>();
     public int depth = 2; // Depth of the map (previously height)
 
     private void Awake()

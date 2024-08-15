@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static enemies.GetAxiesEnemies;
+using static GetAxiesExample;
 
 [System.Serializable]
 
@@ -71,9 +72,8 @@ public class TestTool : MonoBehaviour
         int index = 0;
         foreach (var axie in axieList)
         {
-            if (index >= enemyAxiesForTesting.Count)
+            if (index >= allyAxiesForTesting.Count)
             {
-                axie.stats.hp = 0;
                 break;
             }
             var axieForTesting = enemyAxiesForTesting[index];
@@ -121,7 +121,6 @@ public class TestTool : MonoBehaviour
         {
             if (index >= allyAxiesForTesting.Count)
             {
-                axie.stats.hp = 0;
                 break;
             }
             var axieForTesting = allyAxiesForTesting[index];
@@ -153,6 +152,8 @@ public class TestTool : MonoBehaviour
             axie.axieSkillController.SetAxieSkills(newSkillNames, newBodyParts);
             AxieSpawner.Instance.SimpleProcessCursedMixer(axie.AxieId.ToString(), axie.Genes, false, cursedMeta, axie);
             index++;
+
+            axie.UpdateStats();
         }
     }
 
@@ -161,9 +162,15 @@ public class TestTool : MonoBehaviour
         int index = 0;
         foreach (var character in enemyTeam.GetCharactersAll())
         {
+            if (index >= enemyAxiesForTesting.Count)
+            {
+                character.stats.hp = 0;
+            }
+            character.UpdateStats();
+            Debug.Log(character.axieIngameStats.currentHP);
             if (enemyTeam.GetCharactersAll().Count <= index || enemyAxiesForTesting.Count <= index)
             {
-                return;
+                continue;
             }
             var axieForTesting = enemyAxiesForTesting[index];
 
@@ -182,13 +189,21 @@ public class TestTool : MonoBehaviour
         int index = 0;
         foreach (var character in goodTeam.GetCharactersAll())
         {
+
+            if (index >= allyAxiesForTesting.Count)
+            {
+                character.stats.hp = 0;
+            }
+            character.UpdateStats();
+
+            Debug.Log(character.axieIngameStats.currentHP);
             if (goodTeam.GetCharactersAll().Count <= index || allyAxiesForTesting.Count <= index)
             {
-                return;
+                continue;
             }
             if (allyAxiesForTesting.Count == 0)
             {
-                return;
+                continue;
             }
 
             var axieForTesting = allyAxiesForTesting[index];

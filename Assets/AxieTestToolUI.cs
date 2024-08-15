@@ -34,7 +34,7 @@ public class AxieTestToolUI : MonoBehaviour
     //        margin = new RectOffset(5, 5, 5, 5)
     //    };
     //}
-
+    private Vector2 dropdownScrollPosition;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F12))
@@ -188,29 +188,43 @@ public class AxieTestToolUI : MonoBehaviour
     private void RenderAxieAbilities(AxieForTesting axie)
     {
         GUILayout.Label("Abilities to Use", GUILayout.Height(20));
-        RenderEnumDropdownList(axie.abilitiesToUse, "Ability", SkillName.Anemone, 100);
+        RenderEnumDropdownList(axie.abilitiesToUse, "Ability", SkillName.Anemone, 100, ref scrollPosition);
         GUILayout.Space(10);
     }
 
     private void RenderSpecialBodyParts(AxieForTesting axie)
     {
         GUILayout.Label("Special Body Parts", GUILayout.Height(20));
-        RenderEnumDropdownList(axie.specialBodyPartForAbilityIfNeeded, "Part", BodyPart.None, 100);
+        RenderEnumDropdownList(axie.specialBodyPartForAbilityIfNeeded, "Part", BodyPart.None, 100, ref scrollPosition);
         GUILayout.Space(10);
     }
+
+
+
+
 
     private void RenderBuffsDebuffs(AxieForTesting axie)
     {
         GUILayout.Label("Buffs/Debuffs", GUILayout.Height(20));
-        RenderEnumDropdownList(axie.startsWithBuffDebuff, "Buff/Debuff", StatusEffectEnum.None, 100);
+        RenderEnumDropdownList(axie.startsWithBuffDebuff, "Buff/Debuff", StatusEffectEnum.None, 100, ref scrollPosition);
         GUILayout.Space(10);
     }
-
-    private void RenderEnumDropdownList<T>(List<T> list, string labelPrefix, T defaultValue, float width) where T : System.Enum
+    private void RenderEnumDropdownList<T>(List<T> list, string labelPrefix, T defaultValue, float width, ref Vector2 scrollPosition) where T : System.Enum
     {
         for (int i = 0; i < list.Count; i++)
         {
-            list[i] = EnumDropdown($"{labelPrefix} {i + 1}", list[i], width);
+            GUILayout.BeginHorizontal();
+
+            list[i] = EnumDropdown($"{labelPrefix} {i + 1}", list[i], width, ref scrollPosition);
+
+            if (GUILayout.Button("Remove", GUILayout.Width(60)))
+            {
+                list.RemoveAt(i);
+                i--; // Adjust the index to account for the removed item
+            }
+
+            GUILayout.EndHorizontal();
+            GUILayout.Space(5);
         }
 
         if (GUILayout.Button($"Add {labelPrefix}", GUILayout.Width(width)))
@@ -218,6 +232,8 @@ public class AxieTestToolUI : MonoBehaviour
             list.Add(defaultValue);
         }
     }
+
+
 
     private int IntField(string label, int value)
     {
@@ -265,9 +281,9 @@ public class AxieTestToolUI : MonoBehaviour
     //    return selected;
     //}
 
-    private Vector2 dropdownScrollPosition;
+ 
 
-    private T EnumDropdown<T>(string label, T selected, float width) where T : System.Enum
+    private T EnumDropdown<T>(string label, T selected, float width, ref Vector2 scrollPosition) where T : System.Enum
     {
         GUILayout.BeginVertical(); // Begin vertical layout for dropdown
         GUILayout.Label(label, GUILayout.Width(120));
@@ -285,8 +301,8 @@ public class AxieTestToolUI : MonoBehaviour
 
         if (state.IsOpen)
         {
-            // Save current scroll position
-            dropdownScrollPosition = scrollPosition;
+            // Save current scroll position before modifying dropdown
+            Vector2 previousScrollPosition = scrollPosition;
 
             // Use a separate scroll area for the dropdown
             dropdownScrollPosition = GUILayout.BeginScrollView(dropdownScrollPosition, GUILayout.Width(width), GUILayout.Height(200)); // Adjust height as needed
@@ -298,12 +314,13 @@ public class AxieTestToolUI : MonoBehaviour
             GUILayout.EndScrollView();
 
             // Restore the main scroll position
-            scrollPosition = dropdownScrollPosition;
+            scrollPosition = previousScrollPosition;
         }
 
         GUILayout.EndVertical(); // End vertical layout for dropdown
         return selected;
     }
+
 
 
     private void RenderDropdownItems<T>(ref T selected, ref DropdownState state, List<T> filteredValues, float width) where T : System.Enum
