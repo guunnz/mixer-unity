@@ -237,6 +237,36 @@ public class AxieTestToolUI : MonoBehaviour
         return value;
     }
 
+    //private T EnumDropdown<T>(string label, T selected, float width) where T : System.Enum
+    //{
+    //    GUILayout.BeginVertical(); // Begin vertical layout for dropdown
+    //    GUILayout.Label(label, GUILayout.Width(120));
+
+    //    if (!dropdownStates.TryGetValue(label, out DropdownState state))
+    //    {
+    //        state = new DropdownState();
+    //        dropdownStates[label] = state;
+    //    }
+
+    //    if (GUILayout.Button(selected.ToString(), GUILayout.Width(width)))
+    //    {
+    //        state.IsOpen = !state.IsOpen;
+    //    }
+
+    //    if (state.IsOpen)
+    //    {
+    //        state.SearchFilter = GUILayout.TextField(state.SearchFilter, GUILayout.Width(width));
+    //        var filteredValues = FilterEnumValues<T>(state.SearchFilter);
+
+    //        RenderDropdownItems(ref selected, ref state, filteredValues, width);
+    //    }
+
+    //    GUILayout.EndVertical(); // End vertical layout for dropdown
+    //    return selected;
+    //}
+
+    private Vector2 dropdownScrollPosition;
+
     private T EnumDropdown<T>(string label, T selected, float width) where T : System.Enum
     {
         GUILayout.BeginVertical(); // Begin vertical layout for dropdown
@@ -255,15 +285,26 @@ public class AxieTestToolUI : MonoBehaviour
 
         if (state.IsOpen)
         {
+            // Save current scroll position
+            dropdownScrollPosition = scrollPosition;
+
+            // Use a separate scroll area for the dropdown
+            dropdownScrollPosition = GUILayout.BeginScrollView(dropdownScrollPosition, GUILayout.Width(width), GUILayout.Height(200)); // Adjust height as needed
             state.SearchFilter = GUILayout.TextField(state.SearchFilter, GUILayout.Width(width));
             var filteredValues = FilterEnumValues<T>(state.SearchFilter);
 
             RenderDropdownItems(ref selected, ref state, filteredValues, width);
+
+            GUILayout.EndScrollView();
+
+            // Restore the main scroll position
+            scrollPosition = dropdownScrollPosition;
         }
 
         GUILayout.EndVertical(); // End vertical layout for dropdown
         return selected;
     }
+
 
     private void RenderDropdownItems<T>(ref T selected, ref DropdownState state, List<T> filteredValues, float width) where T : System.Enum
     {
