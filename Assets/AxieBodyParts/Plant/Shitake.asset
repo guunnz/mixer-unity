@@ -29,7 +29,8 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
-    GainHPPercentage: 25
+    GainShieldPercentage: 0
+    GainHPPercentage: 15
     HPBaseOnDamage: 0
     ShieldOnStart: 0
     IgnoresShield: 0
@@ -46,6 +47,7 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +94,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 4
   prefab: {fileID: 8593578658295523109, guid: 18041e17ccf3b9c47b62742b06420fb0, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 4
   damage: 0
   shield: 40
   energy: 1
-  description: Heal user by 25% of its max HP
+  description: Heal user by 15% of its max HP

@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 100
     HPBaseOnDamage: 1
     ShieldOnStart: 0
@@ -46,6 +47,7 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,6 +94,7 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 3
   prefab: {fileID: 3133670662096343493, guid: c09e908572f7274449998f4536fdf998, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 4
   damage: 50
   shield: 80
