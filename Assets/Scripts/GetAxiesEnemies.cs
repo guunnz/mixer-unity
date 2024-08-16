@@ -187,11 +187,15 @@ namespace enemies
             FindingOpponent.gameObject.SetActive(false);
             Countdown.gameObject.SetActive(true);
             Countdown.text = "3!";
+            SFXManager.instance.PlaySFX(SFXType.ThreeTwoOne, 0.06f, false, 1);
             yield return new WaitForSeconds(1f);
+            SFXManager.instance.PlaySFX(SFXType.ThreeTwoOne, 0.06f, false, 1);
             Countdown.text = "2!";
             yield return new WaitForSeconds(1f);
+            SFXManager.instance.PlaySFX(SFXType.ThreeTwoOne, 0.06f, false, 1);
             Countdown.text = "1!";
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
+            SFXManager.instance.PlaySFX(SFXType.ThreeTwoOne, 0.06f, false, 1.4f);
             Countdown.text = "BATTLE!";
             yield return new WaitForSeconds(0.5f);
             FightManagerSingleton.Instance.StartFight();

@@ -162,6 +162,8 @@ public class TestTool : MonoBehaviour
         int index = 0;
         foreach (var character in enemyTeam.GetCharactersAll())
         {
+            if (enemyAxiesForTesting.Count == 0)
+                return;
             if (index >= enemyAxiesForTesting.Count)
             {
                 character.stats.hp = 0;
@@ -189,7 +191,8 @@ public class TestTool : MonoBehaviour
         int index = 0;
         foreach (var character in goodTeam.GetCharactersAll())
         {
-
+            if (allyAxiesForTesting.Count == 0)
+                return;
             if (index >= allyAxiesForTesting.Count)
             {
                 character.stats.hp = 0;

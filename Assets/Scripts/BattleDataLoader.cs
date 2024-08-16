@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static BattleDataLoader;
 
@@ -75,17 +76,10 @@ public class BattleDataLoader : MonoBehaviour
         List<Opponent> filteredOpponents = new List<Opponent>();
         foreach (var opponent in opponentList.opponents)
         {
-            if (opponent.axie_team != null && opponent.axie_team.team_upgrades_values_per_round != null)
+            if (opponent.axie_team.team_upgrades_values_per_round.Length >= score)
             {
-                foreach (var upgrade in opponent.axie_team.team_upgrades_values_per_round)
-                {
-                    // Assuming score criteria relates to the number of upgrades or another simple score mechanism
-                    if (upgrade != null && upgrade.upgrades_ids.Length >= score)
-                    {
-                        filteredOpponents.Add(opponent);
-                        break;
-                    }
-                }
+                filteredOpponents.Add(opponent);
+                break;
             }
         }
 

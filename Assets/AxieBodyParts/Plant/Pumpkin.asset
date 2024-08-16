@@ -28,7 +28,8 @@ MonoBehaviour:
     GainEnergy: 0
     MeleeReflect: 0
     RangedReflect: 0
-    GainShield: 0
+    GainShield: 200
+    GainShieldPercentage: 0
     GainHPPercentage: 5
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,7 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -62,7 +64,7 @@ MonoBehaviour:
     specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
     specialActivactionWhenReceiveDamage: []
-    lowestHP: 0
+    lowestHP: 1
     FurthestTarget: 0
     targetHighestEnergy: 0
     targetHighestSpeed: 0
@@ -92,8 +94,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 4
   prefab: {fileID: 489240768068986823, guid: 243ec8b62c00cff40a9a7a268cca3023, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 4
   damage: 0
-  shield: 130
+  shield: 0
   energy: 1
-  description: If shield does not break for 2 seconds heal all allies 5%
+  description: Gives 200 Shield to the lowest HP axie

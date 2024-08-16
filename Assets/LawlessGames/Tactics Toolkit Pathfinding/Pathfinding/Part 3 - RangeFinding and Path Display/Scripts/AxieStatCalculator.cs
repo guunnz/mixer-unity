@@ -5,6 +5,8 @@ using UnityEngine;
 
 static public class AxieStatCalculator
 {
+
+    public const float LungePercentage = .1f;
     static public float GetAttackSpeed(GetAxiesExample.Stats stats)
     {
         // el 50 implica que alguien con stats (speed + speed * 0,5) 50 va a atacar 1 vez por segundo

@@ -16746,7 +16746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 248f71a62dc130c4e99094afba4d142a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CoinsAmount: 100
+  CoinsAmount: 10
   BattleTimerStartIn: 0
   allyAxiesForTesting: []
   enemyAxiesForTesting: []
@@ -42279,19 +42279,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicPairs:
   - track: 0
-    clip: {fileID: 8300000, guid: 7d63cf9c38941bf43ba24144b506dae5, type: 3}
+    clip: {fileID: 8300000, guid: 2186f25bcea59e541aebc55265d7ebd4, type: 3}
   - track: 7
-    clip: {fileID: 8300000, guid: 7d63cf9c38941bf43ba24144b506dae5, type: 3}
+    clip: {fileID: 8300000, guid: 2186f25bcea59e541aebc55265d7ebd4, type: 3}
   - track: 1
     clip: {fileID: 8300000, guid: f2ffd893700925e41a9f5892a2f4d324, type: 3}
   - track: 3
-    clip: {fileID: 8300000, guid: 7d63cf9c38941bf43ba24144b506dae5, type: 3}
+    clip: {fileID: 8300000, guid: 2186f25bcea59e541aebc55265d7ebd4, type: 3}
   - track: 2
-    clip: {fileID: 8300000, guid: 7d63cf9c38941bf43ba24144b506dae5, type: 3}
+    clip: {fileID: 8300000, guid: 2186f25bcea59e541aebc55265d7ebd4, type: 3}
   - track: 4
     clip: {fileID: 8300000, guid: f2ffd893700925e41a9f5892a2f4d324, type: 3}
   - track: 8
-    clip: {fileID: 8300000, guid: 7d63cf9c38941bf43ba24144b506dae5, type: 3}
+    clip: {fileID: 8300000, guid: 2186f25bcea59e541aebc55265d7ebd4, type: 3}
 --- !u!114 &1546848198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42312,7 +42312,7 @@ MonoBehaviour:
   - type: 5
     clip: {fileID: 8300000, guid: 9e38649f043d84d458f42226d9c6a843, type: 3}
   - type: 4
-    clip: {fileID: 8300000, guid: bdebdd0713160594ca9c66a8e83cdd6c, type: 3}
+    clip: {fileID: 8300000, guid: d7363fa0945d8c9459f3b7f23f4fb2f1, type: 3}
   - type: 6
     clip: {fileID: 8300000, guid: a6b4be48ae2cd9b4fb93e9fcbf80debc, type: 3}
   - type: 7
@@ -42325,6 +42325,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 44aa7982be7f04318b201887d9d3243c, type: 3}
   - type: 11
     clip: {fileID: 8300000, guid: 5ffd52c872e914abaa1a501030aef008, type: 3}
+  - type: 12
+    clip: {fileID: 8300000, guid: c15767610a0d5c640b307cb5aaead7bf, type: 3}
 --- !u!114 &1546848199
 MonoBehaviour:
   m_ObjectHideFlags: 0

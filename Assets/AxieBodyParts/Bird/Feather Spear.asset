@@ -46,6 +46,7 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 1
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,6 +93,7 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 2
   prefab: {fileID: 489240768068986823, guid: e94cf0872c35a7745af2bd5deee1140a, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 2
   damage: 80
   shield: 50

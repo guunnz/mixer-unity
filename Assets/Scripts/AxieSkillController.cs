@@ -17,6 +17,7 @@ public class AxiePassives
 {
     public List<AxieBodyPart> bodyPartList = new List<AxieBodyPart>();
     public List<AxieBodyPart> bodyPartListReactivation = new List<AxieBodyPart>();
+    public List<AxieBodyPart> bodyPartListShieldBreak = new List<AxieBodyPart>();
     public bool ImmuneToCriticals;
     public int HealOnDamageDealt;
     public bool AutoattacksIgnoreShield;
@@ -201,6 +202,7 @@ public class AxieSkillController : MonoBehaviour
 
     public void OnBattleStart()
     {
+        self.axieIngameStats.MaxEnergy = GetComboCost();
         lastActivationTimes.Clear();
         if (!passives.bodyPartList.Any(x =>
                 x.skillEffects.Any(y => y.skillTriggerType == SkillTriggerType.Battlecry)))

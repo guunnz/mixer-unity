@@ -28,6 +28,7 @@ public class SkillEffect : ICloneable
     public int MeleeReflect;
     public int RangedReflect;
     public int GainShield;
+    public int GainShieldPercentage;
     public int GainHPPercentage;
     public bool HPBaseOnDamage;
     public int ShieldOnStart;
@@ -45,6 +46,7 @@ public class SkillEffect : ICloneable
     public bool Fragile;
     public bool Poison;
     public bool Wombo;
+    public bool Lunge;
     public bool AlwaysCritical;
     public bool RandomEffectIsDebuff;
     public bool RandomEffectIsBuff;
@@ -71,7 +73,7 @@ public class SkillEffect : ICloneable
     public bool targetAxieClass;
     public AxieClass axieClassToTarget;
 
-    internal bool Prioritize => FurthestTarget || targetHighestEnergy || targetHighestSpeed || targetAxieClass;
+    internal bool Prioritize => (FurthestTarget || targetHighestEnergy || targetHighestSpeed || targetAxieClass) && statusApplyType == StatusApplyType.ApplyTarget;
 
     [Header("Trigger If")] public bool triggerIfCertainHPTreshold;
 
@@ -131,7 +133,7 @@ public class SkillEffect : ICloneable
     public bool IsOnlyBuffOrDebuff()
     {
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
-                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry);
+                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry || Lunge);
     }
 
     public bool IsOnlyInfiniteBuffsOrDebuff()

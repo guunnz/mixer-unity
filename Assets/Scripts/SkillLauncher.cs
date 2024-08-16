@@ -282,6 +282,15 @@ public class SkillLauncher : MonoBehaviour
             }
         }
 
+
+        if (skillEffect.OnShieldBreak)
+        {
+            if (target.axieIngameStats.currentShield != 0)
+            {
+                return false;
+            }
+        }
+
         if (skillEffect.ComboAmount > 0)
         {
             if (self.axieSkillController.GetComboAmount() < skillEffect.ComboAmount)
@@ -598,6 +607,12 @@ public class SkillLauncher : MonoBehaviour
                 self.axieIngameStats.CurrentEnergy += energyToTransfer;
             }
 
+            if (skillEffect.GainEnergy > 0)
+            {
+                targetList.ForEach(x => x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.CurrentEnergy * skillEffect.GainEnergy));
+            }
+
+
             self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
 
             if (skillInstance.axieBodyPart.bodyPart == BodyPart.Horn)
@@ -608,22 +623,42 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.GainShield > 0)
             {
-                self.axieIngameStats.currentShield +=
-                    (self.axieIngameStats.currentShield * (skillEffect.GainShield / 100f));
+                if (skillEffect.lowestHP)
+                {
+                    var axie = self.myTeam.GetCharactersAll().OrderBy(x => x.axieIngameStats.currentHP).First();
+                    axie.axieIngameStats.currentShield += (skillEffect.GainShield);
+                }
+                else
+                {
+                    self.axieIngameStats.currentShield += skillEffect.GainShield;
+                }
             }
 
             if (skillEffect.GainHPPercentage > 0)
             {
                 if (!skillEffect.HPBaseOnDamage)
                 {
-                    foreach (var axieController in statusEffectTargetList)
+                    if (skillEffect.lowestHP)
                     {
-                        skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.HP *
+                        var axie = self.myTeam.GetCharactersAll().OrderBy(x => x.axieIngameStats.currentHP).First();
+                        skillInstance.AddHealTargetPair(axie.AxieId, (axie.axieIngameStats.HP *
                                                                                    (skillEffect.GainHPPercentage *
                                                                                        0.01f)) *
                                                                                specialEffectExtras
                                                                                    .multiplyStatusEffect);
                     }
+                    else
+                    {
+                        foreach (var axieController in statusEffectTargetList)
+                        {
+                            skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.HP *
+                                                                                       (skillEffect.GainHPPercentage *
+                                                                                           0.01f)) *
+                                                                                   specialEffectExtras
+                                                                                       .multiplyStatusEffect);
+                        }
+                    }
+
                 }
             }
 
@@ -668,9 +703,19 @@ public class SkillLauncher : MonoBehaviour
                          specialEffectExtras.multiplyStatusEffect));
                 }
 
+
                 dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
 
                 int damageReduction = target.axieSkillController.passives.DamageReductionAmount;
+
+                if (skill.bodyPartSO.skillEffects.Any(x => x.Lunge))
+                {
+                    int lungeAmount = self.axieSkillEffectManager.LungeAmount();
+                    if (lungeAmount > 0)
+                    {
+                        dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(lungeAmount * AxieStatCalculator.LungePercentage);
+                    }
+                }
 
                 if (target.axieSkillEffectManager.IsAromad())
                 {

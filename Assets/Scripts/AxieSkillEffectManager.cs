@@ -34,7 +34,7 @@ public class AxieSkillEffectManager : MonoBehaviour
     private List<SkillEffectDuration> durationToRemove = new List<SkillEffectDuration>();
     private int lastXAxisScale;
 
-//
+    //
     public bool IsDebuff()
     {
         return skillEffects.Any(x =>
@@ -116,6 +116,13 @@ public class AxieSkillEffectManager : MonoBehaviour
     public bool IsFragiled()
     {
         return skillEffects.Any(x => x.Fragile);
+    }
+
+    public int LungeAmount()
+    {
+        int timesSet = skillEffects.FirstOrDefault(x => x.Lunge)?.timesSet ?? 0;
+
+        return timesSet;
     }
 
     public bool IsAromad()

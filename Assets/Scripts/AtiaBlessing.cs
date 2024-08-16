@@ -307,40 +307,11 @@ public class AtiaBlessing : MonoBehaviour
         //TODO: Do items shop
         try
         {
-            UpgradeAugument augument = blessingAugument[indexAugument];
-
-            List<AxieController> axieControllers = axieClasses == null
-                ? team.GetCharactersAll()
-                : team.GetCharactersAll()
-                    .Where(x => augument.axie_class.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
-                    .ToList();
-
-
-            foreach (var controller in axieControllers)
-            {
-                switch ((BuffEffect)augument.id)
-                {
-                    case AtiaBlessing.BuffEffect.Increase_HP:
-                        controller.stats.hp += 3;
-                        break;
-                    case AtiaBlessing.BuffEffect.Increase_Morale:
-                        controller.stats.morale += 3;
-                        break;
-                    case AtiaBlessing.BuffEffect.Increase_Speed:
-                        controller.stats.speed += 3;
-                        break;
-                    case AtiaBlessing.BuffEffect.Increase_Skill:
-                        controller.stats.skill += 3;
-                        break;
-                    case AtiaBlessing.BuffEffect.Backdoor:
-                        controller.ShrimpOnStart = true;
-                        break;
-                }
-            }
+            ShopItemsManager.instance.DoUpgrade((BuffEffect)indexAugument, team);
         }
         catch (Exception ex)
         {
-            Debug.Log("Please code me");
+            Debug.LogError(ex.Message);
         }
 
     }

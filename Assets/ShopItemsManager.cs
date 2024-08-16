@@ -38,6 +38,12 @@ public class ShopItemsManager : MonoBehaviour
         }
     }
 
+    public void Backdoor(Team team)
+    {
+        var axies = team.GetCharactersAll();
+        axies.ForEach(x => x.ShrimpOnStart = true);
+    }
+
     public void Topaz(Team team)
     {
         if (!team.isGoodTeam)
@@ -506,7 +512,7 @@ public class ShopItemsManager : MonoBehaviour
         Action action = () =>
         {
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.CurrentEnergy = x.axieIngameStats.MaxEnergy * .3f);
+            axies.ForEach(x => x.axieIngameStats.CurrentEnergy += x.axieIngameStats.MaxEnergy * .3f);
         };
 
 
@@ -638,7 +644,7 @@ public class ShopItemsManager : MonoBehaviour
         Action action = () =>
         {
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.CurrentEnergy = x.axieIngameStats.MaxEnergy * .5f);
+            axies.ForEach(x => x.axieIngameStats.CurrentEnergy += x.axieIngameStats.MaxEnergy * .5f);
         };
 
 
