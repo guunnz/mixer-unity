@@ -46,6 +46,8 @@ public class RunManagerSingleton : MonoBehaviour
     public LandType landType;
     internal List<bool> resultsBools = new List<bool>();
     internal string currentOpponent = "";
+    internal int netWorth = 0;
+    internal int eNetWorth = 0;
 
     internal List<UpgradeValuesPerRoundList> globalUpgrades = new List<UpgradeValuesPerRoundList>()
     {
@@ -81,6 +83,7 @@ public class RunManagerSingleton : MonoBehaviour
     public void SetResult(bool won)
     {
         skere = 0;
+        eNetWorth = 0;
         resultsBools.Add(won);
         atiaBlessing.ShowRandomAuguments();
         coins += economyPassive.CoinsOnStart + economyPassive.ExtraCoinsPerRound;
@@ -141,7 +144,7 @@ public class RunManagerSingleton : MonoBehaviour
     {
         int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
                                     100f);
-
+        netWorth += upgrade.price;
         if (coins < price)
             return false;
 

@@ -8560,7 +8560,7 @@ MonoBehaviour:
     Bug: 15.3
     Beast: 20.98
     Mech: 6.54
-  Weight: 5
+  Weight: 10
   removalThreshold: 5
 --- !u!4 &1415467882
 Transform:
@@ -8619,7 +8619,8 @@ MonoBehaviour:
     Bug: 0
     Beast: 0
     Mech: 0
-  Weight: 0
+  Weight: 5
+  DissapearMultiplier: 3
   atia1Fields:
   - {fileID: 1195345392}
   - {fileID: 1362342446}

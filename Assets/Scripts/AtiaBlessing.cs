@@ -304,9 +304,9 @@ public class AtiaBlessing : MonoBehaviour
 
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
     {
-        //TODO: Do items shop
         try
         {
+            RunManagerSingleton.instance.eNetWorth += ShopManager.instance.ItemList.FirstOrDefault(x => x.ItemEffectName == (BuffEffect)indexAugument)?.price ?? 0;
             ShopItemsManager.instance.DoUpgrade((BuffEffect)indexAugument, team);
         }
         catch (Exception ex)

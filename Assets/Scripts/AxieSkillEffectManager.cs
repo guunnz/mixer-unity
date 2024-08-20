@@ -118,6 +118,39 @@ public class AxieSkillEffectManager : MonoBehaviour
         return skillEffects.Any(x => x.Fragile);
     }
 
+    public bool IsHotbutted()
+    {
+        return skillEffects.Any(x => x.Hotbutt);
+    }
+
+    public bool IsHealingBlocked()
+    {
+        return skillEffects.Any(x => x.HealingBlock);
+    }
+
+    public bool IsKestreled()
+    {
+        return skillEffects.Any(x => x.Kestrel);
+    }
+
+    public int GeckoStacks()
+    {
+        int timesSet = skillEffects.FirstOrDefault(x => x.Gecko)?.timesSet ?? 0;
+
+        return timesSet;
+    }
+
+    public bool IsFishSnacked()
+    {
+        return skillEffects.Any(x => x.FishSnack);
+    }
+
+    public bool IsGravelanted()
+    {
+        return skillEffects.Any(x => x.GravelAnt);
+    }
+
+
     public int LungeAmount()
     {
         int timesSet = skillEffects.FirstOrDefault(x => x.Lunge)?.timesSet ?? 0;
@@ -321,6 +354,10 @@ public class AxieSkillEffectManager : MonoBehaviour
                 case StatusEffectEnum.Sleep:
                 case StatusEffectEnum.Lethal:
                 case StatusEffectEnum.Stun:
+                case StatusEffectEnum.Kestrel:
+                case StatusEffectEnum.HotButt:
+                case StatusEffectEnum.CannotUseMeleeAbility:
+                case StatusEffectEnum.HealingBlock:
                     skillEffectOnList.skillDuration = skillEffect.skillDuration == 0 ? 1 : skillEffect.skillDuration;
                     return;
                 default:

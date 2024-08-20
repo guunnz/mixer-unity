@@ -229,6 +229,12 @@ public class AxieBehavior : MonoBehaviour
 
         while (axieState == AxieState.Attacking)
         {
+            float attackSpeedMulti = 1;
+
+            if (myController.axieSkillEffectManager.IsAromad())
+            {
+                attackSpeedMulti = 0.5f;
+            }
             if (myController.CurrentTarget != null)
             {
                 var characters = myController.CurrentTarget.myTeam.GetCharacters();
@@ -244,21 +250,24 @@ public class AxieBehavior : MonoBehaviour
             {
                 myController.SkeletonAnim.AnimationName = AttackAnimation;
                 myController.SkeletonAnim.timeScale =
-                    myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / AttackSpeed;
+                    myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / (AttackSpeed * attackSpeedMulti);
             }
 
 
 
-            yield return new WaitForSecondsRealtime(AttackSpeed / 2f);
+            yield return new WaitForSecondsRealtime((AttackSpeed * attackSpeedMulti) / 2f);
 
             if (myController.Range > 1)
                 AutoAttackMaNAGER.instance.SpawnProjectile(myController.transform,
                     myController.CurrentTarget.transform, myController.axieIngameStats.axieClass);
             else
             {
+                if (myController.axieSkillEffectManager.IsGravelanted())
+                    yield break;
+
                 AutoAttackMaNAGER.instance.SpawnAttack(myController.CurrentTarget.transform, myController.axieIngameStats.axieClass);
             }
-            yield return new WaitForSecondsRealtime(AttackSpeed / 2f);
+            yield return new WaitForSecondsRealtime((AttackSpeed * attackSpeedMulti) / 2f);
             if (myController.CurrentTarget != null)
             {
                 var characters = myController.CurrentTarget.myTeam.GetCharacters();
@@ -286,7 +295,7 @@ public class AxieBehavior : MonoBehaviour
                 attackDamage += this.myController.axieSkillController.passives.AutoattackIncrease;
 
 
-                float damageReduction = target.axieSkillController.passives.DamageReductionAmount;
+                float damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10);
 
                 if (target.axieSkillEffectManager.IsAromad())
                 {
@@ -310,8 +319,10 @@ public class AxieBehavior : MonoBehaviour
                     }
                 }
 
-                myController.axieIngameStats.currentHP +=
-                    attackDamage * myController.axieSkillController.passives.HealOnDamageDealt;
+                if (myController.axieSkillController.passives.HealOnDamageDealt > 0)
+                {
+                    myController.DoHeal(attackDamage * myController.axieSkillController.passives.HealOnDamageDealt);
+                }
 
                 if (myController.axieSkillController.IgnoresShieldOnAttack())
                 {

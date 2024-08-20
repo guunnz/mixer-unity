@@ -9,10 +9,11 @@ public class FakeDragAndDropCharacter : MonoBehaviour
     private Camera mainCamera;
     private GameObject selectedCharacter;
     public Transform AxiesParent;
-    
+
     private List<FakeOverlayTile> allOverlayTiles = new List<FakeOverlayTile>();
     [SerializeField] private List<FakeAxieController> allCharacters = new List<FakeAxieController>();
 
+    private float moveDelay = 0.1f;
     void Start()
     {
         mainCamera = Camera.main;
@@ -20,10 +21,10 @@ public class FakeDragAndDropCharacter : MonoBehaviour
 
     void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null)
             return;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && moveDelay <= 0)
         {
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -44,6 +45,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         // Move character with mouse
         if (selectedCharacter != null && Input.GetMouseButton(0))
         {
+            moveDelay = 0.1f;
             selectedCharacter.GetComponent<BoxCollider>().enabled = false;
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                 mainCamera.WorldToScreenPoint(selectedCharacter.transform.position).z);
@@ -54,6 +56,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         // Release character and attempt to place on the closest tile
         if (selectedCharacter != null && Input.GetMouseButtonUp(0))
         {
+            moveDelay = 0.1f;
             selectedCharacter.GetComponent<BoxCollider>().enabled = true;
             var fakeAxieController = selectedCharacter.GetComponent<FakeAxieController>();
             fakeAxieController.Grab(false);

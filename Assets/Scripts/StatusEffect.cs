@@ -47,6 +47,12 @@ public class SkillEffect : ICloneable
     public bool Poison;
     public bool Wombo;
     public bool Lunge;
+    public bool Trump;
+    public bool Hotbutt;
+    public bool Kestrel;
+    public bool FishSnack;
+    public bool GravelAnt;
+    public bool HealingBlock;
     public bool AlwaysCritical;
     public bool RandomEffectIsDebuff;
     public bool RandomEffectIsBuff;
@@ -133,7 +139,7 @@ public class SkillEffect : ICloneable
     public bool IsOnlyBuffOrDebuff()
     {
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
-                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry || Lunge);
+                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry || Lunge || Kestrel || Hotbutt || FishSnack || GravelAnt || HealingBlock);
     }
 
     public bool IsOnlyInfiniteBuffsOrDebuff()

@@ -12,6 +12,7 @@ public class AtiaSimulator : MonoBehaviour
 
     private float weight => 1 + Weight / 100f;  // Weight value to control the drastic effects
     public float Weight = 0;
+    public int DissapearMultiplier = 1;
 
     public TMP_InputField[] atia1Fields;
     public TMP_InputField[] atia2Fields;
@@ -267,27 +268,39 @@ public class AtiaSimulator : MonoBehaviour
         // Amplify the differences based on the weight
         for (int i = 0; i < results.Count; i++)
         {
-            if (results[i] >= 50)
+            if (results[i] > 0)
             {
-                // Increase higher values even more based on the weight
-                results[i] += (results[i] - 50) * (weight - 1);
-            }
-            else
-            {
-                // Decrease lower values further based on the weight
-                results[i] -= (50 - results[i]) * (weight - 1);
+                if (results[i] >= 50)
+                {
+                    // Increase higher values even more based on the weight
+                    results[i] += (results[i] - 50) * (weight - 1);
+                }
+                else
+                {
+                    // Decrease lower values further based on the weight, but not below 0
+                    results[i] -= (50 - results[i]) * (weight - 1);
+                    if (results[i] < 0)
+                    {
+                        results[i] = 0;
+                    }
+                }
             }
         }
     }
 
+
     private void ApplyRemovalAndRedistributionRules(Dictionary<string, float> mergedStats, Dictionary<string, float> classChances1, Dictionary<string, float> classChances2, List<float> differences, List<float> adjustedValues)
     {
-        var sortedStats = mergedStats.OrderByDescending(x => x.Value).ToList();
+        var sortedStats = mergedStats
+            .Where(x => x.Value > 0) // Exclude 0% stats
+            .OrderByDescending(x => x.Value)
+            .ToList();
+
         var topTwoStats = sortedStats.Take(2).Select(x => x.Key).ToHashSet();
-        float purity = CalculatePurity(mergedStats);
+        float purity = CalculatePurity(mergedStats) * DissapearMultiplier;
 
         // Top 2 Redistribution
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < sortedStats.Count && i < 2; i++)
         {
             string topStat = sortedStats[i].Key;
             float originalValue = System.Math.Max(classChances1[topStat], classChances2[topStat]);
@@ -301,21 +314,63 @@ public class AtiaSimulator : MonoBehaviour
             }
         }
 
-        // Bottom 2 Removal
-        var bottomStats = sortedStats.Skip(sortedStats.Count - 2).ToList();
-
-        foreach (var stat in bottomStats)
+        // Special case for exactly 3 remaining stats
+        if (sortedStats.Count == 3)
         {
-            if (stat.Value < removalThreshold && !topTwoStats.Contains(stat.Key))
+            // Consider the highest as the top stat and the other two as bottom stats
+            var bottomStats = sortedStats.Skip(1).ToList();
+
+            foreach (var stat in bottomStats)
             {
-                float removalChance = (differences[sortedStats.IndexOf(stat)] / adjustedValues[sortedStats.IndexOf(stat)]) / 100.0f * purity;
+                if (stat.Value < removalThreshold)
+                {
+                    float removalChance = (differences[sortedStats.IndexOf(stat)] / adjustedValues[sortedStats.IndexOf(stat)]) / 100.0f * purity;
+
+                    if (UnityEngine.Random.value < removalChance)
+                    {
+                        Debug.Log($"Class '{stat.Key}' removed due to being below {removalThreshold}% and removal chance succeeded.");
+                        mergedStats.Remove(stat.Key);
+                    }
+                }
+            }
+        }
+        // Bottom 2 Removal for more than 3 stats
+        else if (sortedStats.Count > 3)
+        {
+            var bottomStats = sortedStats.Skip(sortedStats.Count - 2).ToList();
+
+            foreach (var stat in bottomStats)
+            {
+                if (stat.Value < removalThreshold && !topTwoStats.Contains(stat.Key))
+                {
+                    float removalChance = (differences[sortedStats.IndexOf(stat)] / adjustedValues[sortedStats.IndexOf(stat)]) / 100.0f * purity;
+
+                    if (UnityEngine.Random.value < removalChance)
+                    {
+                        Debug.Log($"Class '{stat.Key}' removed due to being below {removalThreshold}% and removal chance succeeded.");
+                        mergedStats.Remove(stat.Key);
+                    }
+                }
+            }
+        }
+        else if (sortedStats.Count == 2) // Special case for only 2 remaining stats
+        {
+            // Treat the lower stat as a bottom stat
+            string bottomStat = sortedStats[1].Key;
+            if (mergedStats[bottomStat] < removalThreshold)
+            {
+                float removalChance = (differences[sortedStats.IndexOf(sortedStats[1])] / adjustedValues[sortedStats.IndexOf(sortedStats[1])]) / 100.0f * purity;
 
                 if (UnityEngine.Random.value < removalChance)
                 {
-                    Debug.Log($"Class '{stat.Key}' removed due to being below {removalThreshold}% and removal chance succeeded.");
-                    mergedStats.Remove(stat.Key);
+                    Debug.Log($"Class '{bottomStat}' removed due to being below {removalThreshold}% and removal chance succeeded.");
+                    mergedStats.Remove(bottomStat);
                 }
             }
+        }
+        else if (sortedStats.Count == 1) // Special case for only 1 remaining stat
+        {
+            Debug.Log($"Only one stat '{sortedStats[0].Key}' remains, no further redistribution or removal possible.");
         }
 
         // Recalculate percentages for remaining stats
@@ -325,6 +380,7 @@ public class AtiaSimulator : MonoBehaviour
             mergedStats[stat] = (mergedStats[stat] / totalStats) * 100.0f;
         }
     }
+
 
     private void RedistributeProfit(Dictionary<string, float> mergedStats, string statName, float profit)
     {

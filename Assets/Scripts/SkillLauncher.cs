@@ -47,6 +47,14 @@ public class SkillLauncher : MonoBehaviour
         {
             Skill skill = Instantiate(skills[i].bodyPartSO.prefab).GetComponent<Skill>();
 
+            if (self.axieSkillEffectManager.IsKestreled() && skill.axieBodyPart.bodyPart == BodyPart.Horn)
+            {
+                continue;
+            }
+            else if (self.axieSkillEffectManager.IsHotbutted() && skill.axieBodyPart.bodyPart == BodyPart.Mouth)
+            {
+                continue;
+            }
             skill.axieBodyPart = skills[i].bodyPartSO;
             skill.self = self;
             skill.origin = self.transform;
@@ -595,6 +603,18 @@ public class SkillLauncher : MonoBehaviour
                     skillInstance.AddStatusEffectTargetPair(gotStolen.AxieId, skillsToSteal.ToArray(), true);
                     skillInstance.AddStatusEffectTargetPair(stealer.AxieId, skillsToSteal.ToArray(), false);
                 }
+
+                if (target.axieSkillEffectManager.IsFishSnacked() && target.myTeam != self.myTeam)
+                {
+                    if (skillInstance.axieBodyPart.bodyPartClass == AxieClass.Bird || skillInstance.axieBodyPart.bodyPartClass == AxieClass.Aquatic)
+                    {
+                        skillInstance.AddStatusEffectTargetPair(self.AxieId, new[] {new SkillEffect()
+                { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 2 }  });
+
+                        skillInstance.AddStatusEffectTargetPair(target.AxieId, new[] {new SkillEffect()
+                { statusEffect = StatusEffectEnum.FishSnack,}  }, remove: true);
+                    }
+                }
             }
 
             if (skillEffect.StealEnergyPercentage > 0)
@@ -706,7 +726,7 @@ public class SkillLauncher : MonoBehaviour
 
                 dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
 
-                int damageReduction = target.axieSkillController.passives.DamageReductionAmount;
+                int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10); ;
 
                 if (skill.bodyPartSO.skillEffects.Any(x => x.Lunge))
                 {
@@ -715,6 +735,13 @@ public class SkillLauncher : MonoBehaviour
                     {
                         dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(lungeAmount * AxieStatCalculator.LungePercentage);
                     }
+                }
+
+                if (skill.bodyPartSO.skillEffects.Any(x => x.Trump))
+                {
+                    int economyAmount = self.imGood ? RunManagerSingleton.instance.netWorth : RunManagerSingleton.instance.eNetWorth;
+
+                    dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(economyAmount * AxieStatCalculator.LungePercentage);
                 }
 
                 if (target.axieSkillEffectManager.IsAromad())

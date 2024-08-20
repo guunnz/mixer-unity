@@ -19,7 +19,7 @@ MonoBehaviour:
     statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
-    skillDuration: 0
+    skillDuration: 5
     PoisonStack: 0
     Attack: 0
     Speed: 0
@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,11 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 1
+    Kestrel: 0
+    FishSnack: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +98,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: 5c5fb340b1ef3134c8ddb6db5de56989, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 4
   damage: 90
   shield: 50
   energy: 1
-  description: Apply hot butt to target (Cannot use mouth abilities)
+  description: Apply Hot Butt to target for 5 seconds

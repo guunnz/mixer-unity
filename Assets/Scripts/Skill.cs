@@ -414,7 +414,7 @@ public class Skill : MonoBehaviour
     {
         foreach (var target in statusEffectTargetList)
         {
-            target.axieIngameStats.currentHP += healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value;
+            target.DoHeal(healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value);
         }
     }
 
@@ -460,14 +460,14 @@ public class Skill : MonoBehaviour
                     skill.VFXPrefab.transform.rotation,
                     this.transform);
 
-           
+
 
                 vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
                                                                  pos.x, vfxSpawned.transform.localPosition.y +
                                                                         pos.y,
                     vfxSpawned.transform.localPosition.z +
                     pos.z);
-                
+
                 if (skill.AnimationMove.EnableDotweenAnimation)
                 {
                     vfxSpawned.transform.localPosition += skill.AnimationMove.StartFromExtra;
@@ -554,16 +554,16 @@ public class Skill : MonoBehaviour
             {
                 if (timer >= skill.ActivateTiming)
                 {
-                    
+
                     Vector3 pos = skill.VFXPrefab.transform.localPosition;
                     GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                         skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                         skill.VFXPrefab.transform.rotation,
                         this.transform);
 
-                    
-           
-                    
+
+
+
                     vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
                                                                      pos.x, vfxSpawned.transform.localPosition.y +
                                                                             pos.y,
@@ -576,7 +576,7 @@ public class Skill : MonoBehaviour
                         vfxSpawned.transform.DOLocalMove(vfxSpawned.transform.localPosition + skill.AnimationMove.GoTo,
                             skill.AnimationMove.Time);
                     }
-                     
+
                     VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
 
                     if (changer != null)
@@ -607,7 +607,7 @@ public class Skill : MonoBehaviour
                         }
 
                         if (projectileMover != null)
-                            projectileMover.MoveToTarget(this.target, skill.SkillDuration+.1f);
+                            projectileMover.MoveToTarget(this.target, skill.SkillDuration + .1f);
                     }
                 }
             }

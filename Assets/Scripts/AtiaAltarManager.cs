@@ -166,12 +166,21 @@ public class AtiaAltarManager : MonoBehaviour
 
     private void ApplyRemovalAndRedistributionRules(Dictionary<string, float> mergedStats, Dictionary<string, float> classChances1, Dictionary<string, float> classChances2, List<float> differences, List<float> adjustedValues)
     {
-        var sortedStats = mergedStats.OrderByDescending(x => x.Value).ToList();
+        var sortedStats = mergedStats
+            .Where(x => x.Value > 0) // Exclude 0% stats
+            .OrderByDescending(x => x.Value)
+            .ToList();
+
+        foreach(var stat in sortedStats)
+        {
+            Debug.Log(stat.Key + " " + stat.Value);
+        }
+
         var topTwoStats = sortedStats.Take(2).Select(x => x.Key).ToHashSet();
         float purity = CalculatePurity(mergedStats);
 
         // Top 2 Redistribution
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < sortedStats.Count && i < 2; i++)
         {
             string topStat = sortedStats[i].Key;
             float originalValue = Math.Max(classChances1[topStat], classChances2[topStat]);
@@ -186,20 +195,42 @@ public class AtiaAltarManager : MonoBehaviour
         }
 
         // Bottom 2 Removal
-        var bottomStats = sortedStats.Skip(sortedStats.Count - 2).ToList();
-
-        foreach (var stat in bottomStats)
+        if (sortedStats.Count > 2)
         {
-            if (stat.Value < removalThreshold && !topTwoStats.Contains(stat.Key))
+            var bottomStats = sortedStats.Skip(sortedStats.Count - 2).ToList();
+
+            foreach (var stat in bottomStats)
             {
-                float removalChance = (differences[sortedStats.IndexOf(stat)] / adjustedValues[sortedStats.IndexOf(stat)]) / 100.0f * purity;
+                if (stat.Value < removalThreshold && !topTwoStats.Contains(stat.Key))
+                {
+                    float removalChance = (differences[sortedStats.IndexOf(stat)] / adjustedValues[sortedStats.IndexOf(stat)]) / 100.0f * purity;
+
+                    if (UnityEngine.Random.value < removalChance)
+                    {
+                        Debug.Log($"Class '{stat.Key}' removed due to being below {removalThreshold}% and removal chance succeeded.");
+                        mergedStats.Remove(stat.Key);
+                    }
+                }
+            }
+        }
+        else if (sortedStats.Count == 2) // Special case for only 2 remaining stats
+        {
+            // Treat the lower stat as a bottom stat
+            string bottomStat = sortedStats[1].Key;
+            if (mergedStats[bottomStat] < removalThreshold)
+            {
+                float removalChance = (differences[sortedStats.IndexOf(sortedStats[1])] / adjustedValues[sortedStats.IndexOf(sortedStats[1])]) / 100.0f * purity;
 
                 if (UnityEngine.Random.value < removalChance)
                 {
-                    Debug.Log($"Class '{stat.Key}' removed due to being below {removalThreshold}% and removal chance succeeded.");
-                    mergedStats.Remove(stat.Key);
+                    Debug.Log($"Class '{bottomStat}' removed due to being below {removalThreshold}% and removal chance succeeded.");
+                    mergedStats.Remove(bottomStat);
                 }
             }
+        }
+        else if (sortedStats.Count == 1) // Special case for only 1 remaining stat
+        {
+            Debug.Log($"Only one stat '{sortedStats[0].Key}' remains, no further redistribution or removal possible.");
         }
 
         // Recalculate percentages for remaining stats
@@ -241,8 +272,10 @@ public class AtiaAltarManager : MonoBehaviour
 
         if (difference != 0)
         {
-            string keyToAdjust = stats.OrderByDescending(pair => pair.Value).First().Key;
-            stats[keyToAdjust] = Mathf.Round((stats[keyToAdjust] + difference) * 100f) / 100f;
+            // Adjust the stat that was rounded the most to correct the total
+            string keyToAdjust = stats.OrderByDescending(pair => Mathf.Abs(pair.Value - Mathf.Round(pair.Value * 100f) / 100f)).First().Key;
+            stats[keyToAdjust] += difference;
+            stats[keyToAdjust] = Mathf.Round(stats[keyToAdjust] * 100f) / 100f; // Re-round to two decimals
         }
     }
 

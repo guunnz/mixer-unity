@@ -19,7 +19,7 @@ MonoBehaviour:
     statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
-    skillDuration: 0
+    skillDuration: 5
     PoisonStack: 0
     Attack: 0
     Speed: 0
@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,11 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 1
+    FishSnack: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +98,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 2
   prefab: {fileID: 2179489554462401005, guid: 9abe7a8bd73ce674397b58464b87ff52, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 2
   damage: 110
   shield: 30
   energy: 1
-  description: Apply Kestrel to target (Cannot use horn abilities)
+  description: Apply Kestrel to target

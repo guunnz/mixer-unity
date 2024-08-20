@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,8 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +95,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: d6c4195306ba4f344b0bcd6ae9e65dec, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 1
   damage: 60
   shield: 90
   energy: 1
-  description: Stun on the next axie that targets you with aquatic or bird ability
+  description: Gain a Fish Snack stack

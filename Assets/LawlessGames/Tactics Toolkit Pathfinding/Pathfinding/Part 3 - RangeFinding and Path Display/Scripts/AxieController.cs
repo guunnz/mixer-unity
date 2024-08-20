@@ -96,6 +96,15 @@ public class AxieController : MonoBehaviour
         axieSkillEffectManager.AddStatusEffect(skillEffect);
     }
 
+    public void DoHeal(float healAmount)
+    {
+        if (healAmount <= 0)
+            return;
+        if (this.axieSkillEffectManager.IsHealingBlocked())
+            return;
+        this.axieIngameStats.currentHP += healAmount;
+    }
+
     public void RemoveStatusEffect(SkillEffect skillEffect)
     {
         axieSkillEffectManager.RemoveAllEffects();
@@ -339,7 +348,7 @@ public class AxieController : MonoBehaviour
         }
 
 
-        if (!axieSkillEffectManager.IsChilled())
+        if (!axieSkillEffectManager.IsChilled() && !axieSkillEffectManager.IsStunned())
         {
             axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
         }

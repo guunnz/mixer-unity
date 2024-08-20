@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,13 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 1
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +100,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 2
   prefab: {fileID: 489240768068986823, guid: e11d84f3257d6724d84f89cffa807b57, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 2
   damage: 120
   shield: 30
   energy: 1
-  description: When you cast this ability Every Axie gains a Trump Stack
+  description: This ability deals 1% extra damage multiplied by your items full price

@@ -19,7 +19,7 @@ MonoBehaviour:
     statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
-    skillDuration: 2
+    skillDuration: 3
     PoisonStack: 0
     Attack: 0
     Speed: 0
@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,12 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 1
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +99,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 5
   prefab: {fileID: 2179489554462401005, guid: f3a7a9d02b9596f4785b6395c906586e, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 1
   damage: 30
   shield: 40
   energy: 1
-  description: The target cannot use melee attacks for 2 seconds
+  description: The target cannot use melee attacks for 3 seconds

@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,13 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -92,8 +100,9 @@ MonoBehaviour:
     arreglabugs: 
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: 9ddc4b4d10bc967498ab1856a2bb364c, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 3
   damage: 100
   shield: 0
   energy: 1
-  description: Gain a gecko stack
+  description: Gain a Gecko stack

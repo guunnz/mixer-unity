@@ -14,7 +14,7 @@ public class DragAndDropCharacter : MonoBehaviour
     private OverlayTile originalTile;
     private List<OverlayTile> allOverlayTiles;
     private Team team;
-
+    private float moveDelay = 0.1f;
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
@@ -28,10 +28,11 @@ public class DragAndDropCharacter : MonoBehaviour
         if (team.battleStarted)
             return;
 
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null)
             return;
 
-        if (Input.GetMouseButtonDown(0))
+        moveDelay -= Time.deltaTime;
+        if (Input.GetMouseButtonDown(0) && moveDelay <= 0)
         {
             RaycastHit hit;
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -61,6 +62,7 @@ public class DragAndDropCharacter : MonoBehaviour
         // Move character with mouse
         if (selectedCharacter != null && Input.GetMouseButton(0))
         {
+            moveDelay = 0.1f;
             selectedCharacter.GetComponent<BoxCollider>().enabled = false;
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                 mainCamera.WorldToScreenPoint(selectedCharacter.transform.position).z);
@@ -71,11 +73,12 @@ public class DragAndDropCharacter : MonoBehaviour
         // Release character and attempt to place on the closest tile
         if (selectedCharacter != null && Input.GetMouseButtonUp(0))
         {
+            moveDelay = 0.1f;
             selectedCharacter.GetComponent<BoxCollider>().enabled = true;
             selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
             OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
 
-            SFXManager.instance.PlaySFX(SFXType.GrabAxie,0.12f);
+            SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
             if (closestTile == null)
             {
                 selectedCharacter.GetComponent<BoxCollider>().enabled = true;
@@ -137,6 +140,7 @@ public class DragAndDropCharacter : MonoBehaviour
         }
         else
         {
+            targetTile.currentOccupier = selectedAxieController;
             MoveCharacterToTile(selectedAxieController, targetTile);
             selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
             selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
@@ -190,13 +194,13 @@ public class DragAndDropCharacter : MonoBehaviour
                 Vector3.MoveTowards(character.transform.position, targetPosition, Time.deltaTime * 10);
             yield return null;
         }
+
     }
 
     private void MoveCharacterToTile(AxieController character, OverlayTile targetTile)
     {
         character.transform.position = targetTile.transform.position;
         character.standingOnTile = targetTile;
-
         // Adjust local scale based on grid X value
         if (targetTile.grid2DLocation.x >= 4)
         {
