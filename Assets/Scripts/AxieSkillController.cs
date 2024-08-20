@@ -19,6 +19,7 @@ public class AxiePassives
     public List<AxieBodyPart> bodyPartListReactivation = new List<AxieBodyPart>();
     public List<AxieBodyPart> bodyPartListShieldBreak = new List<AxieBodyPart>();
     public bool ImmuneToCriticals;
+    public bool PotatoLeaf;
     public int HealOnDamageDealt;
     public bool AutoattacksIgnoreShield;
     public float AutoattackIncrease;
@@ -286,6 +287,14 @@ public class AxieSkillController : MonoBehaviour
                     if (bodyPart.axieClass != attackClass)
                         continue;
 
+                    if (skillEffect.OnShieldBreak && damage < self.axieIngameStats.currentShield || skillEffect.OnShieldBreak && self.axieIngameStats.currentShield == 0)
+                    {
+                        continue;
+                    }
+                    if (skillEffect.RangeAbility && attacker.Range <= 1)
+                    {
+                        continue;
+                    }
                     StartCoroutine(
                         SkillLauncher.Instance.ThrowPassive(
                             skillList.FirstOrDefault(x => x.skillName == bodyPartPassive.skillName), self.SkeletonAnim,
@@ -340,7 +349,14 @@ public class AxieSkillController : MonoBehaviour
 
                     passives.MeleeReflectDamageAmount += skillEffect.MeleeReflect;
                     passives.RangedReflectDamageAmount += skillEffect.RangedReflect;
-                    passives.DamageReductionAmount += skillEffect.ReduceDamagePercentage;
+
+                    if (!skillEffect.PotatoLeaf)
+                        passives.DamageReductionAmount += skillEffect.ReduceDamagePercentage;
+                    else
+                    {
+                        passives.PotatoLeaf = true;
+                    }
+
                     passives.AutoattacksIgnoreShield = skillEffect.IgnoresShield;
                     passives.AutoattackIncrease += skillEffect.skillTriggerType == SkillTriggerType.PassiveOnAttack
                         ? skill.bodyPartSO.damage

@@ -34,6 +34,7 @@ public class AbilitiesManager : MonoBehaviour
     public TextMeshProUGUI ShieldAbilityText;
     public TextMeshProUGUI AttackAbilityText;
     public AxieBodyPartsManager skillList;
+    public AbilityDescriptionTooltip AbilityDescriptionTooltip;
     public Image HornBodyPart;
     public Image MouthBodyPart;
     public Image BackBodyPart;
@@ -216,6 +217,8 @@ public class AbilitiesManager : MonoBehaviour
         {
             ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
         }
+
+        AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
     }
 
     public void ChoosePartOnlyDo()
@@ -286,6 +289,8 @@ public class AbilitiesManager : MonoBehaviour
             {
                 ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
             }
+
+            AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
         }
     }
 

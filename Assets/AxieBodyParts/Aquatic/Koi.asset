@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,13 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -90,8 +98,10 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 04000000
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: 29f2779239fbf20438c10fcfa5a4d69c, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 5
   damage: 115
   shield: 35

@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,13 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -53,6 +61,7 @@ MonoBehaviour:
     DamageEqualsBasicAttack: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 30
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
@@ -90,10 +99,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 08000000
   bodyPart: 2
   prefab: {fileID: 489240768068986823, guid: f0cdc489ae910074993c225604a67c54, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 5
   damage: 50
   shield: 80
   energy: 1
-  description: Give double shield when combo
+  description: 30% of this Axie's shield becomes extra damage

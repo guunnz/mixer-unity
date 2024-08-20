@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,13 +47,22 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 1
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
-    ExtraDamagePercentage: 300
+    StunOnShieldBroken: 0
+    ExtraDamagePercentage: 500
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
@@ -90,11 +100,13 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 00000000
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: 9c95993618c81fd448a54ca795047d6d, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 1
   damage: 50
   shield: 0
   energy: 1
-  description: Wombo, if this is the last standing axie, this ability deals 300%
+  description: Wombo, if this is the last standing axie, this ability deals 500%
     extra damage

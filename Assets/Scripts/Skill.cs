@@ -258,12 +258,14 @@ public class DamageTargetPair
     public int axieId;
     public float Value;
     public bool onlyShield;
+    public AxieClass DamageType;
 
-    public DamageTargetPair(int axieId, float value, bool onlyShield = false)
+    public DamageTargetPair(int axieId, float value, AxieClass DamageType, bool onlyShield = false)
     {
         this.axieId = axieId;
         Value = value;
         this.onlyShield = onlyShield;
+        this.DamageType = DamageType;
     }
 }
 
@@ -320,7 +322,7 @@ public class Skill : MonoBehaviour
 
     public void AddDamageTargetPair(int axieId, float damage, bool onlyShield = false)
     {
-        damageTargetPairs.Add(new DamageTargetPair(axieId, damage, onlyShield));
+        damageTargetPairs.Add(new DamageTargetPair(axieId, damage, this.axieBodyPart.bodyPartClass, onlyShield));
     }
 
     public void AddHealTargetPair(int axieId, float heal)
@@ -385,6 +387,9 @@ public class Skill : MonoBehaviour
 
             if (pair == null)
                 return;
+
+            if (target.axieSkillController.passives.PotatoLeaf && pair.DamageType == AxieClass.Aquatic)
+                pair.Value = 0;
 
             if (pair.onlyShield)
             {

@@ -723,8 +723,12 @@ public class SkillLauncher : MonoBehaviour
                          specialEffectExtras.multiplyStatusEffect));
                 }
 
-
                 dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
+
+                if (skillEffect.ShieldAsDamagePercentage > 0)
+                {
+                    dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ShieldAsDamagePercentage * .01f));
+                }
 
                 int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10); ;
 

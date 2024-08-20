@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,13 +47,22 @@ MonoBehaviour:
     Fragile: 0
     Poison: 1
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
@@ -90,10 +100,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 01000000
   bodyPart: 4
   prefab: {fileID: 5186805709753591173, guid: ff64cb66324fec345a878debc8fa6414, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 1
   damage: 100
   shield: 50
   energy: 1
-  description: Apply poison when played in combo
+  description: Apply Poison when comboed with another active ability

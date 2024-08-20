@@ -54,15 +54,19 @@ MonoBehaviour:
     FishSnack: 0
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -98,6 +102,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 10000000
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: 9ddc4b4d10bc967498ab1856a2bb364c, type: 3}
   extraPrefabToInstantiate: {fileID: 0}

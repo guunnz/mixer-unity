@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,6 +47,13 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -99,10 +107,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 05000000
   bodyPart: 2
   prefab: {fileID: 489240768068986823, guid: d39e26002c6b4074bbb973ab8394e8fb, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 5
   damage: 110
   shield: 40
   energy: 1
-  description: Apply attack+ on user when attacking Beast, Bug or Mech
+  description: Apply Attack+ on user when attacking Beast, Bug or Mech

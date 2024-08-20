@@ -23,6 +23,7 @@ public class FakeAxieComboManager : MonoBehaviour
     public Image TailBodyPart;
     public Image axieClassImage;
 
+    public AbilityDescriptionTooltip AbilityDescriptionTooltip;
     public Button ButtonHornBodyPart;
     public Button ButtonMouthBodyPart;
     public Button ButtonBackBodyPart;
@@ -183,6 +184,7 @@ public class FakeAxieComboManager : MonoBehaviour
                 x.skillName == bodyPartToSelect.SkillName);
         AbilityDescriptionText.text = ability.description;
 
+        AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
         ShieldAbilityText.text = ability.shield.ToString();
         AttackAbilityText.text = ability.damage.ToString();
     }
@@ -236,6 +238,8 @@ public class FakeAxieComboManager : MonoBehaviour
 
             ShieldAbilityText.text = ability.shield.ToString();
             AttackAbilityText.text = ability.damage.ToString();
+
+            AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
         }
     }
 

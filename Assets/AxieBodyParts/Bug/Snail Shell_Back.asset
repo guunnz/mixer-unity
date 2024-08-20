@@ -29,9 +29,10 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
-    ShieldOnStart: 60
+    ShieldOnStart: 100
     IgnoresShield: 0
     Lethal: 0
     Merry: 0
@@ -46,13 +47,22 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
@@ -90,6 +100,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 0a000000
   bodyPart: 4
   prefab: {fileID: 2179489554462401005, guid: a1b0815851267224c9367391fd627028, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -97,4 +108,4 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: Starts with 100 shield, if your shield breaks, stun the enemy
+  description: Starts with 100 shield, if your shield breaks, Stun the enemy

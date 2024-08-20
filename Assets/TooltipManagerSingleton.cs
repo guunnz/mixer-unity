@@ -27,7 +27,9 @@ public enum TooltipType
     Forest,
     Arctic,
     Mystic,
-    Genesis
+    Genesis,
+    Prioritize,
+    Jinx
 }
 
 [System.Serializable]
@@ -40,6 +42,12 @@ public class Tooltip
 public class TooltipManagerSingleton : MonoBehaviour
 {
     public List<Tooltip> TooltipList = new List<Tooltip>();
+
+    static public TooltipManagerSingleton instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     public void EnableTooltip(TooltipType TooltipType)
     {
         TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(true);

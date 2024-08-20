@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Risky Fish_Mouth
   m_EditorClassIdentifier: 
   skillName: 47
-  statusEffects:
+  skillEffects:
   - statusEffect: 11
     statusApplyType: 0
+    statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
     skillDuration: 0
@@ -28,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -45,6 +47,13 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -59,15 +68,12 @@ MonoBehaviour:
     specialActivationAgainstAxiesList:
     - axieClass: 4
       ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     - axieClass: 3
       ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     - axieClass: 8
       ExtraDamage: 0
-      ExtraTimesAbilityCast: 0
       ExtraTimesStatusEffectApplied: 0
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []
@@ -101,8 +107,10 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 05000000
   bodyPart: 3
   prefab: {fileID: 3133670662096343493, guid: f991069a19957414397db2dfb5b78d94, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 5
   damage: 120
   shield: 30

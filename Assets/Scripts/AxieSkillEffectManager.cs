@@ -113,6 +113,11 @@ public class AxieSkillEffectManager : MonoBehaviour
         return skillEffects.Any(x => x.Jinx);
     }
 
+    public bool IsImmuneToDebuffs()
+    {
+        return skillEffects.Any(x => x.ImmuneToDebuffs);
+    }
+
     public bool IsFragiled()
     {
         return skillEffects.Any(x => x.Fragile);
@@ -341,6 +346,10 @@ public class AxieSkillEffectManager : MonoBehaviour
 
         SkillEffect skillEffectOnList = skillEffects.FirstOrDefault(x => x.statusEffect == statusEffect);
 
+        if (IsImmuneToDebuffs() && skillEffectOnList.IsDebuff())
+        {
+            return;
+        }
         if (skillEffectOnList != null)
         {
             switch (statusEffect)

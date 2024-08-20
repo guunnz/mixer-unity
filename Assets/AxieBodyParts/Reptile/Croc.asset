@@ -19,7 +19,7 @@ MonoBehaviour:
     statusApplyTypeIsTarget: 0
     skillTriggerType: 0
     isPassive: 0
-    skillDuration: 3
+    skillDuration: 0
     PoisonStack: 0
     Attack: 0
     Speed: -1
@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,15 +47,26 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -90,10 +102,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 04000000
   bodyPart: 4
   prefab: {fileID: 2179489554462401005, guid: c299bbb0d224b90419e5d936d3bbc763, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 3
   damage: 80
   shield: 60
   energy: 1
-  description: Apply -Speed on target for 3 seconds
+  description: Apply -1 Speed on target

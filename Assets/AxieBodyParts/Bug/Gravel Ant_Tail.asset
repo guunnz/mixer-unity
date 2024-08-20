@@ -53,13 +53,16 @@ MonoBehaviour:
     Kestrel: 0
     FishSnack: 0
     GravelAnt: 1
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
@@ -97,6 +100,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 00000000
   bodyPart: 5
   prefab: {fileID: 2179489554462401005, guid: f3a7a9d02b9596f4785b6395c906586e, type: 3}
   extraPrefabToInstantiate: {fileID: 0}

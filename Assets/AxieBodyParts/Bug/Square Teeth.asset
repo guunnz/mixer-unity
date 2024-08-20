@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,13 +47,22 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
-    ExtraDamagePercentage: 200
+    StunOnShieldBroken: 0
+    ExtraDamagePercentage: 500
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
     ReduceDamagePercentage: 0
@@ -90,10 +100,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 
   bodyPart: 3
   prefab: {fileID: 3133670662096343493, guid: 4d4bfe2cb950a1b4886cf918eaacd81b, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 1
   damage: 30
   shield: 0
   energy: 1
-  description: '[Wombo], deal 200% extra damage if you are below 50% hp'
+  description: Wombo, deal 500% extra damage if you are below 50% hp

@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,24 +47,33 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 1
     ReduceDamagePercentage: 100
-    UseSpecialsAsTrigger: 1
+    UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
-    specialActivactionWhenReceiveDamage:
-    - onlyAbilities: 1
-      axieClass: 5
+    specialActivactionWhenReceiveDamage: []
     lowestHP: 0
     FurthestTarget: 0
     targetHighestEnergy: 0
@@ -92,6 +102,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 
   bodyPart: 5
   prefab: {fileID: 2179489554462401005, guid: 7b205a7d943f0b043a326bb54e314539, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -99,4 +110,4 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: This axie is immune to aqua abilities
+  description: Aqua Abilities deal no damage to this axie

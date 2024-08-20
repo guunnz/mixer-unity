@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -12,7 +13,9 @@ public class SpriteLand
     public Sprite landSprite;
 }
 
-public class UIListLand : MonoBehaviour
+
+
+public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public List<SpriteLand> spriteLandList = new List<SpriteLand>();
     public GetAxiesExample.Land land;
@@ -35,6 +38,16 @@ public class UIListLand : MonoBehaviour
     {
         fakeLandManager.ChooseFakeLand(land.tokenId);
         teamBuilderManager.SetLandUI();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        TooltipManagerSingleton.instance.EnableTooltip((TooltipType)Enum.Parse(typeof(TooltipType), land.LandTypeEnum.ToString(), true));
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        TooltipManagerSingleton.instance.DisableTooltip((TooltipType)Enum.Parse(typeof(TooltipType), land.LandTypeEnum.ToString(), true));
     }
 
     public void Refresh()

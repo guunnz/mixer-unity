@@ -59,6 +59,7 @@ public class AxieBodyPart : ScriptableObject
     [FormerlySerializedAs("statusEffects")]
     public SkillEffect[] skillEffects;
 
+    public TooltipType[] tooltipTypes = new TooltipType[0];
     public BodyPart bodyPart;
     public GameObject prefab; // Prefab can be assigned in the editor if needed
     public GameObject extraPrefabToInstantiate; // Prefab can be assigned in the editor if needed

@@ -53,15 +53,19 @@ public class SkillEffect : ICloneable
     public bool FishSnack;
     public bool GravelAnt;
     public bool HealingBlock;
+    public bool ImmuneToDebuffs;
     public bool AlwaysCritical;
     public bool RandomEffectIsDebuff;
     public bool RandomEffectIsBuff;
     public bool ApplyRandomEffect;
     public bool DamageEqualsBasicAttack;
+    public bool StunOnShieldBroken;
     public int ExtraDamagePercentage;
     public int ExtraDamageOnCritical;
+    public int ShieldAsDamagePercentage;
     public int MultiCastTimes;
     public bool InmuneToCriticalStrike;
+    public bool PotatoLeaf;
     public int ReduceDamagePercentage;
     [Header("Special Interactions")] public bool UseSpecialsAsTrigger;
     public List<SpecialActivationAgainstAxieClass> specialActivationAgainstAxiesList;
@@ -139,7 +143,13 @@ public class SkillEffect : ICloneable
     public bool IsOnlyBuffOrDebuff()
     {
         return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
-                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry || Lunge || Kestrel || Hotbutt || FishSnack || GravelAnt || HealingBlock);
+                Stench || Attack != 0 || Morale != 0 || Speed != 0 || ApplyRandomEffect || Merry || Lunge || Kestrel || Hotbutt || FishSnack || GravelAnt || HealingBlock || ImmuneToDebuffs);
+    }
+
+    public bool IsDebuff()
+    {
+        return (Aroma || Chill || Fear || Fragile || Jinx || Lethal || Poison || Stun || Sleep ||
+                Stench || statusEffect == StatusEffectEnum.AttackNegative || statusEffect == StatusEffectEnum.MoraleNegative || statusEffect == StatusEffectEnum.SpeedNegative || Kestrel || Hotbutt || GravelAnt || HealingBlock);
     }
 
     public bool IsOnlyInfiniteBuffsOrDebuff()
