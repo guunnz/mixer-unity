@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public enum TooltipType
@@ -39,22 +40,46 @@ public class Tooltip
     public GameObject TooltipObject;
 }
 
+
+[System.Serializable]
+public class ShopTooltip
+{
+    public GameObject TooltipObject;
+    public TextMeshProUGUI ItemName;
+    public TextMeshProUGUI ItemDescription;
+}
+
 public class TooltipManagerSingleton : MonoBehaviour
 {
     public List<Tooltip> TooltipList = new List<Tooltip>();
 
+
     static public TooltipManagerSingleton instance;
+    public ShopTooltip ShopItemTooltip;
     private void Awake()
     {
         instance = this;
     }
-    public void EnableTooltip(TooltipType TooltipType)
+    public void EnableTooltip(ShopItem shopItem)
     {
-        TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(true);
+        ShopItemTooltip.ItemName.text = "<color=\"yellow\">" + shopItem.ShopItemName + "</color>";
+        ShopItemTooltip.ItemDescription.text = shopItem.description;
+        ShopItemTooltip.TooltipObject.SetActive(true);
     }
 
     public void DisableTooltip(TooltipType TooltipType)
     {
         TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(false);
+    }
+
+
+    public void EnableTooltip(TooltipType TooltipType)
+    {
+        TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(true);
+    }
+
+    public void DisableTooltip()
+    {
+        ShopItemTooltip.TooltipObject.SetActive(false);
     }
 }

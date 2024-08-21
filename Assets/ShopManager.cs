@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -33,13 +34,14 @@ public class ShopManager : MonoBehaviour
 
     public void ToggleFreezeMode()
     {
-        SFXManager.instance.PlaySFX(SFXType.Freeze,0.1f);
+        SFXManager.instance.PlaySFX(SFXType.Freeze, 0.1f);
         FreezeMode = !FreezeMode;
         FrozenCursor.SetActive(!FrozenCursor.activeSelf);
     }
 
     public void SetShop()
     {
+
         if (RunManagerSingleton.instance.wins == 11 || RunManagerSingleton.instance.losses == 2)
         {
             MusicManager.Instance.PlayMusic(MusicTrack.NojyHypehu);
@@ -53,6 +55,42 @@ public class ShopManager : MonoBehaviour
             rm = RunManagerSingleton.instance;
         }
 
+        if (RunManagerSingleton.instance.landType == LandType.arctic)
+        {
+            foreach (var item in Items)
+            {
+                if (item.Frozen)
+                {
+                    ShopItem cloneItem = item.shopItem.CreateClone();
+                    cloneItem.price /= 2;
+                    item.SetItem(cloneItem);
+                }
+            }
+
+            foreach (var item in Potions)
+            {
+                if (item.Frozen)
+                {
+                    ShopItem cloneItem = item.shopItem.CreateClone();
+                    cloneItem.price /= 2;
+                    item.SetItem(cloneItem);
+                }
+            }
+        }
+        else if (RunManagerSingleton.instance.landType == LandType.savannah)
+        {
+            Potions[1].gameObject.SetActive(false);
+        }
+        else if (RunManagerSingleton.instance.landType == LandType.axiepark && RunManagerSingleton.instance.score == 0)
+        {
+            var itemListCustom = ItemList.ToList();
+            var itemToBuy = ItemList.Single(x => x.ItemEffectName == AtiaBlessing.BuffEffect.Ruby).CreateClone();
+            itemListCustom.RemoveAll(x => x.ItemEffectName == AtiaBlessing.BuffEffect.Ruby);
+            ItemList = itemListCustom.ToArray();
+            itemToBuy.price = 0;
+            RunManagerSingleton.instance.BuyUpgrade(itemToBuy);
+        }
+
         RollCostText.text = RollCost.ToString();
         DoRollShop();
     }
@@ -62,7 +100,7 @@ public class ShopManager : MonoBehaviour
         if (RunManagerSingleton.instance.coins < RollCost)
             return;
 
-        if (indexesRolled.Count >= 6)
+        if (indexesRolled.Count >= 30)
         {
             indexesRolled = new List<int>();
         }

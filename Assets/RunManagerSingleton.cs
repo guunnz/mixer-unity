@@ -55,8 +55,6 @@ public class RunManagerSingleton : MonoBehaviour
             { team_upgrades_values_per_round = new List<UpgradeAugument>() }
     };
 
-    internal List<AxieUpgrade> axieUpgrades = new List<AxieUpgrade>();
-
     public EconomyPassive economyPassive = new EconomyPassive();
     public RoundsPassives roundsPassives = new RoundsPassives();
     public int score => losses + wins;
@@ -80,12 +78,30 @@ public class RunManagerSingleton : MonoBehaviour
         instance = this;
     }
 
+    public void GenesisLandBehavior()
+    {
+        coins += coins / 3;
+    }
+    public void SavannahLandBehavior()
+    {
+        coins += 3;
+    }
     public void SetResult(bool won)
     {
         skere = 0;
         eNetWorth = 0;
         resultsBools.Add(won);
         atiaBlessing.ShowRandomAuguments();
+
+        if (landType == LandType.genesis)
+        {
+            GenesisLandBehavior();
+        }
+        else if (landType == LandType.savannah)
+        {
+            SavannahLandBehavior();
+        }
+
         coins += economyPassive.CoinsOnStart + economyPassive.ExtraCoinsPerRound;
         MaxCoinsThisRound = coins;
         economyPassive.RollsThisRound = 0;

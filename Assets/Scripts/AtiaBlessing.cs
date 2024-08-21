@@ -129,177 +129,309 @@ public class AtiaBlessing : MonoBehaviour
 
     public void ShowRandomAuguments(bool DoOnlyOne = false, int doAugument = 0)
     {
-        if (DoOnlyOne)
+        if (RunManagerSingleton.instance.landType == LandType.mystic)
         {
-            List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
-            blessingAuguments.AddRange(blessingAugument);
-            blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
-            UpgradeAugument augument = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-            blessingAuguments.Remove(augument);
-            switch (doAugument)
+            if (DoOnlyOne)
             {
-                case 1:
-                    if (rollFirst < 0)
-                    {
-                        rollFirst = 0;
-                        return;
-                    }
+                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
+                blessingAuguments.AddRange(blessingAugument);
+                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
+                UpgradeAugument augument = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument);
+                switch (doAugument)
+                {
+                    case 2:
+                        if (rollSecond < 0)
+                        {
+                            rollSecond = 0;
+                            return;
+                        }
 
-                    FirstAugument.onClick.RemoveAllListeners();
+                        if (augument.id != (int)BuffEffect.Backdoor)
+                        {
+                            SecondAugumentText.text =
+                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
+                        }
+                        else
+                        {
+                            SecondAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
+                                                      " axies now Backdoor on start";
+                        }
 
-                    FirstAugument.onClick.AddListener(delegate
-                    {
-                        AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
-                    });
-
-                    if (augument.id != (int)BuffEffect.Backdoor)
-                    {
-                        FirstAugumentText.text =
-                            "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                            ((BuffEffect)augument.id).ToString().Replace("_", " ") +
-                            " stat by 3";
-                    }
-                    else
-                    {
-                        FirstAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                 " axies now Backdoor on start";
-                    }
-
-                    break;
-                case 2:
-                    if (rollSecond < 0)
-                    {
-                        rollSecond = 0;
-                        return;
-                    }
-
-                    if (augument.id != (int)BuffEffect.Backdoor)
-                    {
-                        SecondAugumentText.text =
-                            "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                            ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
-                    }
-                    else
-                    {
-                        SecondAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                  " axies now Backdoor on start";
-                    }
-
-                    SecondAugument.onClick.RemoveAllListeners();
+                        SecondAugument.onClick.RemoveAllListeners();
 
 
-                    SecondAugument.onClick.AddListener(delegate
-                    {
-                        AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
-                    });
-                    break;
-                case 3:
-                    if (rollThird < 0)
-                    {
-                        rollThird = 0;
-                        return;
-                    }
+                        SecondAugument.onClick.AddListener(delegate
+                        {
+                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                        });
+                        break;
+                    case 3:
+                        if (rollThird < 0)
+                        {
+                            rollThird = 0;
+                            return;
+                        }
 
-                    if (augument.id != (int)BuffEffect.Backdoor)
-                    {
-                        ThirdAugumentText.text =
-                            "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                            ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
-                    }
-                    else
-                    {
-                        ThirdAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                 " axies now Backdoor on start";
-                    }
+                        if (augument.id != (int)BuffEffect.Backdoor)
+                        {
+                            ThirdAugumentText.text =
+                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
+                        }
+                        else
+                        {
+                            ThirdAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
+                                                     " axies now Backdoor on start";
+                        }
 
-                    ThirdAugument.onClick.RemoveAllListeners();
-                    ThirdAugument.onClick.AddListener(delegate
-                    {
-                        AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
-                    });
-                    break;
+                        ThirdAugument.onClick.RemoveAllListeners();
+                        ThirdAugument.onClick.AddListener(delegate
+                        {
+                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                        });
+                        break;
+                }
             }
+            else
+            {
+                rollSecond = 5;
+                rollThird = 5;
+                foreach (var rollButton in rollButtons)
+                {
+                    rollButton.SetActive(true);
+                }
+
+                rollButtons[0].SetActive(false);
+
+                AugumentSelect.SetActive(true);
+                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
+
+                blessingAuguments.AddRange(blessingAugument);
+                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
+                UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument2);
+                UpgradeAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument3);
+                blessingAuguments.Remove(augument2);
+                augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument2);
+                augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+
+                if (augument2.id != (int)BuffEffect.Backdoor)
+                {
+                    SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
+                                              " axies " +
+                                              ((BuffEffect)augument2.id).ToString().Replace("_", " ") + " stat by 3";
+                }
+                else
+                {
+                    SecondAugumentText.text = "Your " + ((AxieClass)augument2.axie_class[0]).ToString() +
+                                              " axies now Backdoor on start";
+                }
+
+                if (augument3.id != (int)BuffEffect.Backdoor)
+                {
+                    ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
+                                             ((BuffEffect)augument3.id).ToString().Replace("_", " ") + " stat by 3";
+                }
+                else
+                {
+                    ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axie_class[0]).ToString() +
+                                             " axies now Backdoor on start";
+                }
+
+                SecondAugument.onClick.RemoveAllListeners();
+                ThirdAugument.onClick.RemoveAllListeners();
+
+
+                SecondAugument.onClick.AddListener(delegate
+                {
+                    AugumentUpgrade(blessingAugument.IndexOf(augument2), goodTeam);
+                });
+                ThirdAugument.onClick.AddListener(delegate
+                {
+                    AugumentUpgrade(blessingAugument.IndexOf(augument3), goodTeam);
+                });
+            }
+            return;
         }
         else
         {
-            foreach (var rollButton in rollButtons)
+            if (DoOnlyOne)
             {
-                rollButton.SetActive(true);
-            }
+                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
+                blessingAuguments.AddRange(blessingAugument);
+                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
+                UpgradeAugument augument = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument);
+                switch (doAugument)
+                {
+                    case 1:
+                        if (rollFirst < 0)
+                        {
+                            rollFirst = 0;
+                            return;
+                        }
 
-            AugumentSelect.SetActive(true);
-            List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
+                        FirstAugument.onClick.RemoveAllListeners();
 
-            blessingAuguments.AddRange(blessingAugument);
-            blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
-            UpgradeAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-            blessingAuguments.Remove(augument1);
-            UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-            blessingAuguments.Remove(augument2);
-            UpgradeAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-            blessingAuguments.Remove(augument3);
+                        FirstAugument.onClick.AddListener(delegate
+                        {
+                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                        });
 
-            augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                        if (augument.id != (int)BuffEffect.Backdoor)
+                        {
+                            FirstAugumentText.text =
+                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                                ((BuffEffect)augument.id).ToString().Replace("_", " ") +
+                                " stat by 3";
+                        }
+                        else
+                        {
+                            FirstAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
+                                                     " axies now Backdoor on start";
+                        }
 
-            blessingAuguments.Remove(augument2);
+                        break;
+                    case 2:
+                        if (rollSecond < 0)
+                        {
+                            rollSecond = 0;
+                            return;
+                        }
 
-            augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                        if (augument.id != (int)BuffEffect.Backdoor)
+                        {
+                            SecondAugumentText.text =
+                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
+                        }
+                        else
+                        {
+                            SecondAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
+                                                      " axies now Backdoor on start";
+                        }
 
-            blessingAuguments.Remove(augument2);
+                        SecondAugument.onClick.RemoveAllListeners();
 
-            augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
-            if (augument1.id != (int)BuffEffect.Backdoor)
-            {
-                FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axie_class[0]).ToString() + " axies " +
-                                         ((BuffEffect)augument1.id).ToString().Replace("_", " ") + " stat by 3";
+                        SecondAugument.onClick.AddListener(delegate
+                        {
+                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                        });
+                        break;
+                    case 3:
+                        if (rollThird < 0)
+                        {
+                            rollThird = 0;
+                            return;
+                        }
+
+                        if (augument.id != (int)BuffEffect.Backdoor)
+                        {
+                            ThirdAugumentText.text =
+                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
+                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
+                        }
+                        else
+                        {
+                            ThirdAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
+                                                     " axies now Backdoor on start";
+                        }
+
+                        ThirdAugument.onClick.RemoveAllListeners();
+                        ThirdAugument.onClick.AddListener(delegate
+                        {
+                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                        });
+                        break;
+                }
             }
             else
             {
-                FirstAugumentText.text = "Your " + ((AxieClass)augument1.axie_class[0]).ToString() +
-                                         " axies now Backdoor on start";
-            }
+                foreach (var rollButton in rollButtons)
+                {
+                    rollButton.SetActive(true);
+                }
 
-            if (augument2.id != (int)BuffEffect.Backdoor)
-            {
-                SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
-                                          " axies " +
-                                          ((BuffEffect)augument2.id).ToString().Replace("_", " ") + " stat by 3";
-            }
-            else
-            {
-                SecondAugumentText.text = "Your " + ((AxieClass)augument2.axie_class[0]).ToString() +
-                                          " axies now Backdoor on start";
-            }
+                AugumentSelect.SetActive(true);
+                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
 
-            if (augument3.id != (int)BuffEffect.Backdoor)
-            {
-                ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
-                                         ((BuffEffect)augument3.id).ToString().Replace("_", " ") + " stat by 3";
-            }
-            else
-            {
-                ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axie_class[0]).ToString() +
-                                         " axies now Backdoor on start";
-            }
+                blessingAuguments.AddRange(blessingAugument);
+                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
+                UpgradeAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument1);
+                UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument2);
+                UpgradeAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+                blessingAuguments.Remove(augument3);
 
-            FirstAugument.onClick.RemoveAllListeners();
-            SecondAugument.onClick.RemoveAllListeners();
-            ThirdAugument.onClick.RemoveAllListeners();
+                augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
 
-            FirstAugument.onClick.AddListener(delegate
-            {
-                AugumentUpgrade(blessingAugument.IndexOf(augument1), goodTeam);
-            });
-            SecondAugument.onClick.AddListener(delegate
-            {
-                AugumentUpgrade(blessingAugument.IndexOf(augument2), goodTeam);
-            });
-            ThirdAugument.onClick.AddListener(delegate
-            {
-                AugumentUpgrade(blessingAugument.IndexOf(augument3), goodTeam);
-            });
+                blessingAuguments.Remove(augument2);
+
+                augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+
+                blessingAuguments.Remove(augument2);
+
+                augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
+
+                if (augument1.id != (int)BuffEffect.Backdoor)
+                {
+                    FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axie_class[0]).ToString() + " axies " +
+                                             ((BuffEffect)augument1.id).ToString().Replace("_", " ") + " stat by 3";
+                }
+                else
+                {
+                    FirstAugumentText.text = "Your " + ((AxieClass)augument1.axie_class[0]).ToString() +
+                                             " axies now Backdoor on start";
+                }
+
+                if (augument2.id != (int)BuffEffect.Backdoor)
+                {
+                    SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
+                                              " axies " +
+                                              ((BuffEffect)augument2.id).ToString().Replace("_", " ") + " stat by 3";
+                }
+                else
+                {
+                    SecondAugumentText.text = "Your " + ((AxieClass)augument2.axie_class[0]).ToString() +
+                                              " axies now Backdoor on start";
+                }
+
+                if (augument3.id != (int)BuffEffect.Backdoor)
+                {
+                    ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
+                                             ((BuffEffect)augument3.id).ToString().Replace("_", " ") + " stat by 3";
+                }
+                else
+                {
+                    ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axie_class[0]).ToString() +
+                                             " axies now Backdoor on start";
+                }
+
+                FirstAugument.onClick.RemoveAllListeners();
+                SecondAugument.onClick.RemoveAllListeners();
+                ThirdAugument.onClick.RemoveAllListeners();
+
+                FirstAugument.onClick.AddListener(delegate
+                {
+                    AugumentUpgrade(blessingAugument.IndexOf(augument1), goodTeam);
+                });
+                SecondAugument.onClick.AddListener(delegate
+                {
+                    AugumentUpgrade(blessingAugument.IndexOf(augument2), goodTeam);
+                });
+                ThirdAugument.onClick.AddListener(delegate
+                {
+                    AugumentUpgrade(blessingAugument.IndexOf(augument3), goodTeam);
+                });
+            }
         }
+
     }
 
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)

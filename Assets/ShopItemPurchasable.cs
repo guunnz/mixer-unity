@@ -30,6 +30,16 @@ public class ShopItemPurchasable : MonoBehaviour
 
     public void SetItem(ShopItem item)
     {
+        if (RunManagerSingleton.instance.landType == LandType.forest)
+        {
+            item = item.CreateClone();
+            item.price--;
+
+            if (item.price <= 0)
+            {
+                item.price = 1;
+            }
+        }
         Sold.gameObject.SetActive(false);
         sold = false;
         shopItem = item;
@@ -70,7 +80,7 @@ public class ShopItemPurchasable : MonoBehaviour
     public IEnumerator Purchased()
     {
         Sold.gameObject.SetActive(true);
-
+        ItemRelicManager.Instance.InstantiateItem(this.transform.position, this.shopItem.CreateClone());
         yield return null;
     }
 
