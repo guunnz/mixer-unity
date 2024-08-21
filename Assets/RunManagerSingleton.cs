@@ -156,7 +156,7 @@ public class RunManagerSingleton : MonoBehaviour
         coinsText.text = coins.ToString();
     }
 
-    public bool BuyUpgrade(ShopItem upgrade)
+    public bool BuyUpgrade(ShopItem upgrade, bool PlayBuyAudio = true)
     {
         int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
                                     100f);
@@ -168,8 +168,8 @@ public class RunManagerSingleton : MonoBehaviour
         {
             Debug.LogError("CHEATING");
         }
-
-        SFXManager.instance.PlaySFX(SFXType.Buy);
+        if (PlayBuyAudio)
+            SFXManager.instance.PlaySFX(SFXType.Buy);
 
         if (globalUpgrades.Count <= score)
         {

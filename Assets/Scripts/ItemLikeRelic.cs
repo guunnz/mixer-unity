@@ -14,6 +14,12 @@ public class ItemLikeRelic : MonoBehaviour
     {
         countText.text = count.ToString();
         UpdateUI(); // Update UI components including the image at start
+        Invoke(nameof(SetColliderActive), 0.5f);
+    }
+
+    void SetColliderActive()
+    {
+        GetComponent<Collider>().enabled = true;
     }
 
     public void SetShopItem(ShopItem newShopItem)

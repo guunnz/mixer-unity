@@ -88,7 +88,7 @@ public class ShopManager : MonoBehaviour
             itemListCustom.RemoveAll(x => x.ItemEffectName == AtiaBlessing.BuffEffect.Ruby);
             ItemList = itemListCustom.ToArray();
             itemToBuy.price = 0;
-            RunManagerSingleton.instance.BuyUpgrade(itemToBuy);
+            RunManagerSingleton.instance.BuyUpgrade(itemToBuy,false);
         }
 
         RollCostText.text = RollCost.ToString();
