@@ -124,7 +124,7 @@ public class AccountManager : MonoBehaviour
                         axie.newGenes = nft.rawMetadata.genes;
                         axie.bodyShape = nft.rawMetadata.properties.bodyshape;
 
-                        axie.stats = AxieGeneUtils.GetStatsByGenes(axie.genes);
+                        axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes,axie.axieClass);
 
                         Debug.Log("Loading parts");
                         List<string> partsClasses = AxieGeneUtils.GetAxiePartsClasses(axie.genes);

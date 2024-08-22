@@ -170,10 +170,17 @@ public class AxieSkillController : MonoBehaviour
     private void CalculateSkillCost()
     {
         List<AxieBodyPart> bodyPart = skillList.Select(x => x.bodyPartSO).ToList();
+
+        if (bodyPart.Count(x => x.skillName == SkillName.Imp) > 1)
+        {
+            bodyPart.Remove(bodyPart.FirstOrDefault(x => x.skillName == SkillName.Imp));
+        }
         int womboCount = bodyPart.Count(x => x.wombo);
         int activeSkillsInCombo = bodyPart.Count(x => !x.isPassive);
         int energySpent = (int)bodyPart.Sum(x => x.energy);
         bool isWombo = womboCount < activeSkillsInCombo;
+
+
 
         if (isWombo)
         {
@@ -181,6 +188,17 @@ public class AxieSkillController : MonoBehaviour
         }
 
         comboCost = energySpent;
+        StartCoroutine(SetEnergyBars());
+    }
+
+    IEnumerator SetEnergyBars()
+    {
+
+        while (self == null)
+            yield return null;
+        self.statsManagerUI.SetManaBars(comboCost);
+        self.statsManagerUI.SetMana(AxieStatCalculator.GetAxieMinEnergy(self.stats) / comboCost);
+
     }
 
     public void AddAndHandleSpecialCases(AxieSkill skill, List<AxieBodyPart> bodyParts, AxieBodyPart bodyPartToExclude)
@@ -307,6 +325,7 @@ public class AxieSkillController : MonoBehaviour
     //Set by UI
     public void SetAxieSkills(List<SkillName> skillNames, List<BodyPart> bodyParts)
     {
+        comboCost = 0;
         skillList.Clear();
 
         passives = new AxiePassives();
@@ -324,7 +343,6 @@ public class AxieSkillController : MonoBehaviour
             skill.skillName = bodyPart.skillName;
             skill.bodyPartSO = bodyPart;
             skill.bodyPart = bodyPart.bodyPart;
-
 
             if (skill.bodyPartSO.isPassive)
             {
@@ -369,5 +387,7 @@ public class AxieSkillController : MonoBehaviour
 
             AddAndHandleSpecialCases(skill, pairedBodyParts, bodyPart);
         }
+
+        CalculateSkillCost();
     }
 }

@@ -109,5 +109,5 @@ MonoBehaviour:
   bodyPartClass: 3
   damage: 90
   shield: 50
-  energy: 2
+  energy: 1
   description: Apply Stun on enemy when comboed with another active ability

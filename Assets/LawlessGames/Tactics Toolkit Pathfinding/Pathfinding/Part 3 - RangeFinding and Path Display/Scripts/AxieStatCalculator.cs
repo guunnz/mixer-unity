@@ -15,6 +15,11 @@ static public class AxieStatCalculator
         return 50f / (stats.speed + stats.speed * 0.5f);
     }
 
+    static public float GetAxieMinEnergy(GetAxiesExample.Stats stats)
+    {
+        return (float)((stats.skill -27) / 100f) * 5f;
+    }
+
     static public float GetHP(GetAxiesExample.Stats stats)
     {
         if (stats.hp == 0)

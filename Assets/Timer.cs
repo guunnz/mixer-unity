@@ -7,23 +7,15 @@ public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
 
-    private float elapsedTime = 0f;
-    //
-    private void OnEnable()
-    {
-        elapsedTime = 0;
-    }
-
     void Update()
     {
-        elapsedTime += Time.deltaTime;
 
         UpdateTimerUI();
     }
 
     void UpdateTimerUI()
     {
-        int seconds = Mathf.FloorToInt(elapsedTime);
+        int seconds = Mathf.FloorToInt(FightManagerSingleton.Instance.SecondsOfFight);
 
         timerText.text = string.Format("{0}", seconds);
     }

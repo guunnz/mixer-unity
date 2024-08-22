@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using static GetAxiesExample;
 
 [System.Serializable]
 public class AxiePartGraphic
@@ -40,6 +41,7 @@ public class AbilitiesManager : MonoBehaviour
     public Image BackBodyPart;
     public Image TailBodyPart;
     public Image axieClassImage;
+    public GameObject PassiveGO;
 
     public Button ButtonHornBodyPart;
     public Button ButtonMouthBodyPart;
@@ -118,29 +120,39 @@ public class AbilitiesManager : MonoBehaviour
         BackBodyPartOrderImage.SetActive(false);
         MouthBodyPartOrderImage.SetActive(false);
         TailBodyPartOrderImage.SetActive(false);
+
+        int passivesAdded = 0;
+
         foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected && x != bodyPartToSelect))
         {
+
+            bool isPassive = skillList.axieBodyParts
+            .FirstOrDefault(x => x.skillName == partObj.SkillName).isPassive;
+
             if (partObj.order > 1)
             {
                 partObj.order -= 1;
             }
 
+            if (isPassive)
+                passivesAdded++;
+
             switch (partObj.BodyPart)
             {
                 case BodyPart.Back:
-                    BackBodyPartOrderText.text = partObj.order + "°";
+                    BackBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
                     BackBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Mouth:
-                    MouthBodyPartOrderText.text = partObj.order + "°";
+                    MouthBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
                     MouthBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Horn:
-                    HornBodyPartOrderText.text = partObj.order + "°";
+                    HornBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
                     HornBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Tail:
-                    TailBodyPartOrderText.text = partObj.order + "°";
+                    TailBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
                     TailBodyPartOrderImage.SetActive(true);
                     break;
             }
@@ -153,37 +165,51 @@ public class AbilitiesManager : MonoBehaviour
             .DefaultIfEmpty(0)
             .Max() ?? 0;
 
-        // Set the selected part as the last orde
-        bodyPartToSelect.selected = true;
-        bodyPartToSelect.order = maxOrder + 1;
-
-
-        switch (bodyPartToSelect.BodyPart)
-        {
-            case BodyPart.Back:
-                BackBodyPartOrderText.text = bodyPartToSelect.order + "°";
-                BackBodyPartOrderImage.SetActive(true);
-                break;
-            case BodyPart.Mouth:
-                MouthBodyPartOrderText.text = bodyPartToSelect.order + "°";
-                MouthBodyPartOrderImage.SetActive(true);
-                break;
-            case BodyPart.Horn:
-                HornBodyPartOrderText.text = bodyPartToSelect.order + "°";
-                HornBodyPartOrderImage.SetActive(true);
-                break;
-            case BodyPart.Tail:
-                TailBodyPartOrderText.text = bodyPartToSelect.order + "°";
-                TailBodyPartOrderImage.SetActive(true);
-                break;
-        }
-
         AbilityNameText.text = bodyPartToSelect.name;
         AxieBodyPart ability = skillList.axieBodyParts
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
                 x.skillName == bodyPartToSelect.SkillName);
+
         AbilityDescriptionText.text = ability.description;
+        // Set the selected part as the last orde
+        bodyPartToSelect.selected = true;
+        bodyPartToSelect.order = maxOrder + 1;
+
+
+
+        switch (bodyPartToSelect.BodyPart)
+        {
+            case BodyPart.Back:
+                BackBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                BackBodyPartOrderImage.SetActive(true);
+                break;
+            case BodyPart.Mouth:
+                MouthBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                MouthBodyPartOrderImage.SetActive(true);
+                break;
+            case BodyPart.Horn:
+                HornBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                HornBodyPartOrderImage.SetActive(true);
+                break;
+            case BodyPart.Tail:
+                TailBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                TailBodyPartOrderImage.SetActive(true);
+                break;
+        }
+
+        if (ability.isPassive)
+        {
+            AttackAbilityText.transform.parent.gameObject.SetActive(false);
+            ShieldAbilityText.transform.parent.gameObject.SetActive(false);
+            PassiveGO.SetActive(true);
+        }
+        else
+        {
+            PassiveGO.SetActive(false);
+            AttackAbilityText.transform.parent.gameObject.SetActive(true);
+            ShieldAbilityText.transform.parent.gameObject.SetActive(true);
+        }
 
         ShieldAbilityText.text = ability.shield.ToString();
         AttackAbilityText.text = ability.damage.ToString();
@@ -223,76 +249,92 @@ public class AbilitiesManager : MonoBehaviour
 
     public void ChoosePartOnlyDo()
     {
+        // Deactivate all body part order images initially
         HornBodyPartOrderImage.SetActive(false);
         BackBodyPartOrderImage.SetActive(false);
         MouthBodyPartOrderImage.SetActive(false);
         TailBodyPartOrderImage.SetActive(false);
-        foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected))
+
+        int passivesAdded = 0;
+
+        // Iterate over selected parts
+        foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order))
         {
+            // Check if the part is a passive
+            bool isPassive = skillList.axieBodyParts
+                .FirstOrDefault(x => x.skillName == partObj.SkillName && x.bodyPart == partObj.BodyPart).isPassive;
+
+            // Adjust the order based on passives logic
+            string displayOrder = isPassive ? "P" : (partObj.order - passivesAdded + "°");
+
+            // Activate and update the UI elements according to the body part type
             switch (partObj.BodyPart)
             {
                 case BodyPart.Back:
-                    BackBodyPartOrderText.text = partObj.order + "°";
+                    BackBodyPartOrderText.text = displayOrder == "0°" ? "1°" : displayOrder;
                     BackBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Mouth:
-                    MouthBodyPartOrderText.text = partObj.order + "°";
+                    MouthBodyPartOrderText.text = displayOrder == "0°" ? "1°" : displayOrder;
                     MouthBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Horn:
-                    HornBodyPartOrderText.text = partObj.order + "°";
+                    HornBodyPartOrderText.text = displayOrder == "0°" ? "1°" : displayOrder;
                     HornBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Tail:
-                    TailBodyPartOrderText.text = partObj.order + "°";
+                    TailBodyPartOrderText.text = displayOrder == "0°" ? "1°" : displayOrder;
                     TailBodyPartOrderImage.SetActive(true);
                     break;
             }
 
-            AbilityNameText.text = partObj.name;
-            AxieBodyPart ability = skillList.axieBodyParts
-                .Single(x =>
-                    x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
-                    x.skillName == partObj.SkillName);
-            AbilityDescriptionText.text = ability.description;
+            // Increment passives count if current part is passive
+            if (isPassive) passivesAdded++;
 
+            // Update ability details
+            AbilityNameText.text = partObj.name;
+            AxieBodyPart ability = skillList.axieBodyParts.Single(x =>
+                x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
+                x.skillName == partObj.SkillName);
+            AbilityDescriptionText.text = ability.description;
             ShieldAbilityText.text = ability.shield.ToString();
             AttackAbilityText.text = ability.damage.ToString();
 
-            var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
-
-            axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController
-                .SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
-                    AxieSelecteds.Select(x => x.BodyPart).ToList());
-
-            ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
-            ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
-            ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
-            ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
-
-            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
+            // Update ability state based on passive
+            if (ability.isPassive)
             {
-                ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+                PassiveGO.SetActive(true);
+                AttackAbilityText.transform.parent.gameObject.SetActive(false);
+                ShieldAbilityText.transform.parent.gameObject.SetActive(false);
             }
-
-            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Back))
+            else
             {
-                ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+                PassiveGO.SetActive(false);
+                AttackAbilityText.transform.parent.gameObject.SetActive(true);
+                ShieldAbilityText.transform.parent.gameObject.SetActive(true);
             }
-
-            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
-            {
-                ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
-            }
-
-            if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
-            {
-                ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
-            }
-
             AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
         }
+
+        // Sort and update the button sprites for the body parts
+        var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
+        ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+        ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
+
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
+            ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Back))
+            ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
+            ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
+            ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
+
+
     }
+
 
     public void SelectAxie(string axieId, Transform parent)
     {

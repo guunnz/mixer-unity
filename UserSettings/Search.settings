@@ -8,7 +8,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.E8DA15E5" = "bubbleex"
+	"last_search.E8DA15E5" = ""
 	"OpenInspectorPreview.E8DA15E5" = "0"
 	"currentGroup.E8DA15E5" = "all"
 	"last_search.310DEAF1" = ""
@@ -68,6 +68,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	""
 	"bubbleex"
 	"h: ref=\"Assets/axie-hackathon-assets/skeleton-datas/axie-particles/curve-slash-1_SkeletonData.asset\""
 ]

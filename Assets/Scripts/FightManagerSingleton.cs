@@ -11,6 +11,8 @@ public class FightManagerSingleton : MonoBehaviour
 
     static public FightManagerSingleton Instance;
 
+    public GameObject TimeToBloodmoon;
+
     private void Awake()
     {
         if (Instance != null)
@@ -39,6 +41,11 @@ public class FightManagerSingleton : MonoBehaviour
         if (FightStarted)
         {
             SecondsOfFight += Time.fixedDeltaTime;
+
+            if (SecondsOfFight >= 60)
+            {
+                TimeToBloodmoon.SetActive(true);
+            }
         }
     }
 }

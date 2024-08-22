@@ -291,10 +291,11 @@ namespace Game
             controller.axieIngameStats.HP = stats.hp * 2;
             controller.axieIngameStats.axieClass = @class;
             controller.imGood = !isEnemy;
-            controller.axieIngameStats.MinEnergy = 0;
-            controller.axieIngameStats.MaxEnergy = 100;
-            controller.axieIngameStats.currentHP = stats.skill;
             controller.stats = stats;
+            controller.axieIngameStats.MinEnergy = 0;
+            controller.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(controller.stats);
+            controller.axieIngameStats.MaxEnergy = 5;
+            controller.axieIngameStats.currentHP = stats.skill;
             controller.Genes = genes;
             controller.axieBodyParts = isEnemy
                 ? axieEnemies.Single(x => x.id == axieId).Parts

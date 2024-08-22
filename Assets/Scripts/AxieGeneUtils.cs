@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using UnityEngine;
+using static GetAxiesExample;
 
 public class AxieGeneUtils
 {
@@ -239,11 +240,13 @@ public class AxieGeneUtils
         return genes;
     }
 
-    public static (int, int, int, int) GetStats(List<string> classCombo)
+    public static (int, int, int, int) GetStats(List<string> classCombo, AxieClass axieClass)
     {
         float hp, speed, skill, morale;
         hp = speed = skill = morale = 0f;
-        switch (classCombo[0])
+
+
+        switch (axieClass.ToString().ToLower())
         {
             case "beast":
                 hp = -1;
@@ -302,7 +305,7 @@ public class AxieGeneUtils
         int iSkill = 35 + (int)(Mathf.Round(skill) * 4);
         int iMorale = 35 + (int)(Mathf.Round(morale) * 4);
 
-        for (int i = 1; i < classCombo.Count; i++)
+        for (int i = 0; i < classCombo.Count; i++)
         {
             switch (classCombo[i])
             {
@@ -351,14 +354,14 @@ public class AxieGeneUtils
         return extractedParts;
     }
 
-    public static GetAxiesExample.Stats GetStatsByGenes(string genes)
+    public static GetAxiesExample.Stats GetStatsByGenesAndAxieClass(string genes, AxieClass axieClass)
     {
         List<string> parts = AxieGeneUtils.ParsePartIdsFromHex(genes);
 
         // Extracting parts before the hyphen
         List<string> extractedParts = parts.Select(part => part.Split('-')[0]).ToList();
 
-        var stats = AxieGeneUtils.GetStats(extractedParts); // Update this line if needed to pass the correct parts
+        var stats = AxieGeneUtils.GetStats(extractedParts, axieClass); // Update this line if needed to pass the correct parts
 
         return new GetAxiesExample.Stats()
         { hp = stats.Item1, speed = stats.Item2, skill = stats.Item3, morale = stats.Item4 };

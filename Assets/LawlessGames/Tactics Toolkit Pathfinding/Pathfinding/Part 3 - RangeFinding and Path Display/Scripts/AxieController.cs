@@ -105,6 +105,7 @@ public class AxieController : MonoBehaviour
         this.axieIngameStats.currentHP += healAmount;
     }
 
+
     public void RemoveStatusEffect(SkillEffect skillEffect)
     {
         axieSkillEffectManager.RemoveAllEffects();
@@ -350,7 +351,7 @@ public class AxieController : MonoBehaviour
 
         if (!axieSkillEffectManager.IsChilled() && !axieSkillEffectManager.IsStunned())
         {
-            axieIngameStats.CurrentEnergy += 0.002f + (stats.skill / 10000f);
+            axieIngameStats.CurrentEnergy += 0.0015f + ((stats.skill * 4) / 10000f);
         }
 
 
@@ -367,8 +368,11 @@ public class AxieController : MonoBehaviour
                 axieIngameStats.CurrentEnergy = axieIngameStats.MaxEnergy;
             }
 
-            statsManagerUI.SetMana((float)Math.Round(axieIngameStats.CurrentEnergy, 2) /
-                                   axieSkillController.GetComboCost());
+            if (axieBehavior.axieState != AxieState.Casting)
+            {
+                SetEnergy();
+            }
+
             statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);
 
             statsManagerUI.SetShield(Mathf.RoundToInt(axieIngameStats.currentShield));
@@ -479,6 +483,12 @@ public class AxieController : MonoBehaviour
         }
     }
 
+
+    public void SetEnergy()
+    {
+        statsManagerUI.SetMana((float)Math.Round(axieIngameStats.CurrentEnergy, 2) /
+                           axieSkillController.GetComboCost());
+    }
     private int GetManhattanDistance(OverlayTile tile1, OverlayTile tile2)
     {
         return Mathf.Abs(tile1.gridLocation.x - tile2.gridLocation.x) +

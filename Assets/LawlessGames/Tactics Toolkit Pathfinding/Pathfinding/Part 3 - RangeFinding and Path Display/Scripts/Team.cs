@@ -78,7 +78,7 @@ public class Team : MonoBehaviour
 
     public void StartBattle()
     {
-        this.GetCharactersAll().ForEach(x => x.axieIngameStats.CurrentEnergy = 0);
+        this.GetCharactersAll().ForEach(x => x.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(x.stats) / x.axieSkillController.GetComboCost());
         int randomMusic = Random.Range(0, 5);
 
         if (isGoodTeam)
@@ -149,7 +149,7 @@ public class Team : MonoBehaviour
             character.axieSkillEffectManager.RemoveAllEffects();
             character.axieIngameStats.currentHP = character.axieIngameStats.HP;
             character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.HP);
-            character.axieIngameStats.CurrentEnergy = character.axieIngameStats.MinEnergy;
+            character.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(character.stats) / character.axieSkillController.GetComboCost();
             character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
                                              character.axieSkillController.GetComboCost());
             character.SkeletonAnim.Initialize(true);
