@@ -39,6 +39,9 @@ public class FakeAxieComboManager : MonoBehaviour
     public TextMeshProUGUI BackBodyPartOrderText;
     public TextMeshProUGUI TailBodyPartOrderText;
 
+    public TextMeshProUGUI EnergyText;
+    public GameObject EnergyObject;
+
     public TextMeshProUGUI HealthText;
     public TextMeshProUGUI SpeedText;
     public TextMeshProUGUI MoraleText;
@@ -193,6 +196,22 @@ public class FakeAxieComboManager : MonoBehaviour
                 break;
         }
 
+        if (ability.isPassive)
+        {
+            AttackAbilityText.transform.parent.gameObject.SetActive(false);
+            ShieldAbilityText.transform.parent.gameObject.SetActive(false);
+            EnergyObject.SetActive(false);
+            PassiveGO.SetActive(true);
+        }
+        else
+        {
+            EnergyText.text = ability.energy.ToString();
+            EnergyObject.SetActive(true);
+            PassiveGO.SetActive(false);
+            AttackAbilityText.transform.parent.gameObject.SetActive(true);
+            ShieldAbilityText.transform.parent.gameObject.SetActive(true);
+        }
+
         AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
         ShieldAbilityText.text = ability.shield.ToString();
         AttackAbilityText.text = ability.damage.ToString();
@@ -260,12 +279,15 @@ public class FakeAxieComboManager : MonoBehaviour
             // Update ability state based on passive
             if (ability.isPassive)
             {
-                PassiveGO.SetActive(true);
                 AttackAbilityText.transform.parent.gameObject.SetActive(false);
                 ShieldAbilityText.transform.parent.gameObject.SetActive(false);
+                EnergyObject.SetActive(false);
+                PassiveGO.SetActive(true);
             }
             else
             {
+                EnergyText.text = ability.energy.ToString();
+                EnergyObject.SetActive(true);
                 PassiveGO.SetActive(false);
                 AttackAbilityText.transform.parent.gameObject.SetActive(true);
                 ShieldAbilityText.transform.parent.gameObject.SetActive(true);

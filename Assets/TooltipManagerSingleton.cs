@@ -30,7 +30,8 @@ public enum TooltipType
     Mystic,
     Genesis,
     Prioritize,
-    Jinx
+    Jinx,
+    Energy
 }
 
 [System.Serializable]

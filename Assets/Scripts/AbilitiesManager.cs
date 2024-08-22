@@ -61,6 +61,10 @@ public class AbilitiesManager : MonoBehaviour
     public TextMeshProUGUI SpeedText;
     public TextMeshProUGUI MoraleText;
     public TextMeshProUGUI SkillText;
+
+    public TextMeshProUGUI EnergyText;
+    public GameObject EnergyObject;
+
     public AxiesManager axiesManager;
     private GetAxiesExample.Axie currentSelectedAxie;
 
@@ -202,10 +206,14 @@ public class AbilitiesManager : MonoBehaviour
         {
             AttackAbilityText.transform.parent.gameObject.SetActive(false);
             ShieldAbilityText.transform.parent.gameObject.SetActive(false);
+
+            EnergyObject.SetActive(false);
             PassiveGO.SetActive(true);
         }
         else
         {
+            EnergyText.text = ability.energy.ToString();
+            EnergyObject.SetActive(true);
             PassiveGO.SetActive(false);
             AttackAbilityText.transform.parent.gameObject.SetActive(true);
             ShieldAbilityText.transform.parent.gameObject.SetActive(true);
@@ -303,12 +311,15 @@ public class AbilitiesManager : MonoBehaviour
             // Update ability state based on passive
             if (ability.isPassive)
             {
-                PassiveGO.SetActive(true);
                 AttackAbilityText.transform.parent.gameObject.SetActive(false);
                 ShieldAbilityText.transform.parent.gameObject.SetActive(false);
+                EnergyObject.SetActive(false);
+                PassiveGO.SetActive(true);
             }
             else
             {
+                EnergyText.text = ability.energy.ToString();
+                EnergyObject.SetActive(true);
                 PassiveGO.SetActive(false);
                 AttackAbilityText.transform.parent.gameObject.SetActive(true);
                 ShieldAbilityText.transform.parent.gameObject.SetActive(true);

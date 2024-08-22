@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class AbilityDescriptionTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private TooltipType[] tooltipsArray = new TooltipType[0];
+    public TooltipType[] tooltipsArray = new TooltipType[0];
 
     public void SetTooltips(TooltipType[] tooltips)
     {
