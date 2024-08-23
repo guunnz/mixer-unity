@@ -100,7 +100,7 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public bool IsStenched()
     {
-        return skillEffects.Any(x => x.Stench);
+        return skillEffects.Any(x => x.Stench || x.statusEffect == StatusEffectEnum.Stench);
     }
 
     public bool IsLethal()

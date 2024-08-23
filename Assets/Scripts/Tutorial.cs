@@ -164,6 +164,7 @@ public class Tutorial : MonoBehaviour
         // Optionally, add a callback at the end
         mySequence.OnComplete(() =>
         {
+            this.gameObject.SetActive(false);
         });
     }
 

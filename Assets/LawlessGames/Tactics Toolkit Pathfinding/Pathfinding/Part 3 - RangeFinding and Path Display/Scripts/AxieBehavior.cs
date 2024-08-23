@@ -233,7 +233,7 @@ public class AxieBehavior : MonoBehaviour
 
             if (myController.axieSkillEffectManager.IsAromad())
             {
-                attackSpeedMulti = 0.5f;
+                attackSpeedMulti = 0.75f;
             }
             if (myController.CurrentTarget != null)
             {

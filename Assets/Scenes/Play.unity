@@ -26856,7 +26856,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: Axies affected will \n<color="red">Receive 50% more damage</color> and
-    gain <color="yellow">50% Attack Speed</color>
+    gain <color="yellow">25% Attack Speed</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,

@@ -43,6 +43,7 @@ public class SkillLauncher : MonoBehaviour
         AxieController self)
     {
         List<SkillAction> skillActions = new List<SkillAction>();
+        float TotalDuration = 0;
         for (int i = 0; i < skills.Count; i++)
         {
             Skill skill = Instantiate(skills[i].bodyPartSO.prefab).GetComponent<Skill>();
@@ -60,12 +61,15 @@ public class SkillLauncher : MonoBehaviour
             skill.origin = self.transform;
             skill.@class = skills[i].bodyPartSO.bodyPartClass;
             skill.skeletonAnimation = skeletonAnimation;
-            skill.ExtraTimerCast += (0.3f * i);
+            skill.ExtraTimerCast += (0.55f * i);
             //Debug.Log("Skill performed: " + skills[i].skillName);
             skillActions.AddRange(PerformSkill(skills[i], skill, self, target));
+            TotalDuration += skill.totalDuration;
         }
 
-        yield return StartCoroutine(DoSkills(skillActions));
+        StartCoroutine(DoSkills(skillActions));
+
+        yield return new WaitForSeconds(0.6f * skills.Count);
     }
 
     public IEnumerator ThrowPassive(AxieSkill passive, SkeletonAnimation skeletonAnimation, AxieController target,

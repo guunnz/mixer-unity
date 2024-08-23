@@ -325,6 +325,21 @@ public class Team : MonoBehaviour
 
     private void MoveTowardsClosestCharacter(AxieController character)
     {
+        if (character.axieBehavior.axieState != AxieState.Moving && character.axieBehavior.axieState != AxieState.None && character.axieBehavior.axieState != AxieState.Idle)
+        {
+            if (character.CurrentTarget != null && !character.CurrentTarget.axieSkillEffectManager.IsStenched())
+            {
+                var step = speed * Time.fixedDeltaTime;
+                if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+                {
+                    character.transform.position = Vector3.MoveTowards(character.transform.position,
+                        character.standingOnTile.transform.position, step);
+                }
+
+                return;
+            }
+        }
+
         if (character.CurrentTarget != null)
         {
             if (character.Range == 1 && !IsPathPossible(character, character.CurrentTarget))
@@ -421,7 +436,8 @@ public class Team : MonoBehaviour
         float minTransformDistance = float.MaxValue;
 
         var characters = enemyTeam.GetCharacters();
-        if (characters.Any(x => x.axieSkillEffectManager.IsStenched()))
+        var stenchCount = characters.Count(x => x.axieSkillEffectManager.IsStenched());
+        if (stenchCount > 0 && characters.Count != stenchCount)
         {
             characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
         }
@@ -460,11 +476,11 @@ public class Team : MonoBehaviour
         int maxManhattanDistance = 0;
         var characters = enemyTeam.GetCharacters();
 
-        if (characters.Count > 1)
+        var stenchCount = characters.Count(x => x.axieSkillEffectManager.IsStenched());
+        if (stenchCount > 0 && characters.Count != stenchCount)
         {
             characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
         }
-
         foreach (var other in characters)
         {
             int manhattanDistance =

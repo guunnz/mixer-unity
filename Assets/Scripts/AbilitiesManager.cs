@@ -97,10 +97,10 @@ public class AbilitiesManager : MonoBehaviour
         {
             SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
         }
-        Tutorial.SetActive(true);
+       
         if (PlayerPrefs.GetInt("Tutorial") == 0)
         {
-            
+            Tutorial.SetActive(true);
             PlayerPrefs.SetInt("Tutorial", 1);
         }
     }
