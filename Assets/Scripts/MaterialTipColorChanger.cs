@@ -10,7 +10,8 @@ public enum LandType
     arctic,
     mystic,
     genesis,
-    axiepark
+    axiepark,
+    lunaslanding
 }
 
 public class MaterialTipColorChanger : MonoBehaviour
@@ -31,6 +32,8 @@ public class MaterialTipColorChanger : MonoBehaviour
     public Vector3 mysticColorMax;
     public Vector3 genesisColorMin;
     public Vector3 genesisColorMax;
+    public Vector3 lunasColorMin;
+    public Vector3 lunasColorMax;
     public OverlayTile tile;
     public FakeOverlayTile tileFake;
     public bool colorAlreadySet = false;
@@ -85,6 +88,11 @@ public class MaterialTipColorChanger : MonoBehaviour
                     color = new Color(RandomRange(forestColorMin.x, forestColorMax.x),
                         RandomRange(forestColorMin.y, forestColorMax.y),
                         RandomRange(forestColorMin.z, forestColorMax.z));
+                    break;
+                case LandType.lunaslanding:
+                    color = new Color(RandomRange(lunasColorMin.x, lunasColorMax.x),
+                       RandomRange(lunasColorMin.y, lunasColorMax.y),
+                       RandomRange(lunasColorMin.z, lunasColorMax.z));
                     break;
                 case LandType.genesis:
                     color = new Color(RandomRange(genesisColorMin.x, genesisColorMax.x),

@@ -601,35 +601,74 @@ public class ShopItemsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.hp += 1; });
+        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        {
+
+            axies.ForEach(axie => { axie.stats.hp += 2; });
+        }
+        else
+        {
+
+            axies.ForEach(axie => { axie.stats.hp += 1; });
+        }
     }
 
     public void Increase_HP(Team team)
     {
         var axies = team.GetCharactersAll();
+        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        {
 
-        axies.ForEach(axie => { axie.stats.hp += 1; });
+            axies.ForEach(axie => { axie.stats.hp += 2; });
+        }
+        else
+        {
+            axies.ForEach(axie => { axie.stats.hp += 1; });
+        }
     }
 
     public void Increase_Morale(Team team)
     {
         var axies = team.GetCharactersAll();
+        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        {
 
-        axies.ForEach(axie => { axie.stats.morale += 1; });
+            axies.ForEach(axie => { axie.stats.morale += 2; });
+        }
+        else
+        {
+            axies.ForEach(axie => { axie.stats.morale += 1; });
+        }
     }
 
     public void Increase_Skill(Team team)
     {
         var axies = team.GetCharactersAll();
+        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        {
 
-        axies.ForEach(axie => { axie.stats.skill += 1; });
+            axies.ForEach(axie => { axie.stats.skill += 2; });
+        }
+        else
+        {
+            axies.ForEach(axie => { axie.stats.skill += 1; });
+        }
+
     }
 
     public void Increase_Speed(Team team)
     {
         var axies = team.GetCharactersAll();
+        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        {
 
-        axies.ForEach(axie => { axie.stats.speed += 1; });
+            axies.ForEach(axie => { axie.stats.speed += 2; });
+        }
+        else
+        {
+            axies.ForEach(axie => { axie.stats.speed += 1; });
+        }
+
     }
 
     public void Donut(Team team)

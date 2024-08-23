@@ -96,7 +96,8 @@ public class SkyMavisLogin : MonoBehaviour
 
     private void OnDisable()
     {
-        httpListener.Stop();
+        if (httpListener != null)
+            httpListener.Stop();
     }
 
     private void StartHttpListener(object state)

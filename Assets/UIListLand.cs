@@ -32,10 +32,19 @@ public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         button = GetComponent<Button>();
 
         button.onClick.AddListener(SelectLand);
+
+        if (land == null || land.locked)
+        {
+            landImage.color = new Color(0.4f, 0.4f, 0.4f, 1);
+        }
     }
 
     private void SelectLand()
     {
+        if (land == null || land.locked)
+        {
+            return;
+        }
         fakeLandManager.ChooseFakeLand(land.tokenId);
         teamBuilderManager.SetLandUI();
     }

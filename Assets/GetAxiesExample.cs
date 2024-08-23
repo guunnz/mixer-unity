@@ -43,6 +43,7 @@ public class GetAxiesExample : MonoBehaviour
         public string tokenId;
         public string col;
         public string row;
+        public bool locked = false;
         public LandType LandTypeEnum => (LandType)Enum.Parse(typeof(LandType), landType, true);
     }
 

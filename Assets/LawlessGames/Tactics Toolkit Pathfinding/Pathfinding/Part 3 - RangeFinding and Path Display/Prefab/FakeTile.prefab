@@ -446,6 +446,8 @@ MonoBehaviour:
   mysticColorMax: {x: 0.6, y: 0.5, z: 1}
   genesisColorMin: {x: 0.5, y: 0, z: 0.3}
   genesisColorMax: {x: 1, y: 0.2, z: 0.5}
+  lunasColorMin: {x: 0.51, y: 0.09, z: -0.54}
+  lunasColorMax: {x: 1.05, y: 0.37, z: -1}
   tile: {fileID: 0}
   tileFake: {fileID: 7073100164742568792}
   colorAlreadySet: 0

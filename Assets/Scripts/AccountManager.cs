@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using SimpleGraphQL;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class AccountManager : MonoBehaviour
 {
@@ -124,7 +125,7 @@ public class AccountManager : MonoBehaviour
                         axie.newGenes = nft.rawMetadata.genes;
                         axie.bodyShape = nft.rawMetadata.properties.bodyshape;
 
-                        axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes,axie.axieClass);
+                        axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
 
                         Debug.Log("Loading parts");
                         List<string> partsClasses = AxieGeneUtils.GetAxiePartsClasses(axie.genes);
@@ -193,7 +194,76 @@ public class AccountManager : MonoBehaviour
             f2pLand.landType = "axiepark";
             f2pLand.col = "0";
             f2pLand.row = "0";
+            f2pLand.locked = false;
             lands.Add(f2pLand);
+
+            if (lands.Count(x => x.LandTypeEnum == LandType.savannah) == 0)
+            {
+                GetAxiesExample.Land landLock = new GetAxiesExample.Land();
+
+                landLock.tokenId = "1111111111111111111111111112112";
+                landLock.landType = "savannah";
+                landLock.col = "0";
+                landLock.row = "0";
+                landLock.locked = true;
+                lands.Add(landLock);
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.forest) == 0)
+            {
+                GetAxiesExample.Land landLock = new GetAxiesExample.Land();
+
+                landLock.tokenId = "1111111111111111111111111112113";
+                landLock.landType = "forest";
+                landLock.col = "0";
+                landLock.row = "0";
+                landLock.locked = true;
+                lands.Add(landLock);
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.arctic) == 0)
+            {
+                GetAxiesExample.Land landLock = new GetAxiesExample.Land();
+
+                landLock.tokenId = "1111111111111111111111111112114";
+                landLock.landType = "arctic";
+                landLock.col = "0";
+                landLock.row = "0";
+                landLock.locked = true;
+                lands.Add(landLock);
+            }
+
+            if (lands.Count(x => x.LandTypeEnum == LandType.mystic) == 0)
+            {
+                GetAxiesExample.Land landLock = new GetAxiesExample.Land();
+
+                landLock.tokenId = "1111111111111111111111111112115";
+                landLock.landType = "mystic";
+                landLock.col = "0";
+                landLock.row = "0";
+                landLock.locked = true;
+                lands.Add(landLock);
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.genesis) == 0)
+            {
+                GetAxiesExample.Land landLock = new GetAxiesExample.Land();
+
+                landLock.tokenId = "1111111111111111111111111112116";
+                landLock.landType = "genesis";
+                landLock.col = "0";
+                landLock.row = "0";
+                landLock.locked = true;
+                lands.Add(landLock);
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.lunaslanding) == 0)
+            {
+                GetAxiesExample.Land landLock = new GetAxiesExample.Land();
+
+                landLock.tokenId = "1111111111111111111111111112117";
+                landLock.landType = "lunaslanding";
+                landLock.col = "0";
+                landLock.row = "0";
+                landLock.locked = false;
+                lands.Add(landLock);
+            }
 
             userLands.results = lands.ToArray();
             loadLand();

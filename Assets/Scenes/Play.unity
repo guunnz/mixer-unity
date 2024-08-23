@@ -395,6 +395,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1344651}
   PlotText: {fileID: 1344650}
   TeamName: {fileID: 1344644}
@@ -1774,7 +1776,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50.6071}
+  m_AnchoredPosition: {x: 50, y: -148.1787}
   m_SizeDelta: {x: 210.912, y: 98.7858}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20935457
@@ -2551,6 +2553,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 35353676}
   PlotText: {fileID: 35353675}
   TeamName: {fileID: 35353669}
@@ -3663,6 +3667,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 75228978}
   PlotText: {fileID: 75228977}
   TeamName: {fileID: 75228971}
@@ -4102,6 +4108,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 83364073}
   PlotText: {fileID: 83364072}
   TeamName: {fileID: 83364066}
@@ -4594,6 +4602,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 104782234}
   PlotText: {fileID: 104782233}
   TeamName: {fileID: 104782227}
@@ -7819,6 +7829,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 195147158}
   PlotText: {fileID: 195147157}
   TeamName: {fileID: 195147151}
@@ -9280,6 +9292,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 232599260}
   PlotText: {fileID: 232599259}
   TeamName: {fileID: 232599258}
@@ -11167,6 +11181,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 310431566}
   PlotText: {fileID: 310431565}
   TeamName: {fileID: 310431559}
@@ -12814,6 +12830,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 341556230}
   PlotText: {fileID: 341556229}
   TeamName: {fileID: 341556223}
@@ -13211,6 +13229,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 344657230}
   PlotText: {fileID: 344657229}
   TeamName: {fileID: 344657223}
@@ -14104,6 +14124,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 379749896}
   PlotText: {fileID: 379749895}
   TeamName: {fileID: 379749889}
@@ -15826,6 +15848,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 409965296}
   PlotText: {fileID: 409965295}
   TeamName: {fileID: 409965289}
@@ -17641,6 +17665,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 467371930}
   PlotText: {fileID: 467371929}
   TeamName: {fileID: 467371923}
@@ -18993,6 +19019,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 510878438}
   PlotText: {fileID: 510878437}
   TeamName: {fileID: 510878431}
@@ -19597,6 +19625,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 527148881}
   PlotText: {fileID: 527148880}
   TeamName: {fileID: 527148874}
@@ -21279,6 +21309,9 @@ MonoBehaviour:
       type: 3}
   - landType: 5
     landPrefab: {fileID: 653169207185143064, guid: 43ab116e72c8f6d4796314bae552aeef,
+      type: 3}
+  - landType: 6
+    landPrefab: {fileID: 6382746243822445601, guid: 80ac8adf308e6304098b0dfe4f75cce1,
       type: 3}
   InitializeOnStart: 0
 --- !u!114 &591399045
@@ -27407,6 +27440,7 @@ RectTransform:
   - {fileID: 285301162}
   - {fileID: 382749094}
   - {fileID: 20935456}
+  - {fileID: 2101579650}
   - {fileID: 832238477}
   - {fileID: 1232830163}
   - {fileID: 401019628}
@@ -27510,6 +27544,8 @@ MonoBehaviour:
     TooltipObject: {fileID: 116885946}
   - TooltipType: 25
     TooltipObject: {fileID: 1279504018}
+  - TooltipType: 26
+    TooltipObject: {fileID: 2101579649}
   ShopItemTooltip:
     TooltipObject: {fileID: 630096449}
     ItemName: {fileID: 1412243629}
@@ -28230,6 +28266,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 825192915}
   PlotText: {fileID: 825192914}
   TeamName: {fileID: 825192908}
@@ -31015,6 +31053,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 915017450}
   PlotText: {fileID: 915017449}
   TeamName: {fileID: 915017443}
@@ -32732,6 +32772,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 979883278}
   PlotText: {fileID: 979883277}
   TeamName: {fileID: 979883271}
@@ -40617,6 +40659,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1192476441}
   PlotText: {fileID: 1192476440}
   TeamName: {fileID: 1192476434}
@@ -45151,6 +45195,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1377196678}
   PlotText: {fileID: 1377196677}
   TeamName: {fileID: 1377196671}
@@ -46060,6 +46106,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1398652912}
   PlotText: {fileID: 1398652911}
   TeamName: {fileID: 1398652905}
@@ -48056,6 +48104,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1450926699}
   PlotText: {fileID: 1450926698}
   TeamName: {fileID: 1450926692}
@@ -50344,6 +50394,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1529530144}
   PlotText: {fileID: 1529530143}
   TeamName: {fileID: 1529530137}
@@ -51105,6 +51157,9 @@ MonoBehaviour:
       type: 3}
   - landType: 5
     landPrefab: {fileID: 653169207185143064, guid: 43ab116e72c8f6d4796314bae552aeef,
+      type: 3}
+  - landType: 6
+    landPrefab: {fileID: 6382746243822445601, guid: 80ac8adf308e6304098b0dfe4f75cce1,
       type: 3}
   landTypeName: {fileID: 877002199}
   landCoordinates: {fileID: 1128364974}
@@ -52981,6 +53036,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1581921170}
   PlotText: {fileID: 1581921169}
   TeamName: {fileID: 1581921163}
@@ -53774,6 +53831,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1600253587}
   PlotText: {fileID: 1600253586}
   TeamName: {fileID: 1600253580}
@@ -53931,6 +53990,141 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1617028540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1617028541}
+  - component: {fileID: 1617028543}
+  - component: {fileID: 1617028542}
+  m_Layer: 5
+  m_Name: Description
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1617028541
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617028540}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2101579650}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -32.5}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &1617028542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617028540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: <color="red">Smooth potions</color> <color="green">Give Twice the stats.
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
+  m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 15
+  m_fontSizeBase: 15
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1617028543
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617028540}
+  m_CullTransparentMesh: 1
 --- !u!1 &1622018021
 GameObject:
   m_ObjectHideFlags: 0
@@ -55618,6 +55812,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1678359581}
   PlotText: {fileID: 1678359580}
   TeamName: {fileID: 1678359574}
@@ -58877,6 +59073,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1768733326}
   PlotText: {fileID: 1768733325}
   TeamName: {fileID: 1768733319}
@@ -60166,6 +60364,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1799800934}
   PlotText: {fileID: 1799800933}
   TeamName: {fileID: 1799800927}
@@ -63875,6 +64075,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1939079647}
   PlotText: {fileID: 1939079646}
   TeamName: {fileID: 1939079640}
@@ -64616,6 +64818,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 1977364693}
   PlotText: {fileID: 1977364692}
   TeamName: {fileID: 1977364686}
@@ -67191,6 +67395,141 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &2066779677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2066779678}
+  - component: {fileID: 2066779680}
+  - component: {fileID: 2066779679}
+  m_Layer: 5
+  m_Name: Keyword
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2066779678
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066779677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2101579650}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -4.7}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &2066779679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066779677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: <color="red">Luna's Landing
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
+  m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 15
+  m_fontSizeBase: 15
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &2066779680
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066779677}
+  m_CullTransparentMesh: 1
 --- !u!1 &2069017244
 GameObject:
   m_ObjectHideFlags: 0
@@ -67934,6 +68273,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 2095157663}
   PlotText: {fileID: 2095157662}
   TeamName: {fileID: 2095157656}
@@ -68238,6 +68579,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   PlotGraphics: {fileID: 2097330707}
   PlotText: {fileID: 2097330706}
   TeamName: {fileID: 2097330700}
@@ -68734,6 +69077,99 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2100279120}
+  m_CullTransparentMesh: 1
+--- !u!1 &2101579649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101579650}
+  - component: {fileID: 2101579653}
+  - component: {fileID: 2101579652}
+  - component: {fileID: 2101579651}
+  m_Layer: 5
+  m_Name: TooltipLuna'sLanding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2101579650
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101579649}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2066779678}
+  - {fileID: 1617028541}
+  m_Father: {fileID: 809496070}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50.6071}
+  m_SizeDelta: {x: 210.912, y: 98.7858}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2101579651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101579649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &2101579652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101579649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 84237565f06ff94448c3c622388c2a7a, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2101579653
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101579649}
   m_CullTransparentMesh: 1
 --- !u!1 &2102194858
 GameObject:

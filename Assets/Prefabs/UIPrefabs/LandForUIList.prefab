@@ -147,6 +147,8 @@ MonoBehaviour:
     landSprite: {fileID: 21300000, guid: f1ebc5ec3424f2447a1713e8394fe9e6, type: 3}
   - landType: 5
     landSprite: {fileID: 21300000, guid: c188c178f25260f459e4b197109f519e, type: 3}
+  - landType: 6
+    landSprite: {fileID: 21300000, guid: b027fa5b2b258a74ba2c1fc79059be1d, type: 3}
   land:
     landType: 
     tokenId: 
@@ -158,6 +160,7 @@ MonoBehaviour:
   selectedSprite: {fileID: 21300000, guid: 76a58eebf00cc3c468c57a6f09bb5712, type: 3}
   unselectedSprite: {fileID: 21300000, guid: 1c1c82256a2354e4191f53c75ac782ea, type: 3}
   fakeLandManager: {fileID: 0}
+  Locked: 0
 --- !u!1 &7235079158783274096
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.9575472, b: 0.9575472, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
