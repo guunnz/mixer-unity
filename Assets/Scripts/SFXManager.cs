@@ -23,7 +23,8 @@ public enum SFXType
     UIButtonTap,
     UIButtonConfirm,
     GrabAxie,
-    ThreeTwoOne
+    ThreeTwoOne,
+    Olek
     // Add more SFX types as needed
 }
 
@@ -73,7 +74,7 @@ public class SFXManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(SFXType type, float volume = 0.06f, bool randomizePitch = true, float forcePitch = 1)
+    public void PlaySFX(SFXType type, float volume = 0.06f, bool randomizePitch = true, float pitchToForceIfNoRandom = 1)
     {
         if (sfxLibrary.ContainsKey(type))
         {
@@ -89,7 +90,7 @@ public class SFXManager : MonoBehaviour
                 }
                 else
                 {
-                    source.pitch = forcePitch;
+                    source.pitch = pitchToForceIfNoRandom;
                 }
                 // Set the volume to maximum
                 source.volume = volume;

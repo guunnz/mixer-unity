@@ -60,7 +60,7 @@ public class SkillLauncher : MonoBehaviour
             skill.origin = self.transform;
             skill.@class = skills[i].bodyPartSO.bodyPartClass;
             skill.skeletonAnimation = skeletonAnimation;
-            skill.ExtraTimerCast += (1f * i);
+            skill.ExtraTimerCast += (0.3f * i);
             //Debug.Log("Skill performed: " + skills[i].skillName);
             skillActions.AddRange(PerformSkill(skills[i], skill, self, target));
         }

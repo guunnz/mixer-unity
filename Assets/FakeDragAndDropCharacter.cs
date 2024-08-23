@@ -23,7 +23,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null)
             return;
-
+        moveDelay -= Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && moveDelay <= 0)
         {
             RaycastHit hit;
