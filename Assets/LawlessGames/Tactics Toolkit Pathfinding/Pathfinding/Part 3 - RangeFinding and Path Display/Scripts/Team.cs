@@ -325,20 +325,20 @@ public class Team : MonoBehaviour
 
     private void MoveTowardsClosestCharacter(AxieController character)
     {
-        if (character.axieBehavior.axieState != AxieState.Moving && character.axieBehavior.axieState != AxieState.None && character.axieBehavior.axieState != AxieState.Idle)
-        {
-            if (character.CurrentTarget != null && !character.CurrentTarget.axieSkillEffectManager.IsStenched())
-            {
-                var step = speed * Time.fixedDeltaTime;
-                if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
-                {
-                    character.transform.position = Vector3.MoveTowards(character.transform.position,
-                        character.standingOnTile.transform.position, step);
-                }
+        //if (character.axieBehavior.axieState != AxieState.Moving && character.axieBehavior.axieState != AxieState.None && character.axieBehavior.axieState != AxieState.Idle || character.axieBehavior.axieState != AxieState.Casting)
+        //{
+        //    if (character.CurrentTarget != null && !character.CurrentTarget.axieSkillEffectManager.IsStenched())
+        //    {
+        //        var step = speed * Time.fixedDeltaTime;
+        //        if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
+        //        {
+        //            character.transform.position = Vector3.MoveTowards(character.transform.position,
+        //                character.standingOnTile.transform.position, step);
+        //        }
 
-                return;
-            }
-        }
+        //        return;
+        //    }
+        //}
 
         if (character.CurrentTarget != null)
         {
