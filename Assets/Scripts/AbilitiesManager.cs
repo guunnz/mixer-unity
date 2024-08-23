@@ -47,6 +47,7 @@ public class AbilitiesManager : MonoBehaviour
     public Button ButtonMouthBodyPart;
     public Button ButtonBackBodyPart;
     public Button ButtonTailBodyPart;
+    public GameObject Tutorial;
 
     public GameObject HornBodyPartOrderImage;
     public GameObject MouthBodyPartOrderImage;
@@ -95,6 +96,12 @@ public class AbilitiesManager : MonoBehaviour
         for (int i = TeamManager.instance.currentTeam.AxieIds.Count - 1; i >= 0; i--)
         {
             SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
+        }
+        Tutorial.SetActive(true);
+        if (PlayerPrefs.GetInt("Tutorial") == 0)
+        {
+            
+            PlayerPrefs.SetInt("Tutorial", 1);
         }
     }
 

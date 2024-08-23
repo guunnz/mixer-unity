@@ -57,13 +57,13 @@ public class UITextController : MonoBehaviour
     public void SetUITexts()
     {
         // Configura los textos para el idioma actual
-        menuNewGame.text = localizedTexts.menuTexts[0];
-        menuContinue.text = localizedTexts.menuTexts[1];
-        menuLeaderboard.text = localizedTexts.menuTexts[2];
-        menuQuit.text = localizedTexts.menuTexts[3];
+        //menuNewGame.text = localizedTexts.menuTexts[0];
+        //menuContinue.text = localizedTexts.menuTexts[1];
+        //menuLeaderboard.text = localizedTexts.menuTexts[2];
+        //menuQuit.text = localizedTexts.menuTexts[3];
 
-        titleTutorial.text = localizedTexts.newGameTexts[0];
-        descTutorial.text = localizedTexts.newGameTexts[1];
+        //titleTutorial.text = localizedTexts.newGameTexts[0];
+        //descTutorial.text = localizedTexts.newGameTexts[1];
         titleBack.text = localizedTexts.newGameTexts[2];
         descBack.text = localizedTexts.newGameTexts[3];
         titlePayRun.text = localizedTexts.newGameTexts[4];

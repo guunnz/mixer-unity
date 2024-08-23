@@ -14,10 +14,10 @@ using UnityEngine.UI;
 public class SkyMavisLogin : MonoBehaviour
 {
     private string redirectUri = "http://localhost:3000/login/callback";
-    private string authorizationEndpoint = "http://34.73.111.101/api/v1/auth/url";
-    private string userInfoEndpoint = "http://34.73.111.101/api/v1/auth/login";
-    private string refreshUserInfoEndpoint = "http://34.73.111.101/api/v1/auth/refresh";
-    private string NFTsUserInfoEndpoint = "http://34.73.111.101/api/v1/user/nfts";
+    private string authorizationEndpoint = "http://34.138.180.95/api/v1/auth/url";
+    private string userInfoEndpoint = "http://34.138.180.95/api/v1/auth/login";
+    private string refreshUserInfoEndpoint = "http://34.138.180.95/api/v1/auth/refresh";
+    private string NFTsUserInfoEndpoint = "http://34.138.180.95/api/v1/user/nfts";
 
     private AuthToken authToken;
 
@@ -92,6 +92,11 @@ public class SkyMavisLogin : MonoBehaviour
     public struct AuthorizationJSON
     {
         public string authUrl;
+    }
+
+    private void OnDisable()
+    {
+        httpListener.Stop();
     }
 
     private void StartHttpListener(object state)
