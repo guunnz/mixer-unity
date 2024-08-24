@@ -30,6 +30,7 @@ public class AxieBehavior : MonoBehaviour
     private string AttackAnimation;
     public List<SkillName> SkillList;
     private Coroutine attackCoroutine;
+    internal bool shrimping;
 
     private IEnumerator Start()
     {
@@ -87,7 +88,7 @@ public class AxieBehavior : MonoBehaviour
 
     public void DoAction(AxieState state)
     {
-        if (state == axieState && state != AxieState.Idle)
+        if (state == axieState && state != AxieState.Idle || shrimping)
             return;
 
         if (axieSkillEffectManager.IsStunned() && state != AxieState.Killed && state != AxieState.Victory)
@@ -156,9 +157,55 @@ public class AxieBehavior : MonoBehaviour
                 break;
         }
     }
+    public IEnumerator GoBackdoorTarget()
+    {
+
+        myController.SkeletonAnim.AnimationName = "attack/melee/shrimp";
+        shrimping = true;
+        myController.SkeletonAnim.loop = false;
+        yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
+        myController.SkeletonAnim.enabled = false;
+        Vector3 positionToMove = Vector3.zero;
+
+        List<OverlayTile> possibleTiles = this.myController.CurrentTarget.standingOnTile.AdjacentTiles();
+
+        if (possibleTiles.Count == 0)
+        {
+            shrimping = false;
+            yield break;
+        }
+        OverlayTile overlayTile = possibleTiles[0];
+
+        if (overlayTile != null)
+        {
+            positionToMove = overlayTile.transform.position;
+        }
+
+        this.myController.standingOnTile = overlayTile;
+        this.transform.position = positionToMove;
+
+        yield return new WaitForSecondsRealtime(0.1f);
+        myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+        myController.SkeletonAnim.enabled = true; yield return new WaitForSecondsRealtime(
+            myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
+        myController.SkeletonAnim.loop = true;
+        if (this.myController.CurrentTarget.standingOnTile.grid2DLocation.x > this.myController.standingOnTile.grid2DLocation.x)
+        {
+            this.transform.localScale = new Vector3(Math.Abs(this.transform.localScale.x) * -1, this.transform.localScale.y,
+          this.transform.localScale.z);
+        }
+        else
+        {
+            this.transform.localScale = new Vector3(Math.Abs(this.transform.localScale.x), this.transform.localScale.y,
+      this.transform.localScale.z);
+        }
+
+        shrimping = false;
+    }
 
     public IEnumerator GoBackdoor()
     {
+        shrimping = true;
         myController.SkeletonAnim.loop = false;
         yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
         myController.SkeletonAnim.enabled = false;
@@ -195,6 +242,7 @@ public class AxieBehavior : MonoBehaviour
         myController.SkeletonAnim.loop = true;
         this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
             this.transform.localScale.z);
+        shrimping = false;
         DoAction(AxieState.Idle);
     }
 

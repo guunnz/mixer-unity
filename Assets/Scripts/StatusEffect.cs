@@ -83,7 +83,7 @@ public class SkillEffect : ICloneable
     public bool targetAxieClass;
     public AxieClass axieClassToTarget;
 
-    internal bool Prioritize => (FurthestTarget || targetHighestEnergy || targetHighestSpeed || targetAxieClass) && statusApplyType == StatusApplyType.ApplyTarget;
+    internal bool Prioritize => (FurthestTarget || targetHighestEnergy || targetHighestSpeed || targetAxieClass);
 
     [Header("Trigger If")] public bool triggerIfCertainHPTreshold;
 

@@ -22,8 +22,8 @@ MonoBehaviour:
     skillDuration: 0
     PoisonStack: 0
     Attack: 0
-    Speed: 1
-    Morale: 1
+    Speed: 0
+    Morale: 0
     StealEnergyPercentage: 0
     GainEnergy: 0
     MeleeReflect: 0
@@ -54,6 +54,7 @@ MonoBehaviour:
     FishSnack: 0
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -65,6 +66,7 @@ MonoBehaviour:
     ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -108,4 +110,4 @@ MonoBehaviour:
   damage: 120
   shield: 0
   energy: 1
-  description: Apply +Speed +Morale +Aroma
+  description: Apply Aroma to self

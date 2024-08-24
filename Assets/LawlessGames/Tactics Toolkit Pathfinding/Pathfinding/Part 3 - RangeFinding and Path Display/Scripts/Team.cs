@@ -258,9 +258,8 @@ public class Team : MonoBehaviour
             {
                 if (character.Key == null)
                     continue;
-                if (character.Key.axieBehavior.axieState == AxieState.Shrimping ||
-                    character.Key.axieBehavior.axieState == AxieState.Killed ||
-                    character.Key.axieBehavior.axieState == AxieState.Stunned)
+                if (character.Key.axieBehavior.axieState == AxieState.Killed ||
+                    character.Key.axieBehavior.axieState == AxieState.Stunned || character.Key.axieBehavior.shrimping)
                     continue;
                 if (character.Value.isMoving && character.Value.path != null && character.Value.path.Count > 0)
                 {

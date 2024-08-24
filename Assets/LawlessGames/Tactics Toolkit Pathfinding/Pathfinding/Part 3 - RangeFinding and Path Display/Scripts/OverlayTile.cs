@@ -95,6 +95,11 @@ public class OverlayTile : MonoBehaviour
         }
     }
 
+    public List<OverlayTile> AdjacentTiles()
+    {
+        return MapManager.Instance.GetAdjacentTiles(this).Where(x => !x.occupied).ToList();
+    }
+
     private void UpdateTileColor()
     {
         if (occupied)

@@ -8,6 +8,7 @@ using Spine;
 using Spine.Unity;
 using Unity.Mathematics;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class DamagePair
 {
@@ -63,6 +64,15 @@ public class SkillLauncher : MonoBehaviour
             skill.skeletonAnimation = skeletonAnimation;
             skill.ExtraTimerCast += (0.55f * i);
             //Debug.Log("Skill performed: " + skills[i].skillName);
+            for (int b = 0; b < skills[i].bodyPartSO.skillEffects.Count(); b++)
+            {
+                if (Backdoor(skills[i].bodyPartSO.skillEffects[b], self))
+                {
+                    yield return StartCoroutine(self.axieBehavior.GoBackdoorTarget());
+                }
+            }
+
+
             skillActions.AddRange(PerformSkill(skills[i], skill, self, target));
             TotalDuration += skill.totalDuration;
         }
@@ -70,6 +80,95 @@ public class SkillLauncher : MonoBehaviour
         StartCoroutine(DoSkills(skillActions));
 
         yield return new WaitForSeconds(0.6f * skills.Count);
+    }
+
+
+    private bool Backdoor(SkillEffect skillEffect, AxieController self)
+    {
+        if (skillEffect.Prioritize)
+        {
+            var target = self.CurrentTarget;
+            if (skillEffect.lowestHP)
+            {
+                AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.currentHP)
+                    .First();
+
+                self.CurrentTarget = newTarget;
+
+                return true;
+            }
+
+            if (skillEffect.FurthestTarget)
+            {
+                AxieController newTarget =
+                    self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetCharacters());
+                if (newTarget != null)
+                {
+                    if (!skillEffect.RangeAbility)
+                    {
+                        self.CurrentTarget = newTarget;
+
+                        return true;
+                    }
+                }
+
+            }
+
+            if (skillEffect.targetHighestEnergy)
+            {
+                AxieController newTarget = self.enemyTeam.GetCharacters()
+                    .OrderBy(x => x.axieIngameStats.CurrentEnergy)
+                    .FirstOrDefault();
+                if (newTarget != null)
+                {
+                    if (!skillEffect.RangeAbility)
+                    {
+                        self.CurrentTarget = newTarget;
+
+                        return true;
+                    }
+                }
+
+            }
+
+            if (skillEffect.targetHighestSpeed)
+            {
+                AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x =>
+                        AxieStatCalculator.GetRealSpeed(x.stats.speed, x.axieSkillEffectManager.GetSpeedBuff()))
+                    .FirstOrDefault();
+                if (newTarget != null)
+                {
+                    if (!skillEffect.RangeAbility)
+                    {
+                        self.CurrentTarget = newTarget;
+
+                        return true;
+                    }
+                }
+
+            }
+
+            if (skillEffect.targetAxieClass)
+            {
+                if (target.myTeam.GetCharacters().Any(y =>
+                        y.axieIngameStats.axieClass == skillEffect.axieClassToTarget))
+                {
+                    AxieController newTarget = target.myTeam.GetCharacters().FirstOrDefault(y =>
+                        y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
+                    if (newTarget != null)
+                    {
+                        if (!skillEffect.RangeAbility)
+                        {
+                            self.CurrentTarget = newTarget;
+
+                            return true;
+                        }
+                    }
+                }
+
+            }
+        }
+        return false;
     }
 
     public IEnumerator ThrowPassive(AxieSkill passive, SkeletonAnimation skeletonAnimation, AxieController target,
@@ -506,84 +605,6 @@ public class SkillLauncher : MonoBehaviour
 
             skillInstance.statusEffectTargetList = statusEffectTargetList;
 
-            if (skillEffect.Prioritize)
-            {
-                if (skillEffect.lowestHP)
-                {
-                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.currentHP)
-                        .First();
-
-                    targetList.Clear();
-                    targetList.Add(newTarget);
-                    self.CurrentTarget = newTarget;
-                }
-
-                if (skillEffect.FurthestTarget)
-                {
-                    AxieController newTarget =
-                        self.goodTeam.FindFurthestCharacter(self, self.enemyTeam.GetCharacters());
-                    if (newTarget != null)
-                    {
-                        targetList.Clear();
-                        targetList.Add(newTarget);
-                        if (!skillEffect.RangeAbility)
-                        {
-                            self.CurrentTarget = newTarget;
-                        }
-                    }
-                }
-
-                if (skillEffect.targetHighestEnergy)
-                {
-                    AxieController newTarget = self.enemyTeam.GetCharacters()
-                        .OrderBy(x => x.axieIngameStats.CurrentEnergy)
-                        .FirstOrDefault();
-                    if (newTarget != null)
-                    {
-                        targetList.Clear();
-                        targetList.Add(newTarget);
-                        if (!skillEffect.RangeAbility)
-                        {
-                            self.CurrentTarget = newTarget;
-                        }
-                    }
-                }
-
-                if (skillEffect.targetHighestSpeed)
-                {
-                    AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x =>
-                            AxieStatCalculator.GetRealSpeed(x.stats.speed, x.axieSkillEffectManager.GetSpeedBuff()))
-                        .FirstOrDefault();
-                    if (newTarget != null)
-                    {
-                        targetList.Clear();
-                        targetList.Add(newTarget);
-                        if (!skillEffect.RangeAbility)
-                        {
-                            self.CurrentTarget = newTarget;
-                        }
-                    }
-                }
-
-                if (skillEffect.targetAxieClass)
-                {
-                    if (target.goodTeam.GetCharacters().Any(y =>
-                            y.axieIngameStats.axieClass == skillEffect.axieClassToTarget))
-                    {
-                        AxieController newTarget = target.goodTeam.GetCharacters().FirstOrDefault(y =>
-                            y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
-                        if (newTarget != null)
-                        {
-                            targetList.Clear();
-                            targetList.Add(newTarget);
-                            if (!skillEffect.RangeAbility)
-                            {
-                                self.CurrentTarget = newTarget;
-                            }
-                        }
-                    }
-                }
-            }
 
             if (skillEffect.IsOnlyBuffOrDebuff())
             {
@@ -943,6 +964,8 @@ public class SkillLauncher : MonoBehaviour
             {
                 if (skillEffect.isPassive)
                     continue;
+
+
                 targets = DoSkillEffect(self, target, skillEffect, skillInstance, specialEffectExtras);
                 skillInstance.targetList = targets;
 
