@@ -261,7 +261,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "lunaslanding";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
 
