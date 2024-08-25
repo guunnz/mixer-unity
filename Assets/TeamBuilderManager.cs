@@ -15,21 +15,21 @@ public enum TeamBuilderMenu
     Atia,
     Combo
 }
-
+public enum AxieStatFilter
+{
+    NoFilter,
+    MoreMorale,
+    MoreHP,
+    MoreSpeed,
+    MoreSkill,
+    LessMorale,
+    LessHP,
+    LessSpeed,
+    LessSkill
+}
 public class TeamBuilderManager : MonoBehaviour
 {
-    public enum AxieStatFilter
-    {
-        NoFilter,
-        MoreMorale,
-        MoreHP,
-        MoreSpeed,
-        MoreSkill,
-        LessMorale,
-        LessHP,
-        LessSpeed,
-        LessSkill
-    }
+
 
     public GameObject LandsContent;
     public GameObject AxiesContent;
@@ -199,16 +199,12 @@ public class TeamBuilderManager : MonoBehaviour
         {
             case "morale":
                 return axieStats.morale;
-                break;
             case "skill":
                 return axieStats.skill;
-                break;
             case "hp":
                 return axieStats.hp;
-                break;
             case "speed":
                 return axieStats.speed;
-                break;
         }
 
         return 0;

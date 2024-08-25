@@ -8,6 +8,7 @@ public class ClassFilter : MonoBehaviour
 {
     public AxieClass filter;
     public TeamBuilderManager teamBuilderManager;
+    public AxiesView axiesView;
     private Button button;
     public TextMeshProUGUI ClassText;
     public Image ClassImage;
@@ -19,12 +20,27 @@ public class ClassFilter : MonoBehaviour
 
 
         button.onClick.AddListener(DoClass);
-        teamBuilderManager.axieClassfilterClearedEvent += DoDisabledGraphics;
+        if (teamBuilderManager != null)
+        {
+            teamBuilderManager.axieClassfilterClearedEvent += DoDisabledGraphics;
+
+        }
+        else
+        {
+            axiesView.axieClassfilterClearedEvent += DoDisabledGraphics;
+        }
     }
 
     private void OnDestroy()
     {
-        teamBuilderManager.axieClassfilterClearedEvent -= DoDisabledGraphics;
+        if (teamBuilderManager != null)
+        {
+            teamBuilderManager.axieClassfilterClearedEvent -= DoDisabledGraphics;
+        }
+        else
+        {
+            axiesView.axieClassfilterClearedEvent -= DoDisabledGraphics;
+        }
     }
 
     private void DoDisabledGraphics()
@@ -35,7 +51,14 @@ public class ClassFilter : MonoBehaviour
 
     private void DoClass()
     {
-        teamBuilderManager.ToggleClassFilter(filter);
+        if (teamBuilderManager != null)
+        {
+            teamBuilderManager.ToggleClassFilter(filter);
+        }
+        else
+        {
+            axiesView.ToggleClassFilter(filter);
+        }
         if (selected)
         {
             ClassText.color = new Color(ClassText.color.r, ClassText.color.g, ClassText.color.b, 0.5f);

@@ -376,7 +376,7 @@ public class Skill : MonoBehaviour
 
     public SkillAction GetDestroyAction()
     {
-        return new SkillAction(delegate { StartCoroutine(Destroy()); }, this.totalDuration + ExtraTimerCast +0.05f);
+        return new SkillAction(delegate { StartCoroutine(Destroy()); }, this.totalDuration + ExtraTimerCast + 0.05f);
     }
 
     private void DoDamage()
@@ -523,11 +523,11 @@ public class Skill : MonoBehaviour
         }
     }
 
-    public IEnumerator LaunchSkillTest()
+    public IEnumerator LaunchSkillTest(bool loop)
     {
         string animationName = animationToPlay.ToString();
 
-        // StartCoroutine(Destroy());
+        StartCoroutine(Destroy());
 
         // Find the last underscore and replace it with a hyphen
         int lastUnderscoreIndex = animationName.LastIndexOf('_');
@@ -563,6 +563,8 @@ public class Skill : MonoBehaviour
                 if (timer >= skill.ActivateTiming)
                 {
 
+                    if (skill == null || this == null)
+                        yield break;
                     Vector3 pos = skill.VFXPrefab.transform.localPosition;
                     GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                         skill.StartFromOrigin ? origin.transform.position : target.transform.position,
@@ -624,15 +626,135 @@ public class Skill : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+        if (loop)
+        {
 
-        skeletonAnimation.AnimationName = "action/idle/normal";
-        skeletonAnimation.loop = true;
+        }
+        else
+        {
+
+            skeletonAnimation.AnimationName = "action/idle/normal";
+            skeletonAnimation.loop = true;
+        }
     }
 
+    public IEnumerator LaunchSkillTestSmall(bool loop)
+    {
+        string animationName = animationToPlay.ToString();
+
+        //StartCoroutine(Destroy());
+
+        // Find the last underscore and replace it with a hyphen
+        int lastUnderscoreIndex = animationName.LastIndexOf('_');
+
+        if (lastUnderscoreIndex != -1)
+        {
+            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
+                            animationName.Substring(lastUnderscoreIndex + 1);
+        }
+
+        // Replace the remaining underscores with slashes
+        animationName = animationName.Replace("_", "/");
+        if (animationName.Contains("shrimp"))
+        {
+            animationName = animationName.Replace("-", "/");
+        }
+
+        if (animationName.Contains("tail/multi"))
+        {
+            animationName = animationName.Replace("tail/multi", "tail-multi");
+        }
+
+        skeletonAnimation.AnimationName = animationName;
+        skeletonAnimation.loop = false;
+        skeletonAnimation.Initialize(true);
+        List<SkillVFX> VFXLIST = new List<SkillVFX>();
+        VFXLIST.AddRange(vfxToThrow);
+        float timer = 0;
+        while (timer < totalDuration)
+        {
+            foreach (SkillVFX skill in VFXLIST)
+            {
+                if (timer >= skill.ActivateTiming)
+                {
+
+                    Vector3 pos = skill.VFXPrefab.transform.localPosition;
+                    GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
+                        skill.StartFromOrigin ? origin.transform.position : target.transform.position,
+                        skill.VFXPrefab.transform.rotation,
+                        this.transform);
+
+
+                    vfxSpawned.transform.localScale /= 8;
+
+                    vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
+                                                                     pos.x, vfxSpawned.transform.localPosition.y +
+                                                                            pos.y,
+                        vfxSpawned.transform.localPosition.z +
+                        pos.z);
+
+                    if (skill.AnimationMove.EnableDotweenAnimation)
+                    {
+                        vfxSpawned.transform.localPosition += skill.AnimationMove.StartFromExtra;
+                        vfxSpawned.transform.DOLocalMove(vfxSpawned.transform.localPosition + skill.AnimationMove.GoTo,
+                            skill.AnimationMove.Time);
+                    }
+
+                    VFXSkinChanger changer = vfxSpawned.GetComponent<VFXSkinChanger>();
+
+                    if (changer != null)
+                    {
+                        changer.ChangeBasedOnClass(@class);
+                    }
+
+                    VFXClassSelector classSelector = vfxSpawned.GetComponent<VFXClassSelector>();
+
+                    if (classSelector != null)
+                    {
+                        classSelector.SetAnimation(this.@class);
+                    }
+
+                    if (skill.StartFromOrigin)
+                    {
+                        ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
+
+                        vfxSpawned.transform.localScale = new Vector3(
+                            origin.transform.localScale.x < 0
+                                ? -vfxSpawned.transform.localScale.x
+                                : vfxSpawned.transform.localScale.x,
+                            vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
+
+                        if (origin.transform.localScale.x > 0)
+                        {
+                            vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
+                        }
+
+                        if (projectileMover != null)
+                            projectileMover.MoveToTarget(this.target, skill.SkillDuration + .1f);
+                    }
+                }
+            }
+
+            VFXLIST.RemoveAll(x => timer >= x.ActivateTiming);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        if (loop)
+        {
+
+        }
+        else
+        {
+
+            skeletonAnimation.AnimationName = "action/idle/normal";
+            skeletonAnimation.loop = true;
+        }
+    }
     private IEnumerator Destroy()
     {
         yield return new WaitForSecondsRealtime(totalDuration);
-        Destroy(this.gameObject);
+        if (this != null)
+            Destroy(this.gameObject);
     }
 
     private void SetStatusEffects()

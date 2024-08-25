@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 public class StatsFilter : MonoBehaviour
 {
-    public TeamBuilderManager.AxieStatFilter filter;
+    public AxieStatFilter filter;
     public TeamBuilderManager teamBuilderManager;
+    public AxiesView axiesView;
     private Button button;
     public TextMeshProUGUI ClassText;
     public Image ClassImage;
@@ -19,17 +20,34 @@ public class StatsFilter : MonoBehaviour
         button = GetComponent<Button>();
 
         button.onClick.AddListener(DoStat);
-        teamBuilderManager.statsfilterClearedEvent += DoDisabledGraphics;
-        teamBuilderManager.contraryfilterClearedEvent += DoDisabledGraphicsContrary;
+        if (teamBuilderManager != null)
+        {
+            teamBuilderManager.statsfilterClearedEvent += DoDisabledGraphics;
+            teamBuilderManager.contraryfilterClearedEvent += DoDisabledGraphicsContrary;
+
+        }
+        else
+        {
+            axiesView.statsfilterClearedEvent += DoDisabledGraphics;
+            axiesView.contraryfilterClearedEvent += DoDisabledGraphicsContrary;
+        }
     }
 
     private void OnDestroy()
     {
-        teamBuilderManager.statsfilterClearedEvent -= DoDisabledGraphics;
-        teamBuilderManager.contraryfilterClearedEvent -= DoDisabledGraphicsContrary;
+        if (teamBuilderManager != null)
+        {
+            teamBuilderManager.statsfilterClearedEvent -= DoDisabledGraphics;
+            teamBuilderManager.contraryfilterClearedEvent -= DoDisabledGraphicsContrary;
+        }
+        else
+        {
+            axiesView.statsfilterClearedEvent -= DoDisabledGraphics;
+            axiesView.contraryfilterClearedEvent -= DoDisabledGraphicsContrary;
+        }
     }
 
-    private void DoDisabledGraphicsContrary(TeamBuilderManager.AxieStatFilter filter)
+    private void DoDisabledGraphicsContrary(AxieStatFilter filter)
     {
         if (filter == this.filter)
         {
@@ -46,7 +64,15 @@ public class StatsFilter : MonoBehaviour
 
     private void DoStat()
     {
-        teamBuilderManager.ToggleStatsFilter(filter);
+        if (teamBuilderManager != null)
+        {
+            teamBuilderManager.ToggleStatsFilter(filter);
+
+        }
+        else
+        {
+            axiesView.ToggleStatsFilter(filter);
+        }
         if (selected)
         {
             ClassText.color = new Color(ClassText.color.r, ClassText.color.g, ClassText.color.b, 0.5f);
