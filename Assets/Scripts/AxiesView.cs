@@ -166,6 +166,26 @@ public class AxiesView : MonoBehaviour
         return 0;
     }
 
+    public void SetAxieStats(GetAxiesExample.Axie Axie)
+    {
+        AxieStatsContainer.SetActive(false);
+
+
+        AxieHPText.text = Axie.stats.hp.ToString();
+        AxieSkillText.text = Axie.stats.skill.ToString();
+        AxieMoraleText.text = Axie.stats.morale.ToString();
+        AxieSpeedText.text = Axie.stats.speed.ToString();
+        statsSkeletonGraphic.skeletonDataAsset = Axie.skeletonDataAsset;
+        statsSkeletonGraphic.material = Axie.skeletonDataAssetMaterial;
+        statsSkeletonGraphic.Initialize(true);
+        AxieStatsContainer.SetActive(true);
+    }
+
+    public void DisableAxieStats()
+    {
+        AxieStatsContainer.SetActive(false);
+    }
+
     public void SetAxieSelected(GetAxiesExample.Axie axie, Sprite classSprite)
     {
         selectedAxie = axie.id;
@@ -178,12 +198,7 @@ public class AxiesView : MonoBehaviour
         statsSkeletonGraphic.skeletonDataAsset = axie.skeletonDataAsset;
         statsSkeletonGraphic.material = axie.skeletonDataAssetMaterial;
         statsSkeletonGraphic.Initialize(true);
-        AxieStatsContainer.SetActive(true);
         lastAxieChosen = axie;
-        AxieHPText.text = axie.stats.hp.ToString();
-        AxieSkillText.text = axie.stats.skill.ToString();
-        AxieMoraleText.text = axie.stats.morale.ToString();
-        AxieSpeedText.text = axie.stats.speed.ToString();
 
         foreach (var axieUICombo in axieViewCombo)
         {

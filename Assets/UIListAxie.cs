@@ -4,10 +4,11 @@ using System.Linq;
 using DG.Tweening;
 using Spine.Unity;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UIListAxie : MonoBehaviour
+public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public List<AxieClassGraphic> axieClassGraphics = new List<AxieClassGraphic>();
     public GetAxiesExample.Axie axie;
@@ -44,7 +45,6 @@ public class UIListAxie : MonoBehaviour
             Refresh(false);
             skeletonGraphic.startingAnimation = "action/idle/normal";
             skeletonGraphic.Initialize(true);
-            teamBuilderManager.SetOtherAxieSelected();
         }
     }
 
@@ -98,5 +98,22 @@ public class UIListAxie : MonoBehaviour
                 selectedImage.sprite = unselectedSprite;
             }
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (axie == null)
+            return;
+
+        teamBuilderManager.SetAxieStats(this.axie);
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (axie == null)
+            return;
+
+        teamBuilderManager.DisableAxieStats();
     }
 }

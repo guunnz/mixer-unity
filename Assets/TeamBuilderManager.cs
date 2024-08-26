@@ -265,7 +265,7 @@ public class TeamBuilderManager : MonoBehaviour
             FakeAxieController axieController = fakeAxieControllers.Single(x => x.axie.id == axie.id);
             newTeam.combos.Add(
                 new Combos()
-                    { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
+                { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
             );
             Position pos = new Position();
 
@@ -345,36 +345,27 @@ public class TeamBuilderManager : MonoBehaviour
         statsSkeletonGraphic.skeletonDataAsset = axie.skeletonDataAsset;
         statsSkeletonGraphic.material = axie.skeletonDataAssetMaterial;
         statsSkeletonGraphic.Initialize(true);
-        AxieStatsContainer.SetActive(true);
         lastAxieChosen = axie;
-        AxieHPText.text = axie.stats.hp.ToString();
-        AxieSkillText.text = axie.stats.skill.ToString();
-        AxieMoraleText.text = axie.stats.morale.ToString();
-        AxieSpeedText.text = axie.stats.speed.ToString();
     }
 
-    public void SetOtherAxieSelected()
+    public void SetAxieStats(GetAxiesExample.Axie Axie)
     {
         AxieStatsContainer.SetActive(false);
-        for (int i = 0; i < 12; i++)
-        {
-            int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
-            if (indexToSearch < AccountManager.userAxies.results.Length)
-            {
-                if (axieList[i].selected)
-                {
-                    AxieHPText.text = axieList[i].axie.stats.hp.ToString();
-                    AxieSkillText.text = axieList[i].axie.stats.skill.ToString();
-                    AxieMoraleText.text = axieList[i].axie.stats.morale.ToString();
-                    AxieSpeedText.text = axieList[i].axie.stats.speed.ToString();
-                    statsSkeletonGraphic.skeletonDataAsset = axieList[i].axie.skeletonDataAsset;
-                    statsSkeletonGraphic.material = axieList[i].axie.skeletonDataAssetMaterial;
-                    statsSkeletonGraphic.Initialize(true);
-                    AxieStatsContainer.SetActive(true);
-                    return;
-                }
-            }
-        }
+
+
+        AxieHPText.text = Axie.stats.hp.ToString();
+        AxieSkillText.text = Axie.stats.skill.ToString();
+        AxieMoraleText.text = Axie.stats.morale.ToString();
+        AxieSpeedText.text = Axie.stats.speed.ToString();
+        statsSkeletonGraphic.skeletonDataAsset = Axie.skeletonDataAsset;
+        statsSkeletonGraphic.material = Axie.skeletonDataAssetMaterial;
+        statsSkeletonGraphic.Initialize(true);
+        AxieStatsContainer.SetActive(true);
+    }
+
+    public void DisableAxieStats()
+    {
+        AxieStatsContainer.SetActive(false);
     }
 
     public void SetAxiesUI()
