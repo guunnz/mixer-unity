@@ -303,6 +303,8 @@ public class AxieController : MonoBehaviour
                 TimerMove -= Time.deltaTime;
             }
         }
+
+     
     }
 
     private void FixedUpdate()

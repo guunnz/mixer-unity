@@ -20,10 +20,11 @@ public class StatsManager : MonoBehaviour
     public Rectangle[] ManaBarsList;
     private float ManaBarSpacing = 0.05f;
     private float TotalEnergyBarSize = 1.2709f;
-
+    public Transform AttackAnim;
     private float ManaPerBar = 0.5f;
 
     private float CurrentMana;
+
 
     private void Start()
     {

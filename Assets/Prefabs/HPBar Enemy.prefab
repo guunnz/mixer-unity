@@ -1850,6 +1850,10 @@ MonoBehaviour:
   - {fileID: 926280621004236902}
   - {fileID: 6444133089014288505}
   - {fileID: 5639007436518662602}
+  AttackAnim: {fileID: 0}
+  punchHeight: 0.04
+  punchDuration: 0.2
+  returnDuration: 0.5
 --- !u!1 &6553610993374144437
 GameObject:
   m_ObjectHideFlags: 0

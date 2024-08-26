@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -278,7 +279,23 @@ public class AxieBehavior : MonoBehaviour
         this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
             this.transform.localScale.z);
     }
+    public void PerformAttack(int targetDiff, float time)
+    {
+        // Store the original position
+        Vector3 originalPosition = transform.localPosition;
 
+        // Calculate the move distance based on targetDiff
+        float moveDistance = targetDiff < 0 ? .2f : -.2f;
+
+        // Create a sequence for the animation
+        Sequence moveSequence = DOTween.Sequence();
+
+        // First, move to the target position
+        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z + moveDistance, time / 2));
+
+        // Then, return to the original position
+        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z, time / 2));
+    }
     public IEnumerator TryAttack()
     {
         if (myController.CurrentTarget == null)
@@ -310,7 +327,15 @@ public class AxieBehavior : MonoBehaviour
                     myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / (AttackSpeed * attackSpeedMulti);
             }
 
+            if (myController.Range <= 1)
+            {
+                int targetDiff = myController.standingOnTile.grid2DLocation.y - myController.CurrentTarget.standingOnTile.grid2DLocation.y;
 
+                if (targetDiff != 0)
+                {
+                    PerformAttack(targetDiff, (AttackSpeed * attackSpeedMulti));
+                }
+            }
 
             yield return new WaitForSecondsRealtime((AttackSpeed * attackSpeedMulti) / 2f);
 
@@ -430,6 +455,16 @@ public class AxieBehavior : MonoBehaviour
         while (axieSkillEffectManager.IsStunned())
         {
             yield return new WaitForFixedUpdate();
+        }
+
+        if (myController.Range <= 1)
+        {
+            int targetDiff = myController.standingOnTile.grid2DLocation.y - myController.CurrentTarget.standingOnTile.grid2DLocation.y;
+
+            if (targetDiff != 0)
+            {
+                PerformAttack(targetDiff, 1.2f);
+            }
         }
 
         yield return StartCoroutine(SkillLauncher.Instance.ThrowSkill(myController.axieSkillController.GetAxieSkills(),

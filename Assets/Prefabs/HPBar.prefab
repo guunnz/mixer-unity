@@ -2112,7 +2112,10 @@ MonoBehaviour:
   - {fileID: 4954607993776094677}
   - {fileID: 1650328365143043271}
   - {fileID: 3670061948470865068}
-  ManaBarSpacing: 0.1
+  AttackAnim: {fileID: 0}
+  punchHeight: 0.04
+  punchDuration: 0.2
+  returnDuration: 0.5
 --- !u!1 &7558741474796766576
 GameObject:
   m_ObjectHideFlags: 0
