@@ -339,9 +339,17 @@ public class ShopItemsManager : MonoBehaviour
 
         Action action = () =>
         {
-
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.currentShield += 50f);
+            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            {
+                axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
+            }
+            else
+            {
+
+                axies.ForEach(x => x.axieIngameStats.currentShield += 50f);
+            }
+
         };
 
         team.OnBattleStartActions.Add(action);
@@ -354,7 +362,15 @@ public class ShopItemsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.stats.speed += 3);
+            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            {
+                axies.ForEach(x => x.stats.speed += 6);
+            }
+            else
+            {
+                axies.ForEach(x => x.stats.speed += 3);
+
+            }
         };
 
         team.OnBattleStartActions.Add(action);
@@ -367,7 +383,15 @@ public class ShopItemsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.stats.speed += 6);
+            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            {
+                axies.ForEach(x => x.stats.speed += 12);
+            }
+            else
+            {
+
+                axies.ForEach(x => x.stats.speed += 6);
+            }
         };
 
         team.OnBattleStartActions.Add(action);
@@ -380,7 +404,15 @@ public class ShopItemsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.stats.skill += 6);
+            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            {
+                axies.ForEach(x => x.stats.skill += 12);
+            }
+            else
+            {
+
+                axies.ForEach(x => x.stats.skill += 6);
+            }
         };
 
         team.OnBattleStartActions.Add(action);
@@ -393,7 +425,14 @@ public class ShopItemsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
+            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            {
+                axies.ForEach(x => x.axieIngameStats.currentShield += 200f);
+            }
+            else
+            {
+                axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
+            }
         };
 
         team.OnBattleStartActions.Add(action);
@@ -402,8 +441,15 @@ public class ShopItemsManager : MonoBehaviour
     public void LargePotionOfResistance(Team team)
     {
         var axies = team.GetCharactersAll();
+        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        {
+            axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 30);
+        }
+        else
+        {
 
-        axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 20);
+            axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 15);
+        }
     }
 
 

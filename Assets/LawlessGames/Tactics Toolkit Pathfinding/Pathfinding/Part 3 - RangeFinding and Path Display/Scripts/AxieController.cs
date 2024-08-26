@@ -59,7 +59,7 @@ public class AxieController : MonoBehaviour
     public AxieMode mode;
     private Vector3 lastMovedPosition;
     private float TimerMove = 0f;
-
+    private Coroutine menuWalkCoroutine;
     public List<AxieController> GetAdjacent()
     {
         try
@@ -230,7 +230,12 @@ public class AxieController : MonoBehaviour
         if (mode == AxieMode.Battle)
         {
             TimerMove = 10000f;
-            MoveToRandomPosition(true);
+            if (menuWalkCoroutine != null)
+            {
+                StopCoroutine(menuWalkCoroutine);
+                menuWalkCoroutine = null;
+            }
+            menuWalkCoroutine = StartCoroutine(MoveToRandomPosition(true));
         }
         else
         {
@@ -245,7 +250,7 @@ public class AxieController : MonoBehaviour
 
     public float timePerMeter = 0.8f; // Time it takes to move 1 meter
 
-    private void MoveToRandomPosition(bool changingFromMenuToBattle = false)
+    IEnumerator MoveToRandomPosition(bool changingFromMenuToBattle = false)
     {
         transform.DOKill();
         float targetX =
@@ -288,6 +293,8 @@ public class AxieController : MonoBehaviour
                     transform.localScale = new Vector3(-0.2f, transform.localScale.y, transform.localScale.z);
                 }
             });
+
+        yield return null;
     }
 
     private void Update()
@@ -296,7 +303,7 @@ public class AxieController : MonoBehaviour
         {
             if (TimerMove <= 0)
             {
-                MoveToRandomPosition();
+                menuWalkCoroutine = StartCoroutine(MoveToRandomPosition());
             }
             else
             {
@@ -304,7 +311,7 @@ public class AxieController : MonoBehaviour
             }
         }
 
-     
+
     }
 
     private void FixedUpdate()

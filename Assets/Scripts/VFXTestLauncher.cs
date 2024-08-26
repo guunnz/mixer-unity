@@ -64,7 +64,7 @@ public class VFXTestLauncher : MonoBehaviour
 
         while (playingCoroutine != null)
         {
-            yield return new WaitForSeconds(skill.totalDuration + 0.3f);
+            yield return new WaitForSeconds(skill.totalDuration + 0.5f);
             skill = Instantiate(part.prefab).GetComponent<Skill>();
 
             skill.debug = true;
