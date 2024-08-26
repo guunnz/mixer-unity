@@ -2,6 +2,7 @@ using finished3;
 using System;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 public enum LandType
 {
@@ -11,7 +12,7 @@ public enum LandType
     mystic,
     genesis,
     axiepark,
-    lunaslanding
+    lunalanding
 }
 
 public class MaterialTipColorChanger : MonoBehaviour
@@ -20,6 +21,7 @@ public class MaterialTipColorChanger : MonoBehaviour
     private MaterialPropertyBlock _propBlock;
 
     private Color color;
+    private Color startingColor;
     public LandType landType;
 
     public Vector3 savannahColorMin;
@@ -89,7 +91,7 @@ public class MaterialTipColorChanger : MonoBehaviour
                         RandomRange(forestColorMin.y, forestColorMax.y),
                         RandomRange(forestColorMin.z, forestColorMax.z));
                     break;
-                case LandType.lunaslanding:
+                case LandType.lunalanding:
                     color = new Color(RandomRange(lunasColorMin.x, lunasColorMax.x),
                        RandomRange(lunasColorMin.y, lunasColorMax.y),
                        RandomRange(lunasColorMin.z, lunasColorMax.z));
@@ -110,6 +112,7 @@ public class MaterialTipColorChanger : MonoBehaviour
                         RandomRange(savannahColorMin.z, savannahColorMax.z));
                     break;
             }
+            startingColor = color;
         }
 
         SetTipColor();
@@ -127,11 +130,33 @@ public class MaterialTipColorChanger : MonoBehaviour
         }
         else if (floorUp)
         {
+            StartColorChange(startingColor, 0.3f);
             floorUp = false;
             transform.DOMoveY(startYPosition - floorMoveAmount, 0.5f);
         }
+
+    }
+    private void StartColorChange(Color targetColor, float duration)
+    {
+        StartCoroutine(ChangeColorCoroutine(targetColor, duration));
     }
 
+    // Coroutine to change the color smoothly
+    private IEnumerator ChangeColorCoroutine(Color targetColor, float duration)
+    {
+        Color initialColor = color;
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            color = Color.Lerp(initialColor, targetColor, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the color is fully set to the target color at the end
+        color = targetColor;
+    }
     // Call this function to change the "_TipColor" property
     public void SetTipColor()
     {

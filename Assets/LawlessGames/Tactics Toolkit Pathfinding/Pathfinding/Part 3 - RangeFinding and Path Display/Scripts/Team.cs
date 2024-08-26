@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using enemies;
 using TMPro;
 using UnityEngine;
@@ -191,19 +192,26 @@ public class Team : MonoBehaviour
                     BattleOverlay.SetActive(false);
                     YouWinLose.gameObject.SetActive(true);
 
+                    Color youwinlosecolor = YouWinLose.color;
+                    YouWinLose.color = Color.clear;
                     if (isGoodTeam)
                     {
                         Debug.Log("SFX PLAYED");
                         SFXManager.instance.PlaySFX(SFXType.Lost, 0.12f, false);
                         MusicManager.Instance.Stop();
-                        YouWinLose.text = "You Lost.";
+
+                        RunManagerSingleton.instance.SetResultUI(!isGoodTeam);
+                        YouWinLose.text = "You Lost. \n <size=12>[Click to continue]";
+                        YouWinLose.DOColor(youwinlosecolor, 1);
                     }
                     else
                     {
+                        RunManagerSingleton.instance.SetResultUI(!isGoodTeam);
                         Debug.Log("SFX PLAYED");
                         SFXManager.instance.PlaySFX(SFXType.Win, 0.12f, false);
                         MusicManager.Instance.Stop();
-                        YouWinLose.text = "You Win!";
+                        YouWinLose.DOColor(youwinlosecolor, 1);
+                        YouWinLose.text = "You Win!\n<size=12>[Click to continue]";
                     }
                 }
 

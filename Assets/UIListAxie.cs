@@ -28,7 +28,7 @@ public class UIListAxie : MonoBehaviour
         button.onClick.AddListener(SelectAxie);
     }
 
-    private void SelectAxie()
+    public void SelectAxie()
     {
         SkeletonDataAsset dataAsset = fakeAxiesManager.ChooseAxie(axie);
 

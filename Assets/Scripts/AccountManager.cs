@@ -253,12 +253,12 @@ public class AccountManager : MonoBehaviour
                 landLock.locked = true;
                 lands.Add(landLock);
             }
-            if (lands.Count(x => x.LandTypeEnum == LandType.lunaslanding) == 0)
+            if (lands.Count(x => x.LandTypeEnum == LandType.lunalanding) == 0)
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
                 landLock.tokenId = "1111111111111111111111111112117";
-                landLock.landType = "lunaslanding";
+                landLock.landType = "lunalanding";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = true;

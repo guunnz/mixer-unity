@@ -153,6 +153,9 @@ public class AxieBehavior : MonoBehaviour
                 myController.SkeletonAnim.loop = true;
                 break;
             case AxieState.Killed:
+                if (attackCoroutine != null)
+                    StopCoroutine(attackCoroutine);
+                attackCoroutine = null;
                 myController.gameObject.SetActive(false);
                 break;
         }
@@ -164,7 +167,6 @@ public class AxieBehavior : MonoBehaviour
         shrimping = true;
         myController.SkeletonAnim.loop = false;
         yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
-        myController.SkeletonAnim.enabled = false;
         Vector3 positionToMove = Vector3.zero;
 
         List<OverlayTile> possibleTiles = this.myController.CurrentTarget.standingOnTile.AdjacentTiles();
@@ -186,9 +188,16 @@ public class AxieBehavior : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(0.1f);
         myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
-        myController.SkeletonAnim.enabled = true; yield return new WaitForSecondsRealtime(
+        yield return new WaitForSecondsRealtime(
             myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
         myController.SkeletonAnim.loop = true;
+
+        if (this.myController.CurrentTarget == null)
+        {
+            shrimping = false;
+            yield break;
+        }
+
         if (this.myController.CurrentTarget.standingOnTile.grid2DLocation.x > this.myController.standingOnTile.grid2DLocation.x)
         {
             this.transform.localScale = new Vector3(Math.Abs(this.transform.localScale.x) * -1, this.transform.localScale.y,

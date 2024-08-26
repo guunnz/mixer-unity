@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,15 +47,26 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    GravelAnt: 0
+    HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
-    RandomEffectIsDebuff: 0
+    RandomEffectIsDebuff: 1
     RandomEffectIsBuff: 0
-    ApplyRandomEffect: 0
+    ApplyRandomEffect: 1
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -62,7 +74,7 @@ MonoBehaviour:
     specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
     specialActivactionWhenReceiveDamage: []
-    lowestHP: 1
+    lowestHP: 0
     FurthestTarget: 0
     targetHighestEnergy: 0
     targetHighestSpeed: 0
@@ -90,10 +102,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 
   bodyPart: 2
   prefab: {fileID: 2179489554462401005, guid: 714dec7da6f6b434f842719d65fffc35, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 1
   damage: 90
   shield: 50
   energy: 1
-  description: This ability targets the lowest health enemy
+  description: Target gets a random debuff

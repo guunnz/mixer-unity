@@ -4,7 +4,7 @@ public class PreciseWorldSpaceCanvasController : MonoBehaviour
 {
     public Camera targetCamera;
     public float planeDistance = 1.0f; // Distance from the camera to place the canvas
-
+    public bool changeLayer = true;
     void Start()
     {
         Canvas canvas = GetComponent<Canvas>();
@@ -21,8 +21,12 @@ public class PreciseWorldSpaceCanvasController : MonoBehaviour
         float width = targetCamera.pixelWidth;
         float height = targetCamera.pixelHeight;
         float depth = 1000f; // The depth range in which UI elements are active
-        canvas.sortingLayerName = "Cursor";
-        canvas.sortingOrder = 100;
+        if (changeLayer)
+        {
+            canvas.sortingLayerName = "Cursor";
+            canvas.sortingOrder = 100;
+
+        }
         // Adjust the canvas size based on camera settings
         rectTransform.sizeDelta = new Vector2(width, height);
         rectTransform.localScale = new Vector3(0.002737f, 0.002737f, 0.002737f);

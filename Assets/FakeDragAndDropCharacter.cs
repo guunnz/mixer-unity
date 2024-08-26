@@ -64,8 +64,10 @@ public class FakeDragAndDropCharacter : MonoBehaviour
             SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
             if (closestTile == null)
             {
-                selectedCharacter.GetComponent<BoxCollider>().enabled = true;
                 MoveCharacterToTile(fakeAxieController, fakeAxieController.standingOnTile);
+                selectedCharacter.transform.SetParent(AxiesParent);
+                selectedCharacter.GetComponent<BoxCollider>().enabled = true;
+                selectedCharacter = null;
                 return;
             }
 
@@ -99,7 +101,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         {
             FakeAxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
-            if (occupyingCharacter != null)
+            if (occupyingCharacter != null && selectedAxieController != occupyingCharacter)
             {
                 SwapCharacters(selectedAxieController, occupyingCharacter);
             }

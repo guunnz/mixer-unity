@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,6 +65,7 @@ public class RunManagerSingleton : MonoBehaviour
     public Image[] lives;
     public Team goodTeam;
     public AtiaBlessing atiaBlessing;
+    public RectTransform ScoreRect;
     private float skere;
     private int MaxCoinsThisRound = 10;
 
@@ -114,37 +116,74 @@ public class RunManagerSingleton : MonoBehaviour
                 axies.ForEach(axie => { axie.stats.hp += roundsPassives.ExtraTeamHPPerRound; });
             }
 
-            wins++;
             if (wins >= 12)
             {
                 MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
-                Debug.Log("YOU WON THE RUN");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 return;
             }
         }
         else
         {
-            losses++;
             if (losses >= 3)
             {
                 MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
-                Debug.LogError("YOU LOST THE RUN");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 return;
             }
         }
+        ShopManager.instance.SetShop();
+    }
 
-
-
+    private void SetScoreGraphics()
+    {
         results.text = wins.ToString();
 
         for (int i = 0; i < losses; i++)
         {
-            lives[i].color = lifeLostColor;
+            lives[i].DOColor(lifeLostColor, 1f);
         }
 
-        ShopManager.instance.SetShop();
+    }
+
+    public void SetResultUI(bool won)
+    {
+        if (won)
+        {
+            wins++;
+        }
+        else
+        {
+            losses++;
+        }
+
+        RunManagerSingleton.instance.MoveAndResize(new Vector2(-30, 150), new Vector2(2, 2), 1, 1);
+    }
+
+    public void MoveAndResize(Vector2 targetPosition, Vector2 targetSize, float duration, float waitTime)
+    {
+        // Store the original position and size
+        Vector2 originalPosition = ScoreRect.anchoredPosition;
+        Vector2 originalSize = ScoreRect.localScale;
+
+        // Create a sequence to chain animations
+        Sequence sequence = DOTween.Sequence();
+        sequence.AppendInterval(waitTime);
+        // Move and resize to target position and size
+        sequence.Append(ScoreRect.DOAnchorPos(targetPosition, duration));
+        sequence.Join(ScoreRect.DOScale(targetSize, duration));
+
+        // Perform the action during the wait time
+        sequence.AppendInterval(waitTime / 2); // Half the wait time before the action
+        sequence.AppendCallback(() => SetScoreGraphics());
+        sequence.AppendInterval(waitTime / 2); // Half the wait time after the action
+
+        // Move and resize back to original position and size
+        sequence.Append(ScoreRect.DOAnchorPos(originalPosition, duration));
+        sequence.Join(ScoreRect.DOScale(originalSize, duration));
+
+        // Start the sequence
+        sequence.Play();
     }
 
     public void RemoveCoins(int coinsAmount)

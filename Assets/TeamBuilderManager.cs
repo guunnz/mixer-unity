@@ -37,6 +37,8 @@ public class TeamBuilderManager : MonoBehaviour
     public List<UIListLand> landList = new List<UIListLand>();
     public List<UIListAxie> axieList = new List<UIListAxie>();
 
+    public GameObject AxieTeamUIObject;
+    public GameObject DragToRemoveObject;
     private int currentPage = 1;
     public TextMeshProUGUI pageText;
     public TMP_InputField teamNameInputField;

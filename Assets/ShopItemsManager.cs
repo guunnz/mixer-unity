@@ -601,7 +601,7 @@ public class ShopItemsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.hp += 2; });
@@ -616,7 +616,7 @@ public class ShopItemsManager : MonoBehaviour
     public void Increase_HP(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.hp += 2; });
@@ -630,7 +630,7 @@ public class ShopItemsManager : MonoBehaviour
     public void Increase_Morale(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.morale += 2; });
@@ -644,7 +644,7 @@ public class ShopItemsManager : MonoBehaviour
     public void Increase_Skill(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.skill += 2; });
@@ -659,7 +659,7 @@ public class ShopItemsManager : MonoBehaviour
     public void Increase_Speed(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunaslanding)
+        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.speed += 2; });

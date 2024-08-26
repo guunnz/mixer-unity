@@ -68,7 +68,7 @@ public class AbilitiesManager : MonoBehaviour
 
     public AxiesManager axiesManager;
     private GetAxiesExample.Axie currentSelectedAxie;
-
+    private SelectedComboData data = new SelectedComboData();
     public Sprite SelectedSprite;
     public Sprite DeselectedSprite;
 
@@ -97,7 +97,7 @@ public class AbilitiesManager : MonoBehaviour
         {
             SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
         }
-       
+
         if (PlayerPrefs.GetInt("Tutorial") == 0)
         {
             Tutorial.SetActive(true);
@@ -105,7 +105,61 @@ public class AbilitiesManager : MonoBehaviour
         }
     }
 
+    public void BodyPartHover(BodyPart part)
+    {
+        GetAxiesExample.Part bodyPartToSelect =
+            currentSelectedAxie.parts.Single(x => x.BodyPart == part);
+        AxieBodyPart ability = skillList.axieBodyParts
+    .Single(x =>
+        x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
+        x.skillName == bodyPartToSelect.SkillName);
 
+        SelectedComboData data = new SelectedComboData();
+
+        data.description = ability.description;
+        data.energy = ability.energy.ToString();
+        data.damage = ability.damage.ToString();
+        data.shield = ability.shield.ToString();
+        data.passive = ability.isPassive;
+        data.name = bodyPartToSelect.name;
+        data.tooltips = ability.tooltipTypes;
+        SetUI(data);
+    }
+    public void SetUI()
+    {
+        PassiveGO.SetActive(data.passive);
+        AttackAbilityText.transform.parent.gameObject.SetActive(!data.passive);
+        ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
+        EnergyObject.SetActive(!data.passive);
+        EnergyText.text = data.energy;
+        AbilityNameText.text = data.name;
+        AbilityDescriptionText.text = data.description;
+        ShieldAbilityText.text = data.shield;
+        AttackAbilityText.text = data.damage;
+
+
+
+        AbilityDescriptionTooltip.SetTooltips(data.tooltips);
+    }
+
+    public void SetUI(SelectedComboData data)
+    {
+        PassiveGO.SetActive(data.passive);
+        AttackAbilityText.transform.parent.gameObject.SetActive(!data.passive);
+        ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
+        EnergyObject.SetActive(!data.passive);
+        EnergyText.text = data.energy;
+        AbilityNameText.text = data.name;
+        AbilityDescriptionText.text = data.description;
+        ShieldAbilityText.text = data.shield;
+        AttackAbilityText.text = data.damage;
+
+        AbilityDescriptionTooltip.SetTooltips(data.tooltips);
+    }
+    public void BodyPartStopHover()
+    {
+        SetUI();
+    }
     public void ChoosePart(BodyPart part)
     {
         GetAxiesExample.Part bodyPartToReplace =
@@ -260,6 +314,13 @@ public class AbilitiesManager : MonoBehaviour
         }
 
         AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
+        data.description = ability.description;
+        data.energy = ability.energy.ToString();
+        data.damage = ability.damage.ToString();
+        data.shield = ability.shield.ToString();
+        data.passive = ability.isPassive;
+        data.name = bodyPartToSelect.name;
+        data.tooltips = ability.tooltipTypes;
     }
 
     public void ChoosePartOnlyDo()
@@ -331,6 +392,13 @@ public class AbilitiesManager : MonoBehaviour
                 AttackAbilityText.transform.parent.gameObject.SetActive(true);
                 ShieldAbilityText.transform.parent.gameObject.SetActive(true);
             }
+            data.description = ability.description;
+            data.energy = ability.energy.ToString();
+            data.damage = ability.damage.ToString();
+            data.shield = ability.shield.ToString();
+            data.passive = ability.isPassive;
+            data.tooltips = ability.tooltipTypes;
+            data.name = partObj.name;
             AbilityDescriptionTooltip.SetTooltips(ability.tooltipTypes);
         }
 
