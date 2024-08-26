@@ -29,6 +29,7 @@ MonoBehaviour:
     MeleeReflect: 0
     RangedReflect: 0
     GainShield: 0
+    GainShieldPercentage: 0
     GainHPPercentage: 0
     HPBaseOnDamage: 0
     ShieldOnStart: 0
@@ -46,15 +47,27 @@ MonoBehaviour:
     Fragile: 0
     Poison: 0
     Wombo: 0
+    Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    Backdoor: 1
+    GravelAnt: 0
+    HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -90,10 +103,12 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 
   bodyPart: 3
   prefab: {fileID: 3133670662096343493, guid: 135721d26cdbd684085a0238d8be80f3, type: 3}
+  extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 5
   damage: 120
   shield: 20
   energy: 1
-  description: Change your target to the lowest HP if your HP is below 50%
+  description: Prioritize to the lowest HP if your HP is below 50%

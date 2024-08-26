@@ -52,17 +52,22 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 1
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -106,4 +111,4 @@ MonoBehaviour:
   damage: 80
   shield: 40
   energy: 1
-  description: Prioritizes furthest target.
+  description: Prioritizes furthest target

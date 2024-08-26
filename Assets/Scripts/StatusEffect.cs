@@ -51,6 +51,7 @@ public class SkillEffect : ICloneable
     public bool Hotbutt;
     public bool Kestrel;
     public bool FishSnack;
+    public bool Backdoor;
     public bool GravelAnt;
     public bool HealingBlock;
     public bool ImmuneToDebuffs;
@@ -83,7 +84,7 @@ public class SkillEffect : ICloneable
     public bool targetAxieClass;
     public AxieClass axieClassToTarget;
 
-    internal bool Prioritize => (FurthestTarget || targetHighestEnergy || targetHighestSpeed || targetAxieClass);
+    internal bool Prioritize => Backdoor;
 
     [Header("Trigger If")] public bool triggerIfCertainHPTreshold;
 

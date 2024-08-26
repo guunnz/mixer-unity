@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 1
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -110,4 +111,4 @@ MonoBehaviour:
   damage: 60
   shield: 80
   energy: 1
-  description: Always targets Bird enemies if possible
+  description: Prioritize Bird enemies if possible
