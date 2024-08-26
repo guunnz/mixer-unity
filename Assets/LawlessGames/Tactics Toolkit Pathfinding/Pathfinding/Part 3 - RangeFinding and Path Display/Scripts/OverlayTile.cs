@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Shapes;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class OverlayTile : MonoBehaviour
 {
@@ -62,6 +63,11 @@ public class OverlayTile : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            beingHovered = false;
+            return;
+        }
         // This method is called when the mouse is over the collider of this GameObject
         beingHovered = true;
     }

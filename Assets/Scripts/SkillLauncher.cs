@@ -190,6 +190,15 @@ public class SkillLauncher : MonoBehaviour
             target = self.CurrentTarget;
         }
 
+
+        for (int b = 0; b < passive.bodyPartSO.skillEffects.Count(); b++)
+        {
+            if (Backdoor(passive.bodyPartSO.skillEffects[b], self))
+            {
+                yield return StartCoroutine(self.axieBehavior.GoBackdoorTarget());
+            }
+        }
+
         skill.axieBodyPart = passive.bodyPartSO;
         skill.self = self;
         skill.origin = self.transform;

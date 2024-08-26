@@ -32,7 +32,7 @@ public enum TooltipType
     Prioritize,
     Jinx,
     Energy,
-    LunasLanding
+    LunaLanding
 }
 
 [System.Serializable]

@@ -69,6 +69,7 @@ public class FakeLandManager : MonoBehaviour
                 int tokenIdInt = int.Parse(tokenIdSubstring);
                 materialTipColorChanger.SetRandomSeed(tokenIdInt / (i + 1));
                 materialTipColorChanger.colorAlreadySet = false;
+                materialTipColorChanger.SetColor();
             }
 
             if (currentSpawnedLand != null)
@@ -87,8 +88,6 @@ public class FakeLandManager : MonoBehaviour
 
         if (currentSpawnedLand == null)
         {
-
-
             if (string.IsNullOrEmpty(tokenId))
             {
                 land = AccountManager.userLands.results[indexChoosing];

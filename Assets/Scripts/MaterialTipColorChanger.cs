@@ -75,6 +75,12 @@ public class MaterialTipColorChanger : MonoBehaviour
 
     private void Update()
     {
+        SetColor();
+
+    }
+
+    public void SetColor()
+    {
         if (!colorAlreadySet)
         {
             colorAlreadySet = true;
@@ -134,7 +140,6 @@ public class MaterialTipColorChanger : MonoBehaviour
             floorUp = false;
             transform.DOMoveY(startYPosition - floorMoveAmount, 0.5f);
         }
-
     }
     private void StartColorChange(Color targetColor, float duration)
     {
