@@ -222,7 +222,7 @@ public class RunManagerSingleton : MonoBehaviour
         RemoveCoins((int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
                                     100f));
 
-        ShopItemsManager.instance.DoUpgrade(upgrade.ItemEffectName, goodTeam);
+        BuffsManager.instance.DoUpgrade(upgrade.ItemEffectName, goodTeam);
 
         foreach (var axieController in goodTeam.GetCharactersAll())
         {

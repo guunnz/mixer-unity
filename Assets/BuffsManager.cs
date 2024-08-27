@@ -6,9 +6,9 @@ using System.Numerics;
 using System.Reflection;
 using UnityEngine;
 
-public class ShopItemsManager : MonoBehaviour
+public class BuffsManager : MonoBehaviour
 {
-    static public ShopItemsManager instance;
+    static public BuffsManager instance;
 
     private void Awake()
     {
@@ -761,4 +761,417 @@ public class ShopItemsManager : MonoBehaviour
             axieController.Range += 1;
         }
     }
+
+
+    /// <summary>
+    /// Auguments
+    /// </summary>
+    /// <param name="team"></param>
+
+    public void GainHPAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainHPReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void GainSpeedAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSpeedReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void GainSkillAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainSkillReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void GainMoraleAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoralePlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void GainMoraleReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void MoraleBuffAfterSecondsAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void MoraleBuffAfterSecondsReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void SpeedBuffAfterSecondsAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void SpeedBuffAfterSecondsReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void AttackBuffAfterSecondsAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AttackBuffAfterSecondsReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void AutoAttackHealReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void ExtraAbilitySlotAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void ExtraAbilitySlotReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void BackdoorAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void BackdoorReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
+    public void PrismaticAqua(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticBird(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticDawn(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticBeast(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticBug(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticMech(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticPlant(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticDusk(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+    public void PrismaticReptile(Team team)
+    {
+        var axies = team.GetCharactersAll();
+    }
+
 }

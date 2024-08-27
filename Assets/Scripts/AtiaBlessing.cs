@@ -86,7 +86,118 @@ public class AtiaBlessing : MonoBehaviour
         SteelHelmet,
         SteelShield,
         ThreeWondersShoes,
-        Topaz
+        Topaz,
+//AUGUMENTS
+        GainHPAqua,
+        GainHPBird,
+        GainHPDawn,
+        GainHPBeast,
+        GainHPBug,
+        GainHPMech,
+        GainHPPlant,
+        GainHPDusk,
+        GainHPReptile,
+
+        GainSpeedAqua,
+        GainSpeedBird,
+        GainSpeedDawn,
+        GainSpeedBeast,
+        GainSpeedBug,
+        GainSpeedMech,
+        GainSpeedPlant,
+        GainSpeedDusk,
+        GainSpeedReptile,
+
+        GainSkillAqua,
+        GainSkillBird,
+        GainSkillDawn,
+        GainSkillBeast,
+        GainSkillBug,
+        GainSkillMech,
+        GainSkillPlant,
+        GainSkillDusk,
+        GainSkillReptile,
+
+        GainMoraleAqua,
+        GainMoraleBird,
+        GainMoraleDawn,
+        GainMoraleBeast,
+        GainMoraleBug,
+        GainMoraleMech,
+        GainMoralePlant,
+        GainMoraleDusk,
+        GainMoraleReptile,
+
+        MoraleBuffAfterSecondsAqua,
+        MoraleBuffAfterSecondsBird,
+        MoraleBuffAfterSecondsDawn,
+        MoraleBuffAfterSecondsBeast,
+        MoraleBuffAfterSecondsBug,
+        MoraleBuffAfterSecondsMech,
+        MoraleBuffAfterSecondsPlant,
+        MoraleBuffAfterSecondsDusk,
+        MoraleBuffAfterSecondsReptile,
+
+        SpeedBuffAfterSecondsAqua,
+        SpeedBuffAfterSecondsBird,
+        SpeedBuffAfterSecondsDawn,
+        SpeedBuffAfterSecondsBeast,
+        SpeedBuffAfterSecondsBug,
+        SpeedBuffAfterSecondsMech,
+        SpeedBuffAfterSecondsPlant,
+        SpeedBuffAfterSecondsDusk,
+        SpeedBuffAfterSecondsReptile,
+
+        AttackBuffAfterSecondsAqua,
+        AttackBuffAfterSecondsBird,
+        AttackBuffAfterSecondsDawn,
+        AttackBuffAfterSecondsBeast,
+        AttackBuffAfterSecondsBug,
+        AttackBuffAfterSecondsMech,
+        AttackBuffAfterSecondsPlant,
+        AttackBuffAfterSecondsDusk,
+        AttackBuffAfterSecondsReptile,
+
+        AutoAttackHealAqua,
+        AutoAttackHealBird,
+        AutoAttackHealDawn,
+        AutoAttackHealBeast,
+        AutoAttackHealBug,
+        AutoAttackHealMech,
+        AutoAttackHealPlant,
+        AutoAttackHealDusk,
+        AutoAttackHealReptile,
+
+        ExtraAbilitySlotAqua,
+        ExtraAbilitySlotBird,
+        ExtraAbilitySlotDawn,
+        ExtraAbilitySlotBeast,
+        ExtraAbilitySlotBug,
+        ExtraAbilitySlotMech,
+        ExtraAbilitySlotPlant,
+        ExtraAbilitySlotDusk,
+        ExtraAbilitySlotReptile,
+
+        BackdoorAqua,
+        BackdoorBird,
+        BackdoorDawn,
+        BackdoorBeast,
+        BackdoorBug,
+        BackdoorMech,
+        BackdoorPlant,
+        BackdoorDusk,
+        BackdoorReptile,
+
+        PrismaticAqua,
+        PrismaticBird,
+        PrismaticDawn,
+        PrismaticBeast,
+        PrismaticBug,
+        PrismaticMech,
+        PrismaticPlant,
+        PrismaticDusk,
+        PrismaticReptile
+//AUGUMENTS STOP
     }
 
     public Team goodTeam;
@@ -439,7 +550,7 @@ public class AtiaBlessing : MonoBehaviour
         try
         {
             RunManagerSingleton.instance.eNetWorth += ShopManager.instance.ItemList.FirstOrDefault(x => x.ItemEffectName == (BuffEffect)indexAugument)?.price ?? 0;
-            ShopItemsManager.instance.DoUpgrade((BuffEffect)indexAugument, team);
+            BuffsManager.instance.DoUpgrade((BuffEffect)indexAugument, team);
         }
         catch (Exception ex)
         {
