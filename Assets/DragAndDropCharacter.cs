@@ -15,6 +15,10 @@ public class DragAndDropCharacter : MonoBehaviour
     private List<OverlayTile> allOverlayTiles;
     private Team team;
     private float moveDelay = 0.1f;
+    private float holdAux = 0.13f;
+    private float hold = 0f;
+    public AxieStatsTooltip statsToolitp;
+    private Vector3 mousePos;
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
@@ -26,38 +30,52 @@ public class DragAndDropCharacter : MonoBehaviour
     {
         // Detect mouse click
         if (team.battleStarted)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                DoStats();
+            }
             return;
+        }
 
         if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null)
             return;
 
         moveDelay -= Time.deltaTime;
-        if (Input.GetMouseButtonDown(0) && moveDelay <= 0)
+        if (Input.GetMouseButton(0))
         {
-            RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (mousePos == Vector3.zero)
+                mousePos = Input.mousePosition;
 
-            if (Physics.Raycast(ray, out hit))
+            hold += Time.deltaTime;
+            if (moveDelay <= 0 && selectedCharacter == null && (hold >= holdAux || mousePos != Input.mousePosition))
             {
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
+                RaycastHit hit;
+                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit))
                 {
-                    selectedCharacter = hit.collider.gameObject;
-                    AxieController axieController = selectedCharacter.GetComponent<AxieController>();
-                    if (axieController.mode == AxieMode.Menu)
+                    if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
                     {
-                        selectedCharacter = null;
-                        return;
+                        selectedCharacter = hit.collider.gameObject;
+                        AxieController axieController = selectedCharacter.GetComponent<AxieController>();
+                        if (axieController.mode == AxieMode.Menu)
+                        {
+                            selectedCharacter = null;
+                            return;
+                        }
+
+                        SFXManager.instance.PlaySFX(SFXType.GrabAxie);
+                        axieController.axieBehavior.DoAction(AxieState.Grabbed);
+                        originalPosition = selectedCharacter.transform.position;
+                        originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
+                        selectedCharacter.transform.SetParent(mainCamera.transform);
                     }
-
-
-                    SFXManager.instance.PlaySFX(SFXType.GrabAxie);
-                    axieController.axieBehavior.DoAction(AxieState.Grabbed);
-                    originalPosition = selectedCharacter.transform.position;
-                    originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
-                    selectedCharacter.transform.SetParent(mainCamera.transform);
                 }
             }
+            mousePos = Input.mousePosition;
         }
+
 
         // Move character with mouse
         if (selectedCharacter != null && Input.GetMouseButton(0))
@@ -71,27 +89,58 @@ public class DragAndDropCharacter : MonoBehaviour
         }
 
         // Release character and attempt to place on the closest tile
-        if (selectedCharacter != null && Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
-            moveDelay = 0.1f;
-            selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-            selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
-            OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
-
-            SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
-            if (closestTile == null)
+            mousePos = Vector3.zero;
+            if (hold < holdAux && selectedCharacter == null)
             {
-                selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-                selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
-                MoveCharacterToTile(selectedCharacter.GetComponent<AxieController>(),
-                    selectedCharacter.GetComponent<AxieController>().standingOnTile);
-                return;
+                DoStats();
             }
+            else
+            {
+                if (selectedCharacter != null)
+                {
+                    moveDelay = 0.1f;
+                    selectedCharacter.GetComponent<BoxCollider>().enabled = true;
+                    selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
+                    OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
 
-            TryPlaceCharacterOnTile(selectedCharacter, closestTile);
+                    SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
+                    if (closestTile == null)
+                    {
+                        selectedCharacter.GetComponent<BoxCollider>().enabled = true;
+                        selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
+                        MoveCharacterToTile(selectedCharacter.GetComponent<AxieController>(),
+                            selectedCharacter.GetComponent<AxieController>().standingOnTile);
+                        return;
+                    }
 
-            selectedCharacter.transform.SetParent(null); // Unparent the character
-            selectedCharacter = null; // Reset the selected character
+                    TryPlaceCharacterOnTile(selectedCharacter, closestTile);
+
+                    selectedCharacter.transform.SetParent(null); // Unparent the character
+                    selectedCharacter = null; // Reset the selected character
+                }
+            }
+            hold = 0;
+        }
+    }
+
+    public void DoStats()
+    {
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
+            {
+                var tappedChar = hit.collider.gameObject;
+                AxieController axieController = tappedChar.GetComponent<AxieController>();
+
+                SFXManager.instance.PlaySFX(SFXType.UIButtonTap);
+
+                statsToolitp.Enable(axieController);
+            }
         }
     }
 

@@ -200,6 +200,7 @@ public class AxieSkillController : MonoBehaviour
 
         while (self == null)
             yield return null;
+        self.axieIngameStats.totalComboCost = comboCost;
         self.statsManagerUI.SetManaBars(comboCost);
         self.statsManagerUI.SetMana(AxieStatCalculator.GetAxieMinEnergy(self.stats) / comboCost);
 

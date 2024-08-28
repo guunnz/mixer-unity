@@ -457,9 +457,12 @@ public class Skill : MonoBehaviour
     {
         try
         {
-            self.axieIngameStats.CurrentEnergy -= this.axieBodyPart.energy;
+            self.axieIngameStats.CurrentEnergy -= this.axieBodyPart.energy / self.axieIngameStats.totalComboCost;
             self.SetEnergy();
-
+            if (self.axieIngameStats.CurrentEnergy < 0)
+            {
+                self.axieIngameStats.CurrentEnergy = 0;
+            }
             foreach (var target in targetList)
             {
                 Vector3 pos = skill.VFXPrefab.transform.localPosition;

@@ -15,6 +15,7 @@ public class StatsManager : MonoBehaviour
     private Transform mainCharacter;
     public TextMeshProUGUI shield;
     public GameObject shieldObject;
+    public GameObject Selected;
     BoneFollower boneFollower;
     private int ManaBars = 1;
     public Rectangle[] ManaBarsList;

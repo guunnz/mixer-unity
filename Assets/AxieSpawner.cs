@@ -216,6 +216,17 @@ namespace Game
             return builderResult.skeletonDataAsset;
         }
 
+        public KeyValuePair<SkeletonDataAsset, Material> ProcessMixer(string genes, string axieid)
+        {
+
+            float scale = 0.007f;
+            var meta = new Dictionary<string, string>();
+
+            var builderResult = builder.BuildSpineFromGene(axieid, genes, meta, scale, false);
+
+            return new KeyValuePair<SkeletonDataAsset, Material>(builderResult.skeletonDataAsset, builderResult.sharedGraphicMaterial);
+        }
+
 
         public Axie2dBuilderResult SimpleProcessMixer(string axieId, string genesStr, bool isGraphic)
         {
@@ -294,7 +305,7 @@ namespace Game
             controller.stats = stats;
             controller.axieIngameStats.MinEnergy = 0;
             controller.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(controller.stats);
-            controller.axieIngameStats.MaxEnergy = 5;
+
             controller.axieIngameStats.currentHP = stats.skill;
             controller.Genes = genes;
             controller.axieBodyParts = isEnemy
@@ -304,6 +315,7 @@ namespace Game
                 : AccountManager.userAxies.results.Single(x => x.id == axieId).parts
                     .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
                     .Select(x => x.SkillName).ToList();
+
 
             controller.axieSkillController = controller.gameObject.AddComponent<AxieSkillController>();
 
@@ -325,9 +337,7 @@ namespace Game
             }
             else
             {
-                go.AddComponent<BoxCollider>().isTrigger = true;
-                go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
-                go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
+
 
 
                 Position position =
@@ -338,7 +348,10 @@ namespace Game
                     new Vector2Int(position.row,
                         position.col));
             }
-
+            go.AddComponent<BoxCollider>().isTrigger = true;
+            go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
+            go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
+            controller.axieIngameStats.MaxEnergy = controller.axieSkillController.GetComboCost();
             go.tag = "Character";
 
             SkeletonAnimation runtimeSkeletonAnimation =

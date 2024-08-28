@@ -21,6 +21,7 @@ public class IngameStats
     public float HP;
     public float currentHP;
     public float currentShield;
+    public int totalComboCost;
     public AxieClass axieClass;
 }
 
@@ -45,6 +46,10 @@ public class AxieController : MonoBehaviour
     public OverlayTile standingOnTile;
     public GetAxiesExample.Stats stats;
     public SkeletonAnimation SkeletonAnim;
+
+    public SkeletonDataAsset skeletonDataAsset;
+    public Material skeletonMaterial;
+
     public StatsManager statsManagerUI;
     public List<SkillName> axieBodyParts = new List<SkillName>();
     internal int startingCol;
@@ -359,7 +364,7 @@ public class AxieController : MonoBehaviour
         }
 
 
-        if (!axieSkillEffectManager.IsChilled() && !axieSkillEffectManager.IsStunned())
+        if (!axieSkillEffectManager.IsChilled() && !axieSkillEffectManager.IsStunned() && axieBehavior.axieState != AxieState.Casting)
         {
             axieIngameStats.CurrentEnergy += 0.0015f + ((stats.skill * 4) / 10000f);
         }
