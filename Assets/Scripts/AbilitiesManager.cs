@@ -93,10 +93,7 @@ public class AbilitiesManager : MonoBehaviour
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
         ButtonBackBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Back); });
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
-        for (int i = TeamManager.instance.currentTeam.AxieIds.Count - 1; i >= 0; i--)
-        {
-            SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
-        }
+        SelectAxie(TeamManager.instance.currentTeam.AxieIds[0].id, TeamGraphics[0].transform.parent);
 
         if (PlayerPrefs.GetInt("Tutorial") == 0)
         {

@@ -41,7 +41,6 @@ public class ShopManager : MonoBehaviour
 
     public void SetShop()
     {
-
         if (RunManagerSingleton.instance.wins == 11 || RunManagerSingleton.instance.losses == 2)
         {
             MusicManager.Instance.PlayMusic(MusicTrack.NojyHypehu);
