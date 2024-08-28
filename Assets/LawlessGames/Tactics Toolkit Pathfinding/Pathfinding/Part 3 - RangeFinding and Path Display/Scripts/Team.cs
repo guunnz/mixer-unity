@@ -35,22 +35,35 @@ public class Team : MonoBehaviour
         pathFinder = new PathFinder();
     }
 
-    public List<AxieController> GetCharacters()
+    public List<AxieController> GetAliveCharacters()
     {
         return new List<AxieController>(characters.Keys).Where(x =>
                 x.axieBehavior.axieState != AxieState.Killed)
             .ToList();
     }
 
+    public List<AxieController> GetAliveCharactersByClass(AxieClass @class)
+    {
+        return new List<AxieController>(characters.Keys).Where(x =>
+                x.axieBehavior.axieState != AxieState.Killed).Where(x => x.axieIngameStats.axieClass == @class)
+            .ToList();
+    }
+
+
     public List<AxieController> GetCharactersAll()
     {
         return new List<AxieController>(characters.Keys).ToList();
     }
 
+    public List<AxieController> GetCharactersAllByClass(AxieClass @class)
+    {
+        return new List<AxieController>(characters.Keys).Where(x => x.axieIngameStats.axieClass == @class).ToList();
+    }
+
     public CharacterState GetCharacterState(string axieId)
     {
         return characters[
-            GetCharacters().Single(x =>
+            GetAliveCharacters().Single(x =>
                 x.axieIngameStats.axieId == axieId && x.axieBehavior.axieState != AxieState.Killed)];
     }
 
@@ -113,7 +126,7 @@ public class Team : MonoBehaviour
             inRangeTile.ToggleRectangle(false);
         }
 
-        foreach (var axieController in GetCharacters())
+        foreach (var axieController in GetAliveCharacters())
         {
             axieController.DoOnStart();
         }
@@ -442,7 +455,7 @@ public class Team : MonoBehaviour
         int minManhattanDistance = int.MaxValue;
         float minTransformDistance = float.MaxValue;
 
-        var characters = enemyTeam.GetCharacters();
+        var characters = enemyTeam.GetAliveCharacters();
         var stenchCount = characters.Count(x => x.axieSkillEffectManager.IsStenched());
         if (stenchCount > 0 && characters.Count != stenchCount)
         {
@@ -481,7 +494,7 @@ public class Team : MonoBehaviour
     {
         AxieController furthestCharacter = null;
         int maxManhattanDistance = 0;
-        var characters = enemyTeam.GetCharacters();
+        var characters = enemyTeam.GetAliveCharacters();
 
         var stenchCount = characters.Count(x => x.axieSkillEffectManager.IsStenched());
         if (stenchCount > 0 && characters.Count != stenchCount)

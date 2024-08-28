@@ -178,7 +178,7 @@ namespace enemies
             //Grab testing values of abilities, stats and 
 
             MusicManager.Instance.FadeOut(1);
-            while (axieSpawner.enemyTeam.GetCharacters().Count != 5)
+            while (axieSpawner.enemyTeam.GetAliveCharacters().Count != 5)
             {
                 yield return null;
             }

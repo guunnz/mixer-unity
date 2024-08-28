@@ -26,11 +26,15 @@ public class AxiePassives
     public int DamageReductionAmount;
     public int RangedReflectDamageAmount;
     public int MeleeReflectDamageAmount;
+    public int AbilityReflectDamageAmount;
+    public int ExtraDamageReceivedByAbilitiesAmount;
     public int ExtraArmorHelmet;
+    public int ExtraShieldGained;
     public bool hasReactivations;
     public bool MerryActivated = false;
     public bool hasMerry = false;
     public bool rangedAlwaysCritical = false;
+    public bool bloodmoonImmune;
 }
 
 public class AxieSkillController : MonoBehaviour
@@ -76,7 +80,7 @@ public class AxieSkillController : MonoBehaviour
         if (self.goodTeam.ChimeraSpawned)
             return;
 
-        List<AxieController> myTeam = self.goodTeam.GetCharacters();
+        List<AxieController> myTeam = self.goodTeam.GetAliveCharacters();
         int merryStacks = myTeam.Sum(x => x.axieSkillEffectManager.MerryStacks());
         if (merryStacks != 0 && (merryStacks >= 5) && !self.goodTeam.ChimeraSpawned)
         {
@@ -279,6 +283,11 @@ public class AxieSkillController : MonoBehaviour
         {
             self.axieIngameStats.currentHP -=
                 AxieStatCalculator.GetPoisonDamage(self.axieSkillEffectManager.PoisonStacks());
+        }
+
+        if (passives.AbilityReflectDamageAmount != 0 && isSkill)
+        {
+            attacker.axieIngameStats.HP -= damage * passives.AbilityReflectDamageAmount;
         }
 
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -87,7 +88,7 @@ public class AtiaBlessing : MonoBehaviour
         SteelShield,
         ThreeWondersShoes,
         Topaz,
-//AUGUMENTS
+        //AUGUMENTS
         GainHPAqua,
         GainHPBird,
         GainHPDawn,
@@ -197,7 +198,7 @@ public class AtiaBlessing : MonoBehaviour
         PrismaticPlant,
         PrismaticDusk,
         PrismaticReptile
-//AUGUMENTS STOP
+        //AUGUMENTS STOP
     }
 
     public Team goodTeam;
@@ -206,14 +207,27 @@ public class AtiaBlessing : MonoBehaviour
     public TextMeshProUGUI SecondAugumentText;
     public TextMeshProUGUI ThirdAugumentText;
 
+    public TextMeshProUGUI FirstRollNumberText;
+    public TextMeshProUGUI SecondRollNumberText;
+    public TextMeshProUGUI ThirdRollNumberText;
+
+    public Image FirstAugumentImage;
+    public Image SecondAugumentImage;
+    public Image ThirdAugumentImage;
+    public Image Cover;
+
+    public AtiasBlessingAnimation atiaAnimation;
+
     public UnityEngine.UI.Button FirstAugument;
     public UnityEngine.UI.Button SecondAugument;
     public UnityEngine.UI.Button ThirdAugument;
 
+    public GameObject RollButton1;
+    public GameObject RollButton2;
+    public GameObject RollButton3;
     public GameObject[] rollButtons;
 
-    public List<UpgradeAugument> blessingAugument = new List<UpgradeAugument>();
-    private List<UpgradeAugument> blessingAugumentsPurchased = new List<UpgradeAugument>();
+    public ShopItem[] blessingsList;
 
     public GameObject AugumentSelect;
 
@@ -221,17 +235,9 @@ public class AtiaBlessing : MonoBehaviour
     private int rollSecond = 1;
     private int rollThird = 1;
 
-    private void Awake()
-    {
-        for (int i = 0; i <= (int)AxieClass.Dusk; i++)
-        {
-            for (int y = 1; y <= (int)BuffEffect.Backdoor; y++)
-            {
-                blessingAugument.Add(new UpgradeAugument()
-                { axie_class = new List<int>() { i }, id = y });
-            }
-        }
-    }
+    private ShopItem blessing1;
+    private ShopItem blessing2;
+    private ShopItem blessing3;
 
     public void RollAugument(int augument)
     {
@@ -240,15 +246,17 @@ public class AtiaBlessing : MonoBehaviour
 
     public void ShowRandomAuguments(bool DoOnlyOne = false, int doAugument = 0)
     {
+        if (!DoOnlyOne)
+        {
+            atiaAnimation.DoAnim();
+            Cover.gameObject.SetActive(true);
+        }
+
         if (RunManagerSingleton.instance.landType == LandType.mystic)
         {
+            List<ShopItem> blessings = new List<ShopItem>();
             if (DoOnlyOne)
             {
-                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
-                blessingAuguments.AddRange(blessingAugument);
-                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
-                UpgradeAugument augument = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument);
                 switch (doAugument)
                 {
                     case 2:
@@ -258,24 +266,28 @@ public class AtiaBlessing : MonoBehaviour
                             return;
                         }
 
-                        if (augument.id != (int)BuffEffect.Backdoor)
-                        {
-                            SecondAugumentText.text =
-                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
-                        }
-                        else
-                        {
-                            SecondAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                      " axies now Backdoor on start";
-                        }
-
                         SecondAugument.onClick.RemoveAllListeners();
 
 
+                        blessings = blessingsList.ToList();
+
+                        if (blessing1 != null)
+                        {
+                            blessings.Remove(blessing1);
+                        }
+
+                        blessings.Remove(blessing2);
+                        blessings.Remove(blessing3);
+
+                        blessing2 = blessings[Random.Range(0, blessings.Count)];
+                        rollSecond--;
+                        if (rollSecond == 0)
+                        {
+                            RollButton2.SetActive(false);
+                        }
                         SecondAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
                         });
                         break;
                     case 3:
@@ -285,22 +297,27 @@ public class AtiaBlessing : MonoBehaviour
                             return;
                         }
 
-                        if (augument.id != (int)BuffEffect.Backdoor)
+                        SecondAugument.onClick.RemoveAllListeners();
+
+                        blessings = blessingsList.ToList();
+
+                        if (blessing1 != null)
                         {
-                            ThirdAugumentText.text =
-                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
-                        }
-                        else
-                        {
-                            ThirdAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                     " axies now Backdoor on start";
+                            blessings.Remove(blessing1);
                         }
 
-                        ThirdAugument.onClick.RemoveAllListeners();
+                        blessings.Remove(blessing2);
+                        blessings.Remove(blessing3);
+
+                        blessing3 = blessings[Random.Range(0, blessings.Count)];
+                        rollThird--;
+                        if (rollThird == 0)
+                        {
+                            RollButton3.SetActive(false);
+                        }
                         ThirdAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
                         });
                         break;
                 }
@@ -309,74 +326,33 @@ public class AtiaBlessing : MonoBehaviour
             {
                 rollSecond = 5;
                 rollThird = 5;
-                foreach (var rollButton in rollButtons)
-                {
-                    rollButton.SetActive(true);
-                }
 
-                rollButtons[0].SetActive(false);
+                FirstAugument.gameObject.SetActive(false);
+                blessings = blessingsList.ToList();
 
-                AugumentSelect.SetActive(true);
-                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
-
-                blessingAuguments.AddRange(blessingAugument);
-                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
-                UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument2);
-                UpgradeAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument3);
-                blessingAuguments.Remove(augument2);
-                augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument2);
-                augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-
-                if (augument2.id != (int)BuffEffect.Backdoor)
-                {
-                    SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
-                                              " axies " +
-                                              ((BuffEffect)augument2.id).ToString().Replace("_", " ") + " stat by 3";
-                }
-                else
-                {
-                    SecondAugumentText.text = "Your " + ((AxieClass)augument2.axie_class[0]).ToString() +
-                                              " axies now Backdoor on start";
-                }
-
-                if (augument3.id != (int)BuffEffect.Backdoor)
-                {
-                    ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
-                                             ((BuffEffect)augument3.id).ToString().Replace("_", " ") + " stat by 3";
-                }
-                else
-                {
-                    ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axie_class[0]).ToString() +
-                                             " axies now Backdoor on start";
-                }
+                blessing2 = blessings[Random.Range(0, blessings.Count)];
+                blessings.Remove(blessing2);
+                blessing3 = blessings[Random.Range(0, blessings.Count)];
+                blessings.Remove(blessing3);
 
                 SecondAugument.onClick.RemoveAllListeners();
                 ThirdAugument.onClick.RemoveAllListeners();
 
-
                 SecondAugument.onClick.AddListener(delegate
                 {
-                    AugumentUpgrade(blessingAugument.IndexOf(augument2), goodTeam);
+                    AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
                 });
                 ThirdAugument.onClick.AddListener(delegate
                 {
-                    AugumentUpgrade(blessingAugument.IndexOf(augument3), goodTeam);
+                    AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
                 });
             }
-            return;
         }
         else
         {
+            List<ShopItem> blessings = new List<ShopItem>();
             if (DoOnlyOne)
             {
-                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
-                blessingAuguments.AddRange(blessingAugument);
-                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
-                UpgradeAugument augument = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument);
                 switch (doAugument)
                 {
                     case 1:
@@ -388,23 +364,28 @@ public class AtiaBlessing : MonoBehaviour
 
                         FirstAugument.onClick.RemoveAllListeners();
 
+                        blessings = blessingsList.ToList();
+
+                        if (blessing1 != null)
+                        {
+                            blessings.Remove(blessing1);
+                        }
+
+                        blessings.Remove(blessing2);
+                        blessings.Remove(blessing3);
+
+                        blessing1 = blessings[Random.Range(0, blessings.Count)];
+
+                        blessings.Remove(blessing1);
+                        rollFirst--;
+                        if (rollFirst == 0)
+                        {
+                            RollButton1.SetActive(false);
+                        }
                         FirstAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
                         });
-
-                        if (augument.id != (int)BuffEffect.Backdoor)
-                        {
-                            FirstAugumentText.text =
-                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                                ((BuffEffect)augument.id).ToString().Replace("_", " ") +
-                                " stat by 3";
-                        }
-                        else
-                        {
-                            FirstAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                     " axies now Backdoor on start";
-                        }
 
                         break;
                     case 2:
@@ -414,24 +395,28 @@ public class AtiaBlessing : MonoBehaviour
                             return;
                         }
 
-                        if (augument.id != (int)BuffEffect.Backdoor)
-                        {
-                            SecondAugumentText.text =
-                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
-                        }
-                        else
-                        {
-                            SecondAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                      " axies now Backdoor on start";
-                        }
-
                         SecondAugument.onClick.RemoveAllListeners();
 
 
+                        blessings = blessingsList.ToList();
+
+                        if (blessing1 != null)
+                        {
+                            blessings.Remove(blessing1);
+                        }
+
+                        blessings.Remove(blessing2);
+                        blessings.Remove(blessing3);
+
+                        blessing2 = blessings[Random.Range(0, blessings.Count)];
+                        rollSecond--;
+                        if (rollSecond == 0)
+                        {
+                            RollButton2.SetActive(false);
+                        }
                         SecondAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
                         });
                         break;
                     case 3:
@@ -441,88 +426,42 @@ public class AtiaBlessing : MonoBehaviour
                             return;
                         }
 
-                        if (augument.id != (int)BuffEffect.Backdoor)
+                        SecondAugument.onClick.RemoveAllListeners();
+
+                        blessings = blessingsList.ToList();
+
+                        if (blessing1 != null)
                         {
-                            ThirdAugumentText.text =
-                                "Increase your " + ((AxieClass)augument.axie_class[0]).ToString() + " axies " +
-                                ((BuffEffect)augument.id).ToString().Replace("_", " ") + " stat by 3";
-                        }
-                        else
-                        {
-                            ThirdAugumentText.text = "Your " + ((AxieClass)augument.axie_class[0]).ToString() +
-                                                     " axies now Backdoor on start";
+                            blessings.Remove(blessing1);
                         }
 
-                        ThirdAugument.onClick.RemoveAllListeners();
+                        blessings.Remove(blessing2);
+                        blessings.Remove(blessing3);
+
+                        blessing3 = blessings[Random.Range(0, blessings.Count)];
+                        rollThird--;
+                        if (rollThird == 0)
+                        {
+                            RollButton3.SetActive(false);
+                        }
                         ThirdAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade(blessingAugument.IndexOf(augument), goodTeam);
+                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
                         });
                         break;
                 }
             }
             else
             {
-                foreach (var rollButton in rollButtons)
-                {
-                    rollButton.SetActive(true);
-                }
+                blessings = blessingsList.ToList();
 
-                AugumentSelect.SetActive(true);
-                List<UpgradeAugument> blessingAuguments = new List<UpgradeAugument>();
+                blessing1 = blessings[Random.Range(0, blessings.Count)];
 
-                blessingAuguments.AddRange(blessingAugument);
-                blessingAuguments.RemoveAll(x => blessingAugumentsPurchased.Contains(x));
-                UpgradeAugument augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument1);
-                UpgradeAugument augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument2);
-                UpgradeAugument augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-                blessingAuguments.Remove(augument3);
-
-                augument1 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-
-                blessingAuguments.Remove(augument2);
-
-                augument2 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-
-                blessingAuguments.Remove(augument2);
-
-                augument3 = blessingAuguments[Random.Range(0, blessingAuguments.Count)];
-
-                if (augument1.id != (int)BuffEffect.Backdoor)
-                {
-                    FirstAugumentText.text = "Increase your " + ((AxieClass)augument1.axie_class[0]).ToString() + " axies " +
-                                             ((BuffEffect)augument1.id).ToString().Replace("_", " ") + " stat by 3";
-                }
-                else
-                {
-                    FirstAugumentText.text = "Your " + ((AxieClass)augument1.axie_class[0]).ToString() +
-                                             " axies now Backdoor on start";
-                }
-
-                if (augument2.id != (int)BuffEffect.Backdoor)
-                {
-                    SecondAugumentText.text = "Increase your " + ((AxieClass)augument2.axie_class[0]).ToString() +
-                                              " axies " +
-                                              ((BuffEffect)augument2.id).ToString().Replace("_", " ") + " stat by 3";
-                }
-                else
-                {
-                    SecondAugumentText.text = "Your " + ((AxieClass)augument2.axie_class[0]).ToString() +
-                                              " axies now Backdoor on start";
-                }
-
-                if (augument3.id != (int)BuffEffect.Backdoor)
-                {
-                    ThirdAugumentText.text = "Increase your " + ((AxieClass)augument3.axie_class[0]).ToString() + " axies " +
-                                             ((BuffEffect)augument3.id).ToString().Replace("_", " ") + " stat by 3";
-                }
-                else
-                {
-                    ThirdAugumentText.text = "Your " + ((AxieClass)augument3.axie_class[0]).ToString() +
-                                             " axies now Backdoor on start";
-                }
+                blessings.Remove(blessing1);
+                blessing2 = blessings[Random.Range(0, blessings.Count)];
+                blessings.Remove(blessing2);
+                blessing3 = blessings[Random.Range(0, blessings.Count)];
+                blessings.Remove(blessing3);
 
                 FirstAugument.onClick.RemoveAllListeners();
                 SecondAugument.onClick.RemoveAllListeners();
@@ -530,19 +469,32 @@ public class AtiaBlessing : MonoBehaviour
 
                 FirstAugument.onClick.AddListener(delegate
                 {
-                    AugumentUpgrade(blessingAugument.IndexOf(augument1), goodTeam);
+                    AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
                 });
                 SecondAugument.onClick.AddListener(delegate
                 {
-                    AugumentUpgrade(blessingAugument.IndexOf(augument2), goodTeam);
+                    AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
                 });
                 ThirdAugument.onClick.AddListener(delegate
                 {
-                    AugumentUpgrade(blessingAugument.IndexOf(augument3), goodTeam);
+                    AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
                 });
             }
         }
 
+        if (blessing1 != null)
+        {
+            FirstAugumentText.text = blessing1.description;
+            FirstRollNumberText.text = rollFirst.ToString();
+            FirstAugumentImage.sprite = blessing1.ShopItemImage;
+        }
+        SecondAugumentText.text = blessing2.description;
+        SecondAugumentImage.sprite = blessing2.ShopItemImage;
+        SecondRollNumberText.text = rollSecond.ToString();
+
+        ThirdAugumentText.text = blessing3.description;
+        ThirdAugumentImage.sprite = blessing3.ShopItemImage;
+        ThirdRollNumberText.text = rollThird.ToString();
     }
 
     public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
@@ -562,8 +514,8 @@ public class AtiaBlessing : MonoBehaviour
     public void AugumentUpgrade(int indexAugument, Team team)
     {
         AugumentSelect.SetActive(false);
-        UpgradeAugument augument = blessingAugument[indexAugument];
-        blessingAugumentsPurchased.Add(augument);
+        Cover.gameObject.SetActive(false);
+
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {
             RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRoundList()
@@ -571,37 +523,9 @@ public class AtiaBlessing : MonoBehaviour
         }
 
         RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].team_upgrades_values_per_round
-            .Add(new UpgradeAugument() { id = augument.id, axie_class = augument.axie_class });
-        List<AxieController> axieControllers = augument.axie_class == null
-            ? team.GetCharactersAll()
-            : team.GetCharactersAll()
-                .Where(x => augument.axie_class.Select(x => (AxieClass)x).Contains(x.axieIngameStats.axieClass))
-                .ToList();
+            .Add(new UpgradeAugument() { id = indexAugument });
 
-        foreach (var controller in axieControllers)
-        {
-            switch ((BuffEffect)augument.id)
-            {
-                case BuffEffect.Increase_HP_Bug:
-                    controller.stats.hp += 1;
-                    break;
+        BuffsManager.instance.DoUpgrade((BuffEffect)indexAugument, team);
 
-                case AtiaBlessing.BuffEffect.Increase_HP:
-                    controller.stats.hp += 1;
-                    break;
-                case AtiaBlessing.BuffEffect.Increase_Morale:
-                    controller.stats.morale += 1;
-                    break;
-                case AtiaBlessing.BuffEffect.Increase_Speed:
-                    controller.stats.speed += 1;
-                    break;
-                case AtiaBlessing.BuffEffect.Increase_Skill:
-                    controller.stats.skill += 1;
-                    break;
-                case AtiaBlessing.BuffEffect.Backdoor:
-                    controller.ShrimpOnStart = true;
-                    break;
-            }
-        }
     }
 }

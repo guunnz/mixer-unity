@@ -53,7 +53,7 @@ public class Chimera : MonoBehaviour
         if (chimeraTeam.battleEnded ||
             chimeraTeam.enemyTeam.battleEnded && skeletonAnimation.AnimationName != "action/random-01")
         {
-            if (chimeraTeam.GetCharacters().Count != 0)
+            if (chimeraTeam.GetAliveCharacters().Count != 0)
             {
                 skeletonAnimation.AnimationName = "action/random-01";
                 skeletonAnimation.loop = true;
@@ -101,7 +101,7 @@ public class Chimera : MonoBehaviour
 
     public void FindClosestEnemy()
     {
-        List<AxieController> potentialTargets = chimeraTeam.enemyTeam.GetCharacters();
+        List<AxieController> potentialTargets = chimeraTeam.enemyTeam.GetAliveCharacters();
 
         List<AxieController> potentialTargetsWithoutStenched = potentialTargets
             .Where(x => !x.axieSkillEffectManager.IsStenched())

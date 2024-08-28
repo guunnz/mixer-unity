@@ -179,8 +179,8 @@ public class RunManagerSingleton : MonoBehaviour
         sequence.AppendInterval(waitTime / 2); // Half the wait time after the action
 
         // Move and resize back to original position and size
-        sequence.Append(ScoreRect.DOAnchorPos(originalPosition, duration));
-        sequence.Join(ScoreRect.DOScale(originalSize, duration));
+        sequence.Append(ScoreRect.DOAnchorPos(originalPosition, duration/4));
+        sequence.Join(ScoreRect.DOScale(originalSize, duration/4));
 
         // Start the sequence
         sequence.Play();

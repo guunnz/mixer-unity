@@ -113,7 +113,7 @@ public class AxieBehavior : MonoBehaviour
             case AxieState.Casting:
                 if (myController.CurrentTarget != null)
                 {
-                    var characters = myController.CurrentTarget.myTeam.GetCharacters();
+                    var characters = myController.CurrentTarget.myTeam.GetAliveCharacters();
                     if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                     {
                         state = AxieState.Idle;
@@ -291,10 +291,10 @@ public class AxieBehavior : MonoBehaviour
         Sequence moveSequence = DOTween.Sequence();
 
         // First, move to the target position
-        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z + moveDistance, time / 2));
-
+        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z + moveDistance, time / 1.85f));
+        moveSequence.AppendInterval(time / .3f);
         // Then, return to the original position
-        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z, time / 2));
+        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z, time / 1.85f));
     }
     public IEnumerator TryAttack()
     {
@@ -311,7 +311,7 @@ public class AxieBehavior : MonoBehaviour
             }
             if (myController.CurrentTarget != null)
             {
-                var characters = myController.CurrentTarget.myTeam.GetCharacters();
+                var characters = myController.CurrentTarget.myTeam.GetAliveCharacters();
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;
@@ -352,7 +352,7 @@ public class AxieBehavior : MonoBehaviour
             yield return new WaitForSecondsRealtime((AttackSpeed * attackSpeedMulti) / 2f);
             if (myController.CurrentTarget != null)
             {
-                var characters = myController.CurrentTarget.myTeam.GetCharacters();
+                var characters = myController.CurrentTarget.myTeam.GetAliveCharacters();
                 if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                 {
                     axieState = AxieState.Idle;

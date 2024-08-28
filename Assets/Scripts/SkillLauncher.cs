@@ -90,7 +90,7 @@ public class SkillLauncher : MonoBehaviour
             var target = self.CurrentTarget;
             if (skillEffect.lowestHP)
             {
-                AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x => x.axieIngameStats.currentHP)
+                AxieController newTarget = self.enemyTeam.GetAliveCharacters().OrderBy(x => x.axieIngameStats.currentHP)
                     .First();
 
                 self.CurrentTarget = newTarget;
@@ -101,7 +101,7 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.FurthestTarget)
             {
                 AxieController newTarget =
-                    self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetCharacters());
+                    self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetAliveCharacters());
                 if (newTarget != null)
                 {
                     if (!skillEffect.RangeAbility)
@@ -116,7 +116,7 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.targetHighestEnergy)
             {
-                AxieController newTarget = self.enemyTeam.GetCharacters()
+                AxieController newTarget = self.enemyTeam.GetAliveCharacters()
                     .OrderBy(x => x.axieIngameStats.CurrentEnergy)
                     .FirstOrDefault();
                 if (newTarget != null)
@@ -133,7 +133,7 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.targetHighestSpeed)
             {
-                AxieController newTarget = self.enemyTeam.GetCharacters().OrderBy(x =>
+                AxieController newTarget = self.enemyTeam.GetAliveCharacters().OrderBy(x =>
                         AxieStatCalculator.GetRealSpeed(x.stats.speed, x.axieSkillEffectManager.GetSpeedBuff()))
                     .FirstOrDefault();
                 if (newTarget != null)
@@ -150,10 +150,10 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.targetAxieClass)
             {
-                if (target.myTeam.GetCharacters().Any(y =>
+                if (target.myTeam.GetAliveCharacters().Any(y =>
                         y.axieIngameStats.axieClass == skillEffect.axieClassToTarget))
                 {
-                    AxieController newTarget = target.myTeam.GetCharacters().FirstOrDefault(y =>
+                    AxieController newTarget = target.myTeam.GetAliveCharacters().FirstOrDefault(y =>
                         y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
                     if (newTarget != null)
                     {
@@ -272,8 +272,8 @@ public class SkillLauncher : MonoBehaviour
             foreach (var bodyPart in skillEffect.specialActivationBasedOnAxiesInBattle)
             {
                 int axieTypeMultiplier =
-                    self.badTeam.GetCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass) + self
-                        .goodTeam.GetCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass);
+                    self.badTeam.GetAliveCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass) + self
+                        .goodTeam.GetAliveCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass);
 
                 effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectAppliedPerAxie * axieTypeMultiplier;
                 effectExtras.extraDamage += bodyPart.ExtraDamageAppliedPerAxie * axieTypeMultiplier;
@@ -374,9 +374,9 @@ public class SkillLauncher : MonoBehaviour
                 bool activated = false;
                 foreach (var specialActivation in skillEffect.specialActivationBasedOnAxiesInBattle)
                 {
-                    if (self.goodTeam.GetCharacters()
+                    if (self.goodTeam.GetAliveCharacters()
                             .Any(x => x.axieIngameStats.axieClass == specialActivation.axieClass) || self.badTeam
-                            .GetCharacters().Any(x => x.axieIngameStats.axieClass == specialActivation.axieClass))
+                            .GetAliveCharacters().Any(x => x.axieIngameStats.axieClass == specialActivation.axieClass))
                     {
                         activated = true;
                         break;
@@ -549,15 +549,15 @@ public class SkillLauncher : MonoBehaviour
             switch (skillEffect.statusApplyType)
             {
                 case StatusApplyType.AllAxies:
-                    statusEffectTargetList.AddRange(self.goodTeam.GetCharacters());
-                    statusEffectTargetList.AddRange(self.badTeam.GetCharacters());
+                    statusEffectTargetList.AddRange(self.goodTeam.GetAliveCharacters());
+                    statusEffectTargetList.AddRange(self.badTeam.GetAliveCharacters());
                     break;
                 case StatusApplyType.ApplyAllied:
                 case StatusApplyType.ApplyTeam:
-                    statusEffectTargetList.AddRange(self.goodTeam.GetCharacters());
+                    statusEffectTargetList.AddRange(self.goodTeam.GetAliveCharacters());
                     break;
                 case StatusApplyType.ApplyEnemyTeam:
-                    statusEffectTargetList.AddRange(self.badTeam.GetCharacters());
+                    statusEffectTargetList.AddRange(self.badTeam.GetAliveCharacters());
                     break;
                 case StatusApplyType.ApplySelfAndEnemy:
                     statusEffectTargetList.Add(self);
@@ -667,8 +667,6 @@ public class SkillLauncher : MonoBehaviour
             }
 
 
-            self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
-
             if (skillInstance.axieBodyPart.bodyPart == BodyPart.Horn)
             {
                 self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield *
@@ -687,7 +685,11 @@ public class SkillLauncher : MonoBehaviour
                     self.axieIngameStats.currentShield += skillEffect.GainShield;
                 }
             }
+            if (self.axieSkillController.passives.ExtraShieldGained > 0)
+            {
+                self.axieIngameStats.currentShield *= 1 + (self.axieSkillController.passives.ExtraShieldGained / 100);
 
+            }
             if (skillEffect.GainHPPercentage > 0)
             {
                 if (!skillEffect.HPBaseOnDamage)
@@ -764,7 +766,7 @@ public class SkillLauncher : MonoBehaviour
                     dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ShieldAsDamagePercentage * .01f));
                 }
 
-                int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10); ;
+                int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10);
 
                 if (skill.bodyPartSO.skillEffects.Any(x => x.Lunge))
                 {
@@ -780,6 +782,13 @@ public class SkillLauncher : MonoBehaviour
                     int economyAmount = self.imGood ? RunManagerSingleton.instance.netWorth : RunManagerSingleton.instance.eNetWorth;
 
                     dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(economyAmount * AxieStatCalculator.LungePercentage);
+                }
+
+                var extraDamageByAbilities = target.axieSkillController.passives.ExtraDamageReceivedByAbilitiesAmount;
+
+                if (extraDamageByAbilities > 0)
+                {
+                    dmgPair.damage *= Mathf.RoundToInt((extraDamageByAbilities / 100f) + 1f);
                 }
 
                 if (target.axieSkillEffectManager.IsAromad())

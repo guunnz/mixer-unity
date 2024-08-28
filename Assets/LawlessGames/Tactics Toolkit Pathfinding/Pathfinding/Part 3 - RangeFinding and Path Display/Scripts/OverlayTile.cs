@@ -91,11 +91,11 @@ public class OverlayTile : MonoBehaviour
             occupied = false;
             return;
         }
-        var allCharacters = goodTeam.GetCharacters();
+        var allCharacters = goodTeam.GetAliveCharacters();
         occupied = allCharacters.Any(character => character.standingOnTile == this);
         if (!occupied)
         {
-            var allCharacters2 = badTeam.GetCharacters();
+            var allCharacters2 = badTeam.GetAliveCharacters();
             occupied = allCharacters2.Any(character =>
                 character.standingOnTile == this && character.axieBehavior.axieState != AxieState.Killed);
         }

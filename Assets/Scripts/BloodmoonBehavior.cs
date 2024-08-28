@@ -37,7 +37,13 @@ public class BloodmoonBehavior : MonoBehaviour
         float percentage = 0.01f;
         while (!GoodTeam.battleEnded && !BadTeam.battleEnded)
         {
-            GoodTeam.GetCharacters().ForEach(x => x.axieIngameStats.currentHP -= x.axieIngameStats.HP * percentage);
+            GoodTeam.GetAliveCharacters().ForEach(x =>
+            {
+                if (!x.axieSkillController.passives.bloodmoonImmune)
+                {
+                    x.axieIngameStats.currentHP -= x.axieIngameStats.HP * percentage;
+                }
+            });
 
             percentage *= 1.5f;
             yield return new WaitForSeconds(1);

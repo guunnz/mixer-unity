@@ -108,7 +108,7 @@ public class DragAndDropCharacter : MonoBehaviour
         OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
         if (tile == null)
         {
-            tile = team.GetCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)
+            tile = team.GetAliveCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)
                 ?.standingOnTile;
         }
 
@@ -121,7 +121,7 @@ public class DragAndDropCharacter : MonoBehaviour
 
         if (targetTile.occupied)
         {
-            var allCharacters = team.GetCharacters();
+            var allCharacters = team.GetAliveCharacters();
             AxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
             if (occupyingCharacter != null)
