@@ -12,6 +12,8 @@ public class AccountManager : MonoBehaviour
 {
     private GraphQLClient graphQLClient;
 
+    static public string username;
+
     internal string wallet = "0x46571200388f6dce5416e552e28caa7a6833c88e";
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
@@ -89,41 +91,40 @@ public class AccountManager : MonoBehaviour
         SkyMavisLogin.Root userInfo = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfoResponse);
         MavisTracking.Instance.InitializeTracking(userInfo.userInfo);
         loggingIn = true;
-
+        AccountManager.username = userInfo.userInfo.name;
         RunManagerSingleton.instance.userId = userInfo.userInfo.addr;
 
         PlayerPrefs.SetString(wallet, userInfoResponse);
-        LoadAssets(userInfo.nftsResponse);
+        LoadAssets(userInfo.axies, userInfo.lands);
     }
 
 
-    public void LoadAssets(SkyMavisLogin.NftsResponse nftsResponse)
+    public void LoadAssets(SkyMavisLogin.NftsResponse axiesResponse, SkyMavisLogin.NftsResponse landsResponse)
     {
         try
         {
+
             PlayerPrefs.SetString("LastWallet", wallet);
 
             List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
             List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
 
-            foreach (var nft in nftsResponse.result.items)
+            foreach (var axiesInList in axiesResponse.result.items)
             {
                 try
                 {
-
-
-                    if (nft.tokenSymbol.ToUpper() == "AXIE" && nft.rawMetadata.genes != "0x0")
+                    if (axiesInList.tokenSymbol.ToUpper() == "AXIE" && axiesInList.rawMetadata.genes != "0x0")
                     {
                         GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
 
-                        axie.genes = nft.rawMetadata.genes;
+                        axie.genes = axiesInList.rawMetadata.genes;
                         axie.maxBodyPartAmount = 2;
-                        axie.@class = nft.rawMetadata.properties.@class;
-                        axie.id = nft.tokenId.ToString();
-                        axie.name = nft.rawMetadata.name;
-                        axie.birthDate = nft.rawMetadata.properties.birthdate;
-                        axie.newGenes = nft.rawMetadata.genes;
-                        axie.bodyShape = nft.rawMetadata.properties.bodyshape;
+                        axie.@class = axiesInList.rawMetadata.properties.@class;
+                        axie.id = axiesInList.tokenId.ToString();
+                        axie.name = axiesInList.rawMetadata.name;
+                        axie.birthDate = axiesInList.rawMetadata.properties.birthdate;
+                        axie.newGenes = axiesInList.rawMetadata.genes;
+                        axie.bodyShape = axiesInList.rawMetadata.properties.bodyshape;
 
                         axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
 
@@ -140,13 +141,13 @@ public class AccountManager : MonoBehaviour
                         List<GetAxiesExample.Part> axieParts = new List<GetAxiesExample.Part>();
 
                         GetAxiesExample.Part horn = new GetAxiesExample.Part(partsClasses[2],
-                            nft.rawMetadata.properties.horn_id, "horn", 0, false, partsAbilities[2]);
+                            axiesInList.rawMetadata.properties.horn_id, "horn", 0, false, partsAbilities[2]);
                         GetAxiesExample.Part tail = new GetAxiesExample.Part(partsClasses[5],
-                            nft.rawMetadata.properties.tail_id, "tail", 0, false, partsAbilities[5]);
+                            axiesInList.rawMetadata.properties.tail_id, "tail", 0, false, partsAbilities[5]);
                         GetAxiesExample.Part back = new GetAxiesExample.Part(partsClasses[4],
-                            nft.rawMetadata.properties.back_id, "back", 0, false, partsAbilities[4]);
+                            axiesInList.rawMetadata.properties.back_id, "back", 0, false, partsAbilities[4]);
                         GetAxiesExample.Part mouth = new GetAxiesExample.Part(partsClasses[3],
-                            nft.rawMetadata.properties.mouth_id, "mouth", 0, false, partsAbilities[3]);
+                            axiesInList.rawMetadata.properties.mouth_id, "mouth", 0, false, partsAbilities[3]);
 
                         axieParts.Add(horn);
                         axieParts.Add(tail);
@@ -157,7 +158,20 @@ public class AccountManager : MonoBehaviour
 
                         axies.Add(axie);
                     }
-                    else if (nft.tokenSymbol.ToUpper() == "LAND")
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + axiesInList.tokenId + " NFT SYMBOL: " + axiesInList.tokenSymbol);
+                    continue;
+                }
+            }
+
+
+            foreach (var nft in landsResponse.result.items)
+            {
+                try
+                {
+                    if (nft.tokenSymbol.ToUpper() == "LAND")
                     {
                         GetAxiesExample.Land land = new GetAxiesExample.Land();
 

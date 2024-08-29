@@ -92,7 +92,7 @@ public class AxieBehavior : MonoBehaviour
         if (state == axieState && state != AxieState.Idle || shrimping)
             return;
 
-        if (axieSkillEffectManager.IsStunned() && state != AxieState.Killed && state != AxieState.Victory)
+        if ((axieSkillEffectManager != null && axieSkillEffectManager.IsStunned()) && state != AxieState.Killed && state != AxieState.Victory)
         {
             state = AxieState.Stunned;
         }
@@ -290,11 +290,13 @@ public class AxieBehavior : MonoBehaviour
         // Create a sequence for the animation
         Sequence moveSequence = DOTween.Sequence();
 
+        var timePerAttack = time / 2.3f;
+        var timeWait = time - (timePerAttack * 2);
         // First, move to the target position
-        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z + moveDistance, time / 1.85f));
-        moveSequence.AppendInterval(time / .3f);
+        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z + moveDistance, timePerAttack));
+        moveSequence.AppendInterval(timeWait);
         // Then, return to the original position
-        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z, time / 1.85f));
+        moveSequence.Append(transform.DOLocalMoveZ(originalPosition.z, timePerAttack));
     }
     public IEnumerator TryAttack()
     {

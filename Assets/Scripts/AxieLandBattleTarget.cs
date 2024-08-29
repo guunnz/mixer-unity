@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Serialization;
+using static SkyMavisLogin;
 
 
 [System.Serializable]
@@ -76,9 +78,10 @@ public class TeamUpgrades
 [System.Serializable]
 public class Run
 {
-    public string user_id;
-    public int score;
-    public bool[] rounds;
+    public string user_wallet_address;
+    public string username;
+    public int played_rounds;
+    public bool[] win_loss_record;
 
     public string[] opponents_run_id;
 
@@ -91,7 +94,7 @@ public class AxieLandBattleTarget : MonoBehaviour
     private string postUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
     private string getUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
     private int maxRetries = 5;
-
+    public SkyMavisLogin skymavisLogin;
     public void PostTeam(int score, List<AxieController> axies)
     {
         List<AxieForBackend> axieForBackends = new List<AxieForBackend>();
@@ -120,9 +123,10 @@ public class AxieLandBattleTarget : MonoBehaviour
 
         Run wrapper = new Run
         {
-            user_id = RunManagerSingleton.instance.userId,
-            rounds = RunManagerSingleton.instance.resultsBools.ToArray(),
-            score = score,
+            user_wallet_address = RunManagerSingleton.instance.userId,
+            win_loss_record = RunManagerSingleton.instance.resultsBools.ToArray(),
+            played_rounds = score,
+            username = AccountManager.username,
             opponents_run_id = new[] { RunManagerSingleton.instance.currentOpponent },
             land_type = (int)RunManagerSingleton.instance.landType,
             axie_team = new AxieTeamDatabase()
@@ -149,7 +153,7 @@ public class AxieLandBattleTarget : MonoBehaviour
         }
     }
 
-// Method to post data
+    // Method to post data
     public void PostScore(string jsonData)
     {
         StartCoroutine(PostRequest(postUrl, jsonData, maxRetries));
@@ -192,6 +196,15 @@ public class AxieLandBattleTarget : MonoBehaviour
         webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
+
+        var authToken = JsonConvert.DeserializeObject<AuthToken>(PlayerPrefs.GetString("Auth"));
+
+        if (authToken.IsExpired())
+        {
+            StartCoroutine(skymavisLogin.RefreshToken(3, true));
+        }
+
+        webRequest.SetRequestHeader("access_token", skymavisLogin.authToken.AccessToken);
 
         yield return webRequest.SendWebRequest();
 

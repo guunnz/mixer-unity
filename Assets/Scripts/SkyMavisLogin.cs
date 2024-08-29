@@ -10,6 +10,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static GetAxiesExample;
 
 public class SkyMavisLogin : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class SkyMavisLogin : MonoBehaviour
     private string refreshUserInfoEndpoint = "http://34.138.180.95/api/v1/auth/refresh";
     private string NFTsUserInfoEndpoint = "http://34.138.180.95/api/v1/user/nfts";
 
-    private AuthToken authToken;
+    public AuthToken authToken;
 
     public Button loginButton;
     public Text resultText;
@@ -164,7 +165,7 @@ public class SkyMavisLogin : MonoBehaviour
 
     private IEnumerator GetNFTS(int retries = 5)
     {
-        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint, "GET");
+        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint+ "?page=0", "GET");
         webRequest.SetRequestHeader("access_token", authToken.AccessToken);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
@@ -352,7 +353,9 @@ public class SkyMavisLogin : MonoBehaviour
     public struct Root
     {
         public UserInfo userInfo;
-        public NftsResponse nftsResponse;
+
+        public NftsResponse lands;
+        public NftsResponse axies;
     }
 
     private void OnDestroy()
