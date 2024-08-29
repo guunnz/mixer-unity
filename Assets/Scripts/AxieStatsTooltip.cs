@@ -49,13 +49,13 @@ public class AxieStatsTooltip : MonoBehaviour
         enabled = true;
         axieToCheck = controller;
         Container.DOAnchorPosX(-75, 0.5f);
-        axieToCheck.statsManagerUI.Selected.SetActive(true);
+        axieToCheck.statsManagerUI.Selected.DOColor(new Color(1, 1, 1, 0.7215686f), 0.5f);
     }
 
     private void Disable()
     {
         enabled = false;
-        axieToCheck.statsManagerUI.Selected.SetActive(false);
+        axieToCheck.statsManagerUI.Selected.DOColor(new Color(1, 1, 1, 0), 0.5f);
         Container.anchoredPosition = new Vector2(80, Container.anchoredPosition.y);
     }
 
