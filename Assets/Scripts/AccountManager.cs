@@ -92,7 +92,7 @@ public class AccountManager : MonoBehaviour
         MavisTracking.Instance.InitializeTracking(userInfo.userInfo);
         loggingIn = true;
         AccountManager.username = userInfo.userInfo.name;
-        RunManagerSingleton.instance.userId = userInfo.userInfo.addr;
+        RunManagerSingleton.instance.user_wallet_address = userInfo.userInfo.addr;
 
         PlayerPrefs.SetString(wallet, userInfoResponse);
         LoadAssets(userInfo.axies, userInfo.lands);

@@ -48,7 +48,7 @@ namespace enemies
 
             Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);
             Debug.Log("Opponent land type is: " + opponent.land_type.ToString());
-            GetOpponentTeam(opponent);
+                GetOpponentTeam(opponent);
         }
 
         void GetOpponentTeam(Opponent jsonAxieIds)
@@ -126,7 +126,7 @@ namespace enemies
                 string responseString = task.Result;
                 if (isOpponent)
                 {
-                    RunManagerSingleton.instance.currentOpponent = opponent.user_id;
+                    RunManagerSingleton.instance.currentOpponent = opponent.user_wallet_address;
                     RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
 
                     if (!AccountManager.TestMode)

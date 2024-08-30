@@ -41278,7 +41278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runId: 
-  userId: 
+  user_wallet_address: 
   wins: 0
   losses: 0
   coins: 10
@@ -86400,6 +86400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c13031f2c60fb4bacbed1d426f296e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skymavisLogin: {fileID: 1546848194}
 --- !u!1 &1899166581
 GameObject:
   m_ObjectHideFlags: 0

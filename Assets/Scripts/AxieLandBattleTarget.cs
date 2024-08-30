@@ -123,7 +123,7 @@ public class AxieLandBattleTarget : MonoBehaviour
 
         Run wrapper = new Run
         {
-            user_wallet_address = RunManagerSingleton.instance.userId,
+            user_wallet_address = RunManagerSingleton.instance.user_wallet_address,
             win_loss_record = RunManagerSingleton.instance.resultsBools.ToArray(),
             played_rounds = score,
             username = AccountManager.username,
@@ -232,9 +232,9 @@ public class AxieLandBattleTarget : MonoBehaviour
     }
 
     // Method to get data as an async Task
-    public async Task<string> GetScoreAsync(string score)
+    public async Task<string> GetScoreAsync(string played_rounds)
     {
-        string url = $"{getUrl}?score={score}&user_id={RunManagerSingleton.instance.userId}";
+        string url = $"{getUrl}?played_rounds={played_rounds}&user_wallet_address={RunManagerSingleton.instance.user_wallet_address}";
         Debug.Log("requested " + url);
         return await GetRequestAsync(url, maxRetries);
     }

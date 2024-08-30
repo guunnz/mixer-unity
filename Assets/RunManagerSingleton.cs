@@ -39,7 +39,7 @@ public class RunManagerSingleton : MonoBehaviour
     static public RunManagerSingleton instance;
 
     public string runId = "";
-    public string userId;
+    public string user_wallet_address;
     public int wins;
     public int losses;
     public int coins = 10;
