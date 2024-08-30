@@ -171,6 +171,14 @@ public class AxieLandBattleTarget : MonoBehaviour
         webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
+        var authToken = JsonConvert.DeserializeObject<AuthToken>(PlayerPrefs.GetString("Auth"));
+
+        if (authToken.IsExpired())
+        {
+            StartCoroutine(skymavisLogin.RefreshToken(3, true));
+        }
+
+        webRequest.SetRequestHeader("access-token", skymavisLogin.authToken.AccessToken);
 
         yield return webRequest.SendWebRequest();
 
@@ -204,7 +212,7 @@ public class AxieLandBattleTarget : MonoBehaviour
             StartCoroutine(skymavisLogin.RefreshToken(3, true));
         }
 
-        webRequest.SetRequestHeader("access_token", skymavisLogin.authToken.AccessToken);
+        webRequest.SetRequestHeader("access-token", skymavisLogin.authToken.AccessToken);
 
         yield return webRequest.SendWebRequest();
 
