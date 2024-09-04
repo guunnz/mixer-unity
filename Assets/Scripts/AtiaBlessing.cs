@@ -287,7 +287,7 @@ public class AtiaBlessing : MonoBehaviour
                         }
                         SecondAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
+                            AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
                         });
                         break;
                     case 3:
@@ -317,7 +317,7 @@ public class AtiaBlessing : MonoBehaviour
                         }
                         ThirdAugument.onClick.AddListener(delegate
                         {
-                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
+                            AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
                         });
                         break;
                 }

@@ -15,10 +15,10 @@ using static GetAxiesExample;
 public class SkyMavisLogin : MonoBehaviour
 {
     private string redirectUri = "http://localhost:3000/login/callback";
-    private string authorizationEndpoint = "http://34.138.180.95/api/v1/auth/url";
-    private string userInfoEndpoint = "http://34.138.180.95/api/v1/auth/login";
-    private string refreshUserInfoEndpoint = "http://34.138.180.95/api/v1/auth/refresh";
-    private string NFTsUserInfoEndpoint = "http://34.138.180.95/api/v1/user/nfts";
+    private string authorizationEndpoint = "https://www.axielandbattles.com/api/v1/auth/url";
+    private string userInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/login";
+    private string refreshUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/refresh";
+    private string NFTsUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/user/nfts";
 
     public AuthToken authToken;
 
@@ -143,7 +143,7 @@ public class SkyMavisLogin : MonoBehaviour
     private IEnumerator HandleAuthorizationResponse(string authorizationCode, int retries = 5)
     {
         UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "POST");
-        webRequest.SetRequestHeader("auth_code", authorizationCode);
+        webRequest.SetRequestHeader("auth-code", authorizationCode);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
         yield return webRequest.SendWebRequest();
@@ -166,7 +166,7 @@ public class SkyMavisLogin : MonoBehaviour
     private IEnumerator GetNFTS(int retries = 5)
     {
         UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint+ "?page=0", "GET");
-        webRequest.SetRequestHeader("access_token", authToken.AccessToken);
+        webRequest.SetRequestHeader("access-token", authToken.AccessToken);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
         yield return webRequest.SendWebRequest();
