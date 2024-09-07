@@ -219,7 +219,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "savannah";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = true;
+                landLock.locked = false;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.forest) == 0)
@@ -230,7 +230,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "forest";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = true;
+                landLock.locked = false;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.arctic) == 0)
@@ -241,7 +241,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "arctic";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = true;
+                landLock.locked = false;
                 lands.Add(landLock);
             }
 
@@ -253,7 +253,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "mystic";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = true;
+                landLock.locked = false;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.genesis) == 0)
@@ -264,7 +264,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "genesis";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = true;
+                landLock.locked = false;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.lunalanding) == 0)
@@ -275,7 +275,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "lunalanding";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = true;
+                landLock.locked = false;
                 lands.Add(landLock);
             }
 

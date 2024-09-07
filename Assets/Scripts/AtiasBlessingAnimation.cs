@@ -37,7 +37,6 @@ public class AtiasBlessingAnimation : MonoBehaviour
         var rectTransformAtia = AtiaImage.GetComponent<RectTransform>();
         AtiaImage.color = Color.white;
         rectTransformAtia.DOAnchorPosX(-485, 0);
-
         yield return new WaitForFixedUpdate();
         AtiaImage.gameObject.SetActive(true);
         rectTransformAtia.DOAnchorPosX(0, 0.4f);
@@ -63,12 +62,14 @@ public class AtiasBlessingAnimation : MonoBehaviour
         }
         foreach (var item in BlessingsList)
         {
-            item.DOColor(new Color(1f, 1f,1f,1), 1f);
+            item.DOColor(new Color(1f, 1f, 1f, 1), 1f);
         }
 
         yield return new WaitForSeconds(.5f);
         DoBlessingScale(5, .1f, 1f);
         BlessingGlow.ForEach(x => x.DOColor(new Color(1, 1, 1, 0f), 0.5f));
         BlessingGlow.ForEach(x => x.rectTransform.DOAnchorPosY(-250, .5f));
+        yield return new WaitForSeconds(1);
+        BlessingGlow.ForEach(x => x.rectTransform.DOAnchorPosY(150, .5f));
     }
 }

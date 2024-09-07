@@ -250,6 +250,12 @@ public class AtiaBlessing : MonoBehaviour
         {
             atiaAnimation.DoAnim();
             Cover.gameObject.SetActive(true);
+            if (RunManagerSingleton.instance.landType != LandType.mystic)
+            {
+                RollButton1.SetActive(true);
+            }
+            RollButton2.SetActive(true);
+            RollButton3.SetActive(true);
         }
 
         if (RunManagerSingleton.instance.landType == LandType.mystic)
