@@ -68,6 +68,7 @@ public class AxieBodyPart : ScriptableObject
     public float shield;
     public float energy;
     public string description;
+    public bool OnlyDamageShields = false;
     public bool wombo => skillEffects.Any(x => x.Wombo);
     public bool isPassive => energy == 0;
 }

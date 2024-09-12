@@ -21,4 +21,4 @@ MonoBehaviour:
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
   description: Beast, Bugs and Mechs gain +3 skill
-  price: 2
+  price: 3

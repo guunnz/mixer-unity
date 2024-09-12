@@ -21,4 +21,4 @@ MonoBehaviour:
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
   description: After you re-roll 3 times this round, you get a free re-roll
-  price: 1
+  price: 2

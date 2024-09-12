@@ -87,14 +87,16 @@ public class AbilitiesManager : MonoBehaviour
             var parent = localGraphic.transform.parent;
             parent.GetComponent<Button>().onClick.RemoveAllListeners();
             parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId, parent); });
+            SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
+
         }
+        SelectAxie(TeamManager.instance.currentTeam.AxieIds[0].id, TeamGraphics[0].transform.parent);
 
         ButtonHornBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Horn); });
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
         ButtonBackBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Back); });
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
-        SelectAxie(TeamManager.instance.currentTeam.AxieIds[0].id, TeamGraphics[0].transform.parent);
-
+  
         if (PlayerPrefs.GetInt("Tutorial") == 0)
         {
             Tutorial.SetActive(true);

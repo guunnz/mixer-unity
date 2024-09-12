@@ -319,6 +319,13 @@ namespace Game
 
             controller.axieSkillController = controller.gameObject.AddComponent<AxieSkillController>();
 
+            SkeletonAnimation runtimeSkeletonAnimation =
+    SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
+
+            controller.statsManagerUI =
+    Instantiate(isEnemy ? badTeamHP : goodTeamHP, runtimeSkeletonAnimation.transform)
+        .GetComponent<StatsManager>();
+
             if (isEnemy)
             {
                 controller.startingCol =
@@ -337,9 +344,6 @@ namespace Game
             }
             else
             {
-
-
-
                 Position position =
                     TeamManager.instance.currentTeam.position[
                         TeamManager.instance.currentTeam.AxieIds.FindIndex(x => x.id == axieId)];
@@ -348,23 +352,21 @@ namespace Game
                     new Vector2Int(position.row,
                         position.col));
             }
+
             go.AddComponent<BoxCollider>().isTrigger = true;
             go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
             go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
             controller.axieIngameStats.MaxEnergy = controller.axieSkillController.GetComboCost();
             go.tag = "Character";
 
-            SkeletonAnimation runtimeSkeletonAnimation =
-                SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
+
 
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
 
             runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
 
             controller.SkeletonAnim = runtimeSkeletonAnimation;
-            controller.statsManagerUI =
-                Instantiate(isEnemy ? badTeamHP : goodTeamHP, runtimeSkeletonAnimation.transform)
-                    .GetComponent<StatsManager>();
+
             controller.axieSkillEffectManager =
                 Instantiate(axieSkillEffectManager, runtimeSkeletonAnimation.transform)
                     .GetComponent<AxieSkillEffectManager>();

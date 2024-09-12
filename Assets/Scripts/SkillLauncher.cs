@@ -737,9 +737,11 @@ public class SkillLauncher : MonoBehaviour
             try
             {
                 DamagePair dmgPair = new DamagePair();
-
+                int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10);
                 dmgPair.axieController = target;
                 dmgPair.damage = Mathf.RoundToInt(skill.bodyPartSO.damage);
+
+
 
                 if (skillEffect.DamageEqualsBasicAttack)
                 {
@@ -766,7 +768,7 @@ public class SkillLauncher : MonoBehaviour
                     dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ShieldAsDamagePercentage * .01f));
                 }
 
-                int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10);
+
 
                 if (skill.bodyPartSO.skillEffects.Any(x => x.Lunge))
                 {
@@ -796,7 +798,16 @@ public class SkillLauncher : MonoBehaviour
                     damageReduction -= 50;
                 }
 
+
                 dmgPair.damage -= (dmgPair.damage * (damageReduction / 100));
+
+                if (skill.bodyPartSO.OnlyDamageShields)
+                {
+                    if (dmgPair.damage > Mathf.RoundToInt(target.axieIngameStats.currentShield))
+                    {
+                        dmgPair.damage = Mathf.RoundToInt(target.axieIngameStats.currentShield);
+                    }
+                }
 
                 damagePairList.Add(dmgPair);
             }

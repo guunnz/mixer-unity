@@ -21,4 +21,4 @@ MonoBehaviour:
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
   description: Rolls now cost 2 coins - You gain 15 coins each round
-  price: 4
+  price: 5

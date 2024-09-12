@@ -234,7 +234,7 @@ public class AxieLandBattleTarget : MonoBehaviour
     // Method to get data as an async Task
     public async Task<string> GetScoreAsync(string played_rounds)
     {
-        string url = $"{getUrl}?played_rounds={played_rounds}&user_wallet_address={RunManagerSingleton.instance.user_wallet_address}";
+        string url = $"{getUrl}?played_rounds={played_rounds}&user_wallet_address=\"\"";
         Debug.Log("requested " + url);
         return await GetRequestAsync(url, maxRetries);
     }

@@ -248,11 +248,22 @@ public class AtiaBlessing : MonoBehaviour
     {
         if (!DoOnlyOne)
         {
+
+         
             atiaAnimation.DoAnim();
             Cover.gameObject.SetActive(true);
             if (RunManagerSingleton.instance.landType != LandType.mystic)
             {
+                rollFirst = 1;
+                rollSecond = 1;
+                rollThird = 1;
                 RollButton1.SetActive(true);
+            }
+            else
+            {
+                rollFirst = 5;
+                rollSecond = 5;
+                rollThird = 5;
             }
             RollButton2.SetActive(true);
             RollButton3.SetActive(true);
@@ -532,6 +543,7 @@ public class AtiaBlessing : MonoBehaviour
             .Add(new UpgradeAugument() { id = indexAugument });
 
         BuffsManager.instance.DoUpgrade((BuffEffect)indexAugument, team);
+
 
     }
 }
