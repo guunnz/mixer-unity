@@ -14,7 +14,7 @@ namespace enemies
     {
         private GraphQLClient graphQLClient;
         private string address = "0x5506e7c52163d07d9a42ce9514aecdb694d674e3";
-        private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7"; // Replace with your actual API key
+        private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7"; 
         public AxieSpawner axieSpawner;
         public int spawnCountMax = 0;
 

@@ -248,8 +248,6 @@ public class AtiaBlessing : MonoBehaviour
     {
         if (!DoOnlyOne)
         {
-
-         
             atiaAnimation.DoAnim();
             Cover.gameObject.SetActive(true);
             if (RunManagerSingleton.instance.landType != LandType.mystic)
@@ -314,7 +312,7 @@ public class AtiaBlessing : MonoBehaviour
                             return;
                         }
 
-                        SecondAugument.onClick.RemoveAllListeners();
+                        ThirdAugument.onClick.RemoveAllListeners();
 
                         blessings = blessingsList.ToList();
 
@@ -443,7 +441,7 @@ public class AtiaBlessing : MonoBehaviour
                             return;
                         }
 
-                        SecondAugument.onClick.RemoveAllListeners();
+                        ThirdAugument.onClick.RemoveAllListeners();
 
                         blessings = blessingsList.ToList();
 
