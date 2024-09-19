@@ -1210,6 +1210,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotAqua(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1218,6 +1220,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotBird(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Bird);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1226,6 +1230,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotDawn(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1234,6 +1240,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotBeast(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Beast);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1242,6 +1250,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotBug(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Bug);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1250,6 +1260,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotMech(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Mech);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1258,6 +1270,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotPlant(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Plant);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1266,6 +1280,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotDusk(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1274,6 +1290,8 @@ public class BuffsManager : MonoBehaviour
     public void ExtraAbilitySlotReptile(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
+        if (axies.Count == 0)
+            return;
         var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
@@ -1283,54 +1301,72 @@ public class BuffsManager : MonoBehaviour
     public void BackdoorAqua(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
+        if (axies.Count == 0)
+            return;
         var mostSpeedAqua = axies.OrderByDescending(x => x.stats.speed).First();
         mostSpeedAqua.ShrimpOnStart = true;
     }
     public void BackdoorBird(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Bird);
+        if (axies.Count == 0)
+            return;
         var lessHPBird = axies.OrderBy(x => x.stats.hp).First();
         lessHPBird.ShrimpOnStart = true;
     }
     public void BackdoorDawn(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
+        if (axies.Count == 0)
+            return;
         var mostHPDawn = axies.OrderByDescending(x => x.stats.hp).First();
         mostHPDawn.ShrimpOnStart = true;
     }
     public void BackdoorBeast(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Beast);
+        if (axies.Count == 0)
+            return;
         var mostMoraleBeast = axies.OrderByDescending(x => x.stats.morale).First();
         mostMoraleBeast.ShrimpOnStart = true;
     }
     public void BackdoorBug(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Bug);
+        if (axies.Count == 0)
+            return;
         var lessSpeedBug = axies.OrderBy(x => x.stats.speed).First();
         lessSpeedBug.ShrimpOnStart = true;
     }
     public void BackdoorMech(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Mech);
+        if (axies.Count == 0)
+            return;
         var leastMoraleMech = axies.OrderBy(x => x.stats.morale).First();
         leastMoraleMech.ShrimpOnStart = true;
     }
     public void BackdoorPlant(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Plant);
+        if (axies.Count == 0)
+            return;
         var mostHPPlant = axies.OrderByDescending(x => x.stats.hp).First();
         mostHPPlant.ShrimpOnStart = true;
     }
     public void BackdoorDusk(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
+        if (axies.Count == 0)
+            return;
         var mostSpeedDusk = axies.OrderByDescending(x => x.stats.speed).First();
         mostSpeedDusk.ShrimpOnStart = true;
     }
     public void BackdoorReptile(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
+        if (axies.Count == 0)
+            return;
         var lessHPReptile = axies.OrderBy(x => x.stats.hp).First();
         lessHPReptile.ShrimpOnStart = true;
     }
@@ -1368,6 +1404,8 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticDawn(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
+        if (axies.Count == 0)
+            return;
         axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 25);
         Action action = () =>
         {
@@ -1384,7 +1422,8 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticBeast(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-
+        if (axies.Count == 0)
+            return;
         axies.ForEach(x =>
         {
             var speed = x.stats.speed;
@@ -1400,6 +1439,8 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticBug(Team team)
     {
         var axies = team.GetCharactersAll();
+        if (axies.Count == 0)
+            return;
         var axie = axies.FirstOrDefault(x => x.axieIngameStats.axieClass == AxieClass.Bug);
 
         if (axie != null)
@@ -1426,8 +1467,10 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticMech(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Mech);
+        if (axies.Count == 0)
+            return;
 
-        if (axies.Count != 0)
+        if (axies.Count > 1)
             return;
 
         var axie = axies.Single(x => x.axieIngameStats.axieClass == AxieClass.Mech);
@@ -1441,7 +1484,8 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticPlant(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-
+        if (axies.Count == 0)
+            return;
         foreach (var item in axies)
         {
             item.axieSkillController.passives.ExtraShieldGained = 100;
@@ -1450,7 +1494,8 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticDusk(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-
+        if (axies.Count == 0)
+            return;
         foreach (var item in axies)
         {
             item.axieSkillController.passives.bloodmoonImmune = true;
@@ -1459,6 +1504,8 @@ public class BuffsManager : MonoBehaviour
     public void PrismaticReptile(Team team)
     {
         var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
+        if (axies.Count == 0)
+            return;
         foreach (var item in axies)
         {
             item.axieSkillController.passives.AbilityReflectDamageAmount = 100;
