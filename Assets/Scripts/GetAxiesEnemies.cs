@@ -29,7 +29,7 @@ namespace enemies
 
         public TeamToJSON teamToJson;
 
-
+        public EnemyLandAnimation enemyLandAnimation;
         public BattleDataLoader battleDataLoader;
 
         public async void GetEnemy()
@@ -185,6 +185,8 @@ namespace enemies
 
 
             FindingOpponent.gameObject.SetActive(false);
+            enemyLandAnimation.DoAnimation(LandType.savannah);
+            //enemyLandAnimation.DoAnimation((LandType)opponent.land_type);
             Countdown.gameObject.SetActive(true);
             Countdown.text = "3!";
             SFXManager.instance.PlaySFX(SFXType.ThreeTwoOne, 0.06f, false, 1);

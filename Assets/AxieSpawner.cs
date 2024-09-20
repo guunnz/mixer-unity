@@ -284,7 +284,17 @@ namespace Game
             return CreateAxie(go, builderResult, axieId, @class, stats, axieForBackend, axieEnemies, isOpponent, genes);
         }
 
+        void SetLayerRecursively(Transform root, string layerName)
+        {
+            // Set the layer of the current root
+            root.gameObject.layer = LayerMask.NameToLayer(layerName);
 
+            // Iterate over all children and apply the function recursively
+            for (int i = 0; i < root.childCount; i++)
+            {
+                SetLayerRecursively(root.GetChild(i), layerName);
+            }
+        }
         private AxieController CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId,
             AxieClass @class,
             GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesEnemies.AxieEnemy> axieEnemies,
@@ -294,6 +304,7 @@ namespace Game
             go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
             go.transform.eulerAngles = new Vector3(55.26f, go.transform.eulerAngles.y, go.transform.eulerAngles.z);
             go.AddComponent<AxieController>();
+
             AxieController controller = go.GetComponent<AxieController>();
             controller.axieBehavior = go.AddComponent<AxieBehavior>();
             controller.AxieId = int.Parse(axieId);
@@ -328,8 +339,10 @@ namespace Game
 
             if (isEnemy)
             {
+
+
                 controller.startingCol =
-                    axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].col;
+                     axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].col;
                 controller.startingRow =
                     axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].row;
                 enemyTeam.AddCharacter(controller);
@@ -372,6 +385,14 @@ namespace Game
                     .GetComponent<AxieSkillEffectManager>();
             controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
             controller.transform.parent = AxiesParent;
+
+            if (isEnemy)
+            {
+                go.layer = LayerMask.NameToLayer("LandEnemy");
+                SetLayerRecursively(go.transform, "LandEnemy");
+
+            }
+
             return controller;
         }
 

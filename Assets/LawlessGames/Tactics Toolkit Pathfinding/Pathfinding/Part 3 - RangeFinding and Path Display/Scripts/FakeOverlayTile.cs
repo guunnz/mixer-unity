@@ -26,6 +26,8 @@ public class FakeOverlayTile : MonoBehaviour
     internal FakeAxieController currentOccupier;
     public Rectangle rectangle;
     private bool untoggleable;
+    public MaterialTipColorChanger materialTipColorChanger;
+    public bool EnemyTile;
 
     private void Start()
     {
@@ -61,8 +63,10 @@ public class FakeOverlayTile : MonoBehaviour
         beingHovered = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        if (EnemyTile)
+            return;
         UpdateTileColor();
     }
 

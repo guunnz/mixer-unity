@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3822632946423895673}
   - component: {fileID: 7128074872005781662}
   - component: {fileID: 1554474160615582824}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 9071737882443925449}
   - component: {fileID: 8960564715673761318}
   - component: {fileID: 1719405982564232092}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SelectedTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ GameObject:
   - component: {fileID: 3339866439842875852}
   - component: {fileID: 5916477539583406946}
   - component: {fileID: 7646460898099111136}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
