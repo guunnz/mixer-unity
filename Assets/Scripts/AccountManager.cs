@@ -25,6 +25,8 @@ public class AccountManager : MonoBehaviour
     public bool LoadInstantly = false;
     static private bool loggingIn;
     static public bool TestMode = false;
+    public int pages;
+    public int axiesShown;
 
     public IEnumerator IncorrectWalletDo()
     {
@@ -98,14 +100,26 @@ public class AccountManager : MonoBehaviour
         LoadAssets(userInfo.axies, userInfo.lands);
     }
 
+    public void AddNFTs(string userInfoResponse)
+    {
+        Debug.Log("User info: " + userInfoResponse);
 
-    public void LoadAssets(SkyMavisLogin.NftsResponse axiesResponse, SkyMavisLogin.NftsResponse landsResponse)
+        SkyMavisLogin.Root userInfo = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfoResponse);
+
+        SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(wallet));
+
+        userInfoPrev.axies.result.items.AddRange(userInfo.axies.result.items);
+        if (userInfo.lands.result.items.Count != 0)
+            userInfoPrev.lands.result.items.AddRange(userInfo.lands.result.items);
+
+        PlayerPrefs.SetString(wallet, JsonUtility.ToJson(userInfoPrev));
+        AddAssets(userInfo.axies, userInfo.lands);
+    }
+
+    private void AddAssets(SkyMavisLogin.NftsResponse axiesResponse, SkyMavisLogin.NftsResponse landsResponse)
     {
         try
         {
-
-            PlayerPrefs.SetString("LastWallet", wallet);
-
             List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
             List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
 
@@ -166,6 +180,111 @@ public class AccountManager : MonoBehaviour
                 }
             }
 
+            foreach (var nft in landsResponse.result.items)
+            {
+                try
+                {
+                    if (nft.tokenSymbol.ToUpper() == "LAND")
+                    {
+                        GetAxiesExample.Land land = new GetAxiesExample.Land();
+
+                        land.tokenId = nft.tokenId;
+                        land.landType = nft.rawMetadata.properties.land_type;
+                        land.col = nft.rawMetadata.properties.col;
+                        land.row = nft.rawMetadata.properties.row;
+                        lands.Add(land);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + nft.tokenId + " NFT SYMBOL: " + nft.tokenSymbol);
+                    continue;
+                }
+            }
+
+            var resultAxiesList = userAxies.results.ToList();
+            resultAxiesList.AddRange(axies);
+
+            var resultLandList = userLands.results.ToList();
+            resultLandList.AddRange(lands);
+            userLands.results = resultLandList.ToArray();
+
+            foreach (var userAxiesResult in userAxies.results)
+            {
+                userAxiesResult.LoadGraphicAssets();
+                userAxiesResult.maxBodyPartAmount = 2;
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error processing response: " + ex.Message);
+        }
+    }
+
+    public void LoadAssets(SkyMavisLogin.NftsResponse axiesResponse, SkyMavisLogin.NftsResponse landsResponse)
+    {
+        try
+        {
+            PlayerPrefs.SetString("LastWallet", wallet);
+            List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
+            List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
+
+            foreach (var axiesInList in axiesResponse.result.items)
+            {
+                try
+                {
+                    if (axiesInList.tokenSymbol.ToUpper() == "AXIE" && axiesInList.rawMetadata.genes != "0x0")
+                    {
+                        GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
+
+                        axie.genes = axiesInList.rawMetadata.genes;
+                        axie.maxBodyPartAmount = 2;
+                        axie.@class = axiesInList.rawMetadata.properties.@class;
+                        axie.id = axiesInList.tokenId.ToString();
+                        axie.name = axiesInList.rawMetadata.name;
+                        axie.birthDate = axiesInList.rawMetadata.properties.birthdate;
+                        axie.newGenes = axiesInList.rawMetadata.genes;
+                        axie.bodyShape = axiesInList.rawMetadata.properties.bodyshape;
+
+                        axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
+
+                        Debug.Log("Loading parts");
+                        List<string> partsClasses = AxieGeneUtils.GetAxiePartsClasses(axie.genes);
+                        Debug.Log("Loading abilities");
+                        List<string> partsAbilities = AxieGeneUtils.ParsePartIdsFromHex(axie.genes);
+
+                        if (partsAbilities == null)
+                            continue;
+
+                        Debug.Log("Abilities loaded");
+
+                        List<GetAxiesExample.Part> axieParts = new List<GetAxiesExample.Part>();
+
+                        GetAxiesExample.Part horn = new GetAxiesExample.Part(partsClasses[2],
+                            axiesInList.rawMetadata.properties.horn_id, "horn", 0, false, partsAbilities[2]);
+                        GetAxiesExample.Part tail = new GetAxiesExample.Part(partsClasses[5],
+                            axiesInList.rawMetadata.properties.tail_id, "tail", 0, false, partsAbilities[5]);
+                        GetAxiesExample.Part back = new GetAxiesExample.Part(partsClasses[4],
+                            axiesInList.rawMetadata.properties.back_id, "back", 0, false, partsAbilities[4]);
+                        GetAxiesExample.Part mouth = new GetAxiesExample.Part(partsClasses[3],
+                            axiesInList.rawMetadata.properties.mouth_id, "mouth", 0, false, partsAbilities[3]);
+
+                        axieParts.Add(horn);
+                        axieParts.Add(tail);
+                        axieParts.Add(back);
+                        axieParts.Add(mouth);
+
+                        axie.parts = axieParts.ToArray();
+
+                        axies.Add(axie);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + axiesInList.tokenId + " NFT SYMBOL: " + axiesInList.tokenSymbol);
+                    continue;
+                }
+            }
 
             foreach (var nft in landsResponse.result.items)
             {

@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: LandEnemyTransparent
-    Event: 500
+    Event: 450
     filterSettings:
       RenderQueueType: 1
       LayerMask:

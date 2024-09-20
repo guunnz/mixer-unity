@@ -200,6 +200,7 @@ public class Team : MonoBehaviour
 
                 if (!battleEnded)
                 {
+                    EnemyLandAnimation.instance.ResetAnimation();
                     battleEnded = true;
                     FightManagerSingleton.Instance.StopFight();
                     BattleOverlay.SetActive(false);

@@ -163,9 +163,9 @@ public class SkyMavisLogin : MonoBehaviour
         StartCoroutine(GetNFTS());
     }
 
-    private IEnumerator GetNFTS(int retries = 5)
+    private IEnumerator GetNFTS(int retries = 5, int page = 0)
     {
-        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint+ "?page=0", "GET");
+        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint + "?page=" + page.ToString(), "GET");
         webRequest.SetRequestHeader("access-token", authToken.AccessToken);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
@@ -185,7 +185,21 @@ public class SkyMavisLogin : MonoBehaviour
 
         if (!string.IsNullOrEmpty(userInfo))
         {
-            GetUserInfo(userInfo);
+            if (page > 0)
+            {
+                AddNFTs(userInfo);
+            }
+            else
+            {
+                GetUserInfo(userInfo);
+
+                SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
+
+                if (userInfoObj.axies.result.paging.total != userInfoObj.axies.result.items.Count || userInfoObj.lands.result.paging.total != userInfoObj.lands.result.items.Count)
+                {
+                    StartCoroutine(GetNFTS(5, page + 1));
+                }
+            }
         }
         else
         {
@@ -260,6 +274,14 @@ public class SkyMavisLogin : MonoBehaviour
         if (accountManager != null)
         {
             accountManager.LoginAccount(userInfoString);
+        }
+    }
+
+    private void AddNFTs(string userInfoString)
+    {
+        if (accountManager != null)
+        {
+            accountManager.AddNFTs(userInfoString);
         }
     }
 
