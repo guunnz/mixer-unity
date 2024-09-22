@@ -11,6 +11,12 @@ public class FileLogger : MonoBehaviour
         // Set the log file path to the same folder as the game executable
         logFilePath = Path.Combine(Application.persistentDataPath, "game_logs.txt");
 
+        // Clear the existing log file on game start
+        if (File.Exists(logFilePath))
+        {
+            File.Delete(logFilePath);
+        }
+
         // Register the callback to handle log messages
         Application.logMessageReceived += HandleLog;
     }
