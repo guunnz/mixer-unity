@@ -64,7 +64,6 @@ public class OpponentLand : MonoBehaviour
         else
         {
             landSquares = fakeMapManager.materialTipColorChangerList.ToArray();
-            RunManagerSingleton.instance.landType = currentLandType;
             for (int i = 0; i < landSquares.Length; i++)
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
@@ -94,7 +93,6 @@ public class OpponentLand : MonoBehaviour
 
         currentLandType = landType;
         landSquares = fakeMapManager.materialTipColorChangerList.ToArray();
-        RunManagerSingleton.instance.landType = currentLandType;
         for (int i = 0; i < landSquares.Length; i++)
         {
             MaterialTipColorChanger materialTipColorChanger = landSquares[i];

@@ -52,8 +52,10 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -65,6 +67,7 @@ MonoBehaviour:
     ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -98,7 +101,7 @@ MonoBehaviour:
     MoraleStatDifference: 0
     CurrentHPStatDifference: 0
     AllowReactivation: 1
-    ReactivateEffectEveryXSeconds: 10
+    ReactivateEffectEveryXSeconds: 5
     arreglabugs: 
   tooltipTypes: 0b000000
   bodyPart: 2
@@ -111,3 +114,4 @@ MonoBehaviour:
   energy: 0
   description: Gain 1 Merry stack every 10 seconds. If there are 5 friendly Merry
     stacks in battle, summon a Chimera
+  OnlyDamageShields: 0

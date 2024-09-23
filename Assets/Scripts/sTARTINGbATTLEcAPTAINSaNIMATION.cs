@@ -27,6 +27,8 @@ public class sTARTINGbATTLEcAPTAINSaNIMATION : MonoBehaviour
     private void OnDisable()
     {
         TeamCaptainManager.Instance.DisableCaptainBehavior();
+        myCaptain.DOAnchorPosX(-455f, 0f);
+        enemyCaptain.DOAnchorPosX(455f, 0f);
     }
 
     public void EnableAnimations()

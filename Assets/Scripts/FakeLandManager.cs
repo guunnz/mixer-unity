@@ -60,7 +60,6 @@ public class FakeLandManager : MonoBehaviour
         else
         {
             landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
-            RunManagerSingleton.instance.landType = currentLandType;
             for (int i = 0; i < landSquares.Length; i++)
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
@@ -104,7 +103,6 @@ public class FakeLandManager : MonoBehaviour
 
             currentSelectedLandId = land.tokenId;
             landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
-            RunManagerSingleton.instance.landType = currentLandType;
             for (int i = 0; i < landSquares.Length; i++)
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
@@ -132,7 +130,6 @@ public class FakeLandManager : MonoBehaviour
 
             currentSelectedLandId = land.tokenId;
             landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
-            RunManagerSingleton.instance.landType = currentLandType;
             for (int i = 0; i < landSquares.Length; i++)
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];

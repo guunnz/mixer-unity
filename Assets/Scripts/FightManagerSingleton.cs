@@ -34,6 +34,7 @@ public class FightManagerSingleton : MonoBehaviour
     {
         SecondsOfFight = 0;
         FightStarted = false;
+        TimeToBloodmoon.SetActive(false);
     }
 
     private void FixedUpdate()

@@ -77,12 +77,9 @@ public class AxieSkillController : MonoBehaviour
 
     private void MerryBehavior()
     {
-        if (self.goodTeam.ChimeraSpawned)
-            return;
-
         List<AxieController> myTeam = self.goodTeam.GetAliveCharacters();
         int merryStacks = myTeam.Sum(x => x.axieSkillEffectManager.MerryStacks());
-        if (merryStacks != 0 && (merryStacks >= 5) && !self.goodTeam.ChimeraSpawned)
+        if (merryStacks != 0 && (merryStacks >= 5))
         {
             foreach (var axieController in myTeam)
             {
@@ -98,6 +95,7 @@ public class AxieSkillController : MonoBehaviour
                 .GetComponent<Chimera>();
 
             chimera.transform.position = self.imGood ? new Vector3(0, 2, 0) : new Vector3(7, 2, 0);
+            chimera.transform.localScale = self.imGood ? new Vector3(-.1f, .1f, .1f) : new Vector3(.1f, .1f, .1f);
 
             chimera.chimeraTeam = self.goodTeam;
         }
