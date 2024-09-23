@@ -66,6 +66,7 @@ public class RunManagerSingleton : MonoBehaviour
     public Team goodTeam;
     public AtiaBlessing atiaBlessing;
     public RectTransform ScoreRect;
+    public GameObject ItemsTooltip;
     private float skere;
     private int MaxCoinsThisRound = 10;
 
@@ -108,6 +109,7 @@ public class RunManagerSingleton : MonoBehaviour
         MaxCoinsThisRound = coins;
         economyPassive.RollsThisRound = 0;
         coinsText.text = coins.ToString();
+        RunManagerSingleton.instance.ItemsTooltip.gameObject.SetActive(true);
         if (won)
         {
             if (roundsPassives.ExtraTeamHPPerRound != 0)
@@ -162,6 +164,7 @@ public class RunManagerSingleton : MonoBehaviour
 
     public void MoveAndResize(Vector2 targetPosition, Vector2 targetSize, float duration, float waitTime)
     {
+        ScoreRect.gameObject.SetActive(true);
         // Store the original position and size
         Vector2 originalPosition = ScoreRect.anchoredPosition;
         Vector2 originalSize = ScoreRect.localScale;
@@ -170,8 +173,8 @@ public class RunManagerSingleton : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(waitTime);
         // Move and resize to target position and size
-        sequence.Append(ScoreRect.DOAnchorPos(targetPosition, duration));
-        sequence.Join(ScoreRect.DOScale(targetSize, duration));
+        sequence.Append(ScoreRect.DOAnchorPos(targetPosition, waitTime / 2));
+        sequence.Join(ScoreRect.DOScale(targetSize, waitTime / 2));
 
         // Perform the action during the wait time
         sequence.AppendInterval(waitTime / 2); // Half the wait time before the action
@@ -179,8 +182,8 @@ public class RunManagerSingleton : MonoBehaviour
         sequence.AppendInterval(waitTime / 2); // Half the wait time after the action
 
         // Move and resize back to original position and size
-        sequence.Append(ScoreRect.DOAnchorPos(originalPosition, duration/4));
-        sequence.Join(ScoreRect.DOScale(originalSize, duration/4));
+        sequence.Append(ScoreRect.DOAnchorPos(originalPosition, duration / 4));
+        sequence.Join(ScoreRect.DOScale(originalSize, duration / 4));
 
         // Start the sequence
         sequence.Play();

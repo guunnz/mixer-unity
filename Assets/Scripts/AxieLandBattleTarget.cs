@@ -79,6 +79,7 @@ public class TeamUpgrades
 public class Run
 {
     public string user_wallet_address;
+    public string axie_captain_id;
     public string username;
     public int played_rounds;
     public bool[] win_loss_record;
@@ -125,6 +126,7 @@ public class AxieLandBattleTarget : MonoBehaviour
         {
             user_wallet_address = RunManagerSingleton.instance.user_wallet_address,
             win_loss_record = RunManagerSingleton.instance.resultsBools.ToArray(),
+            axie_captain_id = PlayerPrefs.GetString("Captain"),
             played_rounds = score,
             username = AccountManager.username,
             opponents_run_id = new[] { RunManagerSingleton.instance.currentOpponent },

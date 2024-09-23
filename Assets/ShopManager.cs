@@ -87,7 +87,7 @@ public class ShopManager : MonoBehaviour
             itemListCustom.RemoveAll(x => x.ItemEffectName == AtiaBlessing.BuffEffect.Ruby);
             ItemList = itemListCustom.ToArray();
             itemToBuy.price = 0;
-            RunManagerSingleton.instance.BuyUpgrade(itemToBuy,false);
+            RunManagerSingleton.instance.BuyUpgrade(itemToBuy, false);
         }
 
         RollCostText.text = RollCost.ToString();
@@ -191,5 +191,32 @@ public class ShopManager : MonoBehaviour
 
             Items[1].SetItem(ItemList[ItemRandom2]);
         }
+    }
+
+    public void SetManualShopItems(AtiaBlessing.BuffEffect potionEffect1, AtiaBlessing.BuffEffect potionEffect2, AtiaBlessing.BuffEffect itemEffect1, AtiaBlessing.BuffEffect itemEffect2)
+    {
+        FirstActivePotion = GetPotionIndexByEffectName(potionEffect1);
+        SecondActivePotion = GetPotionIndexByEffectName(potionEffect2);
+
+        Potions[FirstActivePotion].transform.position = Pot1Pos.position;
+        Potions[SecondActivePotion].transform.position = Pot2Pos.position;
+        Potions[FirstActivePotion].gameObject.SetActive(true);
+        Potions[SecondActivePotion].gameObject.SetActive(true);
+
+        Items[0].SetItem(ItemList.Single(x => x.ItemEffectName == itemEffect1));
+        Items[1].SetItem(ItemList.Single(x => x.ItemEffectName == itemEffect2));
+    }
+
+    // Helper function to find potion index by ItemEffectName
+    private int GetPotionIndexByEffectName(AtiaBlessing.BuffEffect effectName)
+    {
+        for (int i = 0; i < Potions.Length; i++)
+        {
+            if (Potions[i].shopItem.ItemEffectName == effectName)
+            {
+                return i;
+            }
+        }
+        return 0; // Default to first if not found (you might want to handle this differently)
     }
 }

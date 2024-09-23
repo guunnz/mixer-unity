@@ -5,6 +5,7 @@ using DG.Tweening;
 using enemies;
 using TMPro;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -26,13 +27,19 @@ public class Team : MonoBehaviour
     internal bool ChimeraSpawned;
     public bool isGoodTeam;
     internal bool battleEnded = false;
-
+    private TeamCaptainManager teamCaptainManager;
     public List<Action> OnBattleStartActions = new List<Action>();
     internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
 
-    private void Start()
+    public IEnumerator Start()
     {
         pathFinder = new PathFinder();
+        while (teamCaptainManager == null)
+        {
+
+            teamCaptainManager = TeamCaptainManager.Instance;
+            yield return null;
+        }
     }
 
     public List<AxieController> GetAliveCharacters()
@@ -161,8 +168,8 @@ public class Team : MonoBehaviour
                 0.2f, character.transform.localScale.z);
             character.axieBehavior.DoAction(AxieState.Idle);
             character.axieSkillEffectManager.RemoveAllEffects();
-            character.axieIngameStats.currentHP = character.axieIngameStats.HP;
-            character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.HP);
+            character.axieIngameStats.currentHP = character.axieIngameStats.maxHP;
+            character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.maxHP);
             character.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(character.stats) / character.axieSkillController.GetComboCost();
             character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
                                              character.axieSkillController.GetComboCost());
@@ -195,6 +202,15 @@ public class Team : MonoBehaviour
 
         if (battleStarted)
         {
+            if (isGoodTeam)
+            {
+                teamCaptainManager.myTeamHP.fillAmount = GetTeamTotalHPBar();
+            }
+            else
+            {
+                teamCaptainManager.opponentHP.fillAmount = GetTeamTotalHPBar();
+            }
+
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
 
@@ -270,6 +286,14 @@ public class Team : MonoBehaviour
                 return;
             }
         }
+    }
+
+
+    public float GetTeamTotalHPBar()
+    {
+        var allCharacters = GetCharactersAll();
+
+        return allCharacters.Sum(x => x.axieIngameStats.currentHP) / allCharacters.Sum(x => x.axieIngameStats.maxHP);
     }
 
     void FixedUpdate()

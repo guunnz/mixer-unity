@@ -70,10 +70,10 @@ public class AxieStatsTooltip : MonoBehaviour
                 return;
             }
             var ingameStats = axieToCheck.axieIngameStats;
-            HPText.text = $"{Math.Round(ingameStats.currentHP, 0)} / {ingameStats.HP}";
+            HPText.text = $"{Math.Round(ingameStats.currentHP, 0)} / {ingameStats.maxHP}";
             EnergyText.text = $"{Math.Round(ingameStats.CurrentEnergy, 2)} / {ingameStats.totalComboCost}";
             axieEnergy.fillAmount = (ingameStats.CurrentEnergy) / ingameStats.MaxEnergy;
-            axieHP.fillAmount = ingameStats.currentHP / ingameStats.HP;
+            axieHP.fillAmount = ingameStats.currentHP / ingameStats.maxHP;
             return;
         }
         if (Container.anchoredPosition.x == -75)

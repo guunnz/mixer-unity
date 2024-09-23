@@ -7,6 +7,7 @@ using System.Linq;
 using Game;
 using Newtonsoft.Json;
 using TMPro;
+using UnityEditor.Search;
 
 namespace enemies
 {
@@ -63,7 +64,7 @@ namespace enemies
             axie{i}: axie(axieId: ""{axieIds[i].axie_id}"") {{
                 birthDate
                 name
-                genes
+                newGenes
                 id
                 class
                 parts {{
@@ -93,6 +94,88 @@ namespace enemies
             }
 
             StartCoroutine(RequestGraphQL(combinedQuery, jsonAxieIds, true));
+        }
+
+        void GetOpponentCaptain(string axieId)
+        {
+            string combinedQuery = "";
+
+            string individualQuery = $@"
+            axie0: axie(axieId: ""{axieId}"") {{
+                birthDate
+                name
+                genes
+                newGenes
+                id
+                class
+                parts {{
+                    class
+                    id
+                    name
+                    type
+                    abilities {{
+                        attack
+                        attackType
+                        name
+                        id
+                        effectIconUrl
+                        defense
+                        backgroundUrl
+                    }}
+                }}
+                stats {{
+                    speed
+                    skill
+                    morale
+                    hp
+                }}
+                bodyShape
+            }}";
+            combinedQuery += individualQuery;
+            StartCoroutine(GetAxieSkeleton(combinedQuery));
+        }
+
+        private IEnumerator GetAxieSkeleton(string query)
+        {
+            var request = new Request()
+            {
+                Query = "query {" + query + "}"
+            };
+
+            var headers = new Dictionary<string, string>
+            {
+                { "X-API-Key", apiKey }
+            };
+
+            var task = graphQLClient.Send(request, null, headers);
+
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            if (task.Exception != null)
+            {
+                GetAxieSkeleton(query);
+                Debug.LogError("GraphQL Error: " + task.Exception.Message);
+                yield break;
+            }
+
+            try
+            {
+                string responseString = task.Result;
+                RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
+
+                AxieEnemy axie1 = axiesData.Data["axie0"];
+                var builderResult = axieSpawner.SimpleProcessMixer(axie1.id, axie1.NewGenes, true);
+
+                TeamCaptainManager.Instance.SetOpponentCaptain(builderResult.skeletonDataAsset, builderResult.sharedGraphicMaterial);
+
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError("Error processing response: " + ex.Message);
+            }
         }
 
         private IEnumerator RequestGraphQL(string query, Opponent opponent, bool isOpponent = false)
@@ -164,7 +247,6 @@ namespace enemies
                 axieList = TestTool.Instance.GetEnemyAxies(axieList);
             }
 
-
             foreach (var axieEnemy in axieList)
             {
                 AxieForBackend axieForBackend = opponent.axie_team.axies.Single(x => x.axie_id == axieEnemy.id);
@@ -178,12 +260,25 @@ namespace enemies
             //Grab testing values of abilities, stats and 
 
             MusicManager.Instance.FadeOut(1);
+
             while (axieSpawner.enemyTeam.GetAliveCharacters().Count != 5)
             {
                 yield return null;
             }
 
+            if (string.IsNullOrEmpty(opponent.axie_captain_id))
+            {
+                Debug.Log("CAPTAIN RECEIVED: " + opponent.axie_captain_id);
+                var captainToSelect = axieSpawner.enemyTeam.GetCharactersAll().First();
+                TeamCaptainManager.Instance.SetOpponentCaptain(captainToSelect.skeletonDataAsset, captainToSelect.skeletonMaterial);
+            }
+            else
+            {
+                GetOpponentCaptain(opponent.axie_captain_id);
+            }
 
+            RunManagerSingleton.instance.ScoreRect.gameObject.SetActive(false);
+            RunManagerSingleton.instance.ItemsTooltip.gameObject.SetActive(false);
             FindingOpponent.gameObject.SetActive(false);
             enemyLandAnimation.DoAnimation((LandType)opponent.land_type);
             //enemyLandAnimation.DoAnimation((LandType)opponent.land_type);
@@ -229,6 +324,7 @@ namespace enemies
             public long BirthDate { get; set; }
             public string Name { get; set; }
             public string Genes { get; set; }
+            public string NewGenes { get; set; }
             public string id { get; set; }
             public string Class { get; set; }
             public AxieClass axieClass => (AxieClass)Enum.Parse(typeof(AxieClass), Class);

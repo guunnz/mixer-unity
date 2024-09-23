@@ -44,7 +44,7 @@ public class Chimera : MonoBehaviour
         }
 
         chimeraAttackSfx.Initialize(true);
-        target.axieIngameStats.currentHP -= target.axieIngameStats.HP / 5f;
+        target.axieIngameStats.currentHP -= target.axieIngameStats.maxHP / 5f;
         Debug.Log("Damaged target. Target HP: " + target.axieIngameStats.currentHP);
     }
 

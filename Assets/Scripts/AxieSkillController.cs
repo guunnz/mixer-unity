@@ -288,7 +288,7 @@ public class AxieSkillController : MonoBehaviour
 
         if (passives.AbilityReflectDamageAmount != 0 && isSkill)
         {
-            attacker.axieIngameStats.HP -= damage * passives.AbilityReflectDamageAmount;
+            attacker.axieIngameStats.maxHP -= damage * passives.AbilityReflectDamageAmount;
         }
 
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)

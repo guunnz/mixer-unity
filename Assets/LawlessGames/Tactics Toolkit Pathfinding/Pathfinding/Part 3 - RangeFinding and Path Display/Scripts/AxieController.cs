@@ -18,7 +18,7 @@ public class IngameStats
     public float MinEnergy;
     public float MaxEnergy;
     public float CurrentEnergy;
-    public float HP;
+    public float maxHP;
     public float currentHP;
     public float currentShield;
     public int totalComboCost;
@@ -135,9 +135,9 @@ public class AxieController : MonoBehaviour
             Range = 4;
         }
 
-        axieIngameStats.HP = AxieStatCalculator.GetHP(stats);
+        axieIngameStats.maxHP = AxieStatCalculator.GetHP(stats);
 
-        axieIngameStats.currentHP = axieIngameStats.HP;
+        axieIngameStats.currentHP = axieIngameStats.maxHP;
     }
 
     private IEnumerator Start()
@@ -358,9 +358,9 @@ public class AxieController : MonoBehaviour
             return;
         }
 
-        if (axieIngameStats.currentHP > axieIngameStats.HP)
+        if (axieIngameStats.currentHP > axieIngameStats.maxHP)
         {
-            axieIngameStats.currentHP = axieIngameStats.HP;
+            axieIngameStats.currentHP = axieIngameStats.maxHP;
         }
 
 
@@ -388,7 +388,7 @@ public class AxieController : MonoBehaviour
                 SetEnergy();
             }
 
-            statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.HP);
+            statsManagerUI.SetHP(axieIngameStats.currentHP / axieIngameStats.maxHP);
 
             statsManagerUI.SetShield(Mathf.RoundToInt(axieIngameStats.currentShield));
         }

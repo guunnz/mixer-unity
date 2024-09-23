@@ -7,6 +7,7 @@ public class Opponent
 {
     public string user_wallet_address;
     public string username;
+    public string axie_captain_id;
     public int land_type;
     public AxieTeamDatabase axie_team;
 }

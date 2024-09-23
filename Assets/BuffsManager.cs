@@ -89,6 +89,17 @@ public class BuffsManager : MonoBehaviour
         });
     }
 
+    public void IronShield(Team team)
+    {
+        var axies = team.GetCharactersAll();
+
+        axies.ForEach(axie =>
+        {
+            axie.axieSkillController.passives.RangedReflectDamageAmount += 5;
+            axie.axieSkillController.passives.MeleeReflectDamageAmount += 5;
+        });
+    }
+
     public void SteelHelmet(Team team)
     {
         var axies = team.GetCharactersAll();
@@ -327,7 +338,7 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.HP);
+            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.maxHP);
             axies.First().axieIngameStats.currentHP *= 0.5f;
         };
 
@@ -486,7 +497,7 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.HP);
+            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.maxHP);
 
             axies.First().axieSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.Stench, Stench = true });
@@ -1212,7 +1223,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1222,7 +1233,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Bird);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1232,7 +1243,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1242,7 +1253,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Beast);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1252,7 +1263,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Bug);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1262,7 +1273,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Mech);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1272,7 +1283,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Plant);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1282,7 +1293,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;
@@ -1292,7 +1303,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
         if (axies.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.HP).First();
+        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
         var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
         if (accountAxie.maxBodyPartAmount < 4)
             accountAxie.maxBodyPartAmount++;

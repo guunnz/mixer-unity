@@ -395,8 +395,8 @@ public class SkillLauncher : MonoBehaviour
         if (skillEffect.HPTresholdPercentage > 0)
         {
             if (!skillEffect.LessThan
-                    ? myAxieData.currentHP < myAxieData.HP * (skillEffect.HPTresholdPercentage / 100f)
-                    : myAxieData.currentHP > myAxieData.HP * (skillEffect.HPTresholdPercentage / 100f))
+                    ? myAxieData.currentHP < myAxieData.maxHP * (skillEffect.HPTresholdPercentage / 100f)
+                    : myAxieData.currentHP > myAxieData.maxHP * (skillEffect.HPTresholdPercentage / 100f))
             {
                 return false;
             }
@@ -697,7 +697,7 @@ public class SkillLauncher : MonoBehaviour
                     if (skillEffect.lowestHP)
                     {
                         var axie = self.myTeam.GetCharactersAll().OrderBy(x => x.axieIngameStats.currentHP).First();
-                        skillInstance.AddHealTargetPair(axie.AxieId, (axie.axieIngameStats.HP *
+                        skillInstance.AddHealTargetPair(axie.AxieId, (axie.axieIngameStats.maxHP *
                                                                                    (skillEffect.GainHPPercentage *
                                                                                        0.01f)) *
                                                                                specialEffectExtras
@@ -707,7 +707,7 @@ public class SkillLauncher : MonoBehaviour
                     {
                         foreach (var axieController in statusEffectTargetList)
                         {
-                            skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.HP *
+                            skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.maxHP *
                                                                                        (skillEffect.GainHPPercentage *
                                                                                            0.01f)) *
                                                                                    specialEffectExtras

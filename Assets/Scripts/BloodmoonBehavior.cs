@@ -41,7 +41,7 @@ public class BloodmoonBehavior : MonoBehaviour
             {
                 if (!x.axieSkillController.passives.bloodmoonImmune)
                 {
-                    x.axieIngameStats.currentHP -= x.axieIngameStats.HP * percentage;
+                    x.axieIngameStats.currentHP -= x.axieIngameStats.maxHP * percentage;
                 }
             });
 

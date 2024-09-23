@@ -82,42 +82,17 @@ namespace Game
             GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesEnemies.AxieEnemy> axieEnemies, GetAxiesEnemies.AxieEnemy axieEnemy,
             bool isOpponent = false)
         {
-            StartCoroutine(
-                GetAxiesGenesAndSpawn(axieId, @class, stats, axieForBackend, axieEnemies, axieEnemy,
-                    isOpponent));
+            GetAxiesGenesAndSpawn(axieId, @class, stats, axieForBackend, axieEnemies, axieEnemy,
+                isOpponent);
         }
 
-        bool isFetchingGenes = false;
 
-        private IEnumerator GetAxiesGenesAndSpawn(string axieId,
+        private void GetAxiesGenesAndSpawn(string axieId,
             AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend,
             List<GetAxiesEnemies.AxieEnemy> axieEnemies, GetAxiesEnemies.AxieEnemy enemy, bool isOpponent = false)
         {
-            isFetchingGenes = true;
-            string searchString = "{ axie (axieId: \"" + axieId + "\") { id, genes, newGenes}}";
-            JObject jPayload = new JObject();
-            jPayload.Add(new JProperty("query", searchString));
 
-            var wr = new UnityWebRequest("https://graphql-gateway.axieinfinity.com/graphql", "POST");
-            //var wr = new UnityWebRequest("https://testnet-graphql.skymavis.one/graphql", "POST");
-            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jPayload.ToString().ToCharArray());
-            wr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
-            wr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            wr.SetRequestHeader("Content-Type", "application/json");
-            wr.timeout = 10;
-            yield return wr.SendWebRequest();
-            if (wr.error == null)
-            {
-                var result = wr.downloadHandler != null ? wr.downloadHandler.text : null;
-                if (!string.IsNullOrEmpty(result))
-                {
-                    JObject jResult = JObject.Parse(result);
-                    string genesStr = (string)jResult["data"]["axie"]["newGenes"];
-                    ProcessMixer(axieId, genesStr, USE_GRAPHIC, @class, stats, axieForBackend, axieEnemies, enemy, isOpponent);
-                }
-            }
-
-            isFetchingGenes = false;
+            ProcessMixer(axieId, enemy.NewGenes, USE_GRAPHIC, @class, stats, axieForBackend, axieEnemies, enemy, isOpponent);
         }
 
 
@@ -310,7 +285,7 @@ namespace Game
             controller.AxieId = int.Parse(axieId);
             controller.axieIngameStats = new IngameStats();
             controller.axieIngameStats.axieId = axieId;
-            controller.axieIngameStats.HP = stats.hp * 2;
+            controller.axieIngameStats.maxHP = stats.hp * 2;
             controller.axieIngameStats.axieClass = @class;
             controller.imGood = !isEnemy;
             controller.stats = stats;
@@ -372,7 +347,8 @@ namespace Game
             controller.axieIngameStats.MaxEnergy = controller.axieSkillController.GetComboCost();
             go.tag = "Character";
 
-
+            controller.skeletonDataAsset = builderResult.skeletonDataAsset;
+            controller.skeletonMaterial = builderResult.sharedGraphicMaterial;
 
             runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
 

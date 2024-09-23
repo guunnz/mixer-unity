@@ -11,6 +11,7 @@ public class BattleDataLoader : MonoBehaviour
     {
         public string user_id;
         public int land_type;
+        public string axie_captain_id;
         public AxieTeamDatabase axie_team;
     }
 
