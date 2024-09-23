@@ -19,6 +19,8 @@ public class AccountManager : MonoBehaviour
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;
     public TextMeshProUGUI IncorrectWallet;
+    public TextMeshProUGUI usernameText;
+    public TextMeshProUGUI usernameTextInBattle;
     public GameObject NextStepAfterLogin;
     public GameObject MainMenu;
     public GameObject RoninMenu;
@@ -94,6 +96,8 @@ public class AccountManager : MonoBehaviour
         MavisTracking.Instance.InitializeTracking(userInfo.userInfo);
         loggingIn = true;
         AccountManager.username = userInfo.userInfo.name;
+        usernameText.text = string.IsNullOrEmpty(userInfo.userInfo.name) ? userInfo.userInfo.roninAddress : userInfo.userInfo.name;
+        usernameTextInBattle.text = string.IsNullOrEmpty(userInfo.userInfo.name) ? userInfo.userInfo.roninAddress : userInfo.userInfo.name;
         RunManagerSingleton.instance.user_wallet_address = userInfo.userInfo.addr;
 
         PlayerPrefs.SetString(wallet, userInfoResponse);

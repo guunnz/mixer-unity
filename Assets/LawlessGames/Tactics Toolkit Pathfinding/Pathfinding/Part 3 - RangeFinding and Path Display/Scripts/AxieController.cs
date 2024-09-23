@@ -234,6 +234,7 @@ public class AxieController : MonoBehaviour
     {
         if (mode == AxieMode.Battle)
         {
+            this.mode = AxieMode.Battle;
             TimerMove = 10000f;
             if (menuWalkCoroutine != null)
             {
@@ -315,8 +316,6 @@ public class AxieController : MonoBehaviour
                 TimerMove -= Time.deltaTime;
             }
         }
-
-
     }
 
     private void FixedUpdate()

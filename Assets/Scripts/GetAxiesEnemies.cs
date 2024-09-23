@@ -7,7 +7,6 @@ using System.Linq;
 using Game;
 using Newtonsoft.Json;
 using TMPro;
-using UnityEditor.Search;
 
 namespace enemies
 {
@@ -20,6 +19,7 @@ namespace enemies
         public int spawnCountMax = 0;
 
         public TextMeshProUGUI Countdown;
+        public TextMeshProUGUI EnemyUsername;
         public GameObject FindingOpponent;
         public GameObject IngameOverlay;
         public GameObject BattleOverlay;
@@ -255,7 +255,7 @@ namespace enemies
                     axieEnemy.stats, axieForBackend, axieList, axieEnemy, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
-
+            EnemyUsername.text = string.IsNullOrEmpty(opponent.username) ? "Lunacian #" + UnityEngine.Random.Range(1000000, 9999999).ToString() : opponent.username;
             //If test mode
             //Grab testing values of abilities, stats and 
 

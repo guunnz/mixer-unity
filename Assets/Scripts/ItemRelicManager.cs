@@ -24,7 +24,7 @@ public class ItemRelicManager : MonoBehaviour
     private float currentY;
     private float currentZ;
     public static ItemRelicManager Instance;
-
+    private Dictionary<AtiaBlessing.BuffEffect, GameObject> itemInstances = new Dictionary<AtiaBlessing.BuffEffect, GameObject>();
     private void Awake()
     {
         Instance = this;
@@ -41,16 +41,27 @@ public class ItemRelicManager : MonoBehaviour
 
     public void InstantiateItem(Vector3 startPosition, ShopItem shopItem)
     {
-        GameObject newItem = Instantiate(itemPrefab, startPosition, itemPrefab.transform.rotation, itemsParent);
-        if (shopItem.isPotion())
+        // Check if the item already exists
+        if (itemInstances.TryGetValue(shopItem.ItemEffectName, out GameObject existingItem))
         {
-            newItem.transform.localScale = new Vector3(.008f, .008f, 1);
+            // Increment the count on the existing item
+            existingItem.GetComponent<ItemLikeRelic>().IncrementCount();
         }
-        newItem.GetComponent<ItemLikeRelic>().SetShopItem(shopItem);
-        newItem.SetActive(isShowingMore || items.Count < MaxVisibleItems);
-        items.Add(newItem);
+        else
+        {
+            // Instantiate a new item if it doesn't exist
+            GameObject newItem = Instantiate(itemPrefab, startPosition, itemPrefab.transform.rotation, itemsParent);
+            if (shopItem.isPotion())
+            {
+                newItem.transform.localScale = new Vector3(.008f, .008f, 1);
+            }
+            newItem.GetComponent<ItemLikeRelic>().SetShopItem(shopItem);
+            newItem.SetActive(isShowingMore || items.Count < MaxVisibleItems);
+            items.Add(newItem);
+            itemInstances[shopItem.ItemEffectName] = newItem; // Track the new instance
 
-        UpdateItemPositions(newItem.activeSelf);
+            UpdateItemPositions(newItem.activeSelf);
+        }
     }
 
     private void UpdateItemPositions(bool animate = false)

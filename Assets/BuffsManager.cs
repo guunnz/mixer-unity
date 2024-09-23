@@ -470,7 +470,12 @@ public class BuffsManager : MonoBehaviour
 
         axies.ForEach(x => x.axieSkillController.passives.MeleeReflectDamageAmount += 20);
     }
+    public void IronArmor(Team team)
+    {
+        var axies = team.GetCharactersAll();
 
+        axies.ForEach(x => x.axieSkillController.passives.RangedReflectDamageAmount += 10);
+    }
     public void MeatPie(Team team)
     {
         var axies = team.GetCharactersAll();

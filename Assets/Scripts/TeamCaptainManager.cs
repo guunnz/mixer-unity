@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GetAxiesExample;
-using static UnityEditor.ObjectChangeEventStream;
 
 public class TeamCaptainManager : MonoBehaviour
 {
