@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -66,6 +67,7 @@ MonoBehaviour:
     ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -101,7 +103,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
-  tooltipTypes: 
+  tooltipTypes: 05000000
   bodyPart: 5
   prefab: {fileID: 489240768068986823, guid: dc313ef7350c75949827863793eaa79d, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -109,4 +111,6 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: When targeted by a ranged axie, apply -1 Attack on enemy
+  description: When targeted by a ranged axie, apply <color="yellow">-Attack</color>
+    on enemy
+  OnlyDamageShields: 0

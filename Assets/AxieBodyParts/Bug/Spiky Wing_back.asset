@@ -111,5 +111,5 @@ MonoBehaviour:
   damage: 999
   shield: 0
   energy: 1
-  description: Wombo, deals damage only to shields
+  description: <color="yellow">Wombo</color>, deals damage only to shields
   OnlyDamageShields: 0

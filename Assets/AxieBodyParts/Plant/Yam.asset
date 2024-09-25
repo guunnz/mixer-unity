@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -112,4 +113,6 @@ MonoBehaviour:
   damage: 30
   shield: 0
   energy: 0
-  description: When this axie is attacked by an ability apply 10 poison to the attacker
+  description: When this axie is attacked by an ability apply <color="yellow">10
+    poison</color> to the attacker
+  OnlyDamageShields: 0

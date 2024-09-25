@@ -1,11 +1,11 @@
 using AxieCore.SimpleJSON;
 using Newtonsoft.Json;
+using SimpleGraphQL.GraphQLParser;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
-using System.Numerics;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,14 +14,13 @@ using static GetAxiesExample;
 
 public class SkyMavisLogin : MonoBehaviour
 {
-    private string redirectUri = "http://localhost:3000/login/callback";
+    private string redirectUri = "http://localhost:3000/login/callback/"; // Used only for Desktop
     private string authorizationEndpoint = "https://www.axielandbattles.com/api/v1/auth/url";
     private string userInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/login";
     private string refreshUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/refresh";
     private string NFTsUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/user/nfts";
 
     public AuthToken authToken;
-
     public Button loginButton;
     public Text resultText;
     public AccountManager accountManager;
@@ -33,22 +32,42 @@ public class SkyMavisLogin : MonoBehaviour
 
     private void Start()
     {
-        PartFinder.LoadFromResources();
-        loginButton.onClick.AddListener(OnLoginButtonClicked);
-        string auth = PlayerPrefs.GetString("Auth");
-
-        if (!string.IsNullOrEmpty(auth))
+#if UNITY_ANDROID || UNITY_IOS
+      
+        Application.targetFrameRate = 30;
+      
+#endif
+        string token = GetTokenFromCommandLineArgs();
+        if (!string.IsNullOrEmpty(token))
         {
-            authToken = JsonConvert.DeserializeObject<AuthToken>(auth);
+            authToken = new AuthToken { AccessToken = token };
+            StartCoroutine(GetNFTS());  // Proceed directly with NFT fetching if token is valid
+        }
+        else
+        {
+            PartFinder.LoadFromResources();
+            loginButton.onClick.AddListener(OnLoginButtonClicked);
+            string auth = PlayerPrefs.GetString("Auth");
 
-            if (authToken.IsExpired())
+            if (!string.IsNullOrEmpty(auth))
             {
-                StartCoroutine(RefreshToken(3, true));
+                authToken = JsonConvert.DeserializeObject<AuthToken>(auth);
+
+                if (authToken.IsExpired())
+                {
+                    StartCoroutine(RefreshToken(3, true));
+                }
+                else
+                {
+                    StartCoroutine(GetNFTS());
+                }
             }
-            else
-            {
-                StartCoroutine(GetNFTS());
-            }
+        }
+
+        // Register deep link handler ONLY for mobile platforms
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            Application.deepLinkActivated += HandleDeepLink;
         }
     }
 
@@ -59,19 +78,14 @@ public class SkyMavisLogin : MonoBehaviour
 
     public IEnumerator LogIn(int retries = 5)
     {
-        httpListener = new HttpListener();
-        httpListener.Prefixes.Add("http://localhost:3000/");
-        httpListener.Start();
-        ThreadPool.QueueUserWorkItem(StartHttpListener);
-
         using (UnityWebRequest www = new UnityWebRequest(authorizationEndpoint, "GET"))
         {
             DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
             www.downloadHandler = dH;
             www.SetRequestHeader("Content-Type", "application/json");
-            yield return www.Send();
+            yield return www.SendWebRequest();
 
-            if (www.isNetworkError)
+            if (www.isNetworkError || www.isHttpError)
             {
                 Debug.LogError(www.error);
                 if (retries > 0)
@@ -82,13 +96,94 @@ public class SkyMavisLogin : MonoBehaviour
             }
             else
             {
-                Debug.Log(www.ToString());
-                Debug.Log(www.downloadHandler.text);
                 string authorizationUrl = JsonUtility.FromJson<AuthorizationJSON>(www.downloadHandler.text).authUrl;
-                Application.OpenURL(authorizationUrl);
+
+                // Use platform-specific code to handle login
+#if UNITY_ANDROID || UNITY_IOS
+                // Mobile-specific login with deep link
+                Debug.Log($"Mobile login with deep link: {authorizationUrl}");
+                OpenAuthorizationUrlForMobile(authorizationUrl);
+#else
+                // Desktop-specific login with localhost callback
+                Debug.Log($"Desktop login with redirect URI: {redirectUri}");
+                httpListener = new HttpListener();
+                httpListener.Prefixes.Add(redirectUri);  // Ensure redirectUri ends with '/'
+                httpListener.Start();
+                ThreadPool.QueueUserWorkItem(StartHttpListener);
+                Application.OpenURL(authorizationUrl);  // Open in desktop browser
+#endif
             }
         }
     }
+
+
+
+    private void OpenAuthorizationUrlForMobile(string authorizationUrl)
+    {
+        // Parse the existing authorization URL
+        UriBuilder uriBuilder = new UriBuilder(authorizationUrl);
+        var query = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
+
+        // Replace the redirect_uri parameter with your mobile deep link
+        query.Set("redirect_uri", "axielandbattles://auth");
+
+        // Add the response_mode parameter to use fragment
+        query.Set("response_mode", "fragment");
+
+        // Update the query in the UriBuilder
+        uriBuilder.Query = query.ToString();
+
+        // Get the modified authorization URL
+        string modifiedAuthorizationUrl = uriBuilder.ToString();
+
+        Debug.Log($"Opening URL on mobile: {modifiedAuthorizationUrl}");
+
+        // Open the modified URL
+        Application.OpenURL(modifiedAuthorizationUrl);
+    }
+
+
+
+    private void HandleDeepLink(string url)
+    {
+        Debug.Log("DeepLink activated: " + url);
+        if (url.StartsWith("axielandbattles://auth"))
+        {
+            Uri uri = new Uri(url);
+
+            // Get the fragment (after the '#')
+            string fragment = uri.Fragment;
+
+            // Remove the leading '#' if present
+            if (fragment.StartsWith("#"))
+            {
+                fragment = fragment.Substring(1);
+            }
+
+            // Parse the fragment as a query string
+            var queryParams = System.Web.HttpUtility.ParseQueryString(fragment);
+
+            // Extract parameters
+            string authorizationCode = queryParams.Get("code");
+            string scope = queryParams.Get("scope");
+            string state = queryParams.Get("state");
+
+            Debug.Log("Authorization Code: " + authorizationCode);
+            Debug.Log("Scope: " + scope);
+            Debug.Log("State: " + state);
+
+            if (!string.IsNullOrEmpty(authorizationCode))
+            {
+                StartCoroutine(HandleAuthorizationResponse(authorizationCode));
+            }
+            else
+            {
+                Debug.LogWarning("Authorization code not found in the deep link.");
+            }
+        }
+    }
+
+
 
     public struct AuthorizationJSON
     {
@@ -131,19 +226,26 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
     }
-
+#if UNITY_STANDALONE
     private void Update()
     {
+
         while (actions.TryDequeue(out var action))
         {
             action.Invoke();
         }
-    }
 
+    }
+#endif
     private IEnumerator HandleAuthorizationResponse(string authorizationCode, int retries = 5)
     {
+        Debug.Log("AUTHORIZATION CODE: " + authorizationCode);
         UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "POST");
         webRequest.SetRequestHeader("auth-code", authorizationCode);
+
+#if UNITY_ANDROID || UNITY_IOS
+        webRequest.SetRequestHeader("mobile", "true");
+#endif
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
         yield return webRequest.SendWebRequest();
@@ -176,8 +278,8 @@ public class SkyMavisLogin : MonoBehaviour
             Debug.LogError(webRequest.error);
             if (retries > 0)
             {
-                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
-                StartCoroutine(GetNFTS(retries - 1));
+                Debug.Log("Retrying GET request. Attempts remaining: " + (retries - 1));
+                StartCoroutine(GetNFTS(retries - 1, page));
             }
         }
 
@@ -225,7 +327,7 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
 
-        authToken = JsonUtility.FromJson<AuthToken>(webRequest.downloadHandler.text);
+        authToken = JsonConvert.DeserializeObject<AuthToken>(webRequest.downloadHandler.text);
 
         if (getNfts)
         {
@@ -263,11 +365,9 @@ public class SkyMavisLogin : MonoBehaviour
 
         public bool IsExpired()
         {
-            // Check if the current UTC time is greater than the issue time plus the seconds valid.
             return DateTime.UtcNow >= issueTime.AddSeconds(ExpiresIn);
         }
     }
-
 
     private void GetUserInfo(string userInfoString)
     {
@@ -375,9 +475,21 @@ public class SkyMavisLogin : MonoBehaviour
     public struct Root
     {
         public UserInfo userInfo;
-
         public NftsResponse lands;
         public NftsResponse axies;
+    }
+
+    private string GetTokenFromCommandLineArgs()
+    {
+        var args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-token" && i + 1 < args.Length)
+            {
+                return args[i + 1];
+            }
+        }
+        return null;
     }
 
     private void OnDestroy()

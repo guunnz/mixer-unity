@@ -78,7 +78,7 @@ public class ShopManager : MonoBehaviour
         }
         else if (RunManagerSingleton.instance.landType == LandType.savannah)
         {
-            Potions[1].gameObject.SetActive(false);
+            Potions.ToList().ForEach(x => x.gameObject.SetActive(false));
         }
         else if (RunManagerSingleton.instance.landType == LandType.axiepark && RunManagerSingleton.instance.score == 0)
         {
@@ -115,6 +115,7 @@ public class ShopManager : MonoBehaviour
 
     private void DoRollShop()
     {
+        Potions.ToList().ForEach(x => x.gameObject.SetActive(false));
         if (rm.economyPassive.RollsThisRound -
             rm.economyPassive.RollsFreePerRound < 0)
         {
@@ -162,7 +163,8 @@ public class ShopManager : MonoBehaviour
         Potions[FirstActivePotion].transform.position = Pot1Pos.position;
         Potions[SecondActivePotion].transform.position = Pot2Pos.position;
         Potions[FirstActivePotion].gameObject.SetActive(true);
-        Potions[SecondActivePotion].gameObject.SetActive(true);
+        if (RunManagerSingleton.instance.landType != LandType.savannah)
+            Potions[SecondActivePotion].gameObject.SetActive(true);
 
 
         if (!Items[0].Frozen)

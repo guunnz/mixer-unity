@@ -52,17 +52,22 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -106,4 +111,5 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: Apply +Speed for 2 seconds when attacked
+  description: Apply <color="yellow">+Speed</color> for 2 seconds when attacked
+  OnlyDamageShields: 0

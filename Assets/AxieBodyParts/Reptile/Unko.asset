@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -110,4 +111,6 @@ MonoBehaviour:
   damage: 20
   shield: 40
   energy: 0
-  description: Wombo, Apply stench on enemy for 2 seconds
+  description: <color="yellow">Wombo</color>, Apply <color="yellow">Stench</color>
+    on enemy for 2 seconds
+  OnlyDamageShields: 0

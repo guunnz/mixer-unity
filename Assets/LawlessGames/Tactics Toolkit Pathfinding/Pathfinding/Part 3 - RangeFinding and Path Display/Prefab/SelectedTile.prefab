@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 9071737882443925449}
   - component: {fileID: 8960564715673761318}
   - component: {fileID: 1719405982564232092}
+  - component: {fileID: -7229939408838167330}
   m_Layer: 7
   m_Name: SelectedTile
   m_TagString: Untagged
@@ -191,6 +192,7 @@ MonoBehaviour:
   beingHovered: 0
   occupied: 0
   rectangle: {fileID: 0}
+  tipColorChanger: {fileID: 7646460898099111136}
 --- !u!65 &558678765254996630
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -316,6 +318,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-7229939408838167330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236925022526955805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bfcabc8f77354488594fce918d0907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8938635807039646114
 GameObject:
   m_ObjectHideFlags: 0

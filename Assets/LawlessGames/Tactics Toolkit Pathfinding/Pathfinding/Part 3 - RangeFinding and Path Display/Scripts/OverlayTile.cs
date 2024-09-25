@@ -31,6 +31,7 @@ public class OverlayTile : MonoBehaviour
     internal AxieController currentOccupier;
     public Rectangle rectangle;
     private bool untoggleable;
+    public MaterialTipColorChanger tipColorChanger;
 
     public static AxieController GetCurrentOccupierByY(int yValue, List<OverlayTile> allTiles)
     {
@@ -78,9 +79,8 @@ public class OverlayTile : MonoBehaviour
         beingHovered = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        CheckOccupied();
         UpdateTileColor();
     }
 

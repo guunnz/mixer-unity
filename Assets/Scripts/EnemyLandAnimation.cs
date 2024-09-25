@@ -40,11 +40,39 @@ public class EnemyLandAnimation : MonoBehaviour
         }
     }
 
+    public void StartBatchReset(LandType landType)
+    {
+        StartCoroutine(BatchResetColorCoroutine(landType));
+    }
+
+    private IEnumerator BatchResetColorCoroutine(LandType landType)
+    {
+        yield return new WaitForSeconds(1.5f);
+        List<MaterialTipColorChanger> enemyTiles = MapManager.Instance.enemyTiles;
+        int batchCount = 5;
+
+        for (int i = 0; i < enemyTiles.Count; i += batchCount)
+        {
+            // Process up to 5 items at a time
+            for (int j = i; j < i + batchCount && j < enemyTiles.Count; j++)
+            {
+                enemyTiles[j].ResetColor(landType);
+            }
+
+            // Wait for a specified delay before processing the next batch
+            yield return new WaitForSeconds(.3f); // Delay of 1 second between batches
+        }
+    }
     private IEnumerator IDoAnimation(LandType landType)
     {
-        BigWall.transform.position = new Vector3(8, 1.8f, 2.17f);
+        BigWall.transform.position = new Vector3(12, 1.8f, 2.17f);
         PortalSphere.gameObject.SetActive(true);
-        OpponentLand.Instance.ChooseFakeLand(landType);
+#if UNITY_ANDROID || UNITY_IOS
+        StartBatchReset(landType);
+        OpponentLand.Instance.ChooseFakeLandMobile(landType);
+#else
+          OpponentLand.Instance.ChooseFakeLand(landType);
+#endif
         var portal = LandPortals.FirstOrDefault(x => x.portalType == landType);
         portal.portalObject.gameObject.SetActive(true);
         PortalSphere.transform.position = portal.portalObject.transform.position;
@@ -75,8 +103,9 @@ public class EnemyLandAnimation : MonoBehaviour
 
     public void ResetAnimation()
     {
+        MapManager.Instance.enemyTiles.ForEach(x => x.ResetColor(RunManagerSingleton.instance.landType));
         PortalSphere.gameObject.SetActive(false);
-        BigWall.transform.DOMoveX(8f, 1f);
+        BigWall.transform.DOMoveX(12f, 1f);
     }
 
     void SetLayerRecursively(Transform root, string layerName)

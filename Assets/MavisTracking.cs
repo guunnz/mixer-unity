@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using System;
 
 public class MavisTracking : MonoBehaviour
 {
@@ -43,8 +44,21 @@ public class MavisTracking : MonoBehaviour
     public void InitializeTracking(SkyMavisLogin.UserInfo userInfo)
     {
         this.roninAddress = userInfo.addr;
-        sessionID = System.Guid.NewGuid().ToString();
+        sessionID = string.IsNullOrEmpty(GetSessionIdFromCommandLineArgs()) ? System.Guid.NewGuid().ToString() : GetSessionIdFromCommandLineArgs();
         StartCoroutine(TrackHeartbeat());
+    }
+
+    private string GetSessionIdFromCommandLineArgs()
+    {
+        var args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-sessionId" && i + 1 < args.Length)
+            {
+                return args[i + 1];
+            }
+        }
+        return null; // Return null if no session ID is found
     }
 
     private IEnumerator TrackHeartbeat()

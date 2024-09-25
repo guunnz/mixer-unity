@@ -112,6 +112,6 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: Gain 1 Merry stack every 10 seconds. If there are 5 friendly Merry
-    stacks in battle, summon a Chimera
+  description: Gain 1 <color="yellow">Merry</color> stack every 10 seconds. If there
+    are 5 friendly Merry stacks in battle, summon a Chimera
   OnlyDamageShields: 0

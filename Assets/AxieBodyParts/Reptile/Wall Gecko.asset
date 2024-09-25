@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -110,4 +111,5 @@ MonoBehaviour:
   damage: 100
   shield: 0
   energy: 1
-  description: Gain a Gecko stack
+  description: Gain a <color="yellow">Gecko</color> stack
+  OnlyDamageShields: 0

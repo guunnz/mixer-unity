@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -110,4 +111,5 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 0
-  description: Start the battle with +3 Speed
+  description: Start the battle with <color="yellow">+3 Speed
+  OnlyDamageShields: 0

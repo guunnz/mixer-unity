@@ -52,18 +52,22 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
     ShieldAsDamagePercentage: 30
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -99,7 +103,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
-  tooltipTypes: 08000000
+  tooltipTypes: 
   bodyPart: 2
   prefab: {fileID: 489240768068986823, guid: f0cdc489ae910074993c225604a67c54, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -108,3 +112,4 @@ MonoBehaviour:
   shield: 80
   energy: 1
   description: 30% of this Axie's shield becomes extra damage
+  OnlyDamageShields: 0

@@ -249,7 +249,9 @@ public class DragAndDropCharacter : MonoBehaviour
     private void MoveCharacterToTile(AxieController character, OverlayTile targetTile)
     {
         character.transform.position = targetTile.transform.position;
+        character.standingOnTile.occupied = false;
         character.standingOnTile = targetTile;
+        character.standingOnTile.occupied = true;
         // Adjust local scale based on grid X value
         if (targetTile.grid2DLocation.x >= 4)
         {

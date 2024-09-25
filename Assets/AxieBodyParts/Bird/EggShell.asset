@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -102,7 +103,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
-  tooltipTypes: 040000000300000007000000
+  tooltipTypes: 07000000
   bodyPart: 2
   prefab: {fileID: 2179489554462401005, guid: 02f4f28b6ab80504e80d2f1885493983, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -110,4 +111,5 @@ MonoBehaviour:
   damage: 120
   shield: 0
   energy: 1
-  description: Apply Aroma to self
+  description: Apply <color="yellow">Aroma<color> to self
+  OnlyDamageShields: 0

@@ -111,4 +111,5 @@ MonoBehaviour:
   damage: 50
   shield: 10
   energy: 1
-  description: Wombo, Prioritize furthest target
+  description: <color="yellow">Wombo, Prioritize</color> furthest target
+  OnlyDamageShields: 0

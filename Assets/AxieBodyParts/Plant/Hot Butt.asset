@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 1
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -66,6 +67,7 @@ MonoBehaviour:
     ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -109,4 +111,5 @@ MonoBehaviour:
   damage: 90
   shield: 50
   energy: 1
-  description: Apply Hot Butt to target for 5 seconds
+  description: Apply <color="yellow">Hot Butt</color> to target for 5 seconds
+  OnlyDamageShields: 0

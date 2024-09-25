@@ -157,6 +157,7 @@ public class AxieBehavior : MonoBehaviour
                 if (attackCoroutine != null)
                     StopCoroutine(attackCoroutine);
                 attackCoroutine = null;
+                myController.standingOnTile.occupied = false;
                 myController.gameObject.SetActive(false);
                 break;
         }

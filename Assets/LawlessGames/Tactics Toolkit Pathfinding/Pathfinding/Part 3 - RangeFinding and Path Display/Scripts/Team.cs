@@ -347,7 +347,7 @@ public class Team : MonoBehaviour
             startingTile = MapManager.Instance.map[gridLocation.Value];
         }
 
-        PositionCharacterOnTile(character, startingTile);
+        PositionCharacterOnTile(character, startingTile, true);
         character.transform.localScale = new Vector3(gridLocation.Value.x < 4 ? -0.2f : 0.2f,
             0.2f, character.transform.localScale.z);
 
@@ -645,6 +645,10 @@ public class Team : MonoBehaviour
     {
         if (!tile.occupied || force)
         {
+            if (character.standingOnTile != null)
+            {
+                character.standingOnTile.occupied = false;
+            }
             character.transform.position = tile.transform.position;
             tile.occupied = true;
             tile.currentOccupier = character;

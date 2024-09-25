@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -110,4 +111,6 @@ MonoBehaviour:
   damage: 90
   shield: 50
   energy: 1
-  description: Apply Stun on enemy when comboed with another active ability
+  description: Apply <color="yellow">Stun</color> on enemy when comboed with another
+    active ability
+  OnlyDamageShields: 0

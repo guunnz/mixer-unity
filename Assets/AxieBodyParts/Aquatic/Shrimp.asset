@@ -111,4 +111,5 @@ MonoBehaviour:
   damage: 80
   shield: 40
   energy: 1
-  description: Prioritizes furthest target
+  description: <color="yellow">Prioritizes</color> furthest target
+  OnlyDamageShields: 0

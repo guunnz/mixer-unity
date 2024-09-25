@@ -69,8 +69,8 @@ MonoBehaviour:
   - {fileID: 1737301332660581833}
   - {fileID: 1621615694016571232}
   m_RendererFeatureMap: 21da2cd0b04c1809c221e6a1dadd7d14db0739df176b8d3a87ce5ab790ecca408a890fc16d157d9cec7693ecb72be875c5dd438ff1018760c9f50b815b221c1860670ecce1228116
-  m_UseNativeRenderPass: 0
-  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  m_UseNativeRenderPass: 1
+  postProcessData: {fileID: 0}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -105,12 +105,12 @@ MonoBehaviour:
     passOperation: 2
     failOperation: 0
     zFailOperation: 0
-  m_ShadowTransparentReceive: 1
+  m_ShadowTransparentReceive: 0
   m_RenderingMode: 0
   m_DepthPrimingMode: 0
   m_CopyDepthMode: 1
   m_AccurateGbufferNormals: 0
-  m_IntermediateTextureMode: 1
+  m_IntermediateTextureMode: 0
 --- !u!114 &655358068072962593
 MonoBehaviour:
   m_ObjectHideFlags: 0

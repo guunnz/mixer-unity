@@ -22,6 +22,7 @@ public class MapManager : MonoBehaviour
     public int width = 12; // Width of the map
     internal List<OverlayTile> overlayTiles = new List<OverlayTile>();
     public int depth = 2; // Depth of the map (previously height)
+    public List<MaterialTipColorChanger> enemyTiles;
 
     private void Awake()
     {
@@ -55,9 +56,9 @@ public class MapManager : MonoBehaviour
     {
         map = new Dictionary<Vector2Int, OverlayTile>();
 
-        for (int z = 0; z < depth; z++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            for (int z = 0; z < depth; z++)
             {
                 var overlayTile = Instantiate(overlayPrefab, overlayContainer.transform);
                 Vector3 cellWorldPosition = new Vector3(x, 0, z); // Position based on x and z
@@ -65,7 +66,10 @@ public class MapManager : MonoBehaviour
                 var tileScript = overlayTile.GetComponent<OverlayTile>();
                 overlayTiles.Add(tileScript);
                 tileScript.gridLocation = new Vector3Int(x, 0, z);
-
+                if (x >= 4)
+                {
+                    enemyTiles.Insert(0, tileScript.tipColorChanger);
+                }
                 map.Add(new Vector2Int(x, z), tileScript);
             }
         }

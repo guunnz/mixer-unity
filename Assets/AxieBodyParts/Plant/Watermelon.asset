@@ -111,4 +111,5 @@ MonoBehaviour:
   damage: 30
   shield: 30
   energy: 1
-  description: Wombo, Prioritize the fastest enemy
+  description: <color="yellow">Wombo, Prioritize</color> the fastest enemy
+  OnlyDamageShields: 0

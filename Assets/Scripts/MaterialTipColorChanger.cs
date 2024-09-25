@@ -76,7 +76,12 @@ public class MaterialTipColorChanger : MonoBehaviour
     private void Update()
     {
         SetColor();
+    }
 
+    public void ResetColor(LandType landType)
+    {
+        this.landType = landType;
+        colorAlreadySet = false;
     }
 
     public void SetColor()

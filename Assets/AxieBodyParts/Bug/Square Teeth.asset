@@ -52,8 +52,10 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
@@ -65,6 +67,7 @@ MonoBehaviour:
     ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -100,7 +103,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
-  tooltipTypes: 
+  tooltipTypes: 00000000
   bodyPart: 3
   prefab: {fileID: 3133670662096343493, guid: 4d4bfe2cb950a1b4886cf918eaacd81b, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -108,4 +111,6 @@ MonoBehaviour:
   damage: 30
   shield: 0
   energy: 1
-  description: Wombo, deal 500% extra damage if you are below 50% hp
+  description: <color="yellow">Wombo</color>, deal 500% extra damage if you are below
+    50% hp
+  OnlyDamageShields: 0

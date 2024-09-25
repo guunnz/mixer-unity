@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -110,4 +111,5 @@ MonoBehaviour:
   damage: 100
   shield: 40
   energy: 1
-  description: Apply -1 Speed to target
+  description: Apply <color="yellow">-Speed</color> to target
+  OnlyDamageShields: 0

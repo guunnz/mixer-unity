@@ -111,4 +111,6 @@ MonoBehaviour:
   damage: 100
   shield: 50
   energy: 1
-  description: Prioritize furthest enemy when comboed with another active ability
+  description: <color="yellow">Prioritize</color> furthest enemy when comboed with
+    another active ability
+  OnlyDamageShields: 0

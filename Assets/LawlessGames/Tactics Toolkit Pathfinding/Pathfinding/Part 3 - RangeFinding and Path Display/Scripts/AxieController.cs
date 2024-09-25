@@ -43,7 +43,28 @@ public class AxieController : MonoBehaviour
     public Team myTeam;
     public AxieBehavior axieBehavior;
     public IngameStats axieIngameStats;
-    public OverlayTile standingOnTile;
+    private OverlayTile _standingOnTile;
+    public OverlayTile standingOnTile
+    {
+        get { return _standingOnTile; }
+        set
+        {
+            // If the current tile is not null, set its 'occupied' to false
+            if (_standingOnTile != null)
+            {
+                _standingOnTile.occupied = false;
+            }
+
+            // Set the new tile
+            _standingOnTile = value;
+
+            // If the new tile is not null, set its 'occupied' to true
+            if (_standingOnTile != null)
+            {
+                _standingOnTile.occupied = true;
+            }
+        }
+    }
     public GetAxiesExample.Stats stats;
     public SkeletonAnimation SkeletonAnim;
 
@@ -264,11 +285,15 @@ public class AxieController : MonoBehaviour
         float targetY =
             UnityEngine.Random.Range(MapManager.Instance.minMapBounds.y, MapManager.Instance.maxMapBounds.y);
 
-        if (changingFromMenuToBattle)
+        if (standingOnTile != null)
         {
-            targetX = standingOnTile.grid2DLocation.x;
-            targetY = standingOnTile.grid2DLocation.y;
+            if (changingFromMenuToBattle)
+            {
+                targetX = standingOnTile.grid2DLocation.x;
+                targetY = standingOnTile.grid2DLocation.y;
+            }
         }
+       
 
         Vector3 targetPosition = new Vector3(targetX, 0, targetY);
 

@@ -52,6 +52,7 @@ MonoBehaviour:
     Hotbutt: 0
     Kestrel: 0
     FishSnack: 0
+    Backdoor: 0
     GravelAnt: 0
     HealingBlock: 0
     ImmuneToDebuffs: 0
@@ -116,4 +117,6 @@ MonoBehaviour:
   damage: 20
   shield: 30
   energy: 1
-  description: Wombo, when combo with plant ability gain 50 extra shield
+  description: <color="yellow">Wombo</color>, when combo with plant ability gain
+    50 extra shield
+  OnlyDamageShields: 0

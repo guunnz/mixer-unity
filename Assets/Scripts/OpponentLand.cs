@@ -86,6 +86,20 @@ public class OpponentLand : MonoBehaviour
             currentSpawnedLand.layer = LayerMask.NameToLayer("LandEnemy");
         }
     }
+    public void ChooseFakeLandMobile(LandType landType)
+    {
+        currentLandType = landType;
+        if (currentSpawnedLand != null)
+        {
+            Destroy(currentSpawnedLand);
+        }
+
+        currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
+      landParent);
+        SetLayerRecursively(currentSpawnedLand.transform, "LandEnemy");
+        currentSpawnedLand.layer = LayerMask.NameToLayer("LandEnemy");
+    }
+
 
     public void ChooseFakeLand(LandType landType)
     {
