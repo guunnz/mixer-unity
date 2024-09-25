@@ -328,11 +328,12 @@ public class AxieController : MonoBehaviour
 
         yield return null;
     }
-
+    private bool animationBattleSet = false;
     private void Update()
     {
         if (mode == AxieMode.Menu && axieBehavior.axieState != AxieState.Hovered)
         {
+            animationBattleSet = false;
             if (TimerMove <= 0)
             {
                 menuWalkCoroutine = StartCoroutine(MoveToRandomPosition());
@@ -341,6 +342,11 @@ public class AxieController : MonoBehaviour
             {
                 TimerMove -= Time.deltaTime;
             }
+        }
+        else if (!animationBattleSet && SkeletonAnim.AnimationName != "action/idle/normal")
+        {
+            animationBattleSet = true;
+            SkeletonAnim.AnimationName = "action/idle/normal";
         }
     }
 
