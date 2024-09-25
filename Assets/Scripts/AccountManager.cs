@@ -18,7 +18,6 @@ public class AccountManager : MonoBehaviour
     private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;
-    public TextMeshProUGUI IncorrectWallet;
     public TextMeshProUGUI usernameText;
     public TextMeshProUGUI usernameTextInBattle;
     public GameObject NextStepAfterLogin;
@@ -30,12 +29,6 @@ public class AccountManager : MonoBehaviour
     public int pages;
     public int axiesShown;
 
-    public IEnumerator IncorrectWalletDo()
-    {
-        IncorrectWallet.DOColor(Color.white, 0.2f);
-        yield return new WaitForSeconds(1);
-        IncorrectWallet.DOColor(Color.clear, 0.2f);
-    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F11))

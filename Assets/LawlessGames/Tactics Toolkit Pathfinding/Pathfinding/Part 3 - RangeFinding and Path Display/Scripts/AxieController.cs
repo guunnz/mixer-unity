@@ -53,6 +53,7 @@ public class AxieController : MonoBehaviour
             if (_standingOnTile != null)
             {
                 _standingOnTile.occupied = false;
+                _standingOnTile.currentOccupier = null;
             }
 
             // Set the new tile
@@ -293,7 +294,7 @@ public class AxieController : MonoBehaviour
                 targetY = standingOnTile.grid2DLocation.y;
             }
         }
-       
+
 
         Vector3 targetPosition = new Vector3(targetX, 0, targetY);
 

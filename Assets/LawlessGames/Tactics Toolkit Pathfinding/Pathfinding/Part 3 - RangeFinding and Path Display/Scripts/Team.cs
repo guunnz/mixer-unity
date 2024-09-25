@@ -9,6 +9,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using UnityEngine.TextCore.Text;
 
 public class Team : MonoBehaviour
 {
@@ -153,6 +154,8 @@ public class Team : MonoBehaviour
 
         for (int i = 0; i < enemyList.Count; i++)
         {
+            enemyList[i].standingOnTile.occupied = false;
+            enemyList[i].standingOnTile.currentOccupier = null;
             Destroy(enemyList[i].gameObject);
         }
 
@@ -163,6 +166,8 @@ public class Team : MonoBehaviour
             character.axieBehavior.axieState = AxieState.Idle;
             character.gameObject.SetActive(true);
             Vector2Int gridLocation = new Vector2Int(character.startingRow, character.startingCol);
+            character.standingOnTile.occupied = false;
+            character.standingOnTile.currentOccupier = null;
             OverlayTile startingTile = MapManager.Instance.map[gridLocation];
             character.transform.localScale = new Vector3(gridLocation.x < 4 ? -0.2f : 0.2f,
                 0.2f, character.transform.localScale.z);

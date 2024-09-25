@@ -19,7 +19,7 @@ public class TutorialStep
 
 public class Tutorial : MonoBehaviour
 {
-    public ScriptableRendererData rendererData;
+    public List<ScriptableRendererData> rendererDatas;
     public List<TutorialStep> steps;
     public string featureName = "Tutorial";
     public bool enableFeature = true;
@@ -33,6 +33,7 @@ public class Tutorial : MonoBehaviour
     public RectTransform Olek;
     public GameObject ComboView;
     public TextMeshProUGUI DialogueText;
+    public List<CanvasAlignmentController> AlignmentControllerList;
     private void Awake()
     {
         BuildSteps();
@@ -118,13 +119,13 @@ public class Tutorial : MonoBehaviour
 
     private void OnDisable()
     {
-        EndTutorial();
+        SetRendererFeatureEnabled(featureName, false);
+            EndTutorial();
     }
     void StartTutorial()
     {
-
         DOTween.Init();
-
+        AlignmentControllerList.ForEach(x => x.SetAlignment(TextAnchor.MiddleCenter));
         // Sequence to chain animations
         Sequence mySequence = DOTween.Sequence();
 
@@ -144,12 +145,15 @@ public class Tutorial : MonoBehaviour
 
     void EndTutorial()
     {
+        AlignmentControllerList.ForEach(x => x.SetStretch());
         DialogueText.transform.parent.gameObject.SetActive(false);
         TutorialBW.SetVector("_position", new Vector2(0f, 0f));
         TutorialBW.SetFloat("_size", 1f);
+
         SetRendererFeatureEnabled(featureName, false);
         Destroy(MenuCanvas.GetComponent<PreciseWorldSpaceCanvasController>());
         MenuCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
         ComboView.SetActive(true);
         DOTween.Init();
 
@@ -206,6 +210,11 @@ public class Tutorial : MonoBehaviour
         {
             EndTutorial();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EndTutorial();
+        }
     }
 
     // Function to smoothly move the Vector2 position value over time
@@ -240,18 +249,22 @@ public class Tutorial : MonoBehaviour
 
     public void SetRendererFeatureEnabled(string featureName, bool enable)
     {
-        if (rendererData != null)
+        if (rendererDatas != null)
         {
-            // Find the renderer feature by name
-            foreach (var feature in rendererData.rendererFeatures)
+            foreach (var rendererData in rendererDatas)
             {
-                if (feature.name == featureName)
+                // Find the renderer feature by name
+                foreach (var feature in rendererData.rendererFeatures)
                 {
-                    feature.SetActive(enable);
-                    Debug.Log($"{featureName} feature is now {(enable ? "enabled" : "disabled")}.");
-                    return;
+                    if (feature.name == featureName)
+                    {
+                        feature.SetActive(enable);
+                        Debug.Log($"{featureName} feature is now {(enable ? "enabled" : "disabled")}.");
+                        return;
+                    }
                 }
             }
+
             Debug.LogWarning($"Renderer Feature '{featureName}' not found.");
         }
         else

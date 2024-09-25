@@ -22,8 +22,6 @@ public class LandManager : MonoBehaviour
     [SerializeField] private List<SpawnableLand> spawnableLands;
     private GameObject currentSpawnedLand;
     private LandType currentLandType;
-    [SerializeField] private TextMeshProUGUI landTypeName;
-    [SerializeField] private TextMeshProUGUI landCoordinates;
 
     static public LandManager instance;
 
@@ -101,9 +99,6 @@ public class LandManager : MonoBehaviour
             materialTipColorChanger.colorAlreadySet = false;
         }
 
-        landTypeName.text = CapitalizeFirstLetter(currentLandType.ToString());
-        landCoordinates.text =
-            $"({AccountManager.userLands.results[indexChoosing].col},{AccountManager.userLands.results[indexChoosing].row})";
         if (currentSpawnedLand != null)
         {
             Destroy(currentSpawnedLand);

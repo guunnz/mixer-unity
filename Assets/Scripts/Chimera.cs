@@ -36,11 +36,11 @@ public class Chimera : MonoBehaviour
         // Flip local scale in X based on movement direction
         if (direction.x > 0)
         {
-            transform.localScale = new Vector3(initialScaleX, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(!target.imGood ? -initialScaleX : initialScaleX, transform.localScale.y, transform.localScale.z);
         }
         else if (direction.x < 0)
         {
-            transform.localScale = new Vector3(-initialScaleX, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(!target.imGood ? initialScaleX : -initialScaleX, transform.localScale.y, transform.localScale.z);
         }
 
         chimeraAttackSfx.Initialize(true);
@@ -150,11 +150,11 @@ public class Chimera : MonoBehaviour
             // Flip local scale in X based on movement direction
             if (direction.x > 0)
             {
-                transform.localScale = new Vector3(initialScaleX, transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(!target.imGood ? -initialScaleX : initialScaleX, transform.localScale.y, transform.localScale.z); ;
             }
             else if (direction.x < 0)
             {
-                transform.localScale = new Vector3(-initialScaleX, transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(!target.imGood ? initialScaleX : -initialScaleX, transform.localScale.y, transform.localScale.z);
             }
 
             skeletonAnimation.AnimationName = "action/move-forward";
