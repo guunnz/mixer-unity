@@ -25,6 +25,7 @@ public class EndOfRunResults : MonoBehaviour
     public Team GoodTeam;
     public GameObject MatchPrefab;
     public GameObject Container;
+    public GameObject Items;
 
     private List<MatchData> MatchData = new List<MatchData>();
     public Transform MatchesParent;
@@ -125,6 +126,7 @@ public class EndOfRunResults : MonoBehaviour
         }
 
         Container.SetActive(true);
+        Items.SetActive(true);
         MatchData.ForEach(x => InstantiateMatch(x));
     }
 
