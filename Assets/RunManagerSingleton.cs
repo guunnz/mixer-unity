@@ -91,6 +91,31 @@ public class RunManagerSingleton : MonoBehaviour
     }
     public void SetResult(bool won)
     {
+        if (won)
+        {
+            if (roundsPassives.ExtraTeamHPPerRound != 0)
+            {
+                var axies = goodTeam.GetCharactersAll();
+                axies.ForEach(axie => { axie.stats.hp += roundsPassives.ExtraTeamHPPerRound; });
+            }
+
+            if (wins >= 12)
+            {
+                MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
+                EndOfRunResults.Instance.ShowResults();
+                return;
+            }
+        }
+        else
+        {
+            if (losses >= 3)
+            {
+                MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
+                EndOfRunResults.Instance.ShowResults();
+                return;
+            }
+        }
+
         skere = 0;
         eNetWorth = 0;
         resultsBools.Add(won);
@@ -110,30 +135,6 @@ public class RunManagerSingleton : MonoBehaviour
         economyPassive.RollsThisRound = 0;
         coinsText.text = coins.ToString();
         RunManagerSingleton.instance.ItemsTooltip.gameObject.SetActive(true);
-        if (won)
-        {
-            if (roundsPassives.ExtraTeamHPPerRound != 0)
-            {
-                var axies = goodTeam.GetCharactersAll();
-                axies.ForEach(axie => { axie.stats.hp += roundsPassives.ExtraTeamHPPerRound; });
-            }
-
-            if (wins >= 12)
-            {
-                MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                return;
-            }
-        }
-        else
-        {
-            if (losses >= 3)
-            {
-                MusicManager.Instance.PlayMusic(MusicTrack.Tululu);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                return;
-            }
-        }
         ShopManager.instance.SetShop();
     }
 

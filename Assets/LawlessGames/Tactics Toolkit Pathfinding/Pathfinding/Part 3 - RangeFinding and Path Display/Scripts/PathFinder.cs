@@ -38,14 +38,21 @@ public class PathFinder
             openList.Remove(currentOverlayTile);
             closedList.Add(currentOverlayTile);
 
-            if (currentOverlayTile == end)
+            if (currentOverlayTile == end && !end.occupied)
             {
+                // Return the direct path if the target is not occupied
                 return GetFinishedList(start, end);
             }
 
             foreach (var tile in GetNeightbourOverlayTiles(currentOverlayTile))
             {
-                if (tile.occupied || closedList.Contains(tile))
+                if (closedList.Contains(tile))
+                {
+                    continue;
+                }
+
+                // Skip occupied tiles for movement but still calculate distances to them for closest path
+                if (tile.occupied && tile != end)
                 {
                     continue;
                 }
@@ -69,9 +76,16 @@ public class PathFinder
             }
         }
 
-        // Return null if the closest tile is more than one step away from the target
+        // If it's ranged, we must return the closest possible path, even if the target tile is occupied
+        if (isRanged)
+        {
+            return GetFinishedList(start, closestTile);
+        }
+
+        // For non-ranged, return null if the closest tile is more than one step away from the target
         return closestDistance <= 1 ? GetFinishedList(start, closestTile) : null;
     }
+
 
 
     private int GetManhattanDistance(OverlayTile tile1, OverlayTile tile2)

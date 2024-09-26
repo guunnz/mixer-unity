@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GetAxiesExample;
 
@@ -30,12 +31,18 @@ public class SkyMavisLogin : MonoBehaviour
     private string userWallet;
     private ConcurrentQueue<Action> actions = new ConcurrentQueue<Action>();
 
+    public void LogOut()
+    {
+        PlayerPrefs.SetString("Auth", "");
+        SceneManager.LoadScene(0);
+    }
+
     private void Start()
     {
 #if UNITY_ANDROID || UNITY_IOS
-      
+
         Application.targetFrameRate = 30;
-      
+
 #endif
         string token = GetTokenFromCommandLineArgs();
         if (!string.IsNullOrEmpty(token))

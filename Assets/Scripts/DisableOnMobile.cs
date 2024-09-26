@@ -9,7 +9,16 @@ public class DisableOnMobile : MonoBehaviour
     void Start()
     {
 #if UNITY_ANDROID || UNITY_IOS
-        gameObject.SetActive(EnableInstead ? true : false);
+        if (!EnableInstead)
+            gameObject.SetActive(false);
+#endif
+
+
+#if UNITY_STANDALONE
+ if (EnableInstead)
+        {
+         gameObject.SetActive(false);
+        }
 #endif
     }
 }

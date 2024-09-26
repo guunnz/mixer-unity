@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &877209512680714572
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &1436942949048319407
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &2894404457662004666
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,6 +792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6851412931341925511}
+  - component: {fileID: 6208522242108449468}
   m_Layer: 7
   m_Name: Church(Clone)
   m_TagString: Untagged
@@ -820,6 +824,19 @@ Transform:
   - {fileID: 6893362294785672028}
   m_Father: {fileID: 5635310498936864600}
   m_LocalEulerAnglesHint: {x: -20.653, y: -137.886, z: -17.059}
+--- !u!114 &6208522242108449468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908892663680005297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &3207960888682690401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,6 +1165,7 @@ GameObject:
   - component: {fileID: 671686337745117948}
   - component: {fileID: 5380561941383034186}
   - component: {fileID: 1382324145174991079}
+  - component: {fileID: 4736345516178428126}
   m_Layer: 7
   m_Name: Cart_01(Clone)
   m_TagString: Untagged
@@ -1242,6 +1260,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 7c11f7d1c5d13d14e9e2ae0b21f49e47, type: 3}
+--- !u!114 &4736345516178428126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3566807301275635973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &3719253761489542919
 GameObject:
   m_ObjectHideFlags: 0
@@ -1360,6 +1391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &4126749101787182483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1688,6 +1720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &5270209612783046675
 GameObject:
   m_ObjectHideFlags: 0
@@ -1806,6 +1839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &5977927113858038547
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,6 +2170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &6767682642782189418
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,6 +2228,7 @@ GameObject:
   - component: {fileID: 3486804692380850272}
   - component: {fileID: 959383414714092111}
   - component: {fileID: 6436622676599549162}
+  - component: {fileID: 8551861004922269575}
   m_Layer: 7
   m_Name: Well(Clone)
   m_TagString: Untagged
@@ -2287,6 +2323,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: e19c5170e9fa0c544b8755c221fe8026, type: 3}
+--- !u!114 &8551861004922269575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7166233213729992607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &7196903905243190699
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,6 +2454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &7282611943460159381
 GameObject:
   m_ObjectHideFlags: 0
@@ -2523,6 +2573,7 @@ GameObject:
   - component: {fileID: 548195456308329639}
   - component: {fileID: 5527071784898430391}
   - component: {fileID: 7571336308184255296}
+  - component: {fileID: 3103859033313277879}
   m_Layer: 7
   m_Name: House_05(Clone)
   m_TagString: Untagged
@@ -2623,6 +2674,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 18c49bb3310ae4444aab99aeb9a42dac, type: 3}
+--- !u!114 &3103859033313277879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574191444334375281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &7797765985171425472
 GameObject:
   m_ObjectHideFlags: 0
@@ -2741,6 +2805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8996e25642e7c5048aa7870c36c89c01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableInstead: 0
 --- !u!1 &7836792106651639406
 GameObject:
   m_ObjectHideFlags: 0

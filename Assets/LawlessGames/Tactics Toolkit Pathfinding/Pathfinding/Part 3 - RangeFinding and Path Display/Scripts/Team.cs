@@ -231,6 +231,7 @@ public class Team : MonoBehaviour
                     YouWinLose.color = Color.clear;
                     if (isGoodTeam)
                     {
+                        EndOfRunResults.Instance.SetMatchData(false);
                         Debug.Log("SFX PLAYED");
                         SFXManager.instance.PlaySFX(SFXType.Lost, 0.12f, false);
                         MusicManager.Instance.Stop();
@@ -241,6 +242,7 @@ public class Team : MonoBehaviour
                     }
                     else
                     {
+                        EndOfRunResults.Instance.SetMatchData(true);
                         RunManagerSingleton.instance.SetResultUI(!isGoodTeam);
                         Debug.Log("SFX PLAYED");
                         SFXManager.instance.PlaySFX(SFXType.Win, 0.12f, false);
