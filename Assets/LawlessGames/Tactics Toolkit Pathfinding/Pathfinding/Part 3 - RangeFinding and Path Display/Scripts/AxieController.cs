@@ -343,7 +343,7 @@ public class AxieController : MonoBehaviour
                 TimerMove -= Time.deltaTime;
             }
         }
-        else if (!animationBattleSet && SkeletonAnim.AnimationName != "action/idle/normal")
+        else if (!animationBattleSet && SkeletonAnim.AnimationName != "action/idle/normal" && axieBehavior.axieState != AxieState.Hovered)
         {
             animationBattleSet = true;
             SkeletonAnim.AnimationName = "action/idle/normal";
