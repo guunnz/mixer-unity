@@ -12,7 +12,7 @@ public class RollShopBehavior : MonoBehaviour
 
     public TextMeshProUGUI Poping;
     private bool scaling = false;
-
+    private int pressTimes;
     private void OnEnable()
     {
         Poping.color = Color.clear;
@@ -33,6 +33,9 @@ public class RollShopBehavior : MonoBehaviour
     {
         if (scaling)
         {
+#if UNITY_ANDROID || UNITY_IOS
+            pressTimes = 0;
+#endif
             scaling = false;
             this.transform.DOScale(new Vector3(0.01f, 0.01f, 0.01f), 0.25f);
             Poping.DOColor(Color.clear, 0.5f);
@@ -43,7 +46,14 @@ public class RollShopBehavior : MonoBehaviour
     {
         if (AtiasBlessing.activeSelf)
             return;
+#if UNITY_ANDROID || UNITY_IOS
+        if (pressTimes == 0)
+        {
+            pressTimes++;
+            return;
+        }
 
+#endif
         ShopManager.instance.PressRollShop();
     }
 }

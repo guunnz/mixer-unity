@@ -422,7 +422,7 @@ public class AtiaBlessing : MonoBehaviour
 
                         blessings.Remove(blessing2);
                         blessings.Remove(blessing3);
-
+                        
                         blessing2 = blessings[Random.Range(0, blessings.Count)];
                         rollSecond--;
                         if (rollSecond == 0)

@@ -164,6 +164,12 @@ public class TeamCaptainManager : MonoBehaviour
 
     public List<GetAxiesExample.Axie> GetFilteredList()
     {
+        if (RunManagerSingleton.instance.user_wallet_address != "0x46571200388f6DCE5416E552e28caa7A6833c88e")
+        {
+            var axiesList = AccountManager.userAxies.results.ToList();
+            axiesList.RemoveAll(x => x.id == "3000119" || x.id == "11432057");
+            return axiesList;
+        }
         return AccountManager.userAxies.results.ToList();
     }
 

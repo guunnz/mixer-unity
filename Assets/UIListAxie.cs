@@ -14,6 +14,7 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GetAxiesExample.Axie axie;
     public Image selectedImage;
     public Image axieClassImage;
+    public GameObject freeRotation;
     public Sprite selectedSprite;
     public Sprite unselectedSprite;
     public FakeAxiesManager fakeAxiesManager;
@@ -21,6 +22,7 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private Button button;
     public TeamBuilderManager teamBuilderManager;
     internal bool selected => selectedImage.sprite == selectedSprite;
+    private bool free;
 
     private void Start()
     {
@@ -75,6 +77,18 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             axieClassImage.sprite =
                 axieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
+
+            if (axie.id == "3000119" || axie.id == "11432057")
+            {
+                freeRotation.SetActive(true);
+                free = true;
+            }
+            else
+            {
+                freeRotation.SetActive(false);
+                free = false;
+            }
+
             if (fakeAxiesManager.instantiatedAxies.Any(x => x.axie != null && x.axie.id == this.axie.id))
             {
                 if (skeletonGraphic.startingAnimation != "action/idle/random-04")
@@ -105,6 +119,11 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (axie == null)
             return;
 
+        if (free)
+        {
+            TooltipManagerSingleton.instance.EnableTooltip(TooltipType.FreeAxie);
+        }
+
         teamBuilderManager.SetAxieStats(this.axie);
 
     }
@@ -113,6 +132,11 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (axie == null)
             return;
+
+        if (free)
+        {
+            TooltipManagerSingleton.instance.DisableTooltip(TooltipType.FreeAxie);
+        }
 
         teamBuilderManager.DisableAxieStats();
     }

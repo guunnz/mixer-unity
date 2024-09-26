@@ -111,5 +111,5 @@ MonoBehaviour:
   damage: 120
   shield: 0
   energy: 1
-  description: Apply <color="yellow">Aroma<color/> to self
+  description: Apply <color="yellow">Aroma</color> to self
   OnlyDamageShields: 0

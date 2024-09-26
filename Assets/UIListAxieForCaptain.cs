@@ -51,7 +51,7 @@ public class UIListAxieForCaptain : MonoBehaviour
 
     public void Refresh(bool resetAxie = true)
     {
-        if (axie == null)
+        if (axie == null || axie.@class == "")
         {
             skeletonGraphic.enabled = false;
             selectedImage.enabled = axie != null;
@@ -69,6 +69,8 @@ public class UIListAxieForCaptain : MonoBehaviour
 
         selectedImage.enabled = axie != null;
         axieClassImage.enabled = axie != null;
+        axieClassImage.sprite =
+               axieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
 
         if (teamCaptainManager.selectedAxie != axie.id)
         {

@@ -83,7 +83,7 @@ public class AccountManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("User info: " + userInfoResponse);
+        Debug.Log("User info 1: " + userInfoResponse);
 
         SkyMavisLogin.Root userInfo = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfoResponse);
         MavisTracking.Instance.InitializeTracking(userInfo.userInfo);
@@ -105,6 +105,7 @@ public class AccountManager : MonoBehaviour
 
         SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(wallet));
 
+        Debug.Log("ADDING AXIES");
         userInfoPrev.axies.result.items.AddRange(userInfo.axies.result.items);
         if (userInfo.lands.result.items.Count != 0)
             userInfoPrev.lands.result.items.AddRange(userInfo.lands.result.items);

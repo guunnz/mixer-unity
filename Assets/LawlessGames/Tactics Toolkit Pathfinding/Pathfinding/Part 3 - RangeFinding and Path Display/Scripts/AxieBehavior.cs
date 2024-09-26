@@ -164,17 +164,26 @@ public class AxieBehavior : MonoBehaviour
     }
     public IEnumerator GoBackdoorTarget()
     {
-
         myController.SkeletonAnim.AnimationName = "attack/melee/shrimp";
         shrimping = true;
         myController.SkeletonAnim.loop = false;
         yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
         Vector3 positionToMove = Vector3.zero;
 
+        if (this.myController.CurrentTarget == null || this.myController.CurrentTarget.standingOnTile == null)
+        {
+
+            myController.SkeletonAnim.loop = true;
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            shrimping = false;
+            yield break;
+        }
         List<OverlayTile> possibleTiles = this.myController.CurrentTarget.standingOnTile.AdjacentTiles();
 
         if (possibleTiles.Count == 0)
         {
+            myController.SkeletonAnim.loop = true;
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
             shrimping = false;
             yield break;
         }
@@ -212,6 +221,7 @@ public class AxieBehavior : MonoBehaviour
         }
 
         shrimping = false;
+
     }
 
     public IEnumerator GoBackdoor()

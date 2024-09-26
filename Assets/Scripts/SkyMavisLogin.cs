@@ -297,6 +297,14 @@ public class SkyMavisLogin : MonoBehaviour
             if (page > 0)
             {
                 AddNFTs(userInfo);
+
+                SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
+
+                if (userInfoObj.axies.result.paging.total - page * 100 != userInfoObj.axies.result.items.Count || userInfoObj.lands.result.paging.total - page * 100 != userInfoObj.lands.result.items.Count)
+                {
+                    Debug.Log("LOOKING FOR NEW PAGE: " + (page + 1));
+                    StartCoroutine(GetNFTS(5, page + 1));
+                }
             }
             else
             {
@@ -304,8 +312,12 @@ public class SkyMavisLogin : MonoBehaviour
 
                 SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
 
-                if (userInfoObj.axies.result.paging.total != userInfoObj.axies.result.items.Count || userInfoObj.lands.result.paging.total != userInfoObj.lands.result.items.Count)
+                Debug.Log("TOTAL NUMBERS: " + userInfoObj.axies.result.paging.total.ToString());
+                Debug.Log("TOTAL AXIES IN PAGE: " + userInfoObj.axies.result.items.Count.ToString());
+
+                if (userInfoObj.axies.result.paging.total - page * 100 != userInfoObj.axies.result.items.Count || userInfoObj.lands.result.paging.total - page * 100 != userInfoObj.lands.result.items.Count)
                 {
+                    Debug.Log("LOOKING FOR NEW PAGE: " + (page + 1));
                     StartCoroutine(GetNFTS(5, page + 1));
                 }
             }

@@ -44,7 +44,8 @@ namespace enemies
             }
             else
             {
-                json = await landBattleTarget.GetScoreAsync((RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses).ToString());
+                int num = RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses;
+                json = await landBattleTarget.GetScoreAsync(num.ToString());
             }
 
             Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);

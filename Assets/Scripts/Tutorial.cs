@@ -120,7 +120,7 @@ public class Tutorial : MonoBehaviour
     private void OnDisable()
     {
         SetRendererFeatureEnabled(featureName, false);
-            EndTutorial();
+        EndTutorial();
     }
     void StartTutorial()
     {
@@ -260,7 +260,7 @@ public class Tutorial : MonoBehaviour
                     {
                         feature.SetActive(enable);
                         Debug.Log($"{featureName} feature is now {(enable ? "enabled" : "disabled")}.");
-                        return;
+                        continue;
                     }
                 }
             }

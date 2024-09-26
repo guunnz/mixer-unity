@@ -314,8 +314,6 @@ namespace Game
 
             if (isEnemy)
             {
-
-
                 controller.startingCol =
                      axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].col;
                 controller.startingRow =
