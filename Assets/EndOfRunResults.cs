@@ -20,6 +20,8 @@ public class MatchData
 public class EndOfRunResults : MonoBehaviour
 {
     public List<GameObject> GameobjectsToDisable;
+    public List<Transform> FireworksPositions;
+    public List<GameObject> FireworksPrefab;
     public Team GoodTeam;
     public GameObject MatchPrefab;
     public GameObject Container;
@@ -51,6 +53,44 @@ public class EndOfRunResults : MonoBehaviour
         matchdata.skeletonmaterial = SkeletonGraphicCaptain.material;
         matchdata.winIndex = MatchData.Count + 1;
         MatchData.Add(matchdata);
+    }
+    public IEnumerator Fireworks()
+    {
+        while (true)
+        {
+            var position = FireworksPositions[Random.Range(0, FireworksPositions.Count)];
+            var firework = Instantiate(FireworksPrefab[Random.Range(0, GameobjectsToDisable.Count)], position.position, Quaternion.identity, null);
+
+
+            // Get the main particle system of the firework
+            ParticleSystem mainParticleSystem = firework.GetComponent<ParticleSystem>();
+            if (mainParticleSystem != null)
+            {
+                mainParticleSystem.Play();
+            }
+
+            // Get all child particle systems and play them
+            foreach (var childParticleSystem in firework.GetComponentsInChildren<ParticleSystem>())
+            {
+                if (childParticleSystem != mainParticleSystem) // Skip the main one as it's already played
+                {
+                    childParticleSystem.Play();
+                }
+            }
+
+            // Wait for random time before instantiating the next firework
+            yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+
+            // Start a coroutine to destroy the firework after it's done
+            StartCoroutine(DestroyCoroutine(firework));
+        }
+    }
+
+
+    public IEnumerator DestroyCoroutine(GameObject obj)
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(obj);
     }
 
     public void ShowResults()

@@ -282,6 +282,7 @@ namespace enemies
             FindingOpponent.gameObject.SetActive(false);
             enemyLandAnimation.DoAnimation((LandType)opponent.land_type);
             //enemyLandAnimation.DoAnimation((LandType)opponent.land_type);
+            TooltipManagerSingleton.instance.DisableTooltip();
             Countdown.gameObject.SetActive(true);
             Countdown.text = "3!";
             SFXManager.instance.PlaySFX(SFXType.ThreeTwoOne, 0.06f, false, 1);
