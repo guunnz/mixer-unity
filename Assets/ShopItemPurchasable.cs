@@ -23,6 +23,7 @@ public class ShopItemPurchasable : MonoBehaviour
     public bool Frozen;
     public GameObject FreezeGraphics;
     public bool PreventSetOnStart;
+    private int pressTimes;
 
     private void OnEnable()
     {
@@ -65,6 +66,9 @@ public class ShopItemPurchasable : MonoBehaviour
     {
         if (scaling)
         {
+#if UNITY_ANDROID || UNITY_IOS
+            pressTimes = 0;
+#endif
             scaling = false;
             this.transform.DOScale(new Vector3(0.01f, 0.01f, 0.01f), 0.25f);
             Poping.DOColor(Color.clear, 0.5f);
@@ -89,6 +93,16 @@ public class ShopItemPurchasable : MonoBehaviour
     {
         if (AtiasBlessing.activeSelf || sold)
             return;
+
+#if UNITY_ANDROID || UNITY_IOS
+ if (pressTimes == 0)
+        {
+            pressTimes++;
+            return;
+        }
+
+#endif
+
 
         if (ShopManager.instance.FreezeMode)
         {

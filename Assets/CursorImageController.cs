@@ -15,9 +15,14 @@ public class CursorImageController : MonoBehaviour
     private bool isMoving;
     void Start()
     {
+
         Cursor.visible = false;
-        
+
         uiImage = GetComponent<Image>();
+
+#if UNITY_ANDROID || UNITY_IOS
+        uiImage.color = Color.clear;
+#endif
         if (uiImage == null)
         {
             Debug.LogError("Image component not found on the GameObject.");
@@ -48,7 +53,7 @@ public class CursorImageController : MonoBehaviour
         // Update mouse position for UI
         Vector2 screenPoint = new Vector2(Input.mousePosition.x, Input.mousePosition.y + offsetY);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform.parent as RectTransform, screenPoint, uiCamera, out Vector2 localPoint);
-        
+
         rectTransform.localPosition = localPoint;
 
         // Check for mouse click

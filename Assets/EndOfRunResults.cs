@@ -60,7 +60,7 @@ public class EndOfRunResults : MonoBehaviour
         while (true)
         {
             var position = FireworksPositions[Random.Range(0, FireworksPositions.Count)];
-            var firework = Instantiate(FireworksPrefab[Random.Range(0, GameobjectsToDisable.Count)], position.position, Quaternion.identity, null);
+            var firework = Instantiate(FireworksPrefab[Random.Range(0, FireworksPrefab.Count)], position.position, Quaternion.identity, null);
 
 
             // Get the main particle system of the firework
@@ -96,6 +96,7 @@ public class EndOfRunResults : MonoBehaviour
 
     public void ShowResults()
     {
+        GameobjectsToDisable.ForEach(x => x.SetActive(false));
         var wins = MatchData.Count(x => x.Win);
         ScoreText.text = wins.ToString();
 
