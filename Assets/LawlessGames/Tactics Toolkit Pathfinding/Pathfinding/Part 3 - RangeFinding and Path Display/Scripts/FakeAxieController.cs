@@ -55,7 +55,7 @@ public class FakeAxieController : MonoBehaviour
 
     public void Grab(bool grabbed)
     {
-        if (this.grabbed && grabbed)
+        if (this.grabbed && grabbed || axie == null)
             return;
         this.grabbed = grabbed;
         if (grabbed == false)

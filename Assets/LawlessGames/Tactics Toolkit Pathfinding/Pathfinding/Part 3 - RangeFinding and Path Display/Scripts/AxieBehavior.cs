@@ -228,44 +228,99 @@ public class AxieBehavior : MonoBehaviour
     {
         shrimping = true;
         myController.SkeletonAnim.loop = false;
-        yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
-        myController.SkeletonAnim.enabled = false;
-        Vector3 positionToMove = Vector3.zero;
 
-        List<OverlayTile> possibleTiles = myController.enemyTeam.GetInRangeTiles(this.myController);
+        // Pre-check for null references or invalid states
+        if (myController == null || myController.SkeletonAnim == null || myController.SkeletonAnim.AnimationState == null)
+        {
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            myController.SkeletonAnim.enabled = true;
+
+            myController.SkeletonAnim.loop = true;
+            this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
+                this.transform.localScale.z);
+            shrimping = false;
+            Debug.LogError("Animation controller or state is null.");
+            yield break; // Exit the coroutine gracefully
+        }
+
+        float animationHalfTime = myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2;
+        if (animationHalfTime <= 0)
+        {
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            myController.SkeletonAnim.enabled = true;
+
+            myController.SkeletonAnim.loop = true;
+            shrimping = false;
+            Debug.LogError("Invalid animation time.");
+            yield break; // Exit the coroutine gracefully
+        }
+
+        yield return new WaitForSeconds(animationHalfTime);
+        myController.SkeletonAnim.enabled = false;
+
+        if (myController.enemyTeam == null)
+        {
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            myController.SkeletonAnim.enabled = true;
+
+            myController.SkeletonAnim.loop = true;
+            shrimping = false;
+            Debug.LogError("Enemy team reference is null.");
+            yield break; // Exit the coroutine gracefully
+        }
+
+        Vector3 positionToMove = Vector3.zero;
+        List<OverlayTile> possibleTiles = myController.enemyTeam.GetInRangeTiles(myController);
         List<OverlayTile> jumpToTiles =
             possibleTiles.Where(x => x.grid2DLocation.x == (myController.imGood ? 7 : 0)).ToList();
-
         OverlayTile overlayTile =
-            jumpToTiles.FirstOrDefault(x => x.grid2DLocation.y == this.myController.standingOnTile.grid2DLocation.y);
+            jumpToTiles.FirstOrDefault(x => x.grid2DLocation.y == myController.standingOnTile.grid2DLocation.y);
+
         if (jumpToTiles.Count == 0 || overlayTile == null)
         {
-            jumpToTiles = possibleTiles.Where(x => x.grid2DLocation.x == (this.myController.imGood ? 6 : 1)).ToList();
+            jumpToTiles = possibleTiles.Where(x => x.grid2DLocation.x == (myController.imGood ? 6 : 1)).ToList();
+            overlayTile = jumpToTiles.FirstOrDefault(x => x.grid2DLocation.y == myController.standingOnTile.grid2DLocation.y);
         }
 
-        overlayTile =
-            jumpToTiles.FirstOrDefault(x => x.grid2DLocation.y == this.myController.standingOnTile.grid2DLocation.y);
-
-
-        if (overlayTile != null)
+        if (overlayTile == null)
         {
-            positionToMove = overlayTile.transform.position;
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            myController.SkeletonAnim.enabled = true;
+
+            myController.SkeletonAnim.loop = true;
+            shrimping = false;
+            Debug.LogError("No valid overlay tile found for movement.");
+            yield break; // Exit the coroutine gracefully
         }
 
-        this.myController.standingOnTile = overlayTile;
+        positionToMove = overlayTile.transform.position;
+        myController.standingOnTile = overlayTile;
         this.transform.position = positionToMove;
 
         yield return new WaitForSecondsRealtime(0.1f);
+        if (myController.SkeletonAnim == null || myController.SkeletonAnim.GetComponent<Renderer>() == null)
+        {
+            myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
+            myController.SkeletonAnim.enabled = true;
+
+            myController.SkeletonAnim.loop = true;
+            shrimping = false;
+            Debug.LogError("Renderer or animation component is missing.");
+            yield break; // Exit the coroutine gracefully
+        }
+
         myController.SkeletonAnim.GetComponent<Renderer>().enabled = true;
         myController.SkeletonAnim.enabled = true;
-        yield return new WaitForSecondsRealtime(
-            myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2 - 0.1f);
+
+        yield return new WaitForSecondsRealtime(animationHalfTime - 0.1f);
         myController.SkeletonAnim.loop = true;
         this.transform.localScale = new Vector3(this.transform.localScale.x * -1, this.transform.localScale.y,
             this.transform.localScale.z);
         shrimping = false;
         DoAction(AxieState.Idle);
     }
+
+
 
     public IEnumerator GoBackdoorTile(OverlayTile tile)
     {

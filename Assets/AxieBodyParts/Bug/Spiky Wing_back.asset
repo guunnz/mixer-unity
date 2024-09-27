@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 91
   skillEffects:
-  - statusEffect: 8
+  - statusEffect: 0
     statusApplyType: 1
     statusApplyTypeIsTarget: 0
     skillTriggerType: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
     Chill: 0
     Aroma: 0
     Stench: 0
-    Fragile: 0
+    Fragile: 1
     Poison: 0
     Wombo: 1
     Lunge: 0

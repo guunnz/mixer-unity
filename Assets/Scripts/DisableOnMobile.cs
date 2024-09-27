@@ -14,7 +14,7 @@ public class DisableOnMobile : MonoBehaviour
 #endif
 
 
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE || UNITY_WEBGL
  if (EnableInstead)
         {
          gameObject.SetActive(false);

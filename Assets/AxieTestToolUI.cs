@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class AxieTestToolUI : MonoBehaviour
 {
+#if UNITY_EDITOR
+
     private bool showUI = false;
     private Vector2 scrollPosition;
 
@@ -41,7 +43,7 @@ public class AxieTestToolUI : MonoBehaviour
         {
             showUI = !showUI;
             Cursor.visible = showUI;
-            testUI.SetActive(showUI); 
+            testUI.SetActive(showUI);
         }
     }
 
@@ -281,7 +283,7 @@ public class AxieTestToolUI : MonoBehaviour
     //    return selected;
     //}
 
- 
+
 
     private T EnumDropdown<T>(string label, T selected, float width, ref Vector2 scrollPosition) where T : System.Enum
     {
@@ -392,4 +394,5 @@ public class AxieTestToolUI : MonoBehaviour
         public int ScrollIndex = 0;
         public string SearchFilter = "";
     }
+#endif
 }

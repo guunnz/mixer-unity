@@ -95,7 +95,7 @@ public class ShopItemPurchasable : MonoBehaviour
             return;
 
 #if UNITY_ANDROID || UNITY_IOS
- if (pressTimes == 0)
+ if (pressTimes == 0 && !ShopManager.instance.FreezeMode)
         {
             pressTimes++;
             return;

@@ -7,6 +7,7 @@ public class ForfeitMenu : MonoBehaviour
 {
     public void Forfeit()
     {
+        Loading.instance.EnableLoading();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

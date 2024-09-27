@@ -20,5 +20,5 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies attacks heal 10% of damage dealt
+  description: Your axies attacks heal 3% of damage dealt
   price: 10

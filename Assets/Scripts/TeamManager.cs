@@ -60,13 +60,18 @@ public class TeamManager : MonoBehaviour
 
     public void LoadLastAccountAxies()
     {
+        StartCoroutine(ILoadTeam());
+    }
+
+    IEnumerator ILoadTeam()
+    {
         teamsFilePath = Path.Combine(Application.persistentDataPath,
-            RunManagerSingleton.instance.user_wallet_address + "axieTeams3.json");
+    RunManagerSingleton.instance.user_wallet_address + "axieTeams3.json");
         teams = LoadTeams();
         if (teams == null)
         {
             teams = new List<AxieTeam>();
-            return;
+            yield break;
         }
 
         foreach (var axieTeam in teams)
@@ -81,7 +86,23 @@ public class TeamManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(selectedTeamName))
         {
-            currentTeam = teams.Single(x => x.TeamName == selectedTeamName);
+            currentTeam = teams.FirstOrDefault(x => x.TeamName == selectedTeamName);
+            if (currentTeam == null)
+            {
+                yield break;
+            }
+            float delay = 20;
+            foreach (var axie in currentTeam.AxieIds)
+            {
+                while (!AccountManager.userAxies.results.Select(y => y.id).Contains(axie.id))
+                {
+                    if (delay <= 0)
+                        yield break;
+                    delay -= Time.deltaTime;
+                    yield return null;
+                }
+            }
+
             axiesManager.ShowMenuAxies(currentTeam);
         }
     }

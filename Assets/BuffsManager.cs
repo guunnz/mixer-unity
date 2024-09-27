@@ -256,7 +256,7 @@ public class BuffsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 10; });
+        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 3; });
     }
 
     public void GrilledLambChop(Team team)

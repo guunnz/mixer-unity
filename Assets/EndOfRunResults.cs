@@ -141,6 +141,7 @@ public class EndOfRunResults : MonoBehaviour
 
     public void PlayAgain()
     {
+        Loading.instance.EnableLoading();
         SceneManager.LoadScene(0);
     }
 }

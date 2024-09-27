@@ -29,6 +29,7 @@ public class AccountManager : MonoBehaviour
     public int pages;
     public int axiesShown;
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F11))
@@ -38,7 +39,7 @@ public class AccountManager : MonoBehaviour
             StartCoroutine(PerformLogin());
         }
     }
-
+#endif
     private void Awake()
     {
         loggingIn = false;
@@ -206,6 +207,7 @@ public class AccountManager : MonoBehaviour
             var resultLandList = userLands.results.ToList();
             resultLandList.AddRange(lands);
             userLands.results = resultLandList.ToArray();
+            userAxies.results = resultAxiesList.ToArray();
 
             foreach (var userAxiesResult in userAxies.results)
             {

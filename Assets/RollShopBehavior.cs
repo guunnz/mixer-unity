@@ -46,14 +46,7 @@ public class RollShopBehavior : MonoBehaviour
     {
         if (AtiasBlessing.activeSelf)
             return;
-#if UNITY_ANDROID || UNITY_IOS
-        if (pressTimes == 0)
-        {
-            pressTimes++;
-            return;
-        }
 
-#endif
         ShopManager.instance.PressRollShop();
     }
 }

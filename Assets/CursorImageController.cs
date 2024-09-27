@@ -10,6 +10,7 @@ public class CursorImageController : MonoBehaviour
     private RectTransform rectTransform;
     private Camera uiCamera;
     private Tween momentumTween;
+    public bool isIce;
 
     public float offsetY;
     private bool isMoving;
@@ -21,7 +22,8 @@ public class CursorImageController : MonoBehaviour
         uiImage = GetComponent<Image>();
 
 #if UNITY_ANDROID || UNITY_IOS
-        uiImage.color = Color.clear;
+        if (!isIce)
+            uiImage.color = Color.clear;
 #endif
         if (uiImage == null)
         {

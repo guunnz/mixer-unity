@@ -275,99 +275,110 @@ namespace Game
             GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesEnemies.AxieEnemy> axieEnemies,
             bool isEnemy = false, string genes = "")
         {
-            go.transform.SetParent(rootTF, false);
-            go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-            go.transform.eulerAngles = new Vector3(55.26f, go.transform.eulerAngles.y, go.transform.eulerAngles.z);
-            go.AddComponent<AxieController>();
-
-            AxieController controller = go.GetComponent<AxieController>();
-            controller.axieBehavior = go.AddComponent<AxieBehavior>();
-            controller.AxieId = int.Parse(axieId);
-            controller.axieIngameStats = new IngameStats();
-            controller.axieIngameStats.axieId = axieId;
-            controller.axieIngameStats.maxHP = stats.hp * 2;
-            controller.axieIngameStats.axieClass = @class;
-            controller.imGood = !isEnemy;
-            controller.stats = stats;
-            controller.axieIngameStats.MinEnergy = 0;
-            controller.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(controller.stats);
-
-            controller.axieIngameStats.currentHP = stats.skill;
-            controller.Genes = genes;
-            controller.axieBodyParts = isEnemy
-                ? axieEnemies.Single(x => x.id == axieId).Parts
-                    .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
-                    .Select(x => x.SkillName).ToList()
-                : AccountManager.userAxies.results.Single(x => x.id == axieId).parts
-                    .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
-                    .Select(x => x.SkillName).ToList();
-
-
-            controller.axieSkillController = controller.gameObject.AddComponent<AxieSkillController>();
-
-            SkeletonAnimation runtimeSkeletonAnimation =
-    SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
-
-            controller.statsManagerUI =
-    Instantiate(isEnemy ? badTeamHP : goodTeamHP, runtimeSkeletonAnimation.transform)
-        .GetComponent<StatsManager>();
-
-            if (isEnemy)
+            try
             {
-                controller.startingCol =
-                     axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].col;
-                controller.startingRow =
-                    axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].row;
-                enemyTeam.AddCharacter(controller);
 
-                List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
-                    .Where(x => axieForBackend.combos_values_per_round[RunManagerSingleton.instance.score]
-                        .combos_id.Select(x => (SkillName)x).Contains(x.skillName))
-                    .ToList();
 
-                controller.axieSkillController.SetAxieSkills(skillsSelected.Select(x => x.skillName).ToList(),
-                    skillsSelected.Select(x => x.bodyPart).ToList());
+                go.transform.SetParent(rootTF, false);
+                go.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+                go.transform.eulerAngles = new Vector3(55.26f, go.transform.eulerAngles.y, go.transform.eulerAngles.z);
+                go.AddComponent<AxieController>();
+
+                AxieController controller = go.GetComponent<AxieController>();
+                controller.axieBehavior = go.AddComponent<AxieBehavior>();
+                controller.AxieId = int.Parse(axieId);
+                controller.axieIngameStats = new IngameStats();
+                controller.axieIngameStats.axieId = axieId;
+                controller.axieIngameStats.maxHP = stats.hp * 2;
+                controller.axieIngameStats.axieClass = @class;
+                controller.imGood = !isEnemy;
+                controller.stats = stats;
+                controller.axieIngameStats.MinEnergy = 0;
+                controller.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(controller.stats);
+
+                controller.axieIngameStats.currentHP = stats.skill;
+                controller.Genes = genes;
+                controller.axieBodyParts = isEnemy
+                    ? axieEnemies.Single(x => x.id == axieId).Parts
+                        .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
+                        .Select(x => x.SkillName).ToList()
+                    : AccountManager.userAxies.results.Single(x => x.id == axieId).parts
+                        .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
+                        .Select(x => x.SkillName).ToList();
+
+
+                controller.axieSkillController = controller.gameObject.AddComponent<AxieSkillController>();
+
+                SkeletonAnimation runtimeSkeletonAnimation =
+        SkeletonAnimation.NewSkeletonAnimationGameObject(builderResult.skeletonDataAsset);
+
+                controller.statsManagerUI =
+        Instantiate(isEnemy ? badTeamHP : goodTeamHP, runtimeSkeletonAnimation.transform)
+            .GetComponent<StatsManager>();
+
+                if (isEnemy)
+                {
+                    controller.startingCol =
+                         axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].col;
+                    controller.startingRow =
+                        axieForBackend.position_values_per_round[RunManagerSingleton.instance.score].row;
+                    enemyTeam.AddCharacter(controller);
+
+                    List<AxieBodyPart> skillsSelected = skillList.axieBodyParts
+                        .Where(x => axieForBackend.combos_values_per_round[RunManagerSingleton.instance.score]
+                            .combos_id.Select(x => (SkillName)x).Contains(x.skillName))
+                        .ToList();
+
+                    controller.axieSkillController.SetAxieSkills(skillsSelected.Select(x => x.skillName).ToList(),
+                        skillsSelected.Select(x => x.bodyPart).ToList());
+                }
+                else
+                {
+                    Position position =
+                        TeamManager.instance.currentTeam.position[
+                            TeamManager.instance.currentTeam.AxieIds.FindIndex(x => x.id == axieId)];
+
+                    goodTeam.AddCharacter(controller,
+                        new Vector2Int(position.row,
+                            position.col));
+                }
+
+                go.AddComponent<BoxCollider>().isTrigger = true;
+                go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
+                go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
+                controller.axieIngameStats.MaxEnergy = controller.axieSkillController.GetComboCost();
+                go.tag = "Character";
+
+                controller.skeletonDataAsset = builderResult.skeletonDataAsset;
+                controller.skeletonMaterial = builderResult.sharedGraphicMaterial;
+
+                runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
+
+                runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
+
+                controller.SkeletonAnim = runtimeSkeletonAnimation;
+
+                controller.axieSkillEffectManager =
+                    Instantiate(axieSkillEffectManager, runtimeSkeletonAnimation.transform)
+                        .GetComponent<AxieSkillEffectManager>();
+                controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
+                controller.transform.parent = AxiesParent;
+
+                if (isEnemy)
+                {
+                    go.layer = LayerMask.NameToLayer("LandEnemy");
+                    SetLayerRecursively(go.transform, "LandEnemy");
+
+                }
+
+                return controller;
             }
-            else
+            catch (Exception ex)
             {
-                Position position =
-                    TeamManager.instance.currentTeam.position[
-                        TeamManager.instance.currentTeam.AxieIds.FindIndex(x => x.id == axieId)];
-
-                goodTeam.AddCharacter(controller,
-                    new Vector2Int(position.row,
-                        position.col));
+                Debug.LogError("CHECKING TOKEN : " + PlayerPrefs.GetString("Auth"));
+                Debug.LogError("ERROR CREATING AXIE: " + ex.Message + "AXIE: " + axieId);
+                return null;
             }
-
-            go.AddComponent<BoxCollider>().isTrigger = true;
-            go.GetComponent<BoxCollider>().size = new Vector3(5, 3.7f, 1);
-            go.GetComponent<BoxCollider>().center = new Vector3(0, 1.25f, 0);
-            controller.axieIngameStats.MaxEnergy = controller.axieSkillController.GetComboCost();
-            go.tag = "Character";
-
-            controller.skeletonDataAsset = builderResult.skeletonDataAsset;
-            controller.skeletonMaterial = builderResult.sharedGraphicMaterial;
-
-            runtimeSkeletonAnimation.transform.SetParent(go.transform, false);
-
-            runtimeSkeletonAnimation.state.SetAnimation(0, "action/idle/normal", true);
-
-            controller.SkeletonAnim = runtimeSkeletonAnimation;
-
-            controller.axieSkillEffectManager =
-                Instantiate(axieSkillEffectManager, runtimeSkeletonAnimation.transform)
-                    .GetComponent<AxieSkillEffectManager>();
-            controller.statsManagerUI.SetSR(axieClassObjects.FirstOrDefault(x => x.axieClass == @class)?.classSprite);
-            controller.transform.parent = AxiesParent;
-
-            if (isEnemy)
-            {
-                go.layer = LayerMask.NameToLayer("LandEnemy");
-                SetLayerRecursively(go.transform, "LandEnemy");
-
-            }
-
-            return controller;
         }
 
         private void SpawnSkeletonGraphic(Axie2dBuilderResult builderResult)

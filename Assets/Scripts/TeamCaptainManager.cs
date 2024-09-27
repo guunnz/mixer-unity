@@ -141,15 +141,23 @@ public class TeamCaptainManager : MonoBehaviour
         }
         return "";
     }
-    public void Start()
+    public System.Collections.IEnumerator Start()
     {
         var captain = PlayerPrefs.GetString("Captain");
         if (string.IsNullOrEmpty(captain))
         {
+
+            Loading.instance.DisableLoading();
             OpenMenu();
         }
         else
         {
+            while (!AccountManager.userAxies.results.Select(x => x.id).Contains(captain))
+            {
+                yield return null;
+            }
+
+            Loading.instance.DisableLoading();
             SetAxieSelected(AccountManager.userAxies.results.FirstOrDefault(x => x.id == captain));
             SetProfilePicGraphic();
         }

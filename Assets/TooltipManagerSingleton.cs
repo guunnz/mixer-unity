@@ -63,6 +63,13 @@ public class TooltipManagerSingleton : MonoBehaviour
     {
         instance = this;
     }
+
+    private void Start()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        this.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 85f);
+#endif
+    }
     public void EnableTooltip(ShopItem shopItem)
     {
         ShopItemTooltip.ItemName.text = "<color=\"yellow\">" + shopItem.ShopItemName + "</color>";

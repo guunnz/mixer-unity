@@ -393,6 +393,7 @@ public class Skill : MonoBehaviour
 
             if (pair.onlyShield)
             {
+                Debug.Log("Spiky only shield");
                 target.axieIngameStats.currentShield -= pair.Value;
             }
             else

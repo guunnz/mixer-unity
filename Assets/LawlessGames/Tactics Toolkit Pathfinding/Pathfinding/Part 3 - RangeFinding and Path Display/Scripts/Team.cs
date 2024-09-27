@@ -202,6 +202,7 @@ public class Team : MonoBehaviour
 
         if (resetTimer >= 3)
         {
+            Loading.instance.EnableLoading();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
