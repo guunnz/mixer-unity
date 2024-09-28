@@ -393,8 +393,12 @@ public class Skill : MonoBehaviour
 
             if (pair.onlyShield)
             {
-                Debug.Log("Spiky only shield");
-                target.axieIngameStats.currentShield -= pair.Value;
+                var dmg = pair.Value > target.axieIngameStats.currentShield ? target.axieIngameStats.currentShield : pair.Value;
+                Debug.Log("Spiky only shield" + ":" + dmg);
+                target.axieIngameStats.currentShield -= dmg;
+
+
+                target.axieSkillController.DamageReceived(@class, dmg, self, true);
             }
             else
             {
@@ -410,9 +414,10 @@ public class Skill : MonoBehaviour
 
                     target.axieIngameStats.currentHP -= shieldDamage;
                 }
-            }
 
-            target.axieSkillController.DamageReceived(@class, pair.Value, self, true);
+
+                target.axieSkillController.DamageReceived(@class, pair.Value, self, true);
+            }
         }
     }
 

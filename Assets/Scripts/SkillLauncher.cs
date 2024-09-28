@@ -687,7 +687,7 @@ public class SkillLauncher : MonoBehaviour
             }
             if (self.axieSkillController.passives.ExtraShieldGained > 0)
             {
-                self.axieIngameStats.currentShield *= 1 + (self.axieSkillController.passives.ExtraShieldGained / 100f);
+                self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield * (self.axieSkillController.passives.ExtraShieldGained / 100f);
 
             }
 

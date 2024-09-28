@@ -53,6 +53,7 @@ public class UpgradeValuesPerRoundList
 public class AxieForBackend
 {
     public string axie_id;
+    public string genes = "";
     public Combos[] combos_values_per_round;
     public Position[] position_values_per_round;
     public int[] upgrades_values_per_round;
@@ -80,6 +81,7 @@ public class Run
 {
     public string user_wallet_address;
     public string axie_captain_id;
+    public string axie_captain_genes;
     public string username;
     public int played_rounds;
     public bool[] win_loss_record;
@@ -104,7 +106,7 @@ public class AxieLandBattleTarget : MonoBehaviour
         {
             AxieForBackend axieForBackend = new AxieForBackend();
             axieForBackend.axie_id = axie.AxieId.ToString();
-
+            axieForBackend.genes = axie.Genes;
 
             axieForBackend.position_values_per_round = new[]
             {
@@ -127,6 +129,7 @@ public class AxieLandBattleTarget : MonoBehaviour
             user_wallet_address = RunManagerSingleton.instance.user_wallet_address,
             win_loss_record = RunManagerSingleton.instance.resultsBools.ToArray(),
             axie_captain_id = PlayerPrefs.GetString("Captain"),
+            axie_captain_genes = AccountManager.userAxies.results.Single(x => x.id == PlayerPrefs.GetString("Captain")).newGenes,
             played_rounds = score,
             username = AccountManager.username,
             opponents_run_id = new[] { RunManagerSingleton.instance.currentOpponent },

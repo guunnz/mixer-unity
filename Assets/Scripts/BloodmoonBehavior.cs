@@ -44,7 +44,13 @@ public class BloodmoonBehavior : MonoBehaviour
                     x.axieIngameStats.currentHP -= x.axieIngameStats.maxHP * percentage;
                 }
             });
-
+            BadTeam.GetAliveCharacters().ForEach(x =>
+            {
+                if (!x.axieSkillController.passives.bloodmoonImmune)
+                {
+                    x.axieIngameStats.currentHP -= x.axieIngameStats.maxHP * percentage;
+                }
+            });
             percentage *= 1.5f;
             yield return new WaitForSeconds(1);
         }

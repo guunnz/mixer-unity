@@ -71,7 +71,6 @@ public class AbilitiesManager : MonoBehaviour
     private SelectedComboData data = new SelectedComboData();
     public Sprite SelectedSprite;
     public Sprite DeselectedSprite;
-
     public void LoadUI()
     {
         for (int i = 0; i < TeamManager.instance.currentTeam.AxieIds.Count; i++)
@@ -96,7 +95,7 @@ public class AbilitiesManager : MonoBehaviour
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
         ButtonBackBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Back); });
         ButtonTailBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Tail); });
-  
+
         if (PlayerPrefs.GetInt("Tutorial") == 0)
         {
             Tutorial.SetActive(true);
@@ -403,6 +402,9 @@ public class AbilitiesManager : MonoBehaviour
 
         // Sort and update the button sprites for the body parts
         var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
+
+        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController.SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
+                AxieSelecteds.Select(x => x.BodyPart).ToList());
         ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;

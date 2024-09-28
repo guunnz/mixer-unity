@@ -67,7 +67,12 @@ public class TeamSelectorUI : MonoBehaviour
         }
         else
         {
-            TeamName.text = TeamManager.instance.currentTeam.TeamName;
+            if (TeamManager.instance.currentTeam != null)
+            {
+
+                TeamName.text = TeamManager.instance.currentTeam.TeamName;
+            }
+
         }
 
         for (int i = 0; i < TeamItems.Count; i++)

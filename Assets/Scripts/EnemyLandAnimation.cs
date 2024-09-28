@@ -32,13 +32,6 @@ public class EnemyLandAnimation : MonoBehaviour
         StartCoroutine(IDoAnimation(landType));
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            DoAnimation(animToTest);
-        }
-    }
 
     public void StartBatchReset(LandType landType)
     {
@@ -71,7 +64,7 @@ public class EnemyLandAnimation : MonoBehaviour
         StartBatchReset(landType);
         OpponentLand.Instance.ChooseFakeLandMobile(landType);
 #else
-          OpponentLand.Instance.ChooseFakeLand(landType);
+        OpponentLand.Instance.ChooseFakeLand(landType);
 #endif
         var portal = LandPortals.FirstOrDefault(x => x.portalType == landType);
         portal.portalObject.gameObject.SetActive(true);
