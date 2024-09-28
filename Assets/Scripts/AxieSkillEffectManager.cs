@@ -79,7 +79,9 @@ public class AxieSkillEffectManager : MonoBehaviour
         {
             if (!IsMerry())
                 return 0;
-            return skillEffectGraphics.Single(x => x.statusEffect == StatusEffectEnum.Merry).Times;
+
+            var merryGraphic = skillEffectGraphics.FirstOrDefault(x => x.statusEffect == StatusEffectEnum.Merry);
+            return merryGraphic == null ? 0 : merryGraphic.Times;
         }
         catch (Exception e)
         {

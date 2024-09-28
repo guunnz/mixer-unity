@@ -26,7 +26,7 @@ public class Chimera : MonoBehaviour
 
     void Start()
     {
-        initialScaleX = transform.localScale.x; // Store the initial scale o
+        initialScaleX = -transform.localScale.x; // Store the initial scale o
     }
 
     public void DoDamage()

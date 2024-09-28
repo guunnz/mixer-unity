@@ -5,6 +5,7 @@ using System.Linq;
 using enemies;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static AtiaBlessing;
 
 public class OpponentTeamManager : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class OpponentTeamManager : MonoBehaviour
         {
             foreach (var upgrades in teamUpgrades.upgrades_ids)
             {
+                Debug.Log("ITEM: " + (BuffEffect)upgrades.id);
                 atiaBlessing.AugumentUpgrade((int)upgrades.id,
                     upgrades.axie_class?.Select(x => (AxieClass)x).ToList(),
                     badTeam);

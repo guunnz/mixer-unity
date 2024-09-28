@@ -96,7 +96,11 @@ public class EndOfRunResults : MonoBehaviour
 
     public void ShowResults()
     {
-        GameobjectsToDisable.ForEach(x => x.SetActive(false));
+
+        for (int i = 0; i < GameobjectsToDisable.Count; i++)
+        {
+            Destroy(GameobjectsToDisable[i]);
+        }
         var wins = MatchData.Count(x => x.Win);
         ScoreText.text = wins.ToString();
 

@@ -27,6 +27,7 @@ public class Team : MonoBehaviour
     private float resetTimer;
     internal bool ChimeraSpawned;
     public bool isGoodTeam;
+    public LandType landType;
     internal bool battleEnded = false;
     private TeamCaptainManager teamCaptainManager;
     public List<Action> OnBattleStartActions = new List<Action>();
@@ -147,6 +148,11 @@ public class Team : MonoBehaviour
 
     void RestartTeam()
     {
+        var skillList = FindObjectsOfType<Skill>();
+        for (int i = 0; i < skillList.Length; i++)
+        {
+            Destroy(skillList[i].gameObject);
+        }
         IngameOverlay.SetActive(true);
         battleStarted = false;
         enemyTeam.battleStarted = false;
@@ -345,6 +351,7 @@ public class Team : MonoBehaviour
         OverlayTile startingTile = null;
         if (isGoodTeam)
         {
+            landType = RunManagerSingleton.instance.landType;
             startingTile = MapManager.Instance.map[gridLocation.Value];
         }
         else

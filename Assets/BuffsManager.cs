@@ -116,9 +116,11 @@ public class BuffsManager : MonoBehaviour
 
     public void HoneyRoastedChicken(Team team)
     {
+
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 10; });
+        int maxHp = axies.Max(x => x.stats.hp);
+        axies.ForEach(axie => { axie.stats.hp = maxHp; });
     }
 
     public void IronChainmail(Team team)
@@ -351,7 +353,7 @@ public class BuffsManager : MonoBehaviour
         Action action = () =>
         {
             var axies = team.GetCharactersAll();
-            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            if (team.landType == LandType.lunalanding)
             {
                 axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
             }
@@ -373,7 +375,7 @@ public class BuffsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            if (team.landType == LandType.lunalanding)
             {
                 axies.ForEach(x => x.stats.speed += 6);
             }
@@ -394,7 +396,7 @@ public class BuffsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            if (team.landType == LandType.lunalanding)
             {
                 axies.ForEach(x => x.stats.speed += 12);
             }
@@ -415,7 +417,7 @@ public class BuffsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            if (team.landType == LandType.lunalanding)
             {
                 axies.ForEach(x => x.stats.skill += 12);
             }
@@ -436,7 +438,7 @@ public class BuffsManager : MonoBehaviour
         {
 
             var axies = team.GetCharactersAll();
-            if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+            if (team.landType == LandType.lunalanding)
             {
                 axies.ForEach(x => x.axieIngameStats.currentShield += 200f);
             }
@@ -452,7 +454,7 @@ public class BuffsManager : MonoBehaviour
     public void LargePotionOfResistance(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        if (team.landType == LandType.lunalanding)
         {
             axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 30);
         }
@@ -625,7 +627,8 @@ public class BuffsManager : MonoBehaviour
 
     public void Amethyst(Team team)
     {
-        RunManagerSingleton.instance.economyPassive.FreeRerollEveryXRolls = 3;
+        if (team.isGoodTeam)
+            RunManagerSingleton.instance.economyPassive.FreeRerollEveryXRolls = 3;
     }
 
 
@@ -663,7 +666,7 @@ public class BuffsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        if (team.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.hp += 2; });
@@ -678,7 +681,7 @@ public class BuffsManager : MonoBehaviour
     public void Increase_HP(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        if (team.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.hp += 2; });
@@ -692,7 +695,7 @@ public class BuffsManager : MonoBehaviour
     public void Increase_Morale(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        if (team.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.morale += 2; });
@@ -706,7 +709,7 @@ public class BuffsManager : MonoBehaviour
     public void Increase_Skill(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        if (team.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.skill += 2; });
@@ -721,7 +724,7 @@ public class BuffsManager : MonoBehaviour
     public void Increase_Speed(Team team)
     {
         var axies = team.GetCharactersAll();
-        if (RunManagerSingleton.instance.landType == LandType.lunalanding)
+        if (team.landType == LandType.lunalanding)
         {
 
             axies.ForEach(axie => { axie.stats.speed += 2; });
@@ -735,7 +738,8 @@ public class BuffsManager : MonoBehaviour
 
     public void Donut(Team team)
     {
-        RunManagerSingleton.instance.roundsPassives.ExtraTeamHPPerRound += 2;
+        if (team.isGoodTeam)
+            RunManagerSingleton.instance.roundsPassives.ExtraTeamHPPerRound += 2;
     }
 
 
@@ -754,16 +758,22 @@ public class BuffsManager : MonoBehaviour
 
     public void Ruby(Team team)
     {
+        if (!team.isGoodTeam)
+            return;
         RunManagerSingleton.instance.economyPassive.RollsFreePerRound += 1;
     }
 
     public void Diamond(Team team)
     {
+        if (!team.isGoodTeam)
+            return;
         RunManagerSingleton.instance.economyPassive.ItemCostPercentage = 50;
     }
 
     public void Emerald(Team team)
     {
+        if (!team.isGoodTeam)
+            return;
         RunManagerSingleton.instance.economyPassive.CoinsOnStart = 15;
         RunManagerSingleton.instance.economyPassive.RollCost = 2;
     }

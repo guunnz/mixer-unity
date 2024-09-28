@@ -242,6 +242,8 @@ namespace enemies
 
         IEnumerator SpawnAxies(List<AxieEnemy> axieList, Opponent opponent, bool isOpponent)
         {
+            axieSpawner.enemyTeam.landType = (LandType)opponent.land_type;
+            axieSpawner.enemyTeam.OnBattleStartActions.Clear();
 
             if (AccountManager.TestMode)
             {

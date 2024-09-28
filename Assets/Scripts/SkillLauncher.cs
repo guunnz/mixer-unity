@@ -663,7 +663,7 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.GainEnergy > 0)
             {
-                targetList.ForEach(x => x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.CurrentEnergy * skillEffect.GainEnergy));
+                targetList.ForEach(x => x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy));
             }
 
 
@@ -687,8 +687,18 @@ public class SkillLauncher : MonoBehaviour
             }
             if (self.axieSkillController.passives.ExtraShieldGained > 0)
             {
-                self.axieIngameStats.currentShield *= 1 + (self.axieSkillController.passives.ExtraShieldGained / 100);
+                self.axieIngameStats.currentShield *= 1 + (self.axieSkillController.passives.ExtraShieldGained / 100f);
 
+            }
+
+            if (self.axieIngameStats.currentShield > 10000)
+            {
+                Debug.LogError("EXTRA SHIELD GAIN : " + self.axieSkillController.passives.ExtraShieldGained);
+                Debug.LogError("EXTRA SHIELD HELMET : " + self.axieSkillController.passives.ExtraArmorHelmet);
+                Debug.LogError("MATH1 : " + skillInstance.axieBodyPart.shield * (self.axieSkillController.passives.ExtraArmorHelmet / 100f));
+                Debug.LogError("MATH2 : " + 1 + (self.axieSkillController.passives.ExtraShieldGained / 100f));
+                Debug.LogError("SHIELD SKILL: " + skillInstance.axieBodyPart.shield);
+                self.axieIngameStats.currentShield = 1000;
             }
             if (skillEffect.GainHPPercentage > 0)
             {
@@ -757,8 +767,8 @@ public class SkillLauncher : MonoBehaviour
                 if (skillEffect.HPBaseOnDamage)
                 {
                     skillInstance.AddHealTargetPair(self.AxieId,
-                        (dmgPair.damage * (skillEffect.GainHPPercentage * 0.01f) *
-                         specialEffectExtras.multiplyStatusEffect));
+                        dmgPair.damage * (skillEffect.GainHPPercentage * 0.01f *
+                         specialEffectExtras.multiplyStatusEffect == 0 ? 1 : specialEffectExtras.multiplyStatusEffect));
                 }
 
                 dmgPair.damage *= Mathf.RoundToInt(1f + (specialEffectExtras.extraDamage * .01f));
