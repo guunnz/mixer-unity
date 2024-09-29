@@ -109,8 +109,14 @@ public class EndOfRunResults : MonoBehaviour
             if (wins == 12)
             {
                 x.SkeletonAnim.AnimationName = "activity/victory-pose-back-flip";
+                x.SkeletonAnim.Initialize(true);
             }
         });
+
+        if (wins == 12)
+        {
+            StartCoroutine(Fireworks());
+        }
 
         switch (MatchData.Count(x => !x.Win))
         {

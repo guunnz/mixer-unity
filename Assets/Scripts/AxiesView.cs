@@ -22,7 +22,7 @@ public class AxieViewCombo
     public GameObject PassiveGO;
     public GameObject ActiveGO;
 }
-//
+
 public class AxiesView : MonoBehaviour
 {
     public AxieBodyPartsManager skillList;
@@ -44,6 +44,9 @@ public class AxiesView : MonoBehaviour
     public List<AxieClass> axieClassFilters = new List<AxieClass>();
     public List<AxieStatFilter> axieStatsFilters = new List<AxieStatFilter>();
 
+    // General text filter InputField
+    public TMP_InputField GeneralFilter;
+
     internal delegate void StatsFilterCleared();
 
     internal event StatsFilterCleared statsfilterClearedEvent;
@@ -59,7 +62,23 @@ public class AxiesView : MonoBehaviour
     private void Start()
     {
         SetAxiesUI();
+        SetupGeneralFilterListener();
     }
+
+    private void SetupGeneralFilterListener()
+    {
+        if (GeneralFilter != null)
+        {
+            GeneralFilter.onEndEdit.RemoveAllListeners();
+            GeneralFilter.onEndEdit.AddListener(delegate { OnGeneralFilterChanged(); });
+        }
+    }
+
+    private void OnGeneralFilterChanged()
+    {
+        ResetPages();
+    }
+
     public void ToggleClassFilter(AxieClass axieClass)
     {
         if (axieClassFilters.Any(x => x == axieClass))
@@ -87,11 +106,11 @@ public class AxiesView : MonoBehaviour
         statsfilterClearedEvent.Invoke();
         ResetPages();
     }
+
     public void ToggleStatsFilter(AxieStatFilter statFilter)
     {
         AxieStatFilter contraryFilter = axieStatsFilters.FirstOrDefault(x =>
             x != statFilter && statFilter.ToString().Contains(x.ToString().Substring(4)));
-
 
         if (contraryFilter != AxieStatFilter.NoFilter)
         {
@@ -110,44 +129,81 @@ public class AxiesView : MonoBehaviour
 
         ResetPages();
     }
-    public List<GetAxiesExample.Axie> GetFilteredList()
+
+    public List<GetAxiesExample.Axie> GetFilteredList(string generalFilter = null)
     {
         List<GetAxiesExample.Axie> axiesList = AccountManager.userAxies.results.ToList();
 
+        // Apply class filters
         if (axieClassFilters.Count != 0)
         {
             axiesList = axiesList.Where(x => axieClassFilters.Contains(x.axieClass)).ToList();
         }
 
-        IOrderedEnumerable<GetAxiesExample.Axie> query = axiesList.OrderBy(x => 0);
+        // Apply stat filters
         if (axieStatsFilters.Count != 0)
         {
-            AxieStatFilter firstFilter = axieStatsFilters.First();
-            if (firstFilter.ToString().Contains("More"))
+            var query = SortAxies(axiesList, axieStatsFilters);
+            axiesList = query.ToList();
+        }
+
+        // Apply general text filter
+        if (!string.IsNullOrEmpty(generalFilter))
+        {
+            var filters = generalFilter.ToLower().Split(',').Select(f => f.Trim()).ToList();
+            axiesList = axiesList.Where(axie =>
+                filters.Any(filter =>
+                    (axie.id?.ToLower().Contains(filter) == true) ||
+                    (axie.axieClass.ToString().ToLower().Contains(filter)) ||
+                    (axie.bodyShape.ToString().ToLower().Contains(filter)) ||
+                    (axie.parts != null && axie.parts.Any(part =>
+                        part != null && (
+                            part.id?.ToLower().Contains(filter) == true ||
+                            part.name?.ToLower().Contains(filter) == true ||
+                            part.@class?.ToLower().Contains(filter) == true ||
+                            part.type?.ToLower().Contains(filter) == true ||
+                            part.abilityName?.ToLower().Contains(filter) == true ||
+                            part.partClass.ToString().ToLower().Contains(filter) ||
+                            part.BodyPart.ToString().ToLower().Contains(filter) ||
+                            part.SkillName.ToString().ToLower().Contains(filter)
+                        )
+                    ))
+                )
+            ).ToList();
+        }
+
+        return axiesList;
+    }
+
+    private IOrderedEnumerable<GetAxiesExample.Axie> SortAxies(List<GetAxiesExample.Axie> axiesList, List<AxieStatFilter> axieStatsFilters)
+    {
+        IOrderedEnumerable<GetAxiesExample.Axie> query = axiesList.OrderBy(x => 0);
+        AxieStatFilter firstFilter = axieStatsFilters.First();
+        if (firstFilter.ToString().Contains("More"))
+        {
+            query = query.OrderByDescending(x => GetFieldValue(x.stats, firstFilter));
+        }
+        else
+        {
+            query = query.OrderBy(x => GetFieldValue(x.stats, firstFilter));
+        }
+
+        for (int i = 1; i < axieStatsFilters.Count; i++)
+        {
+            AxieStatFilter filter = axieStatsFilters[i];
+            if (filter.ToString().Contains("More"))
             {
-                query = query.OrderByDescending(x => GetFieldValue(x.stats, firstFilter));
+                query = query.ThenByDescending(x => GetFieldValue(x.stats, filter));
             }
             else
             {
-                query = query.OrderBy(x => GetFieldValue(x.stats, firstFilter));
-            }
-
-            for (int i = 1; i < axieStatsFilters.Count; i++)
-            {
-                AxieStatFilter filter = axieStatsFilters[i];
-                if (filter.ToString().Contains("More"))
-                {
-                    query = query.ThenByDescending(x => GetFieldValue(x.stats, filter));
-                }
-                else
-                {
-                    query = query.ThenBy(x => GetFieldValue(x.stats, filter));
-                }
+                query = query.ThenBy(x => GetFieldValue(x.stats, filter));
             }
         }
 
-        return query.ToList();
+        return query;
     }
+
     int GetFieldValue(GetAxiesExample.Stats axieStats, AxieStatFilter filter)
     {
         // Get the filter property value
@@ -169,7 +225,6 @@ public class AxiesView : MonoBehaviour
     public void SetAxieStats(GetAxiesExample.Axie Axie)
     {
         AxieStatsContainer.SetActive(false);
-
 
         AxieHPText.text = Axie.stats.hp.ToString();
         AxieSkillText.text = Axie.stats.skill.ToString();
@@ -224,6 +279,7 @@ public class AxiesView : MonoBehaviour
             StartCoroutine(SetCards(ability));
         }
     }
+
     IEnumerator SetCards(AxieBodyPart ability)
     {
         var axieUICombo = axieViewCombo.Single(x => x.BodyPart == ability.bodyPart);
@@ -231,6 +287,7 @@ public class AxiesView : MonoBehaviour
         yield return new WaitForFixedUpdate();
         StopAnimation(ability.bodyPart);
     }
+
     public void PlayAnimation(BodyPart bodyPart)
     {
         var axieUICombo = axieViewCombo.Single(x => x.BodyPart == bodyPart);
@@ -267,9 +324,9 @@ public class AxiesView : MonoBehaviour
             }
         }
     }
+
     public void SetAxiesUI()
     {
-
         PagesAmount = AccountManager.userAxies.results.Length / 12f;
         maxPagesAmount = Mathf.CeilToInt(PagesAmount);
         pageText.text = $"Page {currentPage}-{maxPagesAmount}";
@@ -283,7 +340,7 @@ public class AxiesView : MonoBehaviour
 
         AxieStatsContainer.SetActive(false);
 
-        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList();
+        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList(GeneralFilter?.text);
 
         for (int i = 0; i < 12; i++)
         {
@@ -308,7 +365,6 @@ public class AxiesView : MonoBehaviour
                 }
             }
 
-
             axieList[i].Refresh(true);
         }
 
@@ -320,6 +376,7 @@ public class AxiesView : MonoBehaviour
     {
         selectedAxie = "";
     }
+
     public void GoNextPage()
     {
         currentPage++;
@@ -347,7 +404,7 @@ public class AxiesView : MonoBehaviour
 
     public void ResetPages()
     {
-        currentPage = 0;
+        currentPage = 1;
         SetAxiesUI();
     }
 }

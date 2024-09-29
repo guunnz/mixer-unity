@@ -51,7 +51,7 @@ public class BloodmoonBehavior : MonoBehaviour
                     x.axieIngameStats.currentHP -= x.axieIngameStats.maxHP * percentage;
                 }
             });
-            percentage *= 1.5f;
+            percentage *= 2f;
             yield return new WaitForSeconds(1);
         }
     }

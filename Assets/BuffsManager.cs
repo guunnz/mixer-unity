@@ -515,20 +515,6 @@ public class BuffsManager : MonoBehaviour
 
     public void ShellOfBurn(Team team)
     {
-
-        Action action = () =>
-        {
-            var axies = team.enemyTeam.GetCharactersAll();
-            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
-            { statusEffect = StatusEffectEnum.Fear }));
-        };
-
-        team.OnBattleStartActions.Add(action);
-    }
-
-    public void ShellOfBlinding(Team team)
-    {
-
         Action action = () =>
         {
             var axies = team.enemyTeam.GetCharactersAll();
@@ -537,6 +523,20 @@ public class BuffsManager : MonoBehaviour
         };
 
         team.OnBattleStartActions.Add(action);
+
+    }
+
+    public void ShellOfBlinding(Team team)
+    {
+        Action action = () =>
+        {
+            var axies = team.enemyTeam.GetCharactersAll();
+            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            { statusEffect = StatusEffectEnum.Fear }));
+        };
+
+        team.OnBattleStartActions.Add(action);
+
     }
 
     public void ShellOfSlow(Team team)

@@ -1,4 +1,4 @@
-using DG.Tweening;
+    using DG.Tweening;
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
@@ -69,7 +69,8 @@ public class UIListAxieForView : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         selectedImage.enabled = axie != null;
         axieClassImage.enabled = axie != null;
-
+        axieClassImage.sprite =
+    axieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
         if (axiesView.selectedAxie != axie.id)
         {
             this.transform.DOScale(new Vector3(1, 1, 1), 0.3f);

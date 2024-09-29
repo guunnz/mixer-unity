@@ -137,7 +137,15 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public bool IsKestreled()
     {
+        try
+        {
         return skillEffects.Any(x => x.Kestrel);
+
+        }
+        catch(Exception ex)
+        {
+            return false;
+        }
     }
 
     public int GeckoStacks()

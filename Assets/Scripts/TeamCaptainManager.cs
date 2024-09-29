@@ -5,7 +5,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static GetAxiesExample;
 
 public class TeamCaptainManager : MonoBehaviour
 {
@@ -16,6 +15,7 @@ public class TeamCaptainManager : MonoBehaviour
     public List<GameObject> EnableOnCaptainSelection;
 
     public List<UIListAxieForCaptain> axieList = new List<UIListAxieForCaptain>();
+    public TMP_InputField GeneralFilterInput;
     public GetAxiesExample.Axie lastAxieChosen;
     private int currentPage = 1;
     float PagesAmount = 0;
@@ -31,6 +31,7 @@ public class TeamCaptainManager : MonoBehaviour
     private bool isCaptainAnimationBehaviorEnabled = false;
     private float animationChangedMineBuffer = 0;
     private float animationChangedOpponentBuffer = 0;
+
     private void Awake()
     {
         Instance = this;
@@ -43,6 +44,14 @@ public class TeamCaptainManager : MonoBehaviour
             animationChangedMineBuffer -= Time.deltaTime;
             animationChangedOpponentBuffer -= Time.deltaTime;
             UpdateCaptainAnimations();
+        }
+    }
+
+    private void SetupGeneralFilterListener()
+    {
+        if (GeneralFilterInput != null)
+        {
+            GeneralFilterInput.onEndEdit.AddListener(delegate { SetAxiesUI(); });
         }
     }
 
@@ -60,11 +69,10 @@ public class TeamCaptainManager : MonoBehaviour
 
     private void UpdateCaptainAnimations()
     {
-        float myTeamHPFill = myTeamHP.fillAmount * 100f; // Convert to percentage
-        float opponentHPFill = opponentHP.fillAmount * 100f; // Convert to percentage
+        float myTeamHPFill = myTeamHP.fillAmount * 100f;
+        float opponentHPFill = opponentHP.fillAmount * 100f;
         float healthDifference = myTeamHPFill - opponentHPFill;
 
-        // Determine new animation for Ingame Captain
         if (animationChangedMineBuffer < 0)
         {
             string newIngameAnimation = GetAnimationForHealthDifference(healthDifference, true);
@@ -72,20 +80,19 @@ public class TeamCaptainManager : MonoBehaviour
             {
                 currentIngameAnimation = newIngameAnimation;
                 IngameCaptainGraphic.startingAnimation = currentIngameAnimation;
-                IngameCaptainGraphic.Initialize(true); // Apply animation only when changed
+                IngameCaptainGraphic.Initialize(true);
                 animationChangedMineBuffer = 1;
             }
         }
 
         if (animationChangedOpponentBuffer < 0)
         {
-            // Determine new animation for Opponent Captain
             string newOpponentAnimation = GetAnimationForHealthDifference(healthDifference, false);
             if (newOpponentAnimation != currentOpponentAnimation)
             {
                 currentOpponentAnimation = newOpponentAnimation;
                 OpponentCaptainGraphic.startingAnimation = currentOpponentAnimation;
-                OpponentCaptainGraphic.Initialize(true); // Apply animation only when changed
+                OpponentCaptainGraphic.Initialize(true);
                 animationChangedOpponentBuffer = 1;
             }
         }
@@ -95,54 +102,26 @@ public class TeamCaptainManager : MonoBehaviour
     {
         if (isIngameCaptain)
         {
-            if (healthDifference < -14)
-            {
-                return "activity/evolve";
-            }
-            else if (healthDifference < -3)
-            {
-                return "action/idle/random-03";
-            }
-            else if (healthDifference > 14)
-            {
-                return "action/idle/random-02";
-            }
-            else if (healthDifference > 5)
-            {
-                return "action/move-forward";
-            }
-            else if (Mathf.Abs(healthDifference) < 3)
-            {
-                return "action/idle/normal";
-            }
+            if (healthDifference < -14) return "activity/evolve";
+            if (healthDifference < -3) return "action/idle/random-03";
+            if (healthDifference > 14) return "action/idle/random-02";
+            if (healthDifference > 5) return "action/move-forward";
+            if (Mathf.Abs(healthDifference) < 3) return "action/idle/normal";
         }
         else
         {
-            if (healthDifference > 14)
-            {
-                return "activity/evolve";
-            }
-            else if (healthDifference > 3)
-            {
-                return "action/idle/random-03";
-            }
-            else if (healthDifference < -14)
-            {
-                return "action/idle/random-02";
-            }
-            else if (healthDifference < -5)
-            {
-                return "action/move-forward";
-            }
-            else if (Mathf.Abs(healthDifference) < 3)
-            {
-                return "action/idle/normal";
-            }
+            if (healthDifference > 14) return "activity/evolve";
+            if (healthDifference > 3) return "action/idle/random-03";
+            if (healthDifference < -14) return "action/idle/random-02";
+            if (healthDifference < -5) return "action/move-forward";
+            if (Mathf.Abs(healthDifference) < 3) return "action/idle/normal";
         }
         return "";
     }
+
     public System.Collections.IEnumerator Start()
     {
+        SetupGeneralFilterListener();
         while (string.IsNullOrEmpty(RunManagerSingleton.instance.user_wallet_address))
         {
             yield return null;
@@ -150,7 +129,6 @@ public class TeamCaptainManager : MonoBehaviour
         var captain = PlayerPrefs.GetString("Captain" + RunManagerSingleton.instance.user_wallet_address);
         if (string.IsNullOrEmpty(captain))
         {
-
             Loading.instance.DisableLoading();
             OpenMenu();
         }
@@ -176,13 +154,22 @@ public class TeamCaptainManager : MonoBehaviour
 
     public List<GetAxiesExample.Axie> GetFilteredList()
     {
-        if (RunManagerSingleton.instance.user_wallet_address != "0x46571200388f6DCE5416E552e28caa7A6833c88e")
+        var axiesList = AccountManager.userAxies.results.ToList();
+        string filter = GeneralFilterInput != null ? GeneralFilterInput.text.ToLower() : "";
+
+        if (!string.IsNullOrEmpty(filter))
         {
-            var axiesList = AccountManager.userAxies.results.ToList();
-            axiesList.RemoveAll(x => x.id == "3000119" || x.id == "11432057");
-            return axiesList;
+            axiesList = axiesList.Where(axie =>
+                filter.Contains(axie.id.ToLower()) ||
+                filter.Contains(axie.name.ToLower()) ||
+                filter.Contains(axie.axieClass.ToString().ToLower()) ||
+                (axie.parts != null && axie.parts.Any(part =>
+                    filter.Contains(part.name.ToLower()) ||
+                    filter.Contains(part.abilityName.ToLower())))
+            ).ToList();
         }
-        return AccountManager.userAxies.results.ToList();
+
+        return axiesList;
     }
 
     public void SetAxieSelected(GetAxiesExample.Axie axie)
@@ -211,13 +198,6 @@ public class TeamCaptainManager : MonoBehaviour
         PagesAmount = AccountManager.userAxies.results.Length / 12f;
         maxPagesAmount = Mathf.CeilToInt(PagesAmount);
         pageText.text = $"Page {currentPage}-{maxPagesAmount}";
-        if (lastAxieChosen == null)
-        {
-            if (TeamManager.instance.currentTeam != null)
-            {
-                lastAxieChosen = TeamManager.instance.currentTeam.AxieIds[0];
-            }
-        }
 
         List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList();
 
@@ -225,26 +205,23 @@ public class TeamCaptainManager : MonoBehaviour
         {
             axieList[i].axie = null;
 
-            int indexToSearch = Mathf.RoundToInt(i + ((12 * (currentPage == 0 ? 0 : currentPage - 1))));
+            int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
             if (indexToSearch < filteredAxieList.Count)
             {
                 GetAxiesExample.Axie axie = filteredAxieList[indexToSearch];
-
                 axieList[i].axie = axie;
             }
-
 
             axieList[i].Refresh(true);
         }
 
         if (string.IsNullOrEmpty(selectedAxie))
-            axieList.First().SelectAxie();
+            axieList.FirstOrDefault()?.SelectAxie();
     }
 
     public void GoNextPage()
     {
         currentPage++;
-
         if (currentPage > maxPagesAmount)
         {
             currentPage = maxPagesAmount;

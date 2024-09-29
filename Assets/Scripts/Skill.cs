@@ -423,10 +423,18 @@ public class Skill : MonoBehaviour
 
     private void DoHeal()
     {
-        foreach (var target in statusEffectTargetList)
+        try
         {
-            target.DoHeal(healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value);
+            foreach (var target in statusEffectTargetList)
+            {
+                target.DoHeal(healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value);
+            }
         }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+
     }
 
     private void PlayAxieAnimation()

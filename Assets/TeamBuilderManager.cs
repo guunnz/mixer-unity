@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public enum TeamBuilderMenu
 {
     Lands,
@@ -15,6 +14,7 @@ public enum TeamBuilderMenu
     Atia,
     Combo
 }
+
 public enum AxieStatFilter
 {
     NoFilter,
@@ -27,10 +27,9 @@ public enum AxieStatFilter
     LessSpeed,
     LessSkill
 }
+
 public class TeamBuilderManager : MonoBehaviour
 {
-
-
     public GameObject LandsContent;
     public GameObject AxiesContent;
 
@@ -80,6 +79,25 @@ public class TeamBuilderManager : MonoBehaviour
 
     internal event AxieClassFilterCleared axieClassfilterClearedEvent;
 
+    public TMP_InputField GeneralFilter;
+
+    void Start()
+    {
+        SetupGeneralFilterListener();
+    }
+
+    private void SetupGeneralFilterListener()
+    {
+        if (GeneralFilter != null)
+        {
+            GeneralFilter.onEndEdit.RemoveAllListeners();
+            GeneralFilter.onEndEdit.AddListener(delegate { OnGeneralFilterChanged(); });
+        }
+    }
+    private void OnGeneralFilterChanged()
+    {
+        SetAxiesUI();
+    }
 
     public void Edit()
     {
@@ -136,7 +154,6 @@ public class TeamBuilderManager : MonoBehaviour
         AxieStatFilter contraryFilter = axieStatsFilters.FirstOrDefault(x =>
             x != statFilter && statFilter.ToString().Contains(x.ToString().Substring(4)));
 
-
         if (contraryFilter != AxieStatFilter.NoFilter)
         {
             axieStatsFilters.RemoveAll(x => x == contraryFilter);
@@ -155,43 +172,78 @@ public class TeamBuilderManager : MonoBehaviour
         SetAxiesUI();
     }
 
-    public List<GetAxiesExample.Axie> GetFilteredList()
+    public List<GetAxiesExample.Axie> GetFilteredList(string generalFilter = null)
     {
         List<GetAxiesExample.Axie> axiesList = AccountManager.userAxies.results.ToList();
 
+        // Apply existing class and stats filters
         if (axieClassFilters.Count != 0)
         {
             axiesList = axiesList.Where(x => axieClassFilters.Contains(x.axieClass)).ToList();
         }
 
-        IOrderedEnumerable<GetAxiesExample.Axie> query = axiesList.OrderBy(x => 0);
         if (axieStatsFilters.Count != 0)
         {
-            AxieStatFilter firstFilter = axieStatsFilters.First();
-            if (firstFilter.ToString().Contains("More"))
+            var query = SortAxies(axiesList, axieStatsFilters);
+            axiesList = query.ToList();
+        }
+
+        // New filtering based on the GeneralFilter
+        if (!string.IsNullOrEmpty(generalFilter))
+        {
+            var filters = generalFilter.ToLower().Split(',').Select(f => f.Trim()).ToList();
+            axiesList = axiesList.Where(axie =>
+                filters.Any(filter =>
+                    (axie.id?.ToLower() == filter) ||
+                    (axie.axieClass.ToString().ToLower() == filter) ||
+                    (axie.bodyShape.ToString().ToLower() == filter) ||
+                    (axie.parts != null && axie.parts.Any(part =>
+                        part != null && (
+                            part.id?.ToLower() == filter ||
+                            part.name?.ToLower() == filter ||
+                            part.@class?.ToLower() == filter ||
+                            part.type?.ToLower() == filter ||
+                            part.abilityName?.ToLower() == filter ||
+                            part.partClass.ToString().ToLower() == filter ||
+                            part.BodyPart.ToString().ToLower() == filter ||
+                            part.SkillName.ToString().ToLower() == filter
+                        )
+                    ))
+                )
+            ).ToList();
+        }
+
+        return axiesList;
+    }
+
+
+    private IOrderedEnumerable<GetAxiesExample.Axie> SortAxies(List<GetAxiesExample.Axie> axiesList, List<AxieStatFilter> axieStatsFilters)
+    {
+        IOrderedEnumerable<GetAxiesExample.Axie> query = axiesList.OrderBy(x => 0);
+        AxieStatFilter firstFilter = axieStatsFilters.First();
+        if (firstFilter.ToString().Contains("More"))
+        {
+            query = query.OrderByDescending(x => GetFieldValue(x.stats, firstFilter));
+        }
+        else
+        {
+            query = query.OrderBy(x => GetFieldValue(x.stats, firstFilter));
+        }
+
+        for (int i = 1; i < axieStatsFilters.Count; i++)
+        {
+            AxieStatFilter filter = axieStatsFilters[i];
+            if (filter.ToString().Contains("More"))
             {
-                query = query.OrderByDescending(x => GetFieldValue(x.stats, firstFilter));
+                query = query.ThenByDescending(x => GetFieldValue(x.stats, filter));
             }
             else
             {
-                query = query.OrderBy(x => GetFieldValue(x.stats, firstFilter));
-            }
-
-            for (int i = 1; i < axieStatsFilters.Count; i++)
-            {
-                AxieStatFilter filter = axieStatsFilters[i];
-                if (filter.ToString().Contains("More"))
-                {
-                    query = query.ThenByDescending(x => GetFieldValue(x.stats, filter));
-                }
-                else
-                {
-                    query = query.ThenBy(x => GetFieldValue(x.stats, filter));
-                }
+                query = query.ThenBy(x => GetFieldValue(x.stats, filter));
             }
         }
 
-        return query.ToList();
+        return query;
     }
 
     int GetFieldValue(GetAxiesExample.Stats axieStats, AxieStatFilter filter)
@@ -210,6 +262,168 @@ public class TeamBuilderManager : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public void SetMenu(TeamBuilderMenu teamBuilderMenu, bool ResetPage = false)
+    {
+        if (ResetPage)
+        {
+            currentPage = 1;
+        }
+
+        currentTeamBuilderMenu = teamBuilderMenu;
+        switch (teamBuilderMenu)
+        {
+            case TeamBuilderMenu.Atia:
+                SetAtiaUI();
+                break;
+            case TeamBuilderMenu.Axies:
+                PagesAmount = AccountManager.userAxies.results.Length / 12f;
+                maxPagesAmount = Mathf.CeilToInt(PagesAmount);
+                pageText.text = $"Page {currentPage}-{maxPagesAmount}";
+                SetAxiesUI();
+                break;
+            case TeamBuilderMenu.Combo:
+                SetComboUI();
+                break;
+            case TeamBuilderMenu.Lands:
+                PagesAmount = AccountManager.userLands.results.Length / 12f;
+                maxPagesAmount = Mathf.CeilToInt(PagesAmount);
+                pageText.text = $"Page {currentPage}-{maxPagesAmount}";
+                SetLandUI();
+                break;
+        }
+    }
+
+    public void SetComboUI()
+    {
+        TeamLandBuildingUI.SetActive(false);
+        ComboUI.SetActive(true);
+        fakeAxieComboManager.LoadUI();
+    }
+
+    public void SetAtiaUI()
+    {
+    }
+
+    public void SetAxieSelected(GetAxiesExample.Axie axie, Sprite classSprite)
+    {
+        AxieClassGraphic.sprite = classSprite;
+        statsSkeletonGraphic.skeletonDataAsset = axie.skeletonDataAsset;
+        statsSkeletonGraphic.material = axie.skeletonDataAssetMaterial;
+        statsSkeletonGraphic.Initialize(true);
+        lastAxieChosen = axie;
+    }
+
+    public void SetAxieStats(GetAxiesExample.Axie Axie)
+    {
+        AxieStatsContainer.SetActive(false);
+
+        AxieHPText.text = Axie.stats.hp.ToString();
+        AxieSkillText.text = Axie.stats.skill.ToString();
+        AxieMoraleText.text = Axie.stats.morale.ToString();
+        AxieSpeedText.text = Axie.stats.speed.ToString();
+        statsSkeletonGraphic.skeletonDataAsset = Axie.skeletonDataAsset;
+        statsSkeletonGraphic.material = Axie.skeletonDataAssetMaterial;
+        statsSkeletonGraphic.Initialize(true);
+        AxieStatsContainer.SetActive(true);
+    }
+
+    public void DisableAxieStats()
+    {
+        AxieStatsContainer.SetActive(false);
+    }
+
+    public void SetAxiesUI()
+    {
+        TeamLandBuildingUI.SetActive(true);
+        ComboUI.SetActive(false);
+        LandsContent.SetActive(false);
+        AxiesContent.SetActive(true);
+        if (lastAxieChosen == null)
+        {
+            if (TeamManager.instance.currentTeam != null)
+            {
+                lastAxieChosen = TeamManager.instance.currentTeam.AxieIds[0];
+            }
+        }
+
+        AxieStatsContainer.SetActive(false);
+
+        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList(GeneralFilter.text);
+
+        for (int i = 0; i < 12; i++)
+        {
+            axieList[i].axie = null;
+
+            int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
+            if (indexToSearch < filteredAxieList.Count)
+            {
+                GetAxiesExample.Axie axie = filteredAxieList[indexToSearch];
+
+                axieList[i].axie = axie;
+                if (lastAxieChosen != null && axie.id == lastAxieChosen.id)
+                {
+                    AxieHPText.text = axie.stats.hp.ToString();
+                    AxieSkillText.text = axie.stats.skill.ToString();
+                    AxieMoraleText.text = axie.stats.morale.ToString();
+                    AxieSpeedText.text = axie.stats.speed.ToString();
+                    statsSkeletonGraphic.skeletonDataAsset = axieList[i].axie.skeletonDataAsset;
+                    statsSkeletonGraphic.material = axieList[i].axie.skeletonDataAssetMaterial;
+                    statsSkeletonGraphic.Initialize(true);
+                    AxieStatsContainer.SetActive(true);
+                }
+            }
+
+            axieList[i].Refresh();
+        }
+    }
+
+    public void SetLandUI()
+    {
+        TeamLandBuildingUI.SetActive(true);
+        ComboUI.SetActive(false);
+        LandsContent.SetActive(true);
+        AxiesContent.SetActive(false);
+        for (int i = 0; i < 12; i++)
+        {
+            landList[i].land = null;
+
+            if (i < AccountManager.userLands.results.Length)
+            {
+                GetAxiesExample.Land land = AccountManager.userLands.results[Mathf.RoundToInt(i * currentPage)];
+
+                landList[i].land = land;
+            }
+
+            landList[i].Refresh();
+        }
+    }
+
+    public void GoNextPage()
+    {
+        currentPage++;
+
+        if (currentPage > maxPagesAmount)
+        {
+            currentPage = maxPagesAmount;
+            return;
+        }
+
+        SetMenu(currentTeamBuilderMenu, false);
+    }
+
+    public void GoPreviousPage()
+    {
+        currentPage--;
+
+        if (currentPage <= 0)
+        {
+            currentPage = 1;
+            return;
+        }
+
+        SetMenu(currentTeamBuilderMenu, false);
     }
 
     public void SetAxiesMenu()
@@ -297,166 +511,4 @@ public class TeamBuilderManager : MonoBehaviour
         Exit();
     }
 
-    public void SetMenu(TeamBuilderMenu teamBuilderMenu, bool ResetPage = false)
-    {
-        if (ResetPage)
-        {
-            currentPage = 1;
-        }
-
-        currentTeamBuilderMenu = teamBuilderMenu;
-        switch (teamBuilderMenu)
-        {
-            case TeamBuilderMenu.Atia:
-                SetAtiaUI();
-                break;
-            case TeamBuilderMenu.Axies:
-                PagesAmount = AccountManager.userAxies.results.Length / 12f;
-                maxPagesAmount = Mathf.CeilToInt(PagesAmount);
-                pageText.text = $"Page {currentPage}-{maxPagesAmount}";
-                SetAxiesUI();
-                break;
-            case TeamBuilderMenu.Combo:
-                SetComboUI();
-                break;
-            case TeamBuilderMenu.Lands:
-                PagesAmount = AccountManager.userLands.results.Length / 12f;
-                maxPagesAmount = Mathf.CeilToInt(PagesAmount);
-                pageText.text = $"Page {currentPage}-{maxPagesAmount}";
-                SetLandUI();
-                break;
-        }
-    }
-
-    public void SetComboUI()
-    {
-        TeamLandBuildingUI.SetActive(false);
-        ComboUI.SetActive(true);
-        fakeAxieComboManager.LoadUI();
-    }
-
-    public void SetAtiaUI()
-    {
-    }
-
-    public void SetAxieSelected(GetAxiesExample.Axie axie, Sprite classSprite)
-    {
-        AxieClassGraphic.sprite = classSprite;
-        statsSkeletonGraphic.skeletonDataAsset = axie.skeletonDataAsset;
-        statsSkeletonGraphic.material = axie.skeletonDataAssetMaterial;
-        statsSkeletonGraphic.Initialize(true);
-        lastAxieChosen = axie;
-    }
-
-    public void SetAxieStats(GetAxiesExample.Axie Axie)
-    {
-        AxieStatsContainer.SetActive(false);
-
-
-        AxieHPText.text = Axie.stats.hp.ToString();
-        AxieSkillText.text = Axie.stats.skill.ToString();
-        AxieMoraleText.text = Axie.stats.morale.ToString();
-        AxieSpeedText.text = Axie.stats.speed.ToString();
-        statsSkeletonGraphic.skeletonDataAsset = Axie.skeletonDataAsset;
-        statsSkeletonGraphic.material = Axie.skeletonDataAssetMaterial;
-        statsSkeletonGraphic.Initialize(true);
-        AxieStatsContainer.SetActive(true);
-    }
-
-    public void DisableAxieStats()
-    {
-        AxieStatsContainer.SetActive(false);
-    }
-
-    public void SetAxiesUI()
-    {
-        TeamLandBuildingUI.SetActive(true);
-        ComboUI.SetActive(false);
-        LandsContent.SetActive(false);
-        AxiesContent.SetActive(true);
-        if (lastAxieChosen == null)
-        {
-            if (TeamManager.instance.currentTeam != null)
-            {
-                lastAxieChosen = TeamManager.instance.currentTeam.AxieIds[0];
-            }
-        }
-
-        AxieStatsContainer.SetActive(false);
-
-        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList();
-
-        for (int i = 0; i < 12; i++)
-        {
-            axieList[i].axie = null;
-
-            int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
-            if (indexToSearch < filteredAxieList.Count)
-            {
-                GetAxiesExample.Axie axie = filteredAxieList[indexToSearch];
-
-                axieList[i].axie = axie;
-                if (lastAxieChosen != null && axie.id == lastAxieChosen.id)
-                {
-                    AxieHPText.text = axie.stats.hp.ToString();
-                    AxieSkillText.text = axie.stats.skill.ToString();
-                    AxieMoraleText.text = axie.stats.morale.ToString();
-                    AxieSpeedText.text = axie.stats.speed.ToString();
-                    statsSkeletonGraphic.skeletonDataAsset = axieList[i].axie.skeletonDataAsset;
-                    statsSkeletonGraphic.material = axieList[i].axie.skeletonDataAssetMaterial;
-                    statsSkeletonGraphic.Initialize(true);
-                    AxieStatsContainer.SetActive(true);
-                }
-            }
-
-
-            axieList[i].Refresh();
-        }
-    }
-
-    public void SetLandUI()
-    {
-        TeamLandBuildingUI.SetActive(true);
-        ComboUI.SetActive(false);
-        LandsContent.SetActive(true);
-        AxiesContent.SetActive(false);
-        for (int i = 0; i < 12; i++)
-        {
-            landList[i].land = null;
-
-            if (i < AccountManager.userLands.results.Length)
-            {
-                GetAxiesExample.Land land = AccountManager.userLands.results[Mathf.RoundToInt(i * currentPage)];
-
-                landList[i].land = land;
-            }
-
-            landList[i].Refresh();
-        }
-    }
-
-    public void GoNextPage()
-    {
-        currentPage++;
-
-        if (currentPage > maxPagesAmount)
-        {
-            currentPage = maxPagesAmount;
-            return;
-        }
-
-        SetMenu(currentTeamBuilderMenu, false);
-    }
-
-    public void GoPreviousPage()
-    {
-        currentPage--;
-        if (currentPage <= 0)
-        {
-            currentPage = 1;
-            return;
-        }
-
-        SetMenu(currentTeamBuilderMenu, false);
-    }
 }
