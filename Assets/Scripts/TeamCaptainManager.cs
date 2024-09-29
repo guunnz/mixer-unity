@@ -143,7 +143,11 @@ public class TeamCaptainManager : MonoBehaviour
     }
     public System.Collections.IEnumerator Start()
     {
-        var captain = PlayerPrefs.GetString("Captain");
+        while (string.IsNullOrEmpty(RunManagerSingleton.instance.user_wallet_address))
+        {
+            yield return null;
+        }
+        var captain = PlayerPrefs.GetString("Captain" + RunManagerSingleton.instance.user_wallet_address);
         if (string.IsNullOrEmpty(captain))
         {
 
@@ -270,7 +274,7 @@ public class TeamCaptainManager : MonoBehaviour
 
     public void SetProfilePicGraphic()
     {
-        PlayerPrefs.SetString("Captain", lastAxieChosen.id);
+        PlayerPrefs.SetString("Captain" + RunManagerSingleton.instance.user_wallet_address, lastAxieChosen.id);
         var profilePicSkeleton = lastAxieChosen.skeletonDataAsset;
         var skeletonMaterial = lastAxieChosen.skeletonDataAssetMaterial;
 

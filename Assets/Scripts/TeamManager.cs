@@ -82,7 +82,7 @@ public class TeamManager : MonoBehaviour
             }
         }
 
-        string selectedTeamName = PlayerPrefs.GetString(PlayerPrefsValues.AxieTeamSelected);
+        string selectedTeamName = PlayerPrefs.GetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address);
 
         if (!string.IsNullOrEmpty(selectedTeamName))
         {

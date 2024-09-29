@@ -51,7 +51,7 @@ public class TeamItemUI : MonoBehaviour
         if (select)
         {
             TeamManager.instance.currentTeam = axieTeam;
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, axieTeam.TeamName);
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected+ RunManagerSingleton.instance.user_wallet_address, axieTeam.TeamName);
 
             TeamName.text = axieTeam.TeamName;
             StartCoroutine(SelectTeamCoroutine(axieTeam));

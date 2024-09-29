@@ -109,12 +109,12 @@ public class TeamSelectorUI : MonoBehaviour
         {
             TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
 
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, TeamManager.instance.teams[0].TeamName);
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected+ RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.teams[0].TeamName);
         }
         else
         {
             TeamManager.instance.currentTeam = null;
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, "");
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected+ RunManagerSingleton.instance.user_wallet_address, "");
         }
 
         TeamManager.instance.SaveTeams();
@@ -124,7 +124,7 @@ public class TeamSelectorUI : MonoBehaviour
 
     public void SelectTeam()
     {
-        PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected, TeamManager.instance.currentTeam?.TeamName);
+        PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.currentTeam?.TeamName);
         TeamManager.instance.axiesManager.ShowMenuAxies(TeamManager.instance.currentTeam);
         Exit();
     }
