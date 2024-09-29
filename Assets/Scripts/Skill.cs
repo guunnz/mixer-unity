@@ -427,7 +427,11 @@ public class Skill : MonoBehaviour
         {
             foreach (var target in statusEffectTargetList)
             {
-                target.DoHeal(healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId)!.Value);
+                var axieTargetHealingPair = healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
+                if (axieTargetHealingPair == null)
+                    continue;
+
+                target.DoHeal(axieTargetHealingPair.Value);
             }
         }
         catch (Exception ex)

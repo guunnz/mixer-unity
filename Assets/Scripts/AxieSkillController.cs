@@ -295,12 +295,16 @@ public class AxieSkillController : MonoBehaviour
             {
                 Debug.Log("Reflected Ranged to: " + attacker.AxieId + " / Damage: " +
                           damage * passives.RangedReflectDamageAmount / 100f);
+
+                attacker.axieIngameStats.currentHP -= (damage * passives.RangedReflectDamageAmount / 100f);
             }
 
             if (passives.MeleeReflectDamageAmount > 0)
             {
                 Debug.Log("Reflected melee to: " + attacker.AxieId + " / Damage: " +
-                          damage * passives.MeleeReflectDamageAmount / 100f);
+                          damage * passives.MeleeReflectDamageAmount / 100f);//
+
+                attacker.axieIngameStats.currentHP -= (damage * passives.MeleeReflectDamageAmount / 100f);
             }
 
             foreach (var skillEffect in bodyPartPassive.skillEffects)

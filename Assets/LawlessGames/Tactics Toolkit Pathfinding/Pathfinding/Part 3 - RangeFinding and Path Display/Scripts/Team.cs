@@ -673,11 +673,7 @@ public class Team : MonoBehaviour
 
     public List<OverlayTile> GetInRangeTiles(AxieController character)
     {
-        return MapManager.Instance.overlayTiles.Where(t =>
-                character.Range > 1 || !t.occupied &&
-                Vector2Int.Distance(new Vector2Int(t.gridLocation.x, t.gridLocation.z),
-                    new Vector2Int(character.standingOnTile.gridLocation.x,
-                        character.standingOnTile.gridLocation.z)) <= movementRange)
+        return MapManager.Instance.overlayTiles.Where(t => !t.occupied)
             .ToList();
     }
 
