@@ -54,6 +54,7 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         if (axie == null)
         {
+            freeRotation.SetActive(false);
             skeletonGraphic.enabled = false;
         }
         else if (resetAxie)

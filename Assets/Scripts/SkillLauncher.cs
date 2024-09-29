@@ -49,6 +49,7 @@ public class SkillLauncher : MonoBehaviour
         {
             Skill skill = Instantiate(skills[i].bodyPartSO.prefab).GetComponent<Skill>();
 
+            skill.axieBodyPart = skills[i].bodyPartSO;
             if (self.axieSkillEffectManager.IsKestreled() && skill.axieBodyPart.bodyPart == BodyPart.Horn)
             {
                 continue;
@@ -57,7 +58,6 @@ public class SkillLauncher : MonoBehaviour
             {
                 continue;
             }
-            skill.axieBodyPart = skills[i].bodyPartSO;
             skill.self = self;
             skill.origin = self.transform;
             skill.@class = skills[i].bodyPartSO.bodyPartClass;
@@ -571,8 +571,11 @@ public class SkillLauncher : MonoBehaviour
                     statusEffectTargetList.Add(target);
                     break;
                 case StatusApplyType.ApplyAdjacentSelfAndSelf:
-                    statusEffectTargetList.AddRange(target.GetAdjacent());
+                    statusEffectTargetList.AddRange(self.GetAdjacent());
                     statusEffectTargetList.Add(self);
+                    break;
+                case StatusApplyType.ApplyAdjacentSelf:
+                    statusEffectTargetList.AddRange(self.GetAdjacent());
                     break;
                 case StatusApplyType.ApplySelf:
                     statusEffectTargetList.Add(self);
@@ -670,7 +673,11 @@ public class SkillLauncher : MonoBehaviour
             if (skillInstance.axieBodyPart.bodyPart == BodyPart.Horn)
             {
                 self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield *
-                                                      (self.axieSkillController.passives.ExtraArmorHelmet / 100f);
+                                                      ((self.axieSkillController.passives.ExtraArmorHelmet / 100f) == 0 ? 1 : (self.axieSkillController.passives.ExtraArmorHelmet / 100f));
+            }
+            else
+            {
+                self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
             }
 
             if (skillEffect.GainShield > 0)
@@ -775,7 +782,9 @@ public class SkillLauncher : MonoBehaviour
 
                 if (skillEffect.ShieldAsDamagePercentage > 0)
                 {
-                    dmgPair.damage *= Mathf.RoundToInt(1f + (skillEffect.ShieldAsDamagePercentage * .01f));
+                    var shield = self.axieIngameStats.currentShield;
+                    shield *= skillEffect.ShieldAsDamagePercentage * .01f;
+                    dmgPair.damage += Mathf.RoundToInt(shield);
                 }
 
 

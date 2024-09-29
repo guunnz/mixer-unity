@@ -139,10 +139,10 @@ public class AxieSkillEffectManager : MonoBehaviour
     {
         try
         {
-        return skillEffects.Any(x => x.Kestrel);
+            return skillEffects.Any(x => x.Kestrel);
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return false;
         }
@@ -185,17 +185,50 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public int GetAttackBuff()
     {
-        return skillEffects.Sum(x => x.Attack);
+        var attackPlus = skillEffects.FirstOrDefault(x => x.Attack > 0);
+        var attackMinus = skillEffects.FirstOrDefault(x => x.Attack < 0);
+        int attack = 0;
+        if (attackPlus != null)
+        {
+            attack = attackPlus.timesSet;
+        }
+        if (attackMinus != null)
+        {
+            attack = -attackMinus.timesSet;
+        }
+        return attack;
     }
 
     public int GetMoraleBuff()
     {
-        return skillEffects.Sum(x => x.Morale);
+        var moralePlus = skillEffects.FirstOrDefault(x => x.Morale > 0);
+        var moraleMinus = skillEffects.FirstOrDefault(x => x.Morale < 0);
+        int morale = 0;
+        if (moralePlus != null)
+        {
+            morale = moralePlus.timesSet;
+        }
+        if (moraleMinus != null)
+        {
+            morale = -moraleMinus.timesSet;
+        }
+        return morale;
     }
 
     public int GetSpeedBuff()
     {
-        return skillEffects.Sum(x => x.Speed);
+        var speedPlus = skillEffects.FirstOrDefault(x => x.Speed > 0);
+        var speedMinus = skillEffects.FirstOrDefault(x => x.Speed < 0);
+        int speed = 0;
+        if (speedPlus != null)
+        {
+            speed = speedPlus.timesSet;
+        }
+        if (speedMinus != null)
+        {
+            speed = -speedMinus.timesSet;
+        }
+        return speed;
     }
 
     private void Start()

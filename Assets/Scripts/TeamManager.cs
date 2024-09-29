@@ -50,6 +50,7 @@ public class TeamManager : MonoBehaviour
 
     public void SaveTeams()
     {
+        TooltipManagerSingleton.instance.DisableTooltip();
         string json = JsonUtility.ToJson(new SaveableAxieTeamsWrapper() { axieTeams = teams.ToArray() }, true);
 
         teamsFilePath = Path.Combine(Application.persistentDataPath,

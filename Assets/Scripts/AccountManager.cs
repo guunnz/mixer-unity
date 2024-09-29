@@ -35,8 +35,6 @@ public class AccountManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F11))
         {
             TestMode = true;
-            loggingIn = false;
-            StartCoroutine(PerformLogin());
         }
     }
 #endif
@@ -138,6 +136,7 @@ public class AccountManager : MonoBehaviour
                         axie.birthDate = axiesInList.rawMetadata.properties.birthdate;
                         axie.newGenes = axiesInList.rawMetadata.genes;
                         axie.bodyShape = axiesInList.rawMetadata.properties.bodyshape;
+                        axie.f2p = axiesInList.f2p;
 
                         axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
 
@@ -245,7 +244,7 @@ public class AccountManager : MonoBehaviour
                         axie.birthDate = axiesInList.rawMetadata.properties.birthdate;
                         axie.newGenes = axiesInList.rawMetadata.genes;
                         axie.bodyShape = axiesInList.rawMetadata.properties.bodyshape;
-
+                        axie.f2p = axiesInList.f2p;
                         axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
 
                         Debug.Log("Loading parts");

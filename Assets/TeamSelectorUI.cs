@@ -124,6 +124,7 @@ public class TeamSelectorUI : MonoBehaviour
 
     public void SelectTeam()
     {
+        TooltipManagerSingleton.instance.DisableTooltip();
         PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.currentTeam?.TeamName);
         TeamManager.instance.axiesManager.ShowMenuAxies(TeamManager.instance.currentTeam);
         Exit();

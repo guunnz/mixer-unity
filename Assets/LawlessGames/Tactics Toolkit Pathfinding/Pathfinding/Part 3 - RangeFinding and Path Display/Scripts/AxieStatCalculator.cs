@@ -17,7 +17,7 @@ static public class AxieStatCalculator
 
     static public float GetAxieMinEnergy(GetAxiesExample.Stats stats)
     {
-        return (float)((stats.skill -27) / 100f) * 5f;
+        return (float)((stats.skill - 27) / 100f) * 5f;
     }
 
     static public float GetHP(GetAxiesExample.Stats stats)
@@ -59,18 +59,18 @@ static public class AxieStatCalculator
 
     static public int GetRealSpeed(int speed, int speedBuffAmount)
     {
-        return Mathf.RoundToInt(speed + (speed * (speedBuffAmount * 0.2f)));
+        return Mathf.RoundToInt(speed + (speed * (speedBuffAmount * 0.05f)));
     }
 
     static public int GetRealMorale(int morale, int moraleBuffAmount)
     {
-        return Mathf.RoundToInt(morale + (morale * (moraleBuffAmount * 0.2f)));
+        return Mathf.RoundToInt(morale + (morale * (moraleBuffAmount * 0.05f)));
     }
 
     static public int GetRealAttack(GetAxiesExample.Stats stats, int attackBuffAmount)
     {
         int attack = Mathf.RoundToInt(GetAttackDamage(stats));
-        return Mathf.RoundToInt((attack + (attack * (attackBuffAmount * 0.2f))));
+        return Mathf.RoundToInt((attack + (attack * (attackBuffAmount * 0.05f))));
     }
 
     static public float GetCritChance(GetAxiesExample.Stats stats)

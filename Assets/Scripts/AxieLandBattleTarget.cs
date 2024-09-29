@@ -128,8 +128,8 @@ public class AxieLandBattleTarget : MonoBehaviour
         {
             user_wallet_address = RunManagerSingleton.instance.user_wallet_address,
             win_loss_record = RunManagerSingleton.instance.resultsBools.ToArray(),
-            axie_captain_id = PlayerPrefs.GetString("Captain"),
-            axie_captain_genes = AccountManager.userAxies.results.Single(x => x.id == PlayerPrefs.GetString("Captain")).newGenes,
+            axie_captain_id = PlayerPrefs.GetString("Captain" + RunManagerSingleton.instance.user_wallet_address),
+            axie_captain_genes = AccountManager.userAxies.results.Single(x => x.id == PlayerPrefs.GetString("Captain" + RunManagerSingleton.instance.user_wallet_address)).newGenes,
             played_rounds = score,
             username = AccountManager.username,
             opponents_run_id = new[] { RunManagerSingleton.instance.currentOpponent },

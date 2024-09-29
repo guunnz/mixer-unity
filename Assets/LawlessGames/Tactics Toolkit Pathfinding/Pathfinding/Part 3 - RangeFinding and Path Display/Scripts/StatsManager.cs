@@ -23,6 +23,7 @@ public class StatsManager : MonoBehaviour
     private float TotalEnergyBarSize = 1.2709f;
     public Transform AttackAnim;
     private float ManaPerBar = 0.5f;
+    internal float shieldValue;
 
     private float CurrentMana;
 
@@ -166,6 +167,7 @@ public class StatsManager : MonoBehaviour
         {
             shieldObject.SetActive(true);
         }
+        shieldValue = shield;
 
         this.shield.text = shield.ToString();
     }

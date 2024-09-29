@@ -468,6 +468,7 @@ public class SkyMavisLogin : MonoBehaviour
     public struct Item
     {
         public string contractAddress;
+        public bool f2p;
         public long createdAtBlock;
         public string createdAtBlockTime;
         public RawMetadata rawMetadata;

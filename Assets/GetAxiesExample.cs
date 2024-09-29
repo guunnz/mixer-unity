@@ -62,6 +62,7 @@ public class GetAxiesExample : MonoBehaviour
         public string newGenes;
         public string id;
         public string @class;
+        public bool f2p;
         public AxieClass axieClass => (AxieClass)Enum.Parse(typeof(AxieClass), @class, true);
         public Part[] parts;
 

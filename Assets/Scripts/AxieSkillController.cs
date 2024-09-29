@@ -307,6 +307,8 @@ public class AxieSkillController : MonoBehaviour
                 attacker.axieIngameStats.currentHP -= (damage * passives.MeleeReflectDamageAmount / 100f);
             }
 
+            var currentShield = self.statsManagerUI.shieldValue;
+
             foreach (var skillEffect in bodyPartPassive.skillEffects)
             {
                 foreach (var bodyPart in skillEffect.specialActivactionWhenReceiveDamage)
@@ -317,7 +319,7 @@ public class AxieSkillController : MonoBehaviour
                     if (bodyPart.axieClass != attackClass)
                         continue;
 
-                    if (skillEffect.OnShieldBreak && damage < self.axieIngameStats.currentShield || skillEffect.OnShieldBreak && self.axieIngameStats.currentShield == 0)
+                    if (skillEffect.OnShieldBreak && damage < self.axieIngameStats.currentShield && currentShield > 0 || skillEffect.OnShieldBreak && self.axieIngameStats.currentShield <= 0 && currentShield > 0)
                     {
                         continue;
                     }
@@ -325,10 +327,17 @@ public class AxieSkillController : MonoBehaviour
                     {
                         continue;
                     }
+
+
                     StartCoroutine(
                         SkillLauncher.Instance.ThrowPassive(
                             skillList.FirstOrDefault(x => x.skillName == bodyPartPassive.skillName), self.SkeletonAnim,
                             attacker, self));
+
+                    if (skillEffect.OnShieldBreak)
+                    {
+                        break;
+                    }
                 }
             }
         }

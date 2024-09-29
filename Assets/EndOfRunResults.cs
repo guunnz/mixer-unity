@@ -45,6 +45,7 @@ public class EndOfRunResults : MonoBehaviour
         Instance = this;
     }
 
+
     public void SetMatchData(bool win)
     {
         MatchData matchdata = new MatchData();
@@ -102,19 +103,17 @@ public class EndOfRunResults : MonoBehaviour
             Destroy(GameobjectsToDisable[i]);
         }
         var wins = MatchData.Count(x => x.Win);
+        var losses = MatchData.Count(x => !x.Win);
         ScoreText.text = wins.ToString();
-
-        GoodTeam.GetCharactersAll().ForEach(x =>
+        if (losses != 3)
         {
-            if (wins == 12)
-            {
-                x.SkeletonAnim.AnimationName = "activity/victory-pose-back-flip";
-                x.SkeletonAnim.Initialize(true);
-            }
+            GoodTeam.GetCharactersAll().ForEach(x =>
+        {
+
+            x.SkeletonAnim.AnimationName = "activity/victory-pose-back-flip";
+            x.SkeletonAnim.Initialize(true);
+
         });
-
-        if (wins == 12)
-        {
             StartCoroutine(Fireworks());
         }
 

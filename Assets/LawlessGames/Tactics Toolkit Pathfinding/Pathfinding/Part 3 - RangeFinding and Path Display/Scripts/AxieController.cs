@@ -125,7 +125,7 @@ public class AxieController : MonoBehaviour
 
     public void DoHeal(float healAmount)
     {
-        if (healAmount <= 0)
+        if (healAmount <= 0 || this.axieBehavior.axieState == AxieState.Killed)
             return;
         if (this.axieSkillEffectManager.IsHealingBlocked())
             return;

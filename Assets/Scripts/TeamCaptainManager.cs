@@ -154,7 +154,7 @@ public class TeamCaptainManager : MonoBehaviour
 
     public List<GetAxiesExample.Axie> GetFilteredList()
     {
-        var axiesList = AccountManager.userAxies.results.ToList();
+        var axiesList = AccountManager.userAxies.results.Where(x => !x.f2p).ToList();
         string filter = GeneralFilterInput != null ? GeneralFilterInput.text.ToLower() : "";
 
         if (!string.IsNullOrEmpty(filter))

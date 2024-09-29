@@ -74,7 +74,25 @@ MonoBehaviour:
     specialActivationIfComboedWithList: []
     specialActivationWithBodyParts: []
     specialActivationBasedOnAxiesInBattle: []
-    specialActivactionWhenReceiveDamage: []
+    specialActivactionWhenReceiveDamage:
+    - onlyAbilities: 0
+      axieClass: 0
+    - onlyAbilities: 0
+      axieClass: 1
+    - onlyAbilities: 0
+      axieClass: 2
+    - onlyAbilities: 0
+      axieClass: 3
+    - onlyAbilities: 0
+      axieClass: 4
+    - onlyAbilities: 0
+      axieClass: 5
+    - onlyAbilities: 0
+      axieClass: 6
+    - onlyAbilities: 0
+      axieClass: 7
+    - onlyAbilities: 0
+      axieClass: 8
     lowestHP: 0
     FurthestTarget: 0
     targetHighestEnergy: 0
@@ -105,7 +123,7 @@ MonoBehaviour:
     arreglabugs: 
   tooltipTypes: 05000000
   bodyPart: 4
-  prefab: {fileID: 2179489554462401005, guid: 75a85e05ae4c87f4ab0a7b41fd752186, type: 3}
+  prefab: {fileID: 2179489554462401005, guid: a1b0815851267224c9367391fd627028, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 5
   damage: 0
