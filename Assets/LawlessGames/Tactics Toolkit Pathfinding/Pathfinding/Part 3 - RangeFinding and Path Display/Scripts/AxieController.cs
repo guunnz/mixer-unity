@@ -28,7 +28,8 @@ public class IngameStats
 public enum AxieMode
 {
     Battle,
-    Menu
+    Menu,
+    Win
 }
 
 public class AxieController : MonoBehaviour
@@ -331,6 +332,8 @@ public class AxieController : MonoBehaviour
     private bool animationBattleSet = false;
     private void Update()
     {
+        if (mode == AxieMode.Win)
+            return;
         if (mode == AxieMode.Menu && axieBehavior.axieState != AxieState.Hovered)
         {
             animationBattleSet = false;

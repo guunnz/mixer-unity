@@ -110,6 +110,7 @@ public class EndOfRunResults : MonoBehaviour
             GoodTeam.GetCharactersAll().ForEach(x =>
         {
 
+            x.mode = AxieMode.Win;
             x.SkeletonAnim.AnimationName = "activity/victory-pose-back-flip";
             x.SkeletonAnim.Initialize(true);
 

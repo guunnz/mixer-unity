@@ -24,10 +24,15 @@ public class ShopItemPurchasable : MonoBehaviour
     public GameObject FreezeGraphics;
     public bool PreventSetOnStart;
     private int pressTimes;
+    public bool isPotion;
 
     private void OnEnable()
     {
         Poping.color = Color.clear;
+        if (isPotion)
+        {
+            SetItem(shopItem);
+        }
     }
 
     public void SetItem(ShopItem item)
@@ -45,9 +50,16 @@ public class ShopItemPurchasable : MonoBehaviour
         Sold.gameObject.SetActive(false);
         sold = false;
         shopItem = item;
-        Poping.text = item.description;
+        Poping.text = item.description.Replace("\\n", Environment.NewLine);
         ItemName.text = item.ShopItemName;
-        ItemCost.text = Math.Floor(item.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage / 100f).ToString();
+        if (RunManagerSingleton.instance.economyPassive.ItemCostPercentage != 100 || RunManagerSingleton.instance.landType == LandType.forest)
+        {
+            ItemCost.text = "<color=\"green\">" + Math.Floor(item.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage / 100f);
+        }
+        else
+        {
+            ItemCost.text = item.price.ToString();
+        }
         itemImage.sprite = item.ShopItemImage;
         ItemEffect = item.ItemEffectName;
     }
