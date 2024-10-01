@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using System;
+using static SkyMavisLogin;
 
 public class MavisTracking : MonoBehaviour
 {
@@ -45,9 +46,37 @@ public class MavisTracking : MonoBehaviour
     {
         this.roninAddress = userInfo.addr;
         sessionID = string.IsNullOrEmpty(GetSessionIdFromCommandLineArgs()) ? System.Guid.NewGuid().ToString() : GetSessionIdFromCommandLineArgs();
+        Dictionary<string, string> keyValues = new Dictionary<string, string>();
+
+        TrackIdentify(keyValues);
         StartCoroutine(TrackHeartbeat());
     }
-
+    string GetConnectionType()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        using (AndroidJavaClass jc = new AndroidJavaClass("com.example.network.NetworkTypeChecker"))
+        using (AndroidJavaObject activity = new AndroidJavaObject("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity"))
+        {
+            return jc.CallStatic<string>("getNetworkType", activity);
+        }
+#elif UNITY_EDITOR
+        return "Cable";
+#elif UNITY_IOS || UNITY_STANDALONE_WIN
+    switch (Application.internetReachability)
+    {
+        case NetworkReachability.NotReachable:
+            return "Disconnected";
+        case NetworkReachability.ReachableViaLocalAreaNetwork:
+            return "Wifi/Cable";
+        case NetworkReachability.ReachableViaCarrierDataNetwork:
+            return "Data";
+        default:
+            return "Unknown Network State";
+    }
+#else
+    return "Platform Not Supported";
+#endif
+    }
     private string GetSessionIdFromCommandLineArgs()
     {
         var args = System.Environment.GetCommandLineArgs();
@@ -83,8 +112,14 @@ public class MavisTracking : MonoBehaviour
             { "timestamp", timestamp },
             { "session_id", sessionID },
             { "offset", eventOffset++ },
-            { "ronin_address", roninAddress }
-        };
+            { "ronin_address", roninAddress },
+            { "build_version", Application.version },
+            { "device_name", SystemInfo.deviceName },
+            { "device_id", SystemInfo.deviceUniqueIdentifier },
+            { "platform_name", Application.platform.ToString() },
+            { "platform_version", SystemInfo.operatingSystem },
+            { "internet_type", GetConnectionType() },
+    };
 
         foreach (var kvp in eventData)
         {
@@ -133,7 +168,7 @@ public class MavisTracking : MonoBehaviour
         }
     }
 
-    public void TrackIdentify(Dictionary<string, object> userProperties)
+    public void TrackIdentify(Dictionary<string, string> userProperties)
     {
         StartCoroutine(TrackEvent("identify", new Dictionary<string, object>
         {
@@ -149,7 +184,7 @@ public class MavisTracking : MonoBehaviour
         }));
     }
 
-    public void TrackAction(string action, Dictionary<string, object> actionProperties = null)
+    public void TrackAction(string action, Dictionary<string, string> actionProperties = null)
     {
         var data = new Dictionary<string, object>
         {
@@ -162,6 +197,7 @@ public class MavisTracking : MonoBehaviour
                 data[kvp.Key] = kvp.Value;
             }
         }
+        data["action_properties"] = actionProperties;
         StartCoroutine(TrackEvent("track", data));
     }
 }

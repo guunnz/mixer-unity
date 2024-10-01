@@ -73,7 +73,7 @@ public class AxieBehavior : MonoBehaviour
         }
     }
 
-    private void OnAction()
+    private void OnActionPoison()
     {
         if (axieSkillEffectManager.IsPoisoned())
         {
@@ -97,7 +97,7 @@ public class AxieBehavior : MonoBehaviour
             state = AxieState.Stunned;
         }
 
-        OnAction();
+   
         if (attackCoroutine != null)
         {
             StopCoroutine(attackCoroutine);
@@ -113,6 +113,7 @@ public class AxieBehavior : MonoBehaviour
             case AxieState.Casting:
                 if (myController.CurrentTarget != null)
                 {
+                    OnActionPoison();
                     var characters = myController.CurrentTarget.myTeam.GetAliveCharacters();
                     if (myController.CurrentTarget.axieSkillEffectManager.IsStenched() && characters.Count != 1 && characters.Any(x => !x.axieSkillEffectManager.IsStenched()))
                     {
@@ -371,6 +372,7 @@ public class AxieBehavior : MonoBehaviour
 
         while (axieState == AxieState.Attacking)
         {
+            OnActionPoison();
             float attackSpeedMulti = 1;
 
             if (myController.axieSkillEffectManager.IsAromad())

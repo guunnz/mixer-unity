@@ -97,6 +97,9 @@ public class EndOfRunResults : MonoBehaviour
 
     public void ShowResults()
     {
+   
+
+      
 
         for (int i = 0; i < GameobjectsToDisable.Count; i++)
         {
@@ -104,6 +107,14 @@ public class EndOfRunResults : MonoBehaviour
         }
         var wins = MatchData.Count(x => x.Win);
         var losses = MatchData.Count(x => !x.Win);
+
+        Dictionary<string, string> itemDict = new Dictionary<string, string>();
+
+        itemDict["wins"] = wins.ToString();
+        itemDict["losses"] = losses.ToString();
+
+        MavisTracking.Instance.TrackAction("run-finished", itemDict);
+
         ScoreText.text = wins.ToString();
         if (losses != 3)
         {

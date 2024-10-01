@@ -95,16 +95,24 @@ public class GetAxiesExample : MonoBehaviour
 
         public void LoadGraphicAssets()
         {
-            Axie axie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == this.id);
-            if (axie != null && axie.skeletonDataAsset != null)
+            try
             {
-                this.skeletonDataAsset = axie.skeletonDataAsset;
-                this.skeletonDataAssetMaterial = axie.skeletonDataAssetMaterial;
+                Axie axie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == this.id);
+                if (axie != null && axie.skeletonDataAsset != null)
+                {
+                    this.skeletonDataAsset = axie.skeletonDataAsset;
+                    this.skeletonDataAssetMaterial = axie.skeletonDataAssetMaterial;
+                }
+                else
+                {
+                    AxieSpawner.Instance.ProcessMixer(this);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                AxieSpawner.Instance.ProcessMixer(this);
+                Debug.LogError(ex.Message);
             }
+           
         }
     }
 

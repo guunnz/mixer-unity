@@ -666,7 +666,11 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.GainEnergy > 0)
             {
-                targetList.ForEach(x => x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy));
+                targetList.ForEach(x => {
+                    Debug.Log("energy current:" + x.axieIngameStats.CurrentEnergy);
+                    x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy);
+                    Debug.Log("energy gained:" + x.axieIngameStats.CurrentEnergy + "/ added:" + x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy);
+                });
             }
 
 

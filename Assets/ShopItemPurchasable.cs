@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -107,7 +108,7 @@ public class ShopItemPurchasable : MonoBehaviour
             return;
 
 #if UNITY_ANDROID || UNITY_IOS
- if (pressTimes == 0 && !ShopManager.instance.FreezeMode)
+        if (pressTimes == 0 && !ShopManager.instance.FreezeMode)
         {
             pressTimes++;
             return;
@@ -131,6 +132,11 @@ public class ShopItemPurchasable : MonoBehaviour
         if (RunManagerSingleton.instance.BuyUpgrade(shopItem))
         {
             sold = true;
+
+            Dictionary<string, string> itemDict = new Dictionary<string, string>();
+            itemDict["item_purchased_id"] = ((int)shopItem.ItemEffectName).ToString();
+            itemDict["item_purchased_name"] = shopItem.ItemEffectName.ToString();
+            MavisTracking.Instance.TrackAction("buy-item", itemDict);
             StartCoroutine(Purchased());
         }
     }

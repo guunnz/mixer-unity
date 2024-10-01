@@ -7,6 +7,7 @@ using TMPro;
 using SimpleGraphQL;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 public class AccountManager : MonoBehaviour
 {
@@ -83,9 +84,7 @@ public class AccountManager : MonoBehaviour
         }
 
         Debug.Log("User info 1: " + userInfoResponse);
-
         SkyMavisLogin.Root userInfo = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfoResponse);
-        MavisTracking.Instance.InitializeTracking(userInfo.userInfo);
         loggingIn = true;
         AccountManager.username = userInfo.userInfo.name;
         usernameText.text = string.IsNullOrEmpty(userInfo.userInfo.name) ? userInfo.userInfo.roninAddress : userInfo.userInfo.name;
@@ -203,9 +202,13 @@ public class AccountManager : MonoBehaviour
             var resultAxiesList = userAxies.results.ToList();
             resultAxiesList.AddRange(axies);
 
-            var resultLandList = userLands.results.ToList();
-            resultLandList.AddRange(lands);
-            userLands.results = resultLandList.ToArray();
+            if (userLands != null)
+            {
+                var resultLandList = userLands.results.ToList();
+
+                resultLandList.AddRange(lands);
+                userLands.results = resultLandList.ToArray();
+            }
             userAxies.results = resultAxiesList.ToArray();
 
             foreach (var userAxiesResult in userAxies.results)

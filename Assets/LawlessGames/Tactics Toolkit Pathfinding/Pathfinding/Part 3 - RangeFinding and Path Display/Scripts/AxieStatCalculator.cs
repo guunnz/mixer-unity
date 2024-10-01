@@ -78,7 +78,7 @@ static public class AxieStatCalculator
         // el 1 es para decir que todos los axies tienen 10% al menos
         // Esta cuenta devuelve un valor entre 0 y 1 para indicar el porcentaje de chance de critico
         // Le resto el 27 por que es el stat minimo de moral de un axie y en base a la diferencia la multiplico por 0,5 asi los que mas moral tienen tienen mas chances
-        return (10f + ((stats.morale - 27f) * 0.5f)) * 0.01f;
+        return (10f + ((stats.morale - 27f) * 0.5f)) * 0.013f;
     }
 
     static public float GetCritDamage(GetAxiesExample.Stats stats)

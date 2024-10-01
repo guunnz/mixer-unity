@@ -32,6 +32,10 @@ public class FightManagerSingleton : MonoBehaviour
 
     public void StopFight()
     {
+        Dictionary<string, string> itemDict = new Dictionary<string, string>();
+        itemDict["fight-duration"] = this.SecondsOfFight.ToString();
+
+        MavisTracking.Instance.TrackAction("fightFinished", itemDict);
         SecondsOfFight = 0;
         FightStarted = false;
         TimeToBloodmoon.SetActive(false);

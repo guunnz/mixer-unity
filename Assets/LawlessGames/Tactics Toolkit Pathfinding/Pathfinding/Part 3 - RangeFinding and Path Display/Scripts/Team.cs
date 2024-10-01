@@ -331,6 +331,7 @@ public class Team : MonoBehaviour
                     else
                     {
                         // Recalculate path if next tile is occupied
+                        character.Key.CurrentTarget = null;
                         RecalculatePath(character.Key, character.Value);
                     }
                 }

@@ -12,32 +12,33 @@ public class ResolutionMenu : MonoBehaviour
     void Start()
     {
         resolutions = Screen.resolutions;
-
         resolutionDropdown.ClearOptions();
 
         List<TMP_Dropdown.OptionData> resolutionOptions = new List<TMP_Dropdown.OptionData>();
-        int currentResolutionIndex = 0;  // Default to first resolution if current not found
+        int currentResolutionIndex = 0;
+        string savedResolution = PlayerPrefs.GetString("SavedResolution", "");
 
         for (int i = 0; i < resolutions.Length; i++)
         {
             Resolution resolution = resolutions[i];
-            string option = resolution.width + "x" + resolution.height;
+            string option = $"{resolution.width}x{resolution.height} @ {resolution.refreshRate}Hz";
+
             resolutionOptions.Add(new TMP_Dropdown.OptionData(option));
 
-            // Check if the current iteration resolution matches the screen's resolution
-            if (resolution.width == Screen.currentResolution.width &&
-                resolution.height == Screen.currentResolution.height)
+            // Save the resolution option with the refresh rate
+            if (option == savedResolution)
             {
                 currentResolutionIndex = i;
             }
         }
 
         resolutionDropdown.AddOptions(resolutionOptions);
-        resolutionDropdown.value = currentResolutionIndex;  // Set to current resolution
+        resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
         // Attach the SetResolution method to the dropdown's onValueChanged event
         resolutionDropdown.onValueChanged.AddListener(SetResolution);
+
 #if UNITY_ANDROID || UNITY_IOS
         resolutionDropdown.gameObject.SetActive(false);
         FullScreen.SetActive(false);
@@ -47,6 +48,12 @@ public class ResolutionMenu : MonoBehaviour
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        // Corrected the method call to use Screen.fullScreenMode instead of Screen.fullScreen
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed, resolution.refreshRate);
+        // Save the selected resolution with the refresh rate
+        string option = $"{resolution.width}x{resolution.height} @ {resolution.refreshRate}Hz";
+        PlayerPrefs.SetString("SavedResolution", option);
+        PlayerPrefs.Save();
     }
+
 }

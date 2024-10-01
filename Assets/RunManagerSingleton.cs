@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using static AtiaBlessing;
 
 public class AxieUpgrade
 {
@@ -91,6 +93,22 @@ public class RunManagerSingleton : MonoBehaviour
     }
     public void SetResult(bool won)
     {
+        if (score == 0)
+        {
+            Dictionary<string, string> skillsDict = new Dictionary<string, string>();
+            var characters = goodTeam.GetCharactersAll();
+            string skills = "";
+            for (int i = 0; i < characters.Count; i++)
+            {
+                var skillsAxie = characters[i].axieSkillController.GetAxieSkills();
+                for (int s = 0; s < skillsAxie.Count; s++)
+                {
+                    skills += skillsAxie[s].skillName.ToString() + ",";
+                }
+            }
+            skillsDict["abilities"] = skills;
+            MavisTracking.Instance.TrackAction("abilities-selected", skillsDict);
+        }
         if (won)
         {
             if (roundsPassives.ExtraTeamHPPerRound != 0)
@@ -147,6 +165,24 @@ public class RunManagerSingleton : MonoBehaviour
             lives[i].DOColor(lifeLostColor, 1f);
         }
 
+    }
+
+    public void SetStartRunData()
+    {
+        Dictionary<string, string> itemDict = new Dictionary<string, string>();
+        var characters = goodTeam.GetCharactersAll();
+        if (characters.Count != 5)
+        {
+            SceneManager.LoadScene(0);
+        }
+        itemDict["land-selected"] = this.landType.ToString();
+        itemDict["axie1class"] = characters[0].axieIngameStats.axieClass.ToString();
+        itemDict["axie2class"] = characters[1].axieIngameStats.axieClass.ToString();
+        itemDict["axie3class"] = characters[2].axieIngameStats.axieClass.ToString();
+        itemDict["axie4class"] = characters[3].axieIngameStats.axieClass.ToString();
+        itemDict["axie5class"] = characters[4].axieIngameStats.axieClass.ToString();
+
+        MavisTracking.Instance.TrackAction("start-run", itemDict);
     }
 
     public void SetResultUI(bool won)

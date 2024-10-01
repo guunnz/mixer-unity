@@ -234,7 +234,7 @@ public class AxieController : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || mode == AxieMode.Win)
             return;
         if (!goodTeam.battleStarted)
         {
@@ -355,7 +355,7 @@ public class AxieController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (mode == AxieMode.Menu)
+        if (mode == AxieMode.Menu || mode == AxieMode.Win)
             return;
 
         if (goodTeam == null)

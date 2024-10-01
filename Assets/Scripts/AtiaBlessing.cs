@@ -422,7 +422,7 @@ public class AtiaBlessing : MonoBehaviour
 
                         blessings.Remove(blessing2);
                         blessings.Remove(blessing3);
-                        
+
                         blessing2 = blessings[Random.Range(0, blessings.Count)];
                         rollSecond--;
                         if (rollSecond == 0)
@@ -531,12 +531,17 @@ public class AtiaBlessing : MonoBehaviour
         AugumentSelect.SetActive(false);
         Cover.gameObject.SetActive(false);
 
+
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {
             RunManagerSingleton.instance.globalUpgrades.Add(new UpgradeValuesPerRoundList()
             { team_upgrades_values_per_round = new List<UpgradeAugument>() });
         }
+        Dictionary<string, string> itemDict = new Dictionary<string, string>();
 
+        itemDict["atia_blessing_id"] = ((BuffEffect)indexAugument).ToString();
+
+        MavisTracking.Instance.TrackAction("atia-blessing", itemDict);
         RunManagerSingleton.instance.globalUpgrades[RunManagerSingleton.instance.score].team_upgrades_values_per_round
             .Add(new UpgradeAugument() { id = indexAugument });
 
