@@ -15,7 +15,7 @@ public class LeaderboardUIItem : MonoBehaviour
     public void SetUsername(string username)
     {
         if (usernameText != null)
-            usernameText.text = username;
+            usernameText.text = username.Length <= 16 ? username : username.Substring(0, 16);
     }
 
     public void SetAvgWins(int avgWins)

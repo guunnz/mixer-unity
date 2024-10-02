@@ -45,15 +45,6 @@ public class EndOfRunResults : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            ShowResults();
-        }
-    }
-
-
     public void SetMatchData(bool win)
     {
         MatchData matchdata = new MatchData();
