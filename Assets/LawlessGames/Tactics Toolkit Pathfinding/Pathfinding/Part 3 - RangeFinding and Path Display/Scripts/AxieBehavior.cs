@@ -194,7 +194,7 @@ public class AxieBehavior : MonoBehaviour
         {
             positionToMove = overlayTile.transform.position;
         }
-
+        overlayTile.occupied = true;
         this.myController.standingOnTile = overlayTile;
         this.transform.position = positionToMove;
 
@@ -295,6 +295,7 @@ public class AxieBehavior : MonoBehaviour
         }
 
         positionToMove = overlayTile.transform.position;
+        overlayTile.occupied = true;
         myController.standingOnTile = overlayTile;
         this.transform.position = positionToMove;
 

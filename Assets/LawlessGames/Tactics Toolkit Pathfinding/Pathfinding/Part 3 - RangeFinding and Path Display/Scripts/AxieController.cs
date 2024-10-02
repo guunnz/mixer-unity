@@ -64,6 +64,7 @@ public class AxieController : MonoBehaviour
             if (_standingOnTile != null)
             {
                 _standingOnTile.occupied = true;
+                _standingOnTile.currentOccupier = this;
             }
         }
     }
