@@ -20,7 +20,7 @@ public class SkyMavisLogin : MonoBehaviour
     private string userInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/login";
     private string refreshUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/refresh";
     private string NFTsUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/user/nfts";
-
+    private string buildVersion = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/unity/buildversion";
     public AuthToken authToken;
     public Button loginButton;
     public Text resultText;
@@ -30,6 +30,7 @@ public class SkyMavisLogin : MonoBehaviour
     private string accessToken;
     private string userWallet;
     private ConcurrentQueue<Action> actions = new ConcurrentQueue<Action>();
+    private bool version = false;
 
     public void LogOut()
     {
@@ -37,13 +38,20 @@ public class SkyMavisLogin : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
 #if UNITY_ANDROID || UNITY_IOS
 
         Application.targetFrameRate = 30;
 
 #endif
+
+        StartCoroutine(CheckVersion());
+
+        while (!version)
+        {
+            yield return null;
+        }
         string token = GetTokenFromCommandLineArgs();
 
         if (!string.IsNullOrEmpty(token))
@@ -80,6 +88,7 @@ public class SkyMavisLogin : MonoBehaviour
         {
             Application.deepLinkActivated += HandleDeepLink;
         }
+        yield return null;
     }
 
     private void OnLoginButtonClicked()
@@ -89,6 +98,112 @@ public class SkyMavisLogin : MonoBehaviour
             httpListener.Stop();
 #endif
         StartCoroutine(LogIn());
+    }
+
+    public IEnumerator CheckVersion(int retries = 5)
+    {
+        using (UnityWebRequest www = new UnityWebRequest(buildVersion, "GET"))
+        {
+            Debug.Log("REQ LINK: " + buildVersion);
+            DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+            www.downloadHandler = dH;
+            www.SetRequestHeader("Content-Type", "application/json");
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.LogError(www.error);
+                if (retries > 0)
+                {
+                    Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                    StartCoroutine(CheckVersion(retries - 1));
+                }
+            }
+            else
+            {
+                LoginClass login = JsonUtility.FromJson<LoginClass>(www.downloadHandler.text);
+
+                if (IsCurrentVersionHigher(login.version))
+                {
+                    SceneManager.LoadScene(1);
+                }
+                else
+                {
+                    version = true;
+                }
+            }
+        }
+    }
+
+    // Method to compare Application.version with a specified version string
+    public bool IsCurrentVersionHigher(string versionToCheck)
+    {
+        // Parse the Application's version and the versionToCheck
+        string currentVersion = Application.version;
+
+        // Compare versions
+        return CompareVersions(versionToCheck, currentVersion) > 0;
+    }
+
+    // Method to compare two version strings
+    private int CompareVersions(string version1, string version2)
+    {
+        // Split by periods and separate numeric parts and suffixes
+        string[] parts1 = version1.Split('.');
+        string[] parts2 = version2.Split('.');
+
+        // Compare the first three numeric parts
+        for (int i = 0; i < 3; i++)
+        {
+            if (i >= parts1.Length || i >= parts2.Length)
+                return parts1.Length.CompareTo(parts2.Length); // If one version has fewer parts, it is lower
+
+            int num1 = ExtractNumber(parts1[i]);
+            int num2 = ExtractNumber(parts2[i]);
+
+            if (num1 < num2) return -1;
+            if (num1 > num2) return 1;
+        }
+
+        // If numeric parts are equal, compare the alphanumeric suffixes (e.g., "cb")
+        string suffix1 = ExtractSuffix(parts1[2]);
+        string suffix2 = ExtractSuffix(parts2[2]);
+
+        // Compare suffixes if present
+        if (suffix1 == suffix2) return 0;
+        if (string.IsNullOrEmpty(suffix1)) return -1; // No suffix means lower version
+        if (string.IsNullOrEmpty(suffix2)) return 1;
+
+        return string.Compare(suffix1, suffix2, System.StringComparison.Ordinal);
+    }
+
+    // Extract the numeric portion from a version string part
+    private int ExtractNumber(string part)
+    {
+        for (int i = 0; i < part.Length; i++)
+        {
+            if (!char.IsDigit(part[i]))
+                return int.Parse(part.Substring(0, i));
+        }
+        return int.Parse(part);
+    }
+
+    // Extract the alphanumeric suffix from a version string part
+    private string ExtractSuffix(string part)
+    {
+        for (int i = 0; i < part.Length; i++)
+        {
+            if (!char.IsDigit(part[i]))
+                return part.Substring(i);
+        }
+        return null;
+    }
+
+    [System.Serializable]
+    public class LoginClass
+    {
+        public string id;
+        public string version;
     }
 
     public IEnumerator LogIn(int retries = 5)

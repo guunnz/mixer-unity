@@ -27,7 +27,7 @@ public class EndOfRunResults : MonoBehaviour
     public GameObject Container;
     public GameObject Items;
 
-    private List<MatchData> MatchData = new List<MatchData>();
+    public List<MatchData> MatchData = new List<MatchData>();
     public Transform MatchesParent;
     public TextMeshProUGUI ScoreText;
 
@@ -43,6 +43,14 @@ public class EndOfRunResults : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            ShowResults();
+        }
     }
 
 
@@ -97,9 +105,9 @@ public class EndOfRunResults : MonoBehaviour
 
     public void ShowResults()
     {
-   
 
-      
+
+
 
         for (int i = 0; i < GameobjectsToDisable.Count; i++)
         {

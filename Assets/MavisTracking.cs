@@ -28,6 +28,7 @@ public class MavisTracking : MonoBehaviour
     private string roninAddress;
     private string sessionID;
     private int eventOffset = 0;
+    private string userId;
 
     void Awake()
     {
@@ -46,22 +47,17 @@ public class MavisTracking : MonoBehaviour
     {
         this.roninAddress = userInfo.addr;
         sessionID = string.IsNullOrEmpty(GetSessionIdFromCommandLineArgs()) ? System.Guid.NewGuid().ToString() : GetSessionIdFromCommandLineArgs();
+        userId = GetUserIdFromCommandLineArgs();
         Dictionary<string, string> keyValues = new Dictionary<string, string>();
-
+        keyValues["email"] = userInfo.email;
         TrackIdentify(keyValues);
         StartCoroutine(TrackHeartbeat());
     }
     string GetConnectionType()
     {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        using (AndroidJavaClass jc = new AndroidJavaClass("com.example.network.NetworkTypeChecker"))
-        using (AndroidJavaObject activity = new AndroidJavaObject("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity"))
-        {
-            return jc.CallStatic<string>("getNetworkType", activity);
-        }
-#elif UNITY_EDITOR
+#if UNITY_EDITOR
         return "Cable";
-#elif UNITY_IOS || UNITY_STANDALONE_WIN
+#else
     switch (Application.internetReachability)
     {
         case NetworkReachability.NotReachable:
@@ -73,9 +69,20 @@ public class MavisTracking : MonoBehaviour
         default:
             return "Unknown Network State";
     }
-#else
-    return "Platform Not Supported";
 #endif
+    }
+
+    private string GetUserIdFromCommandLineArgs()
+    {
+        var args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-userId" && i + 1 < args.Length)
+            {
+                return args[i + 1];
+            }
+        }
+        return null; // Return null if no session ID is found
     }
     private string GetSessionIdFromCommandLineArgs()
     {
@@ -103,7 +110,8 @@ public class MavisTracking : MonoBehaviour
     {
         string uuid = System.Guid.NewGuid().ToString();
         string timestamp = System.DateTime.UtcNow.ToString("o");
-
+        if (string.IsNullOrEmpty(PlayerPrefs.GetString("useridtest")))
+            PlayerPrefs.SetString("useridtest", System.Guid.NewGuid().ToString());
         // Prepare base data
         var baseData = new Dictionary<string, object>
         {
@@ -111,6 +119,7 @@ public class MavisTracking : MonoBehaviour
             { "ref", "root" },
             { "timestamp", timestamp },
             { "session_id", sessionID },
+            { "user_id", PlayerPrefs.GetString("useridtest") },
             { "offset", eventOffset++ },
             { "ronin_address", roninAddress },
             { "build_version", Application.version },

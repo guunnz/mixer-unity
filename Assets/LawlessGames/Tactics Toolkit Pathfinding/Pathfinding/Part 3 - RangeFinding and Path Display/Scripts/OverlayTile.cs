@@ -25,9 +25,20 @@ public class OverlayTile : MonoBehaviour
     private Rectangle spriteRenderer;
 
     public bool beingHovered;
-    public bool occupied;
     private Team goodTeam;
     private Team badTeam;
+    public bool occupied
+    {
+        get { return currentOccupier != null; }
+        set
+        {
+            if (!value)
+            {
+                currentOccupier = null;
+            }
+        }
+    }
+
     internal AxieController currentOccupier;
     public Rectangle rectangle;
     private bool untoggleable;
