@@ -8,6 +8,7 @@ public class PlayAxiePart : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public AxiesView axieView;
     public BodyPart bodyPart;
 
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         axieView.PlayAnimation(bodyPart);

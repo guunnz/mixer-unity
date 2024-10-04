@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your axies now have the HP of your highest HP axie
   price: 8
+  tooltipType: 1c000000

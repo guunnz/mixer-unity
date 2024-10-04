@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your axies now have the skill of your highest skill axie
   price: 8
+  tooltipType: 1e000000

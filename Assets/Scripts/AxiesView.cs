@@ -96,14 +96,18 @@ public class AxiesView : MonoBehaviour
     public void RemoveAllClassFilter()
     {
         axieClassFilters.Clear();
-        axieClassfilterClearedEvent.Invoke();
+        if (axieClassfilterClearedEvent != null)
+        {
+            axieClassfilterClearedEvent.Invoke();
+        }
         ResetPages();
     }
 
     public void RemoveAllStatsFilter()
     {
         axieStatsFilters.Clear();
-        statsfilterClearedEvent.Invoke();
+        if (statsfilterClearedEvent != null)
+            statsfilterClearedEvent.Invoke();
         ResetPages();
     }
 
@@ -285,7 +289,7 @@ public class AxiesView : MonoBehaviour
         var axieUICombo = axieViewCombo.Single(x => x.BodyPart == ability.bodyPart);
         axieUICombo.vfxPlayer.SetUp(lastAxieChosen.skeletonDataAsset);
         yield return new WaitForFixedUpdate();
-        StopAnimation(ability.bodyPart);
+        PlayAnimation(ability.bodyPart);
     }
 
     public void PlayAnimation(BodyPart bodyPart)
@@ -401,6 +405,28 @@ public class AxiesView : MonoBehaviour
 
         SetAxiesUI();
     }
+
+    public void SelectAxieById(string axieId)
+    {
+        // Remove all filters
+        RemoveAllClassFilter();
+        RemoveAllStatsFilter();
+        GeneralFilter.text = string.Empty;
+
+        // Navigate through the pages to find the Axie
+        for (currentPage = 1; currentPage <= maxPagesAmount; currentPage++)
+        {
+            SetAxiesUI();
+            var targetAxie = axieList.FirstOrDefault(axieView => axieView.axie != null && axieView.axie.id == axieId);
+
+            if (targetAxie != null)
+            {
+                targetAxie.SelectAxie();
+                break;
+            }
+        }
+    }
+
 
     public void ResetPages()
     {

@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your axies gain +3 HP stat
   price: 4
+  tooltipType: 1c000000

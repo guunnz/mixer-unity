@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your beast axies Morale gets multiplied by 2
   price: 10
+  tooltipType: 1d000000

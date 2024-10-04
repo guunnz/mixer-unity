@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your team gains +1 Morale stat
   price: 2
+  tooltipType: 1d000000

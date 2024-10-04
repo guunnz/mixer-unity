@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Aqua, Bird and Dawns gain +3 morale
   price: 3
+  tooltipType: 1d000000

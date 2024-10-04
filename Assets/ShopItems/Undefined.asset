@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your team gains +1 HP stat
   price: 1
+  tooltipType: 1c000000

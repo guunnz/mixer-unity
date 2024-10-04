@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your axies gain +6 skill
   price: 7
+  tooltipType: 1e000000

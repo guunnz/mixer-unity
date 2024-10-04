@@ -442,7 +442,7 @@ public class TeamBuilderManager : MonoBehaviour
             SetMenu(TeamBuilderMenu.Combo, false);
         else
         {
-            //Error Class, please choose 5 axies.
+            NotificationErrorManager.instance.DoNotification("Please select 5 axies first");
         }
     }
 

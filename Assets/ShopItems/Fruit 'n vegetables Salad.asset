@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your plant axies HP stat gets multiplied by 3
   price: 10
+  tooltipType: 1c000000

@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: After 15 seconds your axies gain 3 attack buff
   price: 6
+  tooltipType: 

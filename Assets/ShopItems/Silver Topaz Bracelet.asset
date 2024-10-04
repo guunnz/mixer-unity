@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Beast, Bugs and Mechs gain +3 skill
   price: 3
+  tooltipType: 1e000000

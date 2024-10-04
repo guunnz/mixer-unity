@@ -15,12 +15,14 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public Image selectedImage;
     public Image axieClassImage;
     public GameObject freeRotation;
+    public GameObject info;
     public Sprite selectedSprite;
     public Sprite unselectedSprite;
     public FakeAxiesManager fakeAxiesManager;
     public SkeletonGraphic skeletonGraphic;
     private Button button;
     public TeamBuilderManager teamBuilderManager;
+    public AxiesView axiesView;
     internal bool selected => selectedImage.sprite == selectedSprite;
     private bool free;
 
@@ -29,6 +31,11 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         button = GetComponent<Button>();
 
         button.onClick.AddListener(SelectAxie);
+    }
+
+    public void DoInfo()
+    {
+        axiesView.SelectAxieById(axie.id);
     }
 
     public void SelectAxie()
@@ -55,6 +62,7 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (axie == null)
         {
             freeRotation.SetActive(false);
+            info.SetActive(false);
             skeletonGraphic.enabled = false;
         }
         else if (resetAxie)
@@ -79,7 +87,7 @@ public class UIListAxie : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             axieClassImage.sprite =
                 axieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
 
-            if (axie.id == "3000119" || axie.id == "11432057")
+            if (axie.f2p)
             {
                 freeRotation.SetActive(true);
                 free = true;

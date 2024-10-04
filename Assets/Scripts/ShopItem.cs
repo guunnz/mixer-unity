@@ -11,6 +11,7 @@ public class ShopItem : ScriptableObject
     public GameObject shopPrefab; // Prefab can be assigned in the editor if needed
     public string description;
     public int price;
+    public TooltipType[] tooltipType;
 
     public bool isPotion()
     {

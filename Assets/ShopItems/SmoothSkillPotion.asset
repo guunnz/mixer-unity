@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your team gains +1 Skill stat
   price: 2
+  tooltipType: 1e000000

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIListAxieForView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UIListAxieForView : MonoBehaviour
 {
     public List<AxieClassGraphic> axieClassGraphics = new List<AxieClassGraphic>();
     public GetAxiesExample.Axie axie;
@@ -79,25 +79,9 @@ public class UIListAxieForView : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
         else
         {
+            axiesView.SetAxieStats(this.axie);
             selectedImage.color = new Color(1, 1, 1, 1f);
             selectedImage.sprite = selectedSprite;
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (axie == null)
-            return;
-
-        axiesView.SetAxieStats(this.axie);
-
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (axie == null)
-            return;
-
-        axiesView.DisableAxieStats();
     }
 }

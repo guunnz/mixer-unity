@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: On battle start, highest HP enemy axie gains Stench
   price: 5
+  tooltipType: 06000000

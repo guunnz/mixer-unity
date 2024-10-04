@@ -13,6 +13,7 @@ public class CursorImageController : MonoBehaviour
     public bool isIce;
 
     public float offsetY;
+    public float offsetX;
     private bool isMoving;
     void Start()
     {
@@ -53,7 +54,7 @@ public class CursorImageController : MonoBehaviour
     void Update()
     {
         // Update mouse position for UI
-        Vector2 screenPoint = new Vector2(Input.mousePosition.x, Input.mousePosition.y + offsetY);
+        Vector2 screenPoint = new Vector2(Input.mousePosition.x+ offsetX, Input.mousePosition.y + offsetY);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform.parent as RectTransform, screenPoint, uiCamera, out Vector2 localPoint);
 
         rectTransform.localPosition = localPoint;

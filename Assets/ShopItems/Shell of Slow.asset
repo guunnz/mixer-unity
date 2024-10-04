@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: On battle start, all opponent axies gain -1 Speed
   price: 4
+  tooltipType: 1f000000

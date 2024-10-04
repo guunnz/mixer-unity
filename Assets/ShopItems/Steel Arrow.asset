@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your ranged axies abilities always critical strike
   price: 6
+  tooltipType: 

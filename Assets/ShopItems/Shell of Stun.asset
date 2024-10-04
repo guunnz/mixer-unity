@@ -20,5 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: On battle start, all opponent axies are stunned
+  description: On battle start, all opponent axies are Stunned
   price: 6
+  tooltipType: 0a000000

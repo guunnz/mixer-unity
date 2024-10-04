@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: On battle start, all opponent axies gain Fear
   price: 4
+  tooltipType: 09000000

@@ -26,6 +26,9 @@ public class ShopItemPurchasable : MonoBehaviour
     public bool PreventSetOnStart;
     private int pressTimes;
     public bool isPotion;
+    public TooltipType[] tooltips;
+    public TextMeshProUGUI[] otherTitles;
+
 
     private void OnEnable()
     {
@@ -38,6 +41,7 @@ public class ShopItemPurchasable : MonoBehaviour
 
     public void SetItem(ShopItem item)
     {
+        tooltips = item.tooltipType;
         if (RunManagerSingleton.instance.landType == LandType.forest)
         {
             item = item.CreateClone();
@@ -69,6 +73,12 @@ public class ShopItemPurchasable : MonoBehaviour
     {
         if (!scaling)
         {
+            foreach (var otherTitle in otherTitles)
+            {
+                otherTitle.enabled = false;
+            }
+            foreach (var tooltip in tooltips)
+                TooltipManagerSingleton.instance.EnableTooltipItem(tooltip);
             scaling = true;
             Poping.DOColor(Color.yellow, 0.5f);
             this.transform.DOScale(new Vector3(0.013f, 0.013f, 0.013f), 0.25f);
@@ -79,6 +89,12 @@ public class ShopItemPurchasable : MonoBehaviour
     {
         if (scaling)
         {
+            foreach (var otherTitle in otherTitles)
+            {
+                otherTitle.enabled = true;
+            }
+            foreach (var tooltip in tooltips)
+                TooltipManagerSingleton.instance.DisableTooltip(tooltip);
 #if UNITY_ANDROID || UNITY_IOS
             pressTimes = 0;
 #endif
@@ -120,19 +136,16 @@ public class ShopItemPurchasable : MonoBehaviour
         if (ShopManager.instance.FreezeMode)
         {
             SFXManager.instance.PlaySFX(SFXType.Freeze);
-            this.Frozen = !this.Frozen;
+            this.Frozen = !Frozen;
             FreezeGraphics.SetActive(!FreezeGraphics.activeSelf);
-            return;
-        }
-        else if (this.Frozen)
-        {
             return;
         }
 
         if (RunManagerSingleton.instance.BuyUpgrade(shopItem))
         {
             sold = true;
-
+            this.Frozen = false;
+            FreezeGraphics.SetActive(false);
             Dictionary<string, string> itemDict = new Dictionary<string, string>();
             itemDict["item_purchased_id"] = ((int)shopItem.ItemEffectName).ToString();
             itemDict["item_purchased_name"] = shopItem.ItemEffectName.ToString();

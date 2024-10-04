@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your bird axies Speed gets multiplied by 2
   price: 10
+  tooltipType: 1f000000

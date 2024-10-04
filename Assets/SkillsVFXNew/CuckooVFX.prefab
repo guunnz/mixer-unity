@@ -9706,6 +9706,7 @@ GameObject:
   - component: {fileID: 198535239526381674}
   - component: {fileID: 199754481909346676}
   - component: {fileID: 7283213435960494145}
+  - component: {fileID: 2798103377800518572}
   m_Layer: 0
   m_Name: CenterGlow
   m_TagString: Untagged
@@ -14619,3 +14620,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2798103377800518572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099344919378908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628ef9b0c7e4fd24db54868035e11237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomPercent: 10

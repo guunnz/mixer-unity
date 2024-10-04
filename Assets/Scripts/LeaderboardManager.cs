@@ -8,15 +8,19 @@ using static SkyMavisLogin;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using SimpleGraphQL;
+using System.Linq;
+using static UnityEditor.Progress;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [Serializable]
 public class LeaderboardDTO
 {
     public string username;
-    public int avg_wins;
+    public float avg_wins;
     public int elo;
     public string axie_captain_genes;
-    public string captain_id;
+    public string axie_captain_id;
+    public string user_wallet_address;
 }
 
 [Serializable]
@@ -30,12 +34,17 @@ public class LeaderboardManager : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject leaderboardEntryPrefab;
+    public GameObject loading;
     public Transform leaderboardContainer;
     private List<LeaderboardDTO> leaderboardData = new List<LeaderboardDTO>();
-    private string leaderboardEndpoint;
+    private string leaderboardEndpoint = "http://34.23.94.40:8081/api/v1/leaderboard";
+    public LeaderboardUIItem myData;
 
     private void OnEnable()
     {
+        if (leaderboardContainer.childCount > 0)
+            return;
+        loading.SetActive(true);
         StartCoroutine(GetLeaderboard());
     }
 
@@ -68,9 +77,19 @@ public class LeaderboardManager : MonoBehaviour
 
     public void PopulateLeaderboard(string jsonResponse)
     {
+        loading.SetActive(false);
         // Deserialize the JSON response to get leaderboard data
         LeaderboardResponseDTO leaderboardResponse = JsonUtility.FromJson<LeaderboardResponseDTO>(jsonResponse);
-        leaderboardData = leaderboardResponse.data;
+        leaderboardData = leaderboardResponse.data.OrderByDescending(x => x.elo).ToList();
+
+        var entryMine = leaderboardData.Single(x => x.user_wallet_address == RunManagerSingleton.instance.user_wallet_address);
+
+        myData.gameObject.SetActive(true);
+        myData.SetUsername(entryMine.username);
+        myData.SetAvgWins(entryMine.avg_wins);
+        myData.SetElo(entryMine.elo);
+        myData.SetRanking(leaderboardData.IndexOf(entryMine) + 1);
+        myData.SetCaptainGraphics(entryMine.axie_captain_id, entryMine.axie_captain_genes);
 
         // Clear any existing entries
         foreach (Transform child in leaderboardContainer)
@@ -81,11 +100,11 @@ public class LeaderboardManager : MonoBehaviour
         // Create a new entry for each leaderboard item
         foreach (var entry in leaderboardData)
         {
-            CreateLeaderboardEntry(entry);
+            CreateLeaderboardEntry(entry, leaderboardData.IndexOf(entry) + 1);
         }
     }
 
-    private void CreateLeaderboardEntry(LeaderboardDTO entry)
+    private void CreateLeaderboardEntry(LeaderboardDTO entry, int index)
     {
         // Instantiate the prefab and set parent
         GameObject newEntry = Instantiate(leaderboardEntryPrefab, leaderboardContainer);
@@ -99,7 +118,8 @@ public class LeaderboardManager : MonoBehaviour
             uiItem.SetUsername(entry.username);
             uiItem.SetAvgWins(entry.avg_wins);
             uiItem.SetElo(entry.elo);
-            uiItem.SetCaptainGraphics(entry.captain_id, entry.axie_captain_genes);
+            uiItem.SetRanking(index);
+            uiItem.SetCaptainGraphics(entry.axie_captain_id, entry.axie_captain_genes);
         }
     }
 }

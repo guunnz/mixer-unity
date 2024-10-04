@@ -20,5 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies gain +3 morale
+  description: Your axies gain +3 Morale
   price: 5
+  tooltipType: 1d000000

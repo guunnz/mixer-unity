@@ -23,3 +23,4 @@ MonoBehaviour:
   description: Your axies skill is reduced by half. Every stat point gets divided
     between all other stats
   price: 5
+  tooltipType: 1e000000

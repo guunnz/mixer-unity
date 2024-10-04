@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: All axies gain +5 morale
   price: 5
+  tooltipType: 1d000000

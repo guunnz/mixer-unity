@@ -33,7 +33,11 @@ public enum TooltipType
     Jinx,
     Energy,
     LunaLanding,
-    FreeAxie
+    FreeAxie,
+    HpStat,
+    MoraleStat,
+    SkillStat,
+    SpeedStat
 }
 
 [System.Serializable]
@@ -70,8 +74,24 @@ public class TooltipManagerSingleton : MonoBehaviour
         this.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 85f);
 #endif
     }
+    public void EnableTooltipItem(TooltipType TooltipType)
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        this.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -80f);
+#else
+        this.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -50f);
+#endif
+        TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(true);
+    }
+
+
     public void EnableTooltip(ShopItem shopItem)
     {
+#if UNITY_ANDROID || UNITY_IOS
+        this.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 85f);
+#else
+        this.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 63.5f);
+#endif
         ShopItemTooltip.ItemName.text = "<color=\"yellow\">" + shopItem.ShopItemName + "</color>";
         ShopItemTooltip.ItemDescription.text = shopItem.description;
         ShopItemTooltip.TooltipObject.SetActive(true);

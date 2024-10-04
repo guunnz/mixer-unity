@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Your axies gain +6 speed
   price: 6
+  tooltipType: 1f000000

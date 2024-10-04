@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 3}
   description: Everytime you win a round your axies gain +2 HP stat
   price: 6
+  tooltipType: 1c000000
