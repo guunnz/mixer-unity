@@ -9,8 +9,8 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using SimpleGraphQL;
 using System.Linq;
-using static UnityEditor.Progress;
 using static UnityEngine.EventSystems.EventTrigger;
+using TMPro;
 
 [Serializable]
 public class LeaderboardDTO
@@ -34,17 +34,21 @@ public class LeaderboardManager : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject leaderboardEntryPrefab;
-    public GameObject loading;
+    public TextMeshProUGUI loading;
     public Transform leaderboardContainer;
     private List<LeaderboardDTO> leaderboardData = new List<LeaderboardDTO>();
     private string leaderboardEndpoint = "http://34.23.94.40:8081/api/v1/leaderboard";
     public LeaderboardUIItem myData;
+    private bool isLoading;
 
     private void OnEnable()
     {
         if (leaderboardContainer.childCount > 0)
             return;
-        loading.SetActive(true);
+
+        isLoading = true;
+        StartCoroutine(LoadingCoroutine());
+        loading.gameObject.SetActive(true);
         StartCoroutine(GetLeaderboard());
     }
 
@@ -77,12 +81,13 @@ public class LeaderboardManager : MonoBehaviour
 
     public void PopulateLeaderboard(string jsonResponse)
     {
-        loading.SetActive(false);
+        isLoading = false;
+        loading.gameObject.SetActive(false);
         // Deserialize the JSON response to get leaderboard data
         LeaderboardResponseDTO leaderboardResponse = JsonUtility.FromJson<LeaderboardResponseDTO>(jsonResponse);
         leaderboardData = leaderboardResponse.data.OrderByDescending(x => x.elo).ToList();
 
-        var entryMine = leaderboardData.Single(x => x.user_wallet_address == RunManagerSingleton.instance.user_wallet_address);
+        var entryMine = leaderboardData.FirstOrDefault(x => x.user_wallet_address == RunManagerSingleton.instance.user_wallet_address);
 
         myData.gameObject.SetActive(true);
         myData.SetUsername(entryMine.username);
@@ -103,7 +108,20 @@ public class LeaderboardManager : MonoBehaviour
             CreateLeaderboardEntry(entry, leaderboardData.IndexOf(entry) + 1);
         }
     }
+    public IEnumerator LoadingCoroutine()
+    {
+        loading.text = "Loading";
+        while (isLoading)
+        {
+            loading.text += ".";
+            yield return new WaitForSeconds(0.3f);
 
+            if (loading.text.Count(x => x == '.') >= 3)
+            {
+                loading.text = "Loading";
+            }
+        }
+    }
     private void CreateLeaderboardEntry(LeaderboardDTO entry, int index)
     {
         // Instantiate the prefab and set parent

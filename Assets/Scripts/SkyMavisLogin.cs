@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using static GetAxiesExample;
 
 public class SkyMavisLogin : MonoBehaviour
@@ -31,12 +32,20 @@ public class SkyMavisLogin : MonoBehaviour
     private string userWallet;
     private ConcurrentQueue<Action> actions = new ConcurrentQueue<Action>();
     private bool version = false;
+    public VideoPlayer introVideoPlayer;
+    public VideoPlayer loopedVideoPlayer;
+    public VideoClip FirstTimeIntroVideoclip;
+    public VideoClip SecondTimeIntroVideoclip;
+    public AudioSource mainMenuSong;
 
+    public GameObject cursor;
     public void LogOut()
     {
         PlayerPrefs.SetString("Auth", "");
         SceneManager.LoadScene(0);
+        Loading.instance.DisableLoading();
     }
+
 
     private IEnumerator Start()
     {
@@ -45,7 +54,38 @@ public class SkyMavisLogin : MonoBehaviour
         Application.targetFrameRate = 30;
 
 #endif
+        cursor.SetActive(false);
 
+        if (!Loading.instance.IsLoadingEnabled())
+        {
+            if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Auth")))
+            {
+                introVideoPlayer.clip = SecondTimeIntroVideoclip;
+                introVideoPlayer.Play();
+                yield return new WaitForSeconds(2.02f);
+                loopedVideoPlayer.targetCameraAlpha = 1;
+                loopedVideoPlayer.Play();
+                yield return new WaitForSeconds(0.1f);
+        
+                introVideoPlayer.targetCameraAlpha = 0;
+                introVideoPlayer.Stop();
+                yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                introVideoPlayer.clip = FirstTimeIntroVideoclip;
+                introVideoPlayer.Play();
+                yield return new WaitForSeconds(4.06f);
+                loopedVideoPlayer.targetCameraAlpha = 1;
+                loopedVideoPlayer.Play();
+                yield return new WaitForSeconds(0.1f);
+                introVideoPlayer.targetCameraAlpha = 0;
+                introVideoPlayer.Stop();
+            
+
+            }
+        }
+        cursor.SetActive(true);
         StartCoroutine(CheckVersion());
 
         while (!version)
@@ -56,15 +96,21 @@ public class SkyMavisLogin : MonoBehaviour
 
         if (!string.IsNullOrEmpty(token))
         {
+            if (authToken.IsExpired())
+            {
+                StartCoroutine(RefreshToken(3, true));
+            }
             Loading.instance.EnableLoading();
+            mainMenuSong.enabled = true;
+            introVideoPlayer.Stop();
             authToken = new AuthToken { AccessToken = token };
             StartCoroutine(GetNFTS());  // Proceed directly with NFT fetching if token is valid
         }
         else
         {
             PartFinder.LoadFromResources();
+            loginButton.gameObject.SetActive(true);
             loginButton.onClick.AddListener(OnLoginButtonClicked);
-
             string auth = PlayerPrefs.GetString("Auth");
 
             if (!string.IsNullOrEmpty(auth))
@@ -78,6 +124,8 @@ public class SkyMavisLogin : MonoBehaviour
                 else
                 {
                     Loading.instance.EnableLoading();
+                    mainMenuSong.enabled = true;
+                    introVideoPlayer.Stop();
                     StartCoroutine(GetNFTS());
                 }
             }
@@ -408,8 +456,15 @@ public class SkyMavisLogin : MonoBehaviour
             Debug.LogError(webRequest.error);
             if (retries > 0)
             {
-                Debug.Log("Retrying GET request. Attempts remaining: " + (retries - 1));
+                Debug.Log("Retrying GET request. Attempts remaining: " + (retries - 1) + " GetNFTS");
                 StartCoroutine(GetNFTS(retries - 1, page));
+            }
+            else
+            {
+                PlayerPrefs.SetString("Auth", "");
+
+                SceneManager.LoadScene(0);
+                Loading.instance.DisableLoading();
             }
         }
 
@@ -464,8 +519,14 @@ public class SkyMavisLogin : MonoBehaviour
             Debug.LogError(webRequest.error);
             if (retries > 0)
             {
-                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1) + " Refresh token");
                 StartCoroutine(RefreshToken(retries - 1));
+            }
+            else
+            {
+                PlayerPrefs.SetString("Auth", "");
+                SceneManager.LoadScene(0);
+                Loading.instance.DisableLoading();
             }
         }
 
@@ -474,6 +535,8 @@ public class SkyMavisLogin : MonoBehaviour
         if (getNfts)
         {
             Loading.instance.EnableLoading();
+            mainMenuSong.enabled = true;
+            introVideoPlayer.Stop();
             StartCoroutine(GetNFTS());
         }
     }

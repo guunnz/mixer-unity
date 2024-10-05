@@ -35,6 +35,11 @@ public class Loading : MonoBehaviour
         Container.SetActive(true);
         StartCoroutine(LoadingCoroutine());
     }
+
+    public bool IsLoadingEnabled()
+    {
+        return loading;
+    }
     public void DisableLoading()
     {
         loading = false;
