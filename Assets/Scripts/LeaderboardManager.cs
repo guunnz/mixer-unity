@@ -56,7 +56,7 @@ public class LeaderboardManager : MonoBehaviour
             {
                 timeReached = true;
                 timeText.text = "Now!";
-                loading.SetActive(true);
+                loading.gameObject.SetActive(true);
                 StartCoroutine(GetLeaderboard());
                 Debug.Log("Countdown has reached the target time.");
             }

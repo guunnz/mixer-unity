@@ -128,7 +128,6 @@ public class AccountManager : MonoBehaviour
                         GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
 
                         axie.genes = axiesInList.rawMetadata.genes;
-                        axie.maxBodyPartAmount = 2;
                         axie.@class = axiesInList.rawMetadata.properties.@class;
                         axie.id = axiesInList.tokenId.ToString();
                         axie.name = axiesInList.rawMetadata.name;
@@ -214,7 +213,6 @@ public class AccountManager : MonoBehaviour
             foreach (var userAxiesResult in userAxies.results)
             {
                 userAxiesResult.LoadGraphicAssets();
-                userAxiesResult.maxBodyPartAmount = 2;
             }
         }
         catch (System.Exception ex)
@@ -240,7 +238,6 @@ public class AccountManager : MonoBehaviour
                         GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
 
                         axie.genes = axiesInList.rawMetadata.genes;
-                        axie.maxBodyPartAmount = 2;
                         axie.@class = axiesInList.rawMetadata.properties.@class;
                         axie.id = axiesInList.tokenId.ToString();
                         axie.name = axiesInList.rawMetadata.name;
@@ -318,7 +315,6 @@ public class AccountManager : MonoBehaviour
             foreach (var userAxiesResult in userAxies.results)
             {
                 userAxiesResult.LoadGraphicAssets();
-                userAxiesResult.maxBodyPartAmount = 2;
             }
 
             userLands = new GetAxiesExample.Lands();

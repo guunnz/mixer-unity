@@ -161,10 +161,15 @@ public class AbilitiesManager : MonoBehaviour
     public void ChoosePart(BodyPart part)
     {
         GetAxiesExample.Part bodyPartToReplace =
-            currentSelectedAxie.parts.FirstOrDefault(x => x.selected && x.order == 1);
+            currentSelectedAxie.parts.Where(y => y.selected).OrderBy(x => x.order).FirstOrDefault();
 
         GetAxiesExample.Part bodyPartToSelect =
             currentSelectedAxie.parts.Single(x => x.BodyPart == part);
+
+        if (bodyPartToSelect.selected)
+        {
+            bodyPartToReplace = null;
+        }
 
         if (bodyPartToSelect.order == currentSelectedAxie.maxBodyPartAmount)
         {
@@ -186,13 +191,12 @@ public class AbilitiesManager : MonoBehaviour
 
         int passivesAdded = 0;
 
-        foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected && x != bodyPartToSelect))
+        foreach (var partObj in currentSelectedAxie.parts.OrderBy(x => x.order).Where(x => x.selected && x != bodyPartToSelect))
         {
-
             bool isPassive = skillList.axieBodyParts
             .FirstOrDefault(x => x.skillName == partObj.SkillName).isPassive;
 
-            if (partObj.order > 1)
+            if (partObj.order != 1 && amountSelected >= currentSelectedAxie.maxBodyPartAmount)
             {
                 partObj.order -= 1;
             }
@@ -203,19 +207,19 @@ public class AbilitiesManager : MonoBehaviour
             switch (partObj.BodyPart)
             {
                 case BodyPart.Back:
-                    BackBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
+                    BackBodyPartOrderText.text = isPassive ? "P" : (partObj.order - passivesAdded + "°");
                     BackBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Mouth:
-                    MouthBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
+                    MouthBodyPartOrderText.text = isPassive ? "P" : (partObj.order - passivesAdded + "°");
                     MouthBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Horn:
-                    HornBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
+                    HornBodyPartOrderText.text = (isPassive ? "P" : partObj.order - passivesAdded + "°");
                     HornBodyPartOrderImage.SetActive(true);
                     break;
                 case BodyPart.Tail:
-                    TailBodyPartOrderText.text = isPassive ? "P" : partObj.order - passivesAdded + "°";
+                    TailBodyPartOrderText.text = isPassive ? "P" : (partObj.order - passivesAdded + "°");
                     TailBodyPartOrderImage.SetActive(true);
                     break;
             }
@@ -239,24 +243,25 @@ public class AbilitiesManager : MonoBehaviour
         bodyPartToSelect.selected = true;
         bodyPartToSelect.order = maxOrder + 1;
 
-
+        bool isPassiveSelect = skillList.axieBodyParts
+       .FirstOrDefault(x => x.skillName == bodyPartToSelect.SkillName).isPassive;
 
         switch (bodyPartToSelect.BodyPart)
         {
             case BodyPart.Back:
-                BackBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                BackBodyPartOrderText.text = isPassiveSelect ? "P" : (bodyPartToSelect.order - passivesAdded + "°");
                 BackBodyPartOrderImage.SetActive(true);
                 break;
             case BodyPart.Mouth:
-                MouthBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                MouthBodyPartOrderText.text = isPassiveSelect ? "P" : (bodyPartToSelect.order - passivesAdded + "°");
                 MouthBodyPartOrderImage.SetActive(true);
                 break;
             case BodyPart.Horn:
-                HornBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                HornBodyPartOrderText.text = isPassiveSelect ? "P" : (bodyPartToSelect.order - passivesAdded + "°");
                 HornBodyPartOrderImage.SetActive(true);
                 break;
             case BodyPart.Tail:
-                TailBodyPartOrderText.text = ability.isPassive ? "P" : bodyPartToSelect.order - passivesAdded + "°";
+                TailBodyPartOrderText.text = isPassiveSelect ? "P" : (bodyPartToSelect.order - passivesAdded + "°");
                 TailBodyPartOrderImage.SetActive(true);
                 break;
         }
