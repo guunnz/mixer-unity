@@ -98,6 +98,7 @@ public class AxieLandBattleTarget : MonoBehaviour
     private string getUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
     private int maxRetries = 5;
     public SkyMavisLogin skymavisLogin;
+
     public void PostTeam(int score, List<AxieController> axies)
     {
         List<AxieForBackend> axieForBackends = new List<AxieForBackend>();
@@ -257,7 +258,10 @@ public class AxieLandBattleTarget : MonoBehaviour
                 {
                     Debug.LogError(webRequest.error);
                     retries--;
-                    if (retries == 0) return null;
+                    if (retries == 0)
+                    {
+                        return null;
+                    }
                 }
                 else
                 {

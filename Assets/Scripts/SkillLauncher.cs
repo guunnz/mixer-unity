@@ -488,7 +488,7 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.AttackStatDifference != 0)
             {
                 int realAttack =
-                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
+                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff(), self.axieSkillEffectManager.GetMoraleBuff(), self.axieSkillEffectManager.GetSpeedBuff());
                 if ((skillEffect.AttackStatDifference < 0 && realAttack >= 0) ||
                     (skillEffect.AttackStatDifference > 0 && realAttack <= 0))
                 {
@@ -667,9 +667,7 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.GainEnergy > 0)
             {
                 targetList.ForEach(x => {
-                    Debug.Log("energy current:" + x.axieIngameStats.CurrentEnergy);
                     x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy);
-                    Debug.Log("energy gained:" + x.axieIngameStats.CurrentEnergy + "/ added:" + x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy);
                 });
             }
 
@@ -767,7 +765,7 @@ public class SkillLauncher : MonoBehaviour
                 if (skillEffect.DamageEqualsBasicAttack)
                 {
                     dmgPair.damage =
-                        AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff());
+                        AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff(), self.axieSkillEffectManager.GetMoraleBuff(), self.axieSkillEffectManager.GetSpeedBuff());
                 }
 
                 if (skillEffect.ExtraDamagePercentage > 0)
@@ -851,19 +849,20 @@ public class SkillLauncher : MonoBehaviour
                 Debug.Log("Immune to crits.");
                 continue;
             }
+            var moraleBuff = self.axieSkillEffectManager.GetMoraleBuff();
 
             if (skillEffect.AlwaysCritical)
             {
-                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
             }
             else if (self.Range >= 2 && self.axieSkillController.passives.rangedAlwaysCritical)
             {
-                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
             }
 
             if (damagePair.axieController.axieSkillEffectManager.IsLethal())
             {
-                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats));
+                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
 
                 damagePair.axieController.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);
             }

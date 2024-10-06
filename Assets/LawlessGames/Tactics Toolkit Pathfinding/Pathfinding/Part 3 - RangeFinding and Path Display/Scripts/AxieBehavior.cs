@@ -97,7 +97,7 @@ public class AxieBehavior : MonoBehaviour
             state = AxieState.Stunned;
         }
 
-   
+
         if (attackCoroutine != null)
         {
             StopCoroutine(attackCoroutine);
@@ -443,10 +443,12 @@ public class AxieBehavior : MonoBehaviour
             else
             {
                 var target = myController.CurrentTarget;
-                float attackDamage = AxieStatCalculator.GetAttackDamage(myController.stats);
+                var attackBuff = myController.axieSkillEffectManager.GetAttackBuff();
+                var moraleBuff = myController.axieSkillEffectManager.GetMoraleBuff();
+                var attackSpeedBuff = myController.axieSkillEffectManager.GetSpeedBuff();
+                float attackDamage = (float)AxieStatCalculator.GetRealAttack(myController.stats, attackBuff, moraleBuff, attackSpeedBuff);
 
                 attackDamage += this.myController.axieSkillController.passives.AutoattackIncrease;
-
 
                 float damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10);
 
@@ -461,9 +463,9 @@ public class AxieBehavior : MonoBehaviour
                     !target.axieSkillController.passives.ImmuneToCriticals)
                 {
                     bool isLethal = target.axieSkillEffectManager.IsLethal();
-                    if (isLethal || Random.Range(0, 1f) <= AxieStatCalculator.GetCritChance(myController.stats))
+                    if (isLethal || Random.Range(0, 1f) <= AxieStatCalculator.GetCritChance(myController.stats, moraleBuff))
                     {
-                        attackDamage *= AxieStatCalculator.GetCritDamage(myController.stats);
+                        attackDamage *= AxieStatCalculator.GetCritDamage(myController.stats, moraleBuff);
 
                         if (isLethal)
                         {

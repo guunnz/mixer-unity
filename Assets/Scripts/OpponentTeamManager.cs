@@ -11,7 +11,7 @@ public class OpponentTeamManager : MonoBehaviour
 {
     static public OpponentTeamManager instance;
 
-    public List<GetAxiesEnemies.AxieEnemy> AxieEnemyList = new List<GetAxiesEnemies.AxieEnemy>();
+    public List<GetAxiesExample.Axie> AxieEnemyList = new List<GetAxiesExample.Axie>();
 
     [FormerlySerializedAs("enemyTeam")] public Team badTeam;
 
@@ -28,7 +28,7 @@ public class OpponentTeamManager : MonoBehaviour
         instance = this;
     }
 
-    public IEnumerator SetupTeam(Opponent opponent, List<GetAxiesEnemies.AxieEnemy> axieEnemyList)
+    public IEnumerator SetupTeam(Opponent opponent, List<GetAxiesExample.Axie> axieEnemyList)
     {
         this.AxieEnemyList = axieEnemyList;
 

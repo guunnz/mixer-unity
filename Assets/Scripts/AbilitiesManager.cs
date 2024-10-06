@@ -336,6 +336,8 @@ public class AbilitiesManager : MonoBehaviour
 
         int passivesAdded = 0;
 
+  
+
         // Iterate over selected parts
         foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order))
         {
@@ -424,7 +426,10 @@ public class AbilitiesManager : MonoBehaviour
         if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
             ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
 
-
+        if (currentSelectedAxie.maxBodyPartAmount > currentSelectedAxie.parts.Count(x => x.selected))
+        {
+            ChoosePart(currentSelectedAxie.parts.FirstOrDefault(x => !x.selected).BodyPart);
+        }
     }
 
 

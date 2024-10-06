@@ -79,7 +79,7 @@ namespace Game
 
 
         public void SpawnEnemyAxieById(string axieId, AxieClass @class,
-            GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesEnemies.AxieEnemy> axieEnemies, GetAxiesEnemies.AxieEnemy axieEnemy,
+            GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesExample.Axie> axieEnemies, GetAxiesExample.Axie axieEnemy,
             bool isOpponent = false)
         {
             GetAxiesGenesAndSpawn(axieId, @class, stats, axieForBackend, axieEnemies, axieEnemy,
@@ -89,10 +89,10 @@ namespace Game
 
         private void GetAxiesGenesAndSpawn(string axieId,
             AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend,
-            List<GetAxiesEnemies.AxieEnemy> axieEnemies, GetAxiesEnemies.AxieEnemy enemy, bool isOpponent = false)
+            List<GetAxiesExample.Axie> axieEnemies, GetAxiesExample.Axie enemy, bool isOpponent = false)
         {
 
-            ProcessMixer(axieId, enemy.NewGenes, USE_GRAPHIC, @class, stats, axieForBackend, axieEnemies, enemy, isOpponent);
+            ProcessMixer(axieId, enemy.newGenes, USE_GRAPHIC, @class, stats, axieForBackend, axieEnemies, enemy, isOpponent);
         }
 
 
@@ -100,7 +100,7 @@ namespace Game
 
         public void ProcessMixer(string axieId, string genesStr, bool isGraphic,
             AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend,
-            List<GetAxiesEnemies.AxieEnemy> axieEnemies, GetAxiesEnemies.AxieEnemy enemy, bool isOpponent = false)
+            List<GetAxiesExample.Axie> axieEnemies, GetAxiesExample.Axie enemy, bool isOpponent = false)
         {
             if (string.IsNullOrEmpty(genesStr))
             {
@@ -111,34 +111,18 @@ namespace Game
             float scale = 0.007f;
             var meta = new Dictionary<string, string>();
 
-            if (enemy.cursedMeta.Count > 0)
-            {
-                var builderResult = builder.BuildSpineFromGeneCursed(axieId, genesStr, enemy.cursedMeta, scale);
+            var builderResult = builder.BuildSpineFromGene(axieId, genesStr, meta, scale, isGraphic);
 
-                if (isGraphic)
-                {
-                    SpawnSkeletonGraphic(builderResult);
-                }
-                else
-                {
-                    SpawnSkeletonAnimation(builderResult, axieId,
-                        @class, stats, axieForBackend, axieEnemies, isOpponent, genesStr);
-                }
+            if (isGraphic)
+            {
+                SpawnSkeletonGraphic(builderResult);
             }
             else
             {
-                var builderResult = builder.BuildSpineFromGene(axieId, genesStr, meta, scale, isGraphic);
-
-                if (isGraphic)
-                {
-                    SpawnSkeletonGraphic(builderResult);
-                }
-                else
-                {
-                    SpawnSkeletonAnimation(builderResult, axieId,
-                        @class, stats, axieForBackend, axieEnemies, isOpponent, genesStr);
-                }
+                SpawnSkeletonAnimation(builderResult, axieId,
+                    @class, stats, axieForBackend, axieEnemies, isOpponent, genesStr);
             }
+
 
         }
 
@@ -253,7 +237,7 @@ namespace Game
 
         private AxieController SpawnSkeletonAnimation(Axie2dBuilderResult builderResult, string axieId,
             AxieClass @class, GetAxiesExample.Stats stats, AxieForBackend axieForBackend,
-            List<GetAxiesEnemies.AxieEnemy> axieEnemies, bool isOpponent = false, string genes = "")
+            List<GetAxiesExample.Axie> axieEnemies, bool isOpponent = false, string genes = "")
         {
             GameObject go = new GameObject("Axie");
             return CreateAxie(go, builderResult, axieId, @class, stats, axieForBackend, axieEnemies, isOpponent, genes);
@@ -272,7 +256,7 @@ namespace Game
         }
         private AxieController CreateAxie(GameObject go, Axie2dBuilderResult builderResult, string axieId,
             AxieClass @class,
-            GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesEnemies.AxieEnemy> axieEnemies,
+            GetAxiesExample.Stats stats, AxieForBackend axieForBackend, List<GetAxiesExample.Axie> axieEnemies,
             bool isEnemy = false, string genes = "")
         {
             try
@@ -299,7 +283,7 @@ namespace Game
                 controller.axieIngameStats.currentHP = stats.skill;
                 controller.Genes = genes;
                 controller.axieBodyParts = isEnemy
-                    ? axieEnemies.Single(x => x.id == axieId).Parts
+                    ? axieEnemies.Single(x => x.id == axieId).parts
                         .Where(x => x.BodyPart != BodyPart.Ears && x.BodyPart != BodyPart.Eyes)
                         .Select(x => x.SkillName).ToList()
                     : AccountManager.userAxies.results.Single(x => x.id == axieId).parts

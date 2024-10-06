@@ -239,6 +239,9 @@ public class AtiaBlessing : MonoBehaviour
     private ShopItem blessing2;
     private ShopItem blessing3;
 
+    private List<BuffEffect> blessingsSelected = new List<BuffEffect>();
+    private List<BuffEffect> blessingsRolledFor = new List<BuffEffect>();
+
     public void RollAugument(int augument)
     {
         ShowRandomAuguments(true, augument);
@@ -248,8 +251,9 @@ public class AtiaBlessing : MonoBehaviour
     {
         if (!DoOnlyOne)
         {
-            atiaAnimation.DoAnim();
+            blessingsRolledFor.Clear();
             Cover.gameObject.SetActive(true);
+            atiaAnimation.DoAnim();
             if (RunManagerSingleton.instance.landType != LandType.mystic)
             {
                 rollFirst = 1;
@@ -285,6 +289,7 @@ public class AtiaBlessing : MonoBehaviour
 
 
                         blessings = blessingsList.ToList();
+                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
 
                         if (blessing1 != null)
                         {
@@ -315,7 +320,7 @@ public class AtiaBlessing : MonoBehaviour
                         ThirdAugument.onClick.RemoveAllListeners();
 
                         blessings = blessingsList.ToList();
-
+                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
                         if (blessing1 != null)
                         {
                             blessings.Remove(blessing1);
@@ -344,7 +349,7 @@ public class AtiaBlessing : MonoBehaviour
 
                 FirstAugument.gameObject.SetActive(false);
                 blessings = blessingsList.ToList();
-
+                blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
                 blessing2 = blessings[Random.Range(0, blessings.Count)];
                 blessings.Remove(blessing2);
                 blessing3 = blessings[Random.Range(0, blessings.Count)];
@@ -380,6 +385,7 @@ public class AtiaBlessing : MonoBehaviour
                         FirstAugument.onClick.RemoveAllListeners();
 
                         blessings = blessingsList.ToList();
+                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
 
                         if (blessing1 != null)
                         {
@@ -414,7 +420,7 @@ public class AtiaBlessing : MonoBehaviour
 
 
                         blessings = blessingsList.ToList();
-
+                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
                         if (blessing1 != null)
                         {
                             blessings.Remove(blessing1);
@@ -444,7 +450,7 @@ public class AtiaBlessing : MonoBehaviour
                         ThirdAugument.onClick.RemoveAllListeners();
 
                         blessings = blessingsList.ToList();
-
+                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
                         if (blessing1 != null)
                         {
                             blessings.Remove(blessing1);
@@ -469,7 +475,7 @@ public class AtiaBlessing : MonoBehaviour
             else
             {
                 blessings = blessingsList.ToList();
-
+                blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
                 blessing1 = blessings[Random.Range(0, blessings.Count)];
 
                 blessings.Remove(blessing1);
@@ -530,7 +536,7 @@ public class AtiaBlessing : MonoBehaviour
     {
         AugumentSelect.SetActive(false);
         Cover.gameObject.SetActive(false);
-
+        blessingsSelected.Add((BuffEffect)indexAugument);
 
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {

@@ -9,9 +9,7 @@ using Spine.Unity;
 
 public class GetAxiesExample : MonoBehaviour
 {
-    private GraphQLClient graphQLClient;
-    private string address = "0x5506e7c52163d07d9a42ce9514aecdb694d674e3";
-    private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7"; // Replace with your actual API key
+    private string address = "";
     public AxieSpawner axieSpawner;
     public int spawnCountMax = 0;
     public TeamToJSON teamToJson;
@@ -86,7 +84,7 @@ public class GetAxiesExample : MonoBehaviour
             bodyShape = axie.bodyShape;
             skeletonDataAsset = axie.skeletonDataAsset;
             skeletonDataAssetMaterial = axie.skeletonDataAssetMaterial;
-            maxBodyPartAmount = 2;
+            maxBodyPartAmount = 3;
         }
 
         public Axie()
@@ -112,7 +110,7 @@ public class GetAxiesExample : MonoBehaviour
             {
                 Debug.LogError(ex.Message);
             }
-           
+
         }
     }
 
@@ -133,28 +131,44 @@ public class GetAxiesExample : MonoBehaviour
         public Part(string @class, string name, string type, int order, bool selected, string abilityId)
         {
             this.@class = @class;
-            this.name = ProcessDisplaySkillName(name);
-            this.abilityName = ProcessSkillName(name);
+            if (!string.IsNullOrEmpty(name))
+            {
+                this.name = ProcessDisplaySkillName(name);
+                this.abilityName = ProcessSkillName(name);
+            }
             this.type = type;
             this.order = order;
             this.selected = selected;
-            
+
             if (type.ToLower() == "eyes" || type.ToLower() == "ears")
                 return;
 
-            // Attempt to parse the SkillName
-            try
+
+            if (string.IsNullOrEmpty(name))
             {
-                SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
-            }
-            catch
-            {
-                Debug.Log(name);
                 // Fetch the original part name from PartFinder and retry parsing
-                string originalPartName = PartFinder.GetOriginalPartId(abilityId, name);
+                string originalPartName = PartFinder.GetPartById(abilityId);
                 this.abilityName = ProcessSkillName(originalPartName);
                 SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
             }
+            else
+            {
+
+                // Attempt to parse the SkillName
+                try
+                {
+                    SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
+                }
+                catch
+                {
+                    Debug.Log(name);
+                    // Fetch the original part name from PartFinder and retry parsing
+                    string originalPartName = PartFinder.GetOriginalPartId(abilityId, name);
+                    this.abilityName = ProcessSkillName(originalPartName);
+                    SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
+                }
+            }
+
         }
 
         private string ProcessSkillName(string partName)

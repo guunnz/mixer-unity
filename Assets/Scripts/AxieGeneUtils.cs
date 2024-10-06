@@ -168,6 +168,49 @@ public class AxieGeneUtils
         }
     }
 
+    public static Cls GetAxieClass(string hex)
+    {
+        string hexBin = "";
+        hex = hex.Replace("0x", "");
+        hexBin = String.Join(String.Empty,
+            hex.Select(
+                c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')
+            )
+        );
+        hexBin = hexBin.PadLeft(hexType == HexType.Bit256 ? 256 : 512, '0');
+        GeneBinGroup geneBinGroup = new GeneBinGroup
+        {
+            cls = hexType == HexType.Bit256
+                ? hexBin.Substring(0, 4)
+                : hexBin.Substring(0, 5),
+            region = hexType == HexType.Bit256
+                ? hexBin.Substring(8, 5)
+                : hexBin.Substring(22, 18),
+            xMas = hexType == HexType.Bit256 ? hexBin.Substring(22, 12) : "",
+            eyes = hexType == HexType.Bit256
+                ? hexBin.Substring(64, 32)
+                : hexBin.Substring(149, 43),
+            mouth = hexType == HexType.Bit256
+                ? hexBin.Substring(96, 32)
+                : hexBin.Substring(213, 43),
+            ears = hexType == HexType.Bit256
+                ? hexBin.Substring(128, 32)
+                : hexBin.Substring(277, 43),
+            horn = hexType == HexType.Bit256
+                ? hexBin.Substring(160, 32)
+                : hexBin.Substring(341, 43),
+            back = hexType == HexType.Bit256
+                ? hexBin.Substring(192, 32)
+                : hexBin.Substring(405, 43),
+            tail = hexType == HexType.Bit256
+                ? hexBin.Substring(224, 32)
+                : hexBin.Substring(469, 43),
+        };
+
+        Cls cls = parsePartClass(geneBinGroup.cls);
+        return cls;
+    }
+
     private static Cls parsePartClass(string bin)
     {
         var ret = binClassMap[bin];

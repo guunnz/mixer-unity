@@ -30,7 +30,7 @@ MonoBehaviour:
     RangedReflect: 0
     GainShield: 0
     GainShieldPercentage: 0
-    GainHPPercentage: 40
+    GainHPPercentage: 20
     HPBaseOnDamage: 0
     ShieldOnStart: 0
     IgnoresShield: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   extraPrefabToInstantiate: {fileID: 0}
   bodyPartClass: 4
   damage: 0
-  shield: 40
+  shield: 0
   energy: 2
-  description: Heal ally with least hp by 40% of max hp
+  description: Heal ally with least hp by 20% of max hp
   OnlyDamageShields: 0

@@ -413,10 +413,8 @@ public class Skill : MonoBehaviour
                     target.axieIngameStats.currentShield = 0;
 
                     target.axieIngameStats.currentHP -= shieldDamage;
+                    target.axieSkillController.DamageReceived(@class, pair.Value, self, true);
                 }
-
-
-                target.axieSkillController.DamageReceived(@class, pair.Value, self, true);
             }
         }
     }

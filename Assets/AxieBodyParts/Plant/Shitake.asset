@@ -30,7 +30,7 @@ MonoBehaviour:
     RangedReflect: 0
     GainShield: 0
     GainShieldPercentage: 0
-    GainHPPercentage: 15
+    GainHPPercentage: 10
     HPBaseOnDamage: 0
     ShieldOnStart: 0
     IgnoresShield: 0
@@ -48,15 +48,26 @@ MonoBehaviour:
     Poison: 0
     Wombo: 0
     Lunge: 0
+    Trump: 0
+    Hotbutt: 0
+    Kestrel: 0
+    FishSnack: 0
+    Backdoor: 0
+    GravelAnt: 0
+    HealingBlock: 0
+    ImmuneToDebuffs: 0
     AlwaysCritical: 0
     RandomEffectIsDebuff: 0
     RandomEffectIsBuff: 0
     ApplyRandomEffect: 0
     DamageEqualsBasicAttack: 0
+    StunOnShieldBroken: 0
     ExtraDamagePercentage: 0
     ExtraDamageOnCritical: 0
+    ShieldAsDamagePercentage: 0
     MultiCastTimes: 0
     InmuneToCriticalStrike: 0
+    PotatoLeaf: 0
     ReduceDamagePercentage: 0
     UseSpecialsAsTrigger: 0
     specialActivationAgainstAxiesList: []
@@ -92,6 +103,7 @@ MonoBehaviour:
     AllowReactivation: 0
     ReactivateEffectEveryXSeconds: 0
     arreglabugs: 
+  tooltipTypes: 
   bodyPart: 4
   prefab: {fileID: 8593578658295523109, guid: 18041e17ccf3b9c47b62742b06420fb0, type: 3}
   extraPrefabToInstantiate: {fileID: 0}
@@ -99,4 +111,5 @@ MonoBehaviour:
   damage: 0
   shield: 40
   energy: 1
-  description: Heal user by 15% of its max HP
+  description: Heal user by 10% of its max HP
+  OnlyDamageShields: 0

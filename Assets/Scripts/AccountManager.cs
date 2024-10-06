@@ -11,12 +11,9 @@ using Newtonsoft.Json.Linq;
 
 public class AccountManager : MonoBehaviour
 {
-    private GraphQLClient graphQLClient;
-
     static public string username;
 
-    internal string wallet = "0x46571200388f6dce5416e552e28caa7a6833c88e";
-    private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
+    internal string wallet = "";
     public static GetAxiesExample.Axies userAxies;
     public static GetAxiesExample.Lands userLands;
     public TextMeshProUGUI usernameText;

@@ -69,7 +69,6 @@ public class SkyMavisLogin : MonoBehaviour
         
                 introVideoPlayer.targetCameraAlpha = 0;
                 introVideoPlayer.Stop();
-                yield return new WaitForSeconds(1f);
             }
             else
             {

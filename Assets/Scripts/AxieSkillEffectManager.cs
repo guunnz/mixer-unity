@@ -497,7 +497,7 @@ public class AxieSkillEffectManager : MonoBehaviour
     private void SetSkillEffectDuration(SkillEffect skillEffect, StatusEffectEnum statusEffectEnum)
     {
         float duration = skillEffect.skillDuration == 0
-            ? statusEffectEnum == StatusEffectEnum.Stench ? 5 : 999999
+            ? statusEffectEnum == StatusEffectEnum.Stench || statusEffectEnum == StatusEffectEnum.Chill ? 5 : 999999
             : skillEffect.skillDuration;
 
         if (statusEffectEnum == StatusEffectEnum.Stun || statusEffectEnum == StatusEffectEnum.Fear)

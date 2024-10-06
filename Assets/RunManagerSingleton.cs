@@ -153,9 +153,13 @@ public class RunManagerSingleton : MonoBehaviour
         economyPassive.RollsThisRound = 0;
         coinsText.text = coins.ToString();
         RunManagerSingleton.instance.ItemsTooltip.gameObject.SetActive(true);
-        ShopManager.instance.SetShop();
+        Invoke(nameof(SetShopInvoke), 0.1f);
     }
 
+    void SetShopInvoke()
+    {
+        ShopManager.instance.SetShop();
+    }
     private void SetScoreGraphics()
     {
         results.text = wins.ToString();

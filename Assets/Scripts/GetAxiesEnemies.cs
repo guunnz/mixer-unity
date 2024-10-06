@@ -7,14 +7,14 @@ using System.Linq;
 using Game;
 using Newtonsoft.Json;
 using TMPro;
+using static GetAxiesExample;
+using System.Threading.Tasks;
+using static BattleDataLoader;
 
 namespace enemies
 {
     public class GetAxiesEnemies : MonoBehaviour
     {
-        private GraphQLClient graphQLClient;
-        private string address = "0x5506e7c52163d07d9a42ce9514aecdb694d674e3";
-        private string apiKey = "eE4lgygsFtLXak1lA60fimKyoSwT64v7";
         public AxieSpawner axieSpawner;
         public int spawnCountMax = 0;
 
@@ -32,11 +32,14 @@ namespace enemies
 
         public EnemyLandAnimation enemyLandAnimation;
         public BattleDataLoader battleDataLoader;
+        public GameObject Store;
 
         public async void GetEnemy()
         {
+
             FindingOpponent.SetActive(true);
             IngameOverlay.SetActive(false);
+            await Task.Delay(10);
             string json = "";
             if (AccountManager.TestMode)
             {
@@ -48,186 +51,89 @@ namespace enemies
                 json = await landBattleTarget.GetScoreAsync(num.ToString());
             }
 
+            if (string.IsNullOrEmpty(json))
+            {
+                MapManager.Instance.ToggleRectangles();
+                Store.SetActive(true);
+                FindingOpponent.SetActive(false);
+                IngameOverlay.SetActive(true);
+                NotificationErrorManager.instance.DoNotification("An error has ocurred when trying to find an opponent, please try again");
+                return;
+            }
+            
             Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);
-            Debug.Log("Opponent land type is: " + opponent.land_type.ToString());
-            GetOpponentTeam(opponent);
-        }
-
-        void GetOpponentTeam(Opponent jsonAxieIds)
-        {
-            graphQLClient = new GraphQLClient("https://api-gateway.skymavis.com/graphql/marketplace");
-            List<AxieForBackend> axieIds = jsonAxieIds.axie_team.axies.ToList();
-            string combinedQuery = "";
-
-            for (int i = 0; i < axieIds.Count; i++)
-            {
-                string individualQuery = $@"
-            axie{i}: axie(axieId: ""{axieIds[i].axie_id}"") {{
-                birthDate
-                name
-                newGenes
-                id
-                class
-                parts {{
-                    class
-                    id
-                    name
-                    type
-                    abilities {{
-                        attack
-                        attackType
-                        name
-                        id
-                        effectIconUrl
-                        defense
-                        backgroundUrl
-                    }}
-                }}
-                stats {{
-                    speed
-                    skill
-                    morale
-                    hp
-                }}
-                bodyShape
-            }}";
-                combinedQuery += individualQuery;
-            }
-
-            StartCoroutine(RequestGraphQL(combinedQuery, jsonAxieIds, true));
-        }
-
-        void GetOpponentCaptain(string axieId)
-        {
-            string combinedQuery = "";
-
-            string individualQuery = $@"
-            axie0: axie(axieId: ""{axieId}"") {{
-                birthDate
-                name
-                genes
-                newGenes
-                id
-                class
-                parts {{
-                    class
-                    id
-                    name
-                    type
-                    abilities {{
-                        attack
-                        attackType
-                        name
-                        id
-                        effectIconUrl
-                        defense
-                        backgroundUrl
-                    }}
-                }}
-                stats {{
-                    speed
-                    skill
-                    morale
-                    hp
-                }}
-                bodyShape
-            }}";
-            combinedQuery += individualQuery;
-            StartCoroutine(GetAxieSkeleton(combinedQuery));
-        }
-
-        private IEnumerator GetAxieSkeleton(string query)
-        {
-            var request = new Request()
-            {
-                Query = "query {" + query + "}"
-            };
-
-            var headers = new Dictionary<string, string>
-            {
-                { "X-API-Key", apiKey }
-            };
-
-            var task = graphQLClient.Send(request, null, headers);
-
-            while (!task.IsCompleted)
-            {
-                yield return null;
-            }
-
-            if (task.Exception != null)
-            {
-                GetAxieSkeleton(query);
-                Debug.LogError("GraphQL Error: " + task.Exception.Message);
-                yield break;
-            }
-
-            try
-            {
-                string responseString = task.Result;
-                RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
-
-                AxieEnemy axie1 = axiesData.Data["axie0"];
-                var builderResult = axieSpawner.SimpleProcessMixer(axie1.id, axie1.NewGenes, true);
-
-                TeamCaptainManager.Instance.SetOpponentCaptain(builderResult.skeletonDataAsset, builderResult.sharedGraphicMaterial);
-
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogError("Error processing response: " + ex.Message);
-            }
-        }
-
-        private IEnumerator RequestGraphQL(string query, Opponent opponent, bool isOpponent = false)
-        {
-            var request = new Request()
-            {
-                Query = isOpponent ? "query {" + query + "}" : query
-            };
-
-            var headers = new Dictionary<string, string>
-            {
-                { "X-API-Key", apiKey }
-            };
-
-            var task = graphQLClient.Send(request, null, headers);
-
-            while (!task.IsCompleted)
-            {
-                yield return null;
-            }
-
-            if (task.Exception != null)
+            if (string.IsNullOrEmpty(opponent.axie_captain_genes) || opponent.axie_team.axies.Any(x => string.IsNullOrEmpty(x.genes)))
             {
                 GetEnemy();
-                Debug.LogError("GraphQL Error: " + task.Exception.Message);
-                yield break;
+                return;
             }
+            Debug.Log("Opponent land type is: " + opponent.land_type.ToString());
+            BuildEnemyTeamAxies(opponent, true);
+        }
 
+        void GetOpponentCaptain(string axieId, string axieGenes)
+        {
+            var builderResult = axieSpawner.SimpleProcessMixer(axieId, axieGenes, true);
+
+            TeamCaptainManager.Instance.SetOpponentCaptain(builderResult.skeletonDataAsset, builderResult.sharedGraphicMaterial);
+        }
+
+        private void BuildEnemyTeamAxies(Opponent opponent, bool isOpponent = false)
+        {
             try
             {
-                string responseString = task.Result;
                 if (isOpponent)
                 {
-                    RunManagerSingleton.instance.currentOpponent = opponent.user_wallet_address;
-                    RootObject axiesData = JsonConvert.DeserializeObject<RootObject>(responseString);
 
                     if (!AccountManager.TestMode)
                         GoodTeam.PostTeam();
-                    List<AxieEnemy> axieEnemies = new List<AxieEnemy>();
 
-                    // Assuming axieIds is a List<string>
-                    AxieEnemy axie1 = axiesData.Data["axie0"];
-                    AxieEnemy axie2 = axiesData.Data["axie1"];
-                    AxieEnemy axie3 = axiesData.Data["axie2"];
-                    AxieEnemy axie4 = axiesData.Data["axie3"];
-                    AxieEnemy axie5 = axiesData.Data["axie4"];
-                    axieEnemies.Add(axie1);
-                    axieEnemies.Add(axie2);
-                    axieEnemies.Add(axie3);
-                    axieEnemies.Add(axie4);
-                    axieEnemies.Add(axie5);
+                    List<GetAxiesExample.Axie> axieEnemies = new List<GetAxiesExample.Axie>();
+
+                    foreach (var axiesInList in opponent.axie_team.axies)
+                    {
+                        GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
+
+                        axie.genes = axiesInList.genes;
+
+
+                        axie.@class = AxieGeneUtils.GetAxieClass(axie.genes).ToString();
+                        axie.id = axiesInList.axie_id;
+                        axie.name = "";
+                        axie.birthDate = 0;
+                        axie.newGenes = axie.genes;
+                        axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
+
+                        Debug.Log("Loading parts");
+                        List<string> partsClasses = AxieGeneUtils.GetAxiePartsClasses(axie.genes);
+                        Debug.Log("Loading abilities");
+                        List<string> partsAbilities = AxieGeneUtils.ParsePartIdsFromHex(axie.genes);
+
+                        if (partsAbilities == null)
+                            continue;
+
+                        Debug.Log("Abilities loaded");
+
+                        List<GetAxiesExample.Part> axieParts = new List<GetAxiesExample.Part>();
+
+                        GetAxiesExample.Part horn = new GetAxiesExample.Part(partsClasses[2],
+                            "", "horn", 0, false, partsAbilities[2]);
+                        GetAxiesExample.Part tail = new GetAxiesExample.Part(partsClasses[5],
+                            "", "tail", 0, false, partsAbilities[5]);
+                        GetAxiesExample.Part back = new GetAxiesExample.Part(partsClasses[4],
+                            "", "back", 0, false, partsAbilities[4]);
+                        GetAxiesExample.Part mouth = new GetAxiesExample.Part(partsClasses[3],
+                            "", "mouth", 0, false, partsAbilities[3]);
+
+                        axieParts.Add(horn);
+                        axieParts.Add(tail);
+                        axieParts.Add(back);
+                        axieParts.Add(mouth);
+
+                        axie.parts = axieParts.ToArray();
+
+                        axieEnemies.Add(axie);
+                    }
 
                     axieEnemies = axieEnemies.OrderBy(x => int.Parse(x.id)).ToList();
                     StartCoroutine(SpawnAxies(axieEnemies, opponent, isOpponent));
@@ -240,15 +146,15 @@ namespace enemies
             }
         }
 
-        IEnumerator SpawnAxies(List<AxieEnemy> axieList, Opponent opponent, bool isOpponent)
+        IEnumerator SpawnAxies(List<GetAxiesExample.Axie> axieList, Opponent opponent, bool isOpponent)
         {
             axieSpawner.enemyTeam.landType = (LandType)opponent.land_type;
             axieSpawner.enemyTeam.OnBattleStartActions.Clear();
 
-            if (AccountManager.TestMode)
-            {
-                axieList = TestTool.Instance.GetEnemyAxies(axieList);
-            }
+            //if (AccountManager.TestMode)
+            //{
+            //    axieList = TestTool.Instance.GetEnemyAxies(axieList);
+            //}
 
             foreach (var axieEnemy in axieList)
             {
@@ -271,13 +177,12 @@ namespace enemies
 
             if (string.IsNullOrEmpty(opponent.axie_captain_id))
             {
-                Debug.Log("CAPTAIN RECEIVED: " + opponent.axie_captain_id);
                 var captainToSelect = axieSpawner.enemyTeam.GetCharactersAll().First();
                 TeamCaptainManager.Instance.SetOpponentCaptain(captainToSelect.skeletonDataAsset, captainToSelect.skeletonMaterial);
             }
             else
             {
-                GetOpponentCaptain(opponent.axie_captain_id);
+                GetOpponentCaptain(opponent.axie_captain_id, opponent.axie_captain_genes);
             }
 
             RunManagerSingleton.instance.ScoreRect.gameObject.SetActive(false);
