@@ -20,7 +20,7 @@ MonoBehaviour:
     skillTriggerType: 3
     isPassive: 0
     skillDuration: 2
-    PoisonStack: 10
+    PoisonStack: 5
     Attack: 0
     Speed: 0
     Morale: 0

@@ -485,6 +485,7 @@ public class SkyMavisLogin : MonoBehaviour
             }
             else
             {
+                mainMenuSong.enabled = true;
                 GetUserInfo(userInfo);
                 SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
                 MavisTracking.Instance.InitializeTracking(userInfoObj.userInfo);

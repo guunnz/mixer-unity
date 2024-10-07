@@ -34,10 +34,9 @@ public class LeaderboardManager : MonoBehaviour
     public LeaderboardUIItem myData;
     private bool isLoading;
 
-
     private void OnEnable()
     {
-        if (leaderboardContainer.childCount > 0 )
+        if (leaderboardContainer.childCount > 0)
             return;
 
         isLoading = true;
@@ -83,12 +82,20 @@ public class LeaderboardManager : MonoBehaviour
 
         var entryMine = leaderboardData.FirstOrDefault(x => x.user_wallet_address == RunManagerSingleton.instance.user_wallet_address);
 
-        myData.gameObject.SetActive(true);
-        myData.SetUsername(entryMine.username);
-        myData.SetAvgWins(entryMine.avg_wins);
-        myData.SetElo(entryMine.elo);
-        myData.SetRanking(leaderboardData.IndexOf(entryMine) + 1);
-        myData.SetCaptainGraphics(entryMine.axie_captain_id, entryMine.axie_captain_genes);
+        if (entryMine == null)
+        {
+            myData.gameObject.SetActive(false);
+        }
+        else
+        {
+            myData.gameObject.SetActive(true);
+            myData.SetUsername(entryMine.username);
+            myData.SetAvgWins(entryMine.avg_wins);
+            myData.SetElo(entryMine.elo);
+            myData.SetRanking(leaderboardData.IndexOf(entryMine) + 1);
+            myData.SetCaptainGraphics(entryMine.axie_captain_id, entryMine.axie_captain_genes);
+        }
+
 
         // Clear any existing entries
         foreach (Transform child in leaderboardContainer)

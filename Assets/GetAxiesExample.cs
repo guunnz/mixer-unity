@@ -84,7 +84,7 @@ public class GetAxiesExample : MonoBehaviour
             bodyShape = axie.bodyShape;
             skeletonDataAsset = axie.skeletonDataAsset;
             skeletonDataAssetMaterial = axie.skeletonDataAssetMaterial;
-            maxBodyPartAmount = 3;
+            maxBodyPartAmount = 2;
         }
 
         public Axie()

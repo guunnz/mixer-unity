@@ -428,7 +428,7 @@ public class Skill : MonoBehaviour
                 var axieTargetHealingPair = healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
                 if (axieTargetHealingPair == null)
                     continue;
-
+              
                 target.DoHeal(axieTargetHealingPair.Value);
             }
         }

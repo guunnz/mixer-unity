@@ -401,7 +401,7 @@ public class AxieController : MonoBehaviour
 
         if (!axieSkillEffectManager.IsChilled() && !axieSkillEffectManager.IsStunned() && axieBehavior.axieState != AxieState.Casting)
         {
-            axieIngameStats.CurrentEnergy += 0.0015f + ((stats.skill * 4) / 10000f);
+            axieIngameStats.CurrentEnergy += 0.001f + ((stats.skill * 2) / 10000f);
         }
 
 

@@ -30,7 +30,7 @@ MonoBehaviour:
     RangedReflect: 0
     GainShield: 0
     GainShieldPercentage: 0
-    GainHPPercentage: 20
+    GainHPPercentage: 30
     HPBaseOnDamage: 0
     ShieldOnStart: 0
     IgnoresShield: 0
@@ -111,5 +111,5 @@ MonoBehaviour:
   damage: 0
   shield: 0
   energy: 2
-  description: Heal ally with least hp by 20% of max hp
+  description: Heal ally with least hp by 30% of max hp
   OnlyDamageShields: 0

@@ -26,10 +26,10 @@ static public class AxieStatCalculator
         {
             return 0;
         }
-        float minHp = 600f;
+        float minHp = 420f;
         //el 27 son la stat mas baja de hp que puede tener un axie, se lo resto para unicamente tener en cuenta los stats extra a eso
         //el 4 es la importancia de estos stats sobrantes, ( si fuera 1, un axie con 61 de hp tendria 300 + (61-27)
-        return (minHp + (4f * (stats.hp - 27f))) * 2.2f;
+        return (minHp + (4f * (stats.hp - 27f))) * 4.8f;
     }
 
     static public float GetPoisonDamage(float stacks)
@@ -59,18 +59,18 @@ static public class AxieStatCalculator
 
     static public int GetRealSpeed(int speed, int speedBuffAmount)
     {
-        return Mathf.RoundToInt(speed + (speed * (speedBuffAmount * 0.2f)));
+        return Mathf.RoundToInt(speed + (speed * (speedBuffAmount * 0.1f)));
     }
 
     static public int GetRealMorale(int morale, int moraleBuffAmount)
     {
-        return Mathf.RoundToInt(morale + (morale * (moraleBuffAmount * 0.2f)));
+        return Mathf.RoundToInt(morale + (morale * (moraleBuffAmount * 0.1f)));
     }
 
     static public int GetRealAttack(GetAxiesExample.Stats stats, int attackBuffAmount, int moraleBuffAmount, int speedBuffAmount)
     {
         int attack = Mathf.RoundToInt(GetAttackDamage(stats, moraleBuffAmount, speedBuffAmount));
-        return Mathf.RoundToInt((attack + (attack * (attackBuffAmount * 0.2f))));
+        return Mathf.RoundToInt((attack + (attack * (attackBuffAmount * 0.1f))));
     }
 
     static public float GetCritChance(GetAxiesExample.Stats stats, int moraleBuffAmount)
@@ -98,6 +98,6 @@ static public class AxieStatCalculator
         // skill suma o resta un 25% de la diferencia entre el skill y 31 (un numero arbitrario para marcar la norma de skill de un axie)
         // Este numero lo multiplico por un coeficiente para reducirlo levemente por las dudas, este coeficiente puede no estar
         return (GetRealSpeed(stats.speed, speedBuffAmount) * 0.09f + GetRealMorale(stats.morale, moraleBuffAmount) * 0.2f + (stats.hp - 27) * 0.3f + (stats.skill - 31f) * 0.25f) *
-               2.2f; //era5.9
+               3.2f; //era5.9
     }
 }

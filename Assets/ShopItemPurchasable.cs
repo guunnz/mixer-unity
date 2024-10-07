@@ -77,8 +77,12 @@ public class ShopItemPurchasable : MonoBehaviour
             {
                 otherTitle.enabled = false;
             }
-            foreach (var tooltip in tooltips)
-                TooltipManagerSingleton.instance.EnableTooltipItem(tooltip);
+            if (tooltips != null)
+            {
+                foreach (var tooltip in tooltips)
+                    TooltipManagerSingleton.instance.EnableTooltipItem(tooltip);
+
+            }
             scaling = true;
             Poping.DOColor(Color.yellow, 0.5f);
             this.transform.DOScale(new Vector3(0.013f, 0.013f, 0.013f), 0.25f);
@@ -93,8 +97,12 @@ public class ShopItemPurchasable : MonoBehaviour
             {
                 otherTitle.enabled = true;
             }
-            foreach (var tooltip in tooltips)
-                TooltipManagerSingleton.instance.DisableTooltip(tooltip);
+
+            if (tooltips != null)
+            {
+                foreach (var tooltip in tooltips)
+                    TooltipManagerSingleton.instance.DisableTooltip(tooltip);
+            }
 #if UNITY_ANDROID || UNITY_IOS
             pressTimes = 0;
 #endif

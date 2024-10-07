@@ -300,6 +300,7 @@ public class AtiaBlessing : MonoBehaviour
                         blessings.Remove(blessing3);
 
                         blessing2 = blessings[Random.Range(0, blessings.Count)];
+
                         rollSecond--;
                         if (rollSecond == 0)
                         {
@@ -536,7 +537,11 @@ public class AtiaBlessing : MonoBehaviour
     {
         AugumentSelect.SetActive(false);
         Cover.gameObject.SetActive(false);
-        blessingsSelected.Add((BuffEffect)indexAugument);
+
+        if (((BuffEffect)indexAugument).ToString().ToLower().Contains("prismatic"))
+        {
+            blessingsSelected.Add((BuffEffect)indexAugument);
+        }
 
         if (RunManagerSingleton.instance.globalUpgrades.Count <= RunManagerSingleton.instance.score)
         {

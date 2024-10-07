@@ -64,6 +64,8 @@ public class TeamManager : MonoBehaviour
         StartCoroutine(ILoadTeam());
     }
 
+    private List<GetAxiesExample.Axie> axiesIdNotLoaded = new List<GetAxiesExample.Axie>();
+
     IEnumerator ILoadTeam()
     {
         teamsFilePath = Path.Combine(Application.persistentDataPath,
@@ -79,6 +81,14 @@ public class TeamManager : MonoBehaviour
         {
             foreach (var axieTeamAxieId in axieTeam.AxieIds)
             {
+                if (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieTeamAxieId.id) == null)
+                {
+                    if (!axieTeamAxieId.f2p)
+                    {
+                        axiesIdNotLoaded.Add(axieTeamAxieId);
+                    }
+                    continue;
+                }
                 axieTeamAxieId.LoadGraphicAssets();
             }
         }
@@ -105,6 +115,21 @@ public class TeamManager : MonoBehaviour
             }
 
             axiesManager.ShowMenuAxies(currentTeam);
+        }
+
+        StartCoroutine(TryToLoadAsync());
+    }
+
+    IEnumerator TryToLoadAsync()
+    {
+        foreach (var axieNotLoaded in axiesIdNotLoaded)
+        {
+            while (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieNotLoaded.id) == null)
+            {
+                yield return null;
+            }
+
+            axieNotLoaded.LoadGraphicAssets();
         }
     }
 
