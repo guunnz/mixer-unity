@@ -89,6 +89,17 @@ static public class AxieStatCalculator
         return 2f + (GetRealMorale(stats.morale, moraleBuffAmount) - 35) * 0.02f;
     }
 
+    static public float GetSkillDamage(float dmg, GetAxiesExample.Stats stats, int attackBuffAmount, int skillAmounts)
+    {
+        float attack = dmg + (dmg * ((skillAmounts * .1f) - 0.2f));
+
+        var multiplier = (((stats.skill + stats.speed + stats.morale + stats.hp)) - 164);
+
+        attack *= (multiplier / 100f) + 1;
+
+        return Mathf.RoundToInt((attack + (attack * (attackBuffAmount * 0.1f))));
+    }
+
     static public float GetAttackDamage(GetAxiesExample.Stats stats, int moraleBuffAmount, int speedBuffAmount)
     {
         // esta cuenta devuelve un valor que ronda entre los 10 y 20 para calcular el daño de cada auto ataque

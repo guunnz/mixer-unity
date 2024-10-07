@@ -442,6 +442,11 @@ public class SkyMavisLogin : MonoBehaviour
         StartCoroutine(GetNFTS());
     }
 
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
+
     private IEnumerator GetNFTS(int retries = 5, int page = 0)
     {
         UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint + "?page=" + page.ToString(), "GET");

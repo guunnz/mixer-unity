@@ -381,6 +381,7 @@ public class Skill : MonoBehaviour
 
     private void DoDamage()
     {
+        var AttackBuff = self.axieSkillEffectManager.GetAttackBuff();
         foreach (var target in targetList)
         {
             DamageTargetPair pair = damageTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
@@ -397,23 +398,27 @@ public class Skill : MonoBehaviour
                 Debug.Log("Spiky only shield" + ":" + dmg);
                 target.axieIngameStats.currentShield -= dmg;
 
-
                 target.axieSkillController.DamageReceived(@class, dmg, self, true);
             }
             else
             {
-                float shieldDamage = pair.Value - target.axieIngameStats.currentShield;
+                var dmg = pair.Value;
+                Debug.Log("Ability dmg: " + dmg + "- axie: " + self.AxieId);
+                dmg = AxieStatCalculator.GetSkillDamage(dmg, self.stats, AttackBuff, self.axieSkillController.skillList.Count);
+                Debug.Log("Ability dmg buffed: " + dmg + "- axie: " + self.AxieId);
+                float shieldDamage = dmg - target.axieIngameStats.currentShield;
 
                 if (shieldDamage < 0)
                 {
-                    target.axieIngameStats.currentShield -= pair.Value;
+                    target.axieIngameStats.currentShield -= dmg;
                 }
                 else
                 {
                     target.axieIngameStats.currentShield = 0;
 
                     target.axieIngameStats.currentHP -= shieldDamage;
-                    target.axieSkillController.DamageReceived(@class, pair.Value, self, true);
+                    target.statsManagerUI.SetHP(target.axieIngameStats.currentHP / target.axieIngameStats.maxHP);
+                    target.axieSkillController.DamageReceived(@class, dmg, self, true);
                 }
             }
         }
@@ -428,7 +433,7 @@ public class Skill : MonoBehaviour
                 var axieTargetHealingPair = healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
                 if (axieTargetHealingPair == null)
                     continue;
-              
+
                 target.DoHeal(axieTargetHealingPair.Value);
             }
         }
