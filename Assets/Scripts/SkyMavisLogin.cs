@@ -37,7 +37,6 @@ public class SkyMavisLogin : MonoBehaviour
     public VideoClip FirstTimeIntroVideoclip;
     public VideoClip SecondTimeIntroVideoclip;
     public AudioSource mainMenuSong;
-
     public GameObject cursor;
     public void LogOut()
     {
@@ -54,24 +53,29 @@ public class SkyMavisLogin : MonoBehaviour
         Application.targetFrameRate = 30;
 
 #endif
+
+
         cursor.SetActive(false);
+        string token = GetTokenFromCommandLineArgs();
 
         if (!Loading.instance.IsLoadingEnabled())
         {
-            if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Auth")))
+            if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Auth")) || !string.IsNullOrEmpty(token) && PlayerPrefs.GetInt("IntroVideo", 0) == 1)
             {
+               
                 introVideoPlayer.clip = SecondTimeIntroVideoclip;
                 introVideoPlayer.Play();
                 yield return new WaitForSeconds(2.02f);
                 loopedVideoPlayer.targetCameraAlpha = 1;
                 loopedVideoPlayer.Play();
                 yield return new WaitForSeconds(0.1f);
-        
+
                 introVideoPlayer.targetCameraAlpha = 0;
                 introVideoPlayer.Stop();
             }
             else
             {
+                PlayerPrefs.SetInt("IntroVideo", 1);
                 introVideoPlayer.clip = FirstTimeIntroVideoclip;
                 introVideoPlayer.Play();
                 yield return new WaitForSeconds(4.06f);
@@ -80,7 +84,7 @@ public class SkyMavisLogin : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 introVideoPlayer.targetCameraAlpha = 0;
                 introVideoPlayer.Stop();
-            
+
 
             }
         }
@@ -91,14 +95,9 @@ public class SkyMavisLogin : MonoBehaviour
         {
             yield return null;
         }
-        string token = GetTokenFromCommandLineArgs();
-
+        PartFinder.LoadFromResources();
         if (!string.IsNullOrEmpty(token))
         {
-            if (authToken.IsExpired())
-            {
-                StartCoroutine(RefreshToken(3, true));
-            }
             Loading.instance.EnableLoading();
             mainMenuSong.enabled = true;
             introVideoPlayer.Stop();
@@ -107,7 +106,6 @@ public class SkyMavisLogin : MonoBehaviour
         }
         else
         {
-            PartFinder.LoadFromResources();
             loginButton.gameObject.SetActive(true);
             loginButton.onClick.AddListener(OnLoginButtonClicked);
             string auth = PlayerPrefs.GetString("Auth");
@@ -603,6 +601,7 @@ public class SkyMavisLogin : MonoBehaviour
         public string email;
         public string name;
         public string roninAddress;
+        public string user_id;
     }
 
     [System.Serializable]

@@ -26,6 +26,11 @@ public class AccountManager : MonoBehaviour
     static public bool TestMode = false;
     public int pages;
     public int axiesShown;
+    static public AccountManager Instance;
+    public float loadingAxies = 5;
+    public bool StartedLoading;
+
+
 
 #if UNITY_EDITOR
     private void Update()
@@ -34,10 +39,20 @@ public class AccountManager : MonoBehaviour
         {
             TestMode = true;
         }
+
+        if (StartedLoading)
+        {
+            loadingAxies -= Time.deltaTime;
+            if (loadingAxies <= 0)
+            {
+                StartedLoading = false;
+            }
+        }
     }
 #endif
     private void Awake()
     {
+        Instance = this;
         loggingIn = false;
         TestMode = false;
     }
@@ -94,6 +109,7 @@ public class AccountManager : MonoBehaviour
 
     public void AddNFTs(string userInfoResponse)
     {
+        loadingAxies = 5;
         Debug.Log("User info: " + userInfoResponse);
 
         SkyMavisLogin.Root userInfo = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfoResponse);
@@ -222,6 +238,8 @@ public class AccountManager : MonoBehaviour
     {
         try
         {
+            StartedLoading = true;
+            loadingAxies = 5;
             PlayerPrefs.SetString("LastWallet", wallet);
             List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
             List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
@@ -333,7 +351,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "savannah";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.forest) == 0)
@@ -344,7 +362,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "forest";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.arctic) == 0)
@@ -355,10 +373,9 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "arctic";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
-
             if (lands.Count(x => x.LandTypeEnum == LandType.mystic) == 0)
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
@@ -367,7 +384,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "mystic";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.genesis) == 0)
@@ -378,7 +395,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "genesis";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
             if (lands.Count(x => x.LandTypeEnum == LandType.lunalanding) == 0)
@@ -389,7 +406,7 @@ public class AccountManager : MonoBehaviour
                 landLock.landType = "lunalanding";
                 landLock.col = "0";
                 landLock.row = "0";
-                landLock.locked = false;
+                landLock.locked = true;
                 lands.Add(landLock);
             }
 

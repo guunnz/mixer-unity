@@ -47,7 +47,11 @@ public class MavisTracking : MonoBehaviour
     {
         this.roninAddress = userInfo.addr;
         sessionID = string.IsNullOrEmpty(GetSessionIdFromCommandLineArgs()) ? System.Guid.NewGuid().ToString() : GetSessionIdFromCommandLineArgs();
-        userId = GetUserIdFromCommandLineArgs();
+        userId = userInfo.user_id;
+        if (string.IsNullOrEmpty(userId))
+        {
+            userId = Guid.NewGuid().ToString();
+        }
         Dictionary<string, string> keyValues = new Dictionary<string, string>();
         keyValues["email"] = userInfo.email;
         TrackIdentify(keyValues);
@@ -72,18 +76,7 @@ public class MavisTracking : MonoBehaviour
 #endif
     }
 
-    private string GetUserIdFromCommandLineArgs()
-    {
-        var args = System.Environment.GetCommandLineArgs();
-        for (int i = 0; i < args.Length; i++)
-        {
-            if (args[i] == "-userId" && i + 1 < args.Length)
-            {
-                return args[i + 1];
-            }
-        }
-        return null; // Return null if no session ID is found
-    }
+
     private string GetSessionIdFromCommandLineArgs()
     {
         var args = System.Environment.GetCommandLineArgs();

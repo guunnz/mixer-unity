@@ -65,6 +65,7 @@ public class TeamManager : MonoBehaviour
     }
 
     private List<GetAxiesExample.Axie> axiesIdNotLoaded = new List<GetAxiesExample.Axie>();
+    private List<AxieTeam> teamsNotLoaded = new List<AxieTeam>();
 
     IEnumerator ILoadTeam()
     {
@@ -77,15 +78,21 @@ public class TeamManager : MonoBehaviour
             yield break;
         }
 
-        foreach (var axieTeam in teams)
+        for (int i = 0; i < teams.Count; i++)
         {
+            var axieTeam = teams[i];
             foreach (var axieTeamAxieId in axieTeam.AxieIds)
             {
                 if (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieTeamAxieId.id) == null)
                 {
-                    if (!axieTeamAxieId.f2p)
+                    if (AccountManager.Instance.StartedLoading)
                     {
                         axiesIdNotLoaded.Add(axieTeamAxieId);
+                        teamsNotLoaded.Add(axieTeam);
+                    }
+                    else
+                    {
+                        teams.Remove(axieTeam);
                     }
                     continue;
                 }
@@ -100,33 +107,44 @@ public class TeamManager : MonoBehaviour
             currentTeam = teams.FirstOrDefault(x => x.TeamName == selectedTeamName);
             if (currentTeam == null)
             {
+                Loading.instance.DisableLoading();
+                StartCoroutine(TryToLoadAsync());
                 yield break;
             }
-            float delay = 20;
+
             foreach (var axie in currentTeam.AxieIds)
             {
-                while (!AccountManager.userAxies.results.Select(y => y.id).Contains(axie.id))
+                while (!AccountManager.userAxies.results.Select(y => y.id).Contains(axie.id) && AccountManager.Instance.StartedLoading)
                 {
-                    if (delay <= 0)
-                        yield break;
-                    delay -= Time.deltaTime;
                     yield return null;
                 }
-            }
 
+                if (!AccountManager.userAxies.results.Select(y => y.id).Contains(axie.id))
+                {
+                    Loading.instance.DisableLoading();
+                    StartCoroutine(TryToLoadAsync());
+                    yield break;
+                }    
+            }
             axiesManager.ShowMenuAxies(currentTeam);
         }
-
+        Loading.instance.DisableLoading();
         StartCoroutine(TryToLoadAsync());
     }
 
     IEnumerator TryToLoadAsync()
     {
+        while (AccountManager.Instance.StartedLoading)
+        {
+            yield return null;
+        }
+
         foreach (var axieNotLoaded in axiesIdNotLoaded)
         {
-            while (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieNotLoaded.id) == null)
+            if (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieNotLoaded.id) == null)
             {
-                yield return null;
+                teams.RemoveAll(x => x.AxieIds.Select(y => y.id).Contains(axieNotLoaded.id));
+                continue;
             }
 
             axieNotLoaded.LoadGraphicAssets();

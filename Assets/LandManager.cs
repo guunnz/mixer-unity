@@ -83,7 +83,15 @@ public class LandManager : MonoBehaviour
         }
         else
         {
-            currentLandType = AccountManager.userLands.results.Single(x => x.tokenId == tokenId).LandTypeEnum;
+            var land = AccountManager.userLands.results.FirstOrDefault(x => x.tokenId == tokenId);
+            if (land == null)
+            {
+                currentLandType = AccountManager.userLands.results[indexChoosing].LandTypeEnum;
+            }
+            else
+            {
+                currentLandType = land.LandTypeEnum;
+            }
         }
 
         RunManagerSingleton.instance.landType = currentLandType;

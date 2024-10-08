@@ -10,6 +10,7 @@ public class TeamSelectorUI : MonoBehaviour
     public GameObject FakeUI;
     public GameObject RealAxies;
     public GameObject RealLand;
+    public TextMeshProUGUI LoadingTeams;
     public List<TeamItemUI> TeamItems;
     public TextMeshProUGUI TeamName;
 
@@ -23,8 +24,11 @@ public class TeamSelectorUI : MonoBehaviour
 
     IEnumerator LoadAxies()
     {
-        yield return new WaitForSeconds(0.2f);
-        CreateAxiesUI();
+        LoadingTeams.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+
+        StartCoroutine(LoadingCoroutine());
+        StartCoroutine(CreateAxiesUI());
     }
 
     public void Exit()
@@ -54,7 +58,7 @@ public class TeamSelectorUI : MonoBehaviour
         }
     }
 
-    public void CreateAxiesUI()
+    public IEnumerator CreateAxiesUI()
     {
         if (TeamManager.instance.teams.Count == 1)
         {
@@ -81,10 +85,35 @@ public class TeamSelectorUI : MonoBehaviour
             {
                 AxieTeam team = TeamManager.instance.teams[i];
 
+                if (!AccountManager.userLands.results.Any(x => x.LandTypeEnum == team.landType))
+                {
+                    continue;
+                }
+
+                bool nullAxie = false;
+
+                foreach (var axie in team.AxieIds)
+                {
+                    while (!AccountManager.userAxies.results.Any(x => x.id == axie.id) && AccountManager.Instance.StartedLoading)
+                    {
+                        yield return null;
+                    }
+
+                    if (!AccountManager.userAxies.results.Any(x => x.id == axie.id))
+                    {
+                        nullAxie = true;
+                    }
+                }
+
+                if (nullAxie)
+                {
+                    continue;
+                }
+
                 TeamItems[i].gameObject.SetActive(true);
                 TeamItems[i].SetTeamGraphics(team);
 
-                if (team.TeamName == TeamManager.instance.currentTeam.TeamName)
+                if (TeamManager.instance.currentTeam != null && team.TeamName == TeamManager.instance.currentTeam.TeamName)
                 {
                     TeamName.text = team.TeamName;
                     TeamItems[i].SelectTeam(true, team);
@@ -99,8 +128,22 @@ public class TeamSelectorUI : MonoBehaviour
                 TeamItems[i].gameObject.SetActive(false);
             }
         }
+        LoadingTeams.gameObject.SetActive(false);
     }
+    public IEnumerator LoadingCoroutine()
+    {
+        LoadingTeams.text = "Loading Teams";
+        while (LoadingTeams.gameObject.activeSelf)
+        {
+            LoadingTeams.text += ".";
+            yield return new WaitForSeconds(0.2f);
 
+            if (LoadingTeams.text.Count(x => x == '.') >= 3)
+            {
+                LoadingTeams.text = "Loading Teams";
+            }
+        }
+    }
     public void DeleteTeam()
     {
         TeamManager.instance.teams.Remove(TeamManager.instance.currentTeam);
@@ -109,17 +152,17 @@ public class TeamSelectorUI : MonoBehaviour
         {
             TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
 
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected+ RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.teams[0].TeamName);
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.teams[0].TeamName);
         }
         else
         {
             TeamManager.instance.currentTeam = null;
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected+ RunManagerSingleton.instance.user_wallet_address, "");
+            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, "");
         }
 
         TeamManager.instance.SaveTeams();
 
-        CreateAxiesUI();
+        StartCoroutine(CreateAxiesUI());
     }
 
     public void SelectTeam()

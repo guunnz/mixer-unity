@@ -129,7 +129,6 @@ public class TeamCaptainManager : MonoBehaviour
         var captain = PlayerPrefs.GetString("Captain" + RunManagerSingleton.instance.user_wallet_address);
         if (string.IsNullOrEmpty(captain))
         {
-            Loading.instance.DisableLoading();
             OpenMenu();
         }
         else
@@ -139,7 +138,7 @@ public class TeamCaptainManager : MonoBehaviour
                 yield return null;
             }
 
-            Loading.instance.DisableLoading();
+         
             SetAxieSelected(AccountManager.userAxies.results.FirstOrDefault(x => x.id == captain));
             SetProfilePicGraphic();
         }

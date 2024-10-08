@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Include SceneManager
 
 public class FileLogger : MonoBehaviour
 {
@@ -8,35 +9,34 @@ public class FileLogger : MonoBehaviour
 
     void Awake()
     {
-        // Set the log file path to the same folder as the game executable
         logFilePath = Path.Combine(Application.persistentDataPath, "game_logs.txt");
 
-        // Clear the existing log file on game start
         if (File.Exists(logFilePath))
         {
             File.Delete(logFilePath);
         }
 
-        // Register the callback to handle log messages
         Application.logMessageReceived += HandleLog;
     }
 
     void OnDestroy()
     {
-        // Unregister the callback when the object is destroyed
         Application.logMessageReceived -= HandleLog;
     }
 
     private void HandleLog(string logString, string stackTrace, LogType type)
     {
-        // Format the log message
         string logEntry = $"{DateTime.Now}: [{type}] {logString}\n";
         if (type == LogType.Error || type == LogType.Exception)
         {
             logEntry += $"{stackTrace}\n";
+            // Check if the log entry contains the specific 503 error message
+            if (logString.Contains("HTTP/1.1 503"))
+            {
+                SceneManager.LoadScene(2); // Load scene number 2
+            }
         }
 
-        // Write the log message to the file
         try
         {
             File.AppendAllText(logFilePath, logEntry);
