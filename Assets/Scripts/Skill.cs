@@ -448,6 +448,7 @@ public class Skill : MonoBehaviour
     {
         if (DontPlayAnimation)
             return;
+
         string animationName = animationToPlay.ToString();
 
         // Find the last underscore and replace it with a hyphen
@@ -470,6 +471,15 @@ public class Skill : MonoBehaviour
         {
             animationName = animationName.Replace("tail/multi", "tail-multi");
         }
+
+        float attackSpeedMulti = 1;
+
+        if (self.axieSkillEffectManager.IsAromad())
+        {
+            attackSpeedMulti = 0.75f;
+        }
+        self.SkeletonAnim.timeScale =
+            self.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / (self.axieBehavior.AttackSpeed * attackSpeedMulti);
 
         skeletonAnimation.AnimationName = animationName;
     }

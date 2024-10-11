@@ -95,7 +95,15 @@ static public class AxieStatCalculator
 
         var multiplier = (((stats.skill + stats.speed + stats.morale + stats.hp)) - 164);
 
-        attack *= (multiplier / 100f) + 1;
+        if (multiplier > 0)
+        {
+            var multiplierMulti = (multiplier / 100f) + 1;
+
+
+            attack *= (multiplierMulti < 1 ? 1 : multiplierMulti);
+        }
+
+
 
         return Mathf.RoundToInt((attack + (attack * (attackBuffAmount * 0.1f))));
     }

@@ -537,6 +537,7 @@ public class AtiaBlessing : MonoBehaviour
     {
         AugumentSelect.SetActive(false);
         Cover.gameObject.SetActive(false);
+        InBattleGraphicsManager.Instance.AddUpgradeMe(indexAugument);
 
         if (((BuffEffect)indexAugument).ToString().ToLower().Contains("prismatic"))
         {

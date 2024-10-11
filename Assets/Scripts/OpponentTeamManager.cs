@@ -39,18 +39,20 @@ public class OpponentTeamManager : MonoBehaviour
 
         int index = 0;
 
+        InBattleGraphicsManager.Instance.CleanBlessingsOpponent();
+
         foreach (var teamUpgrades in opponent.axie_team.team_upgrades_values_per_round)
         {
             foreach (var upgrades in teamUpgrades.upgrades_ids)
             {
-                Debug.Log("ITEM: " + (BuffEffect)upgrades.id);
+                InBattleGraphicsManager.Instance.AddUpgrade(upgrades.id);
                 atiaBlessing.AugumentUpgrade((int)upgrades.id,
                     upgrades.axie_class?.Select(x => (AxieClass)x).ToList(),
                     badTeam);
             }
 
             index++;
-            if (index >= RunManagerSingleton.instance.score)
+            if (index > RunManagerSingleton.instance.score)
             {
                 break;
             }

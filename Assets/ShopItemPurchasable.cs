@@ -71,6 +71,9 @@ public class ShopItemPurchasable : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if (AtiasBlessing.activeSelf)
+            return;
+
         if (!scaling)
         {
             foreach (var otherTitle in otherTitles)

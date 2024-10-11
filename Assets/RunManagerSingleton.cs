@@ -69,6 +69,7 @@ public class RunManagerSingleton : MonoBehaviour
     public AtiaBlessing atiaBlessing;
     public RectTransform ScoreRect;
     public GameObject ItemsTooltip;
+    public GameObject ShopBlocker;
     private float skere;
     private int MaxCoinsThisRound = 10;
 
@@ -153,7 +154,7 @@ public class RunManagerSingleton : MonoBehaviour
         economyPassive.RollsThisRound = 0;
         coinsText.text = coins.ToString();
         RunManagerSingleton.instance.ItemsTooltip.gameObject.SetActive(true);
-        Invoke(nameof(SetShopInvoke), 0.1f);
+        SetShopInvoke();
     }
 
     void SetShopInvoke()

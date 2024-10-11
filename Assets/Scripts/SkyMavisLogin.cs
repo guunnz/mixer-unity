@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using static GetAxiesExample;
+using static SkyMavisLogin;
 
 public class SkyMavisLogin : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class SkyMavisLogin : MonoBehaviour
     public GameObject cursor;
     public void LogOut()
     {
+        Loading.instance.GameOpened = false;
         PlayerPrefs.SetString("Auth", "");
         SceneManager.LoadScene(0);
         Loading.instance.DisableLoading();
@@ -54,7 +56,6 @@ public class SkyMavisLogin : MonoBehaviour
 
 #endif
 
-
         cursor.SetActive(false);
         string token = GetTokenFromCommandLineArgs();
 
@@ -62,7 +63,7 @@ public class SkyMavisLogin : MonoBehaviour
         {
             if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Auth")) || !string.IsNullOrEmpty(token) && PlayerPrefs.GetInt("IntroVideo", 0) == 1)
             {
-               
+
                 introVideoPlayer.clip = SecondTimeIntroVideoclip;
                 introVideoPlayer.Play();
                 yield return new WaitForSeconds(2.02f);
@@ -91,10 +92,27 @@ public class SkyMavisLogin : MonoBehaviour
         cursor.SetActive(true);
         StartCoroutine(CheckVersion());
 
+
+
         while (!version)
         {
             yield return null;
         }
+
+
+        if (Loading.instance.GameOpened && !string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))
+        {
+            Loading.instance.EnableLoading();
+            SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(Loading.instance.WalletUsed));
+
+            mainMenuSong.enabled = true;
+            accountManager.LoginAccount(userInfoPrev);
+            Loading.instance.WalletUsed = userInfoPrev.userInfo.addr;
+            MavisTracking.Instance.InitializeTracking(userInfoPrev.userInfo);
+
+            yield break;
+        }
+
         PartFinder.LoadFromResources();
         if (!string.IsNullOrEmpty(token))
         {
@@ -382,7 +400,7 @@ public class SkyMavisLogin : MonoBehaviour
             if (request.Url.AbsolutePath == "/login/callback" && request.QueryString["code"] != null)
             {
                 string authorizationCode = request.QueryString["code"];
-                Debug.Log("Authorization code received: " + authorizationCode);
+                //Debug.Log("Authorization code received: " + authorizationCode);
 
                 actions.Enqueue(() => StartCoroutine(HandleAuthorizationResponse(authorizationCode)));
 
@@ -488,15 +506,18 @@ public class SkyMavisLogin : MonoBehaviour
             }
             else
             {
+                Loading.instance.GameOpened = true;
+
                 mainMenuSong.enabled = true;
                 GetUserInfo(userInfo);
                 SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
+                Loading.instance.WalletUsed = userInfoObj.userInfo.addr;
                 MavisTracking.Instance.InitializeTracking(userInfoObj.userInfo);
 
                 Debug.Log("TOTAL NUMBERS: " + userInfoObj.axies.result.paging.total.ToString());
                 Debug.Log("TOTAL AXIES IN PAGE: " + userInfoObj.axies.result.items.Count.ToString());
 
-                if ((userInfoObj.axies.result.paging.total - page * 100) >= userInfoObj.axies.result.items.Count || (userInfoObj.lands.result.paging.total - page * 100) >= userInfoObj.lands.result.items.Count)
+                if ((userInfoObj.axies.result.paging.total - page * 100) > userInfoObj.axies.result.items.Count || (userInfoObj.lands.result.paging.total - page * 100) > userInfoObj.lands.result.items.Count)
                 {
                     Debug.Log("LOOKING FOR NEW PAGE: " + (page + 1));
                     StartCoroutine(GetNFTS(5, page + 1));

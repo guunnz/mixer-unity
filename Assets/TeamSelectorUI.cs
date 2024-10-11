@@ -57,7 +57,7 @@ public class TeamSelectorUI : MonoBehaviour
             }
         }
     }
-
+    bool removed = false;
     public IEnumerator CreateAxiesUI()
     {
         if (TeamManager.instance.teams.Count == 1)
@@ -85,8 +85,9 @@ public class TeamSelectorUI : MonoBehaviour
             {
                 AxieTeam team = TeamManager.instance.teams[i];
 
-                if (!AccountManager.userLands.results.Any(x => x.LandTypeEnum == team.landType))
+                if (!AccountManager.userLands.results.Any(x => x.LandTypeEnum == team.landType) || AccountManager.userLands.results.Where(x => x.LandTypeEnum == team.landType).All(x => x.locked))
                 {
+                    removed = true;
                     continue;
                 }
 
@@ -95,6 +96,11 @@ public class TeamSelectorUI : MonoBehaviour
                 foreach (var axie in team.AxieIds)
                 {
                     while (!AccountManager.userAxies.results.Any(x => x.id == axie.id) && AccountManager.Instance.StartedLoading)
+                    {
+                        yield return null;
+                    }
+
+                    while (AccountManager.userAxies.results.Any(x => x.skeletonDataAssetMaterial == null) && !AccountManager.Instance.StartedLoading)
                     {
                         yield return null;
                     }
@@ -128,8 +134,15 @@ public class TeamSelectorUI : MonoBehaviour
                 TeamItems[i].gameObject.SetActive(false);
             }
         }
+
         LoadingTeams.gameObject.SetActive(false);
+
+        if (removed)
+        {
+            NotificationErrorManager.instance.DoNotification("One of the lands that you had on one of your teams are not longer available. Teams with that land will be deleted");
+        }
     }
+
     public IEnumerator LoadingCoroutine()
     {
         LoadingTeams.text = "Loading Teams";

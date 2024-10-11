@@ -48,6 +48,8 @@ public class TeamManager : MonoBehaviour
         instance = this;
     }
 
+    bool removed = false;
+
     public void SaveTeams()
     {
         TooltipManagerSingleton.instance.DisableTooltip();
@@ -74,7 +76,9 @@ public class TeamManager : MonoBehaviour
         teams = LoadTeams();
         if (teams == null)
         {
+            Loading.instance.DisableLoading();
             teams = new List<AxieTeam>();
+
             yield break;
         }
 
@@ -92,6 +96,7 @@ public class TeamManager : MonoBehaviour
                     }
                     else
                     {
+                        removed = true;
                         teams.Remove(axieTeam);
                     }
                     continue;
@@ -109,6 +114,10 @@ public class TeamManager : MonoBehaviour
             {
                 Loading.instance.DisableLoading();
                 StartCoroutine(TryToLoadAsync());
+                if (removed)
+                {
+                    NotificationErrorManager.instance.DoNotification("Some axies that you had on one of your teams are not longer available. Teams will be deleted");
+                }
                 yield break;
             }
 
@@ -123,11 +132,21 @@ public class TeamManager : MonoBehaviour
                 {
                     Loading.instance.DisableLoading();
                     StartCoroutine(TryToLoadAsync());
+                    if (removed)
+                    {
+                        NotificationErrorManager.instance.DoNotification("Some axies that you had on one of your teams are not longer available. Teams will be deleted");
+                    }
                     yield break;
-                }    
+                }
             }
             axiesManager.ShowMenuAxies(currentTeam);
         }
+
+        if (removed)
+        {
+            NotificationErrorManager.instance.DoNotification("Some axies that you had on one of your teams are not longer available. Teams will be deleted");
+        }
+
         Loading.instance.DisableLoading();
         StartCoroutine(TryToLoadAsync());
     }

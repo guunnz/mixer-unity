@@ -19,6 +19,6 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: If there is only one Mech axie in your team. All of its stats are
-    doubled
+  description: The stats of your highest morale mech are doubled
   price: 0
+  tooltipType: 

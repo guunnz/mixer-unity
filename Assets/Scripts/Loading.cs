@@ -13,6 +13,8 @@ public class Loading : MonoBehaviour
     public TextMeshProUGUI LoadingText;
     private bool loading;
     static public Loading instance;
+    public bool GameOpened;
+    public string WalletUsed;
 
     private void Awake()
     {

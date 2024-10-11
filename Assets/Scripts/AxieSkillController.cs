@@ -232,6 +232,10 @@ public class AxieSkillController : MonoBehaviour
             return;
         }
 
+        self.axieBehavior.SetAttackSpeed();
+
+
+
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
         {
             foreach (var skillEffect in bodyPartPassive.skillEffects)

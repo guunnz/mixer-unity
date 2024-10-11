@@ -27,17 +27,22 @@ public class AxieBehavior : MonoBehaviour
     public AxieState axieState;
     internal AxieController myController;
     internal AxieSkillEffectManager axieSkillEffectManager;
-    private float AttackSpeed;
+    internal float AttackSpeed;
     private string AttackAnimation;
     public List<SkillName> SkillList;
     private Coroutine attackCoroutine;
     internal bool shrimping;
 
+    public void SetAttackSpeed()
+    {
+        AttackSpeed = AxieStatCalculator.GetAttackSpeed(myController.stats);
+    }
+
     private IEnumerator Start()
     {
         yield return new WaitForFixedUpdate();
         yield return new WaitForFixedUpdate();
-        AttackSpeed = AxieStatCalculator.GetAttackSpeed(myController.stats);
+        SetAttackSpeed();
         if (myController.axieIngameStats.axieClass == AxieClass.Bird ||
             myController.axieIngameStats.axieClass == AxieClass.Dusk ||
             myController.axieIngameStats.axieClass == AxieClass.Bug)
@@ -168,7 +173,9 @@ public class AxieBehavior : MonoBehaviour
         myController.SkeletonAnim.AnimationName = "attack/melee/shrimp";
         shrimping = true;
         myController.SkeletonAnim.loop = false;
+      
         yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
+        myController.SkeletonAnim.GetComponent<Renderer>().enabled = false;
         Vector3 positionToMove = Vector3.zero;
 
         if (this.myController.CurrentTarget == null || this.myController.CurrentTarget.standingOnTile == null)
@@ -476,7 +483,7 @@ public class AxieBehavior : MonoBehaviour
 
                 if (myController.axieSkillController.passives.HealOnDamageDealt > 0)
                 {
-                    myController.DoHeal(attackDamage * myController.axieSkillController.passives.HealOnDamageDealt);
+                    myController.DoHeal(attackDamage + (attackDamage * (myController.axieSkillController.passives.HealOnDamageDealt / 100f)));
                 }
 
                 if (myController.axieSkillController.IgnoresShieldOnAttack())

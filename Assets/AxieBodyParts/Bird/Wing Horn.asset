@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: 132
   skillEffects:
   - statusEffect: 0
-    statusApplyType: 12
+    statusApplyType: 1
     statusApplyTypeIsTarget: 1
     skillTriggerType: 0
     isPassive: 0

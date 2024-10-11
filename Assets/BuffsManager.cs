@@ -1498,16 +1498,13 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAllByClass(AxieClass.Mech);
         if (axies.Count == 0)
             return;
+        var mostMoraleAxie = axies.OrderByDescending(x => x.stats.morale).First();
 
-        if (axies.Count > 1)
-            return;
-
-        var axie = axies.Single(x => x.axieIngameStats.axieClass == AxieClass.Mech);
-        axie.stats.hp *= 2;
-        axie.stats.speed *= 2;
-        axie.stats.skill *= 2;
-        axie.stats.morale *= 2;
-        axie.UpdateStats();
+        mostMoraleAxie.stats.hp *= 2;
+        mostMoraleAxie.stats.speed *= 2;
+        mostMoraleAxie.stats.skill *= 2;
+        mostMoraleAxie.stats.morale *= 2;
+        mostMoraleAxie.UpdateStats();
     }
 
     public void PrismaticPlant(Team team)

@@ -225,7 +225,7 @@ public class Team : MonoBehaviour
 
             if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
             {
-
+                RunManagerSingleton.instance.ShopBlocker.SetActive(true);
                 if (!battleEnded)
                 {
                     EnemyLandAnimation.instance.ResetAnimation();

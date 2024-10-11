@@ -100,16 +100,12 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.FurthestTarget)
             {
-                AxieController newTarget =
-                    self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetAliveCharacters());
+                AxieController newTarget = self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetAliveCharacters());
                 if (newTarget != null)
                 {
-                    if (!skillEffect.RangeAbility)
-                    {
-                        self.CurrentTarget = newTarget;
+                    self.CurrentTarget = newTarget;
 
-                        return true;
-                    }
+                    return true;
                 }
 
             }
@@ -666,7 +662,8 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.GainEnergy > 0)
             {
-                targetList.ForEach(x => {
+                targetList.ForEach(x =>
+                {
                     x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy);
                 });
             }
