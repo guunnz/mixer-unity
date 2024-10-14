@@ -41,7 +41,7 @@ public class StatusManager : MonoBehaviour
         Instance = this;
     }
 
-    public void SetStatus(SkillEffect effect, AxieController target, bool remove)
+    public void SetStatus(SkillEffect effect, AxieController target, bool remove, string skillerId)
     {
         if (remove)
         {

@@ -178,7 +178,7 @@ public class SkyMavisLogin : MonoBehaviour
                 Debug.LogError(www.error);
                 if (retries > 0)
                 {
-                    Debug.Log("Retrying POST request. Attempts remaining: " + (retries - 1));
+                    Debug.Log("Retrying POST request. CHECK VERSION Attempts remaining: " + (retries - 1));
                     StartCoroutine(CheckVersion(retries - 1));
                 }
             }

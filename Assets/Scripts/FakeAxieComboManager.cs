@@ -68,7 +68,7 @@ public class FakeAxieComboManager : MonoBehaviour
         ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
         EnergyObject.SetActive(!data.passive);
         EnergyText.text = data.energy;
-        AbilityNameText.text = data.name;
+        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(data.name);
         AbilityDescriptionText.text = data.description;
         ShieldAbilityText.text = data.shield;
         AttackAbilityText.text = data.damage;
@@ -84,7 +84,7 @@ public class FakeAxieComboManager : MonoBehaviour
         ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
         EnergyObject.SetActive(!data.passive);
         EnergyText.text = data.energy;
-        AbilityNameText.text = data.name;
+        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(data.name);
         AbilityDescriptionText.text = data.description;
         ShieldAbilityText.text = data.shield;
         AttackAbilityText.text = data.damage;
@@ -233,7 +233,7 @@ public class FakeAxieComboManager : MonoBehaviour
         bodyPartToSelect.selected = true;
         bodyPartToSelect.order = maxOrder + 1;
 
-        AbilityNameText.text = bodyPartToSelect.name;
+        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(bodyPartToSelect.name);
         AxieBodyPart ability = skillList.axieBodyParts
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
@@ -344,7 +344,7 @@ public class FakeAxieComboManager : MonoBehaviour
             if (isPassive) passivesAdded++;
 
             // Update ability details
-            AbilityNameText.text = partObj.name;
+            AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(partObj.name);
             AxieBodyPart ability = skillList.axieBodyParts.Single(x =>
                 x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
                 x.skillName == partObj.SkillName);

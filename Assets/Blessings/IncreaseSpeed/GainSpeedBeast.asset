@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPBeast
   ItemEffectName: 80
-  ShopItemImage: {fileID: 21300000, guid: 2904413c5dbeb1340a71d31e2419eea6, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 14f832f7015a8f6408b8b9821211c70f, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Beast Axies Gain 10% Speed
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

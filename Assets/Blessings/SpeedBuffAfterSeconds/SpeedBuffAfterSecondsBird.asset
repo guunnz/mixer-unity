@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPBird
   ItemEffectName: 114
-  ShopItemImage: {fileID: 21300000, guid: ed5f88e04cd0f78418c87a7bdfedbb8c, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 332ac58f6f189c84f80ce83f1dfd777c, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Bird axies gain 2 Morale buff after 10 seconds of fight
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

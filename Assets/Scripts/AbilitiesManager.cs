@@ -71,6 +71,13 @@ public class AbilitiesManager : MonoBehaviour
     private SelectedComboData data = new SelectedComboData();
     public Sprite SelectedSprite;
     public Sprite DeselectedSprite;
+    static public AbilitiesManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public void LoadUI()
     {
         for (int i = 0; i < TeamManager.instance.currentTeam.AxieIds.Count; i++)
@@ -130,7 +137,7 @@ public class AbilitiesManager : MonoBehaviour
         ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
         EnergyObject.SetActive(!data.passive);
         EnergyText.text = data.energy;
-        AbilityNameText.text = data.name;
+        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(data.name);
         AbilityDescriptionText.text = data.description;
         ShieldAbilityText.text = data.shield;
         AttackAbilityText.text = data.damage;
@@ -147,7 +154,7 @@ public class AbilitiesManager : MonoBehaviour
         ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
         EnergyObject.SetActive(!data.passive);
         EnergyText.text = data.energy;
-        AbilityNameText.text = data.name;
+        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(data.name);
         AbilityDescriptionText.text = data.description;
         ShieldAbilityText.text = data.shield;
         AttackAbilityText.text = data.damage;
@@ -232,7 +239,7 @@ public class AbilitiesManager : MonoBehaviour
             .DefaultIfEmpty(0)
             .Max() ?? 0;
 
-        AbilityNameText.text = bodyPartToSelect.name;
+        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(bodyPartToSelect.name);
         AxieBodyPart ability = skillList.axieBodyParts
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
@@ -336,7 +343,7 @@ public class AbilitiesManager : MonoBehaviour
 
         int passivesAdded = 0;
 
-  
+
 
         // Iterate over selected parts
         foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order))
@@ -373,7 +380,7 @@ public class AbilitiesManager : MonoBehaviour
             if (isPassive) passivesAdded++;
 
             // Update ability details
-            AbilityNameText.text = partObj.name;
+            AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(partObj.name);
             AxieBodyPart ability = skillList.axieBodyParts.Single(x =>
                 x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
                 x.skillName == partObj.SkillName);
@@ -430,6 +437,12 @@ public class AbilitiesManager : MonoBehaviour
         {
             ChoosePart(currentSelectedAxie.parts.FirstOrDefault(x => !x.selected).BodyPart);
         }
+    }
+
+    public Sprite GetSkillSprite(AxieBodyPart skill)
+    {
+        var skillVar = SkillLauncher.Instance.skillList.axieBodyParts.FirstOrDefault(x => x == skill);
+        return BodyPartGraphics.Single(x => x.axieClass == skill.bodyPartClass && x.bodyPart == skill.bodyPart).bodyPartSprite;
     }
 
 

@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,6 +23,11 @@ public class EconomyPassive
     public int RollsThisRound = 0;
     public int RollCost = 1;
     public int CoinsOnStart = 10;
+    public bool frozenItemFree = false;
+    public int atiasNotRerolled;
+    public int genesisEconomyGained;
+    public int smoothPotionsPurchased;
+    public bool premiumForest = true;
 
     public int
         ItemCostPercentage =
@@ -86,7 +92,8 @@ public class RunManagerSingleton : MonoBehaviour
 
     public void GenesisLandBehavior()
     {
-        coins += coins / 3;
+        RunManagerSingleton.instance.economyPassive.genesisEconomyGained += coins / 2;
+        coins += coins / 2;
     }
     public void SavannahLandBehavior()
     {
@@ -94,6 +101,7 @@ public class RunManagerSingleton : MonoBehaviour
     }
     public void SetResult(bool won)
     {
+        economyPassive.premiumForest = false;
         if (score == 0)
         {
             Dictionary<string, string> skillsDict = new Dictionary<string, string>();
@@ -240,10 +248,28 @@ public class RunManagerSingleton : MonoBehaviour
         coinsText.text = coins.ToString();
     }
 
-    public bool BuyUpgrade(ShopItem upgrade, bool PlayBuyAudio = true)
+    public bool BuyUpgrade(ShopItem upgrade, bool PlayBuyAudio = true, bool frozen = false)
     {
         int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
                                     100f);
+
+       
+
+        if (frozen && RunManagerSingleton.instance.economyPassive.frozenItemFree)
+        {
+            RunManagerSingleton.instance.economyPassive.frozenItemFree = false;
+            ShopManager.instance.Items.ToList().ForEach(x => x.SetActualPrice());
+            ShopManager.instance.Potions.ToList().ForEach(x => x.SetActualPrice());
+            price = 0;
+        }
+        else
+        {
+            if (price <= 0)
+            {
+                price = 1;
+            }
+        }
+
         netWorth += upgrade.price;
         if (coins < price)
             return false;
@@ -264,8 +290,9 @@ public class RunManagerSingleton : MonoBehaviour
         globalUpgrades[score].team_upgrades_values_per_round
             .Add(new UpgradeAugument() { id = (int)upgrade.ItemEffectName });
 
-        RemoveCoins((int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
-                                    100f));
+        if (price != 0)
+            RemoveCoins((int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
+                                        100f));
 
         BuffsManager.instance.DoUpgrade(upgrade.ItemEffectName, goodTeam);
 

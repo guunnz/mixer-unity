@@ -10,6 +10,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 using UnityEngine.TextCore.Text;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Team : MonoBehaviour
 {
@@ -22,7 +24,10 @@ public class Team : MonoBehaviour
     public bool battleStarted = false;
     public GameObject BattleOverlay;
     public GameObject IngameOverlay;
+    public GameObject PostBattleContainer;
     public TextMeshProUGUI YouWinLose;
+    public TextMeshProUGUI DetailsText;
+    public Image DetailsImage;
     public AxieLandBattleTarget target;
     private float resetTimer;
     internal bool ChimeraSpawned;
@@ -103,7 +108,7 @@ public class Team : MonoBehaviour
     {
         this.GetCharactersAll().ForEach(x => x.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(x.stats) / x.axieSkillController.GetComboCost());
         int randomMusic = Random.Range(0, 5);
-
+        PostBattleManager.Instance.FillList(this);
         if (isGoodTeam)
         {
             switch (randomMusic)
@@ -234,8 +239,14 @@ public class Team : MonoBehaviour
                     BattleOverlay.SetActive(false);
                     YouWinLose.gameObject.SetActive(true);
 
+                    //hacer color con battledetails
+                    Color DetailsTextColor = DetailsText.color;
+                    Color DetailsColor = DetailsImage.color;
+
                     Color youwinlosecolor = YouWinLose.color;
                     YouWinLose.color = Color.clear;
+                    DetailsImage.color = Color.clear;
+                    DetailsText.color = Color.clear;
                     if (isGoodTeam)
                     {
                         EndOfRunResults.Instance.SetMatchData(false);
@@ -244,8 +255,10 @@ public class Team : MonoBehaviour
                         MusicManager.Instance.Stop();
 
                         RunManagerSingleton.instance.SetResultUI(!isGoodTeam);
-                        YouWinLose.text = "You Lost. \n <size=12>[Click to continue]";
+                        YouWinLose.text = "You Lost.\n<size=12>[Click to continue]";
                         YouWinLose.DOColor(youwinlosecolor, 1);
+                        DetailsImage.DOColor(DetailsColor, 1);
+                        DetailsText.DOColor(DetailsTextColor, 1);
                     }
                     else
                     {
@@ -255,12 +268,14 @@ public class Team : MonoBehaviour
                         SFXManager.instance.PlaySFX(SFXType.Win, 0.12f, false);
                         MusicManager.Instance.Stop();
                         YouWinLose.DOColor(youwinlosecolor, 1);
+                        DetailsImage.DOColor(DetailsColor, 1);
+                        DetailsText.DOColor(DetailsTextColor, 1);
                         YouWinLose.text = "You Win!\n<size=12>[Click to continue]";
                     }
                 }
 
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && !PostBattleContainer.activeSelf && (EventSystem.current.currentSelectedGameObject == null || EventSystem.current.currentSelectedGameObject.name != DetailsImage.name))
                 {
                     Chimera[] chimeras = FindObjectsByType<Chimera>(FindObjectsSortMode.None);
 

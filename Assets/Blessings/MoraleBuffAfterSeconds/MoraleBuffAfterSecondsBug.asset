@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPBug
   ItemEffectName: 108
-  ShopItemImage: {fileID: 21300000, guid: 185ed848395009f4eb08f5b2a875b752, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 44201c151018e6e4d95a3182abaaa9b2, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Bug axies gain 2 Morale buff after 10 seconds of fight
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

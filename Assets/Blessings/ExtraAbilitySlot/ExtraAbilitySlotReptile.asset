@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPReptile
   ItemEffectName: 148
-  ShopItemImage: {fileID: 21300000, guid: 5a9f66a11b3b30e48a0826bc2fa6ea18, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 0e366e77d7641264297d2f456c2de057, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Reptile with the most HP gains an extra combo slot
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

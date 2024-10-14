@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPReptile
   ItemEffectName: 94
-  ShopItemImage: {fileID: 21300000, guid: 5a9f66a11b3b30e48a0826bc2fa6ea18, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 6701838a0156190449027e0b22349862, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Reptile Axies Gain 10% Skill
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

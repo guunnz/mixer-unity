@@ -48,7 +48,7 @@ public class ItemLikeRelic : MonoBehaviour
 
     public void OnMouseEnter()
     {
-        TooltipManagerSingleton.instance.EnableTooltip(shopItem);
+        TooltipManagerSingleton.instance.EnableTooltip(shopItem, true, true);
     }
 
     public void OnMouseExit()

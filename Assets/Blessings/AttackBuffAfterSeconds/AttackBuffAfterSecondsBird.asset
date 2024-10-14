@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPBird
   ItemEffectName: 123
-  ShopItemImage: {fileID: 21300000, guid: ed5f88e04cd0f78418c87a7bdfedbb8c, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 1c7f8254e9ec0334f9acda7b5f7e38c4, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Bird axies gain 2 Attack buff after 10 seconds of fight
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

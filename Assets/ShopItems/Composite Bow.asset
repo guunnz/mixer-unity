@@ -20,5 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: All your axies now have +2 range
+  description: All your Aquatic axies now have +5 range
   price: 10
+  tooltipType: 

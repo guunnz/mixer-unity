@@ -20,6 +20,7 @@ public class ShopManager : MonoBehaviour
     private int SecondActivePotion = 0;
     public Transform Pot1Pos;
     public Transform Pot2Pos;
+    public int reRolls;
 
     private void Awake()
     {
@@ -99,11 +100,11 @@ public class ShopManager : MonoBehaviour
         if (RunManagerSingleton.instance.coins < RollCost)
             return;
 
-        if (indexesRolled.Count >= 30)
+        if (indexesRolled.Count >= 36)
         {
             indexesRolled = new List<int>();
         }
-
+        reRolls++;
         SFXManager.instance.PlaySFX(SFXType.Roll, 0.1f);
 
         RunManagerSingleton.instance.RemoveCoins(RollCost);

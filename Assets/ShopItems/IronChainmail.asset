@@ -20,5 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: All axies reflect 10% of melee damage received
+  description: All axies reflect 5% of melee damage received
   price: 2
+  tooltipType: 

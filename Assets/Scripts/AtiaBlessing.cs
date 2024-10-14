@@ -197,7 +197,14 @@ public class AtiaBlessing : MonoBehaviour
         PrismaticMech,
         PrismaticPlant,
         PrismaticDusk,
-        PrismaticReptile
+        PrismaticReptile,
+        AxiePark,
+        Savannah,
+        Forest,
+        Arctic,
+        Mystic,
+        Genesis,
+        LunasLanding,
         //AUGUMENTS STOP
     }
 
@@ -222,20 +229,51 @@ public class AtiaBlessing : MonoBehaviour
     public UnityEngine.UI.Button SecondAugument;
     public UnityEngine.UI.Button ThirdAugument;
 
-    public GameObject RollButton1;
     public GameObject RollButton2;
     public GameObject RollButton3;
     public GameObject[] rollButtons;
 
     public ShopItem[] blessingsList;
 
+    public ShopItem AxieParkBlessing;
+    public ShopItem SavannahBlessing;
+    public ShopItem ForestBlessing;
+    public ShopItem ArcticBlessing;
+    public ShopItem MysticBlessing;
+    public ShopItem GenesisBlessing;
+    public ShopItem LunasLandingBlessing;
+
+    public ShopItem LandBlessing
+    {
+        get
+        {
+            switch (RunManagerSingleton.instance.landType)
+            {
+                case LandType.axiepark:
+                    return AxieParkBlessing;
+                case LandType.savannah:
+                    return SavannahBlessing;
+                case LandType.forest:
+                    return ForestBlessing;
+                case LandType.arctic:
+                    return ArcticBlessing;
+                case LandType.mystic:
+                    return MysticBlessing;
+                case LandType.genesis:
+                    return GenesisBlessing;
+                case LandType.lunalanding:
+                    return LunasLandingBlessing;
+                default:
+                    return null;
+            }
+        }
+    }
+
     public GameObject AugumentSelect;
 
-    private int rollFirst = 1;
     private int rollSecond = 1;
     private int rollThird = 1;
 
-    private ShopItem blessing1;
     private ShopItem blessing2;
     private ShopItem blessing3;
 
@@ -256,260 +294,144 @@ public class AtiaBlessing : MonoBehaviour
             atiaAnimation.DoAnim();
             if (RunManagerSingleton.instance.landType != LandType.mystic)
             {
-                rollFirst = 1;
-                rollSecond = 1;
-                rollThird = 1;
-                RollButton1.SetActive(true);
+                rollSecond = 2;
+                rollThird = 2;
             }
             else
             {
-                rollFirst = 5;
-                rollSecond = 5;
-                rollThird = 5;
+                rollSecond = 4;
+                rollThird = 4;
             }
             RollButton2.SetActive(true);
             RollButton3.SetActive(true);
         }
 
-        if (RunManagerSingleton.instance.landType == LandType.mystic)
+        List<ShopItem> blessings = new List<ShopItem>();
+        if (DoOnlyOne)
         {
-            List<ShopItem> blessings = new List<ShopItem>();
-            if (DoOnlyOne)
+            switch (doAugument)
             {
-                switch (doAugument)
-                {
-                    case 2:
-                        if (rollSecond < 0)
-                        {
-                            rollSecond = 0;
-                            return;
-                        }
+                case 2:
+                    if (rollSecond < 0)
+                    {
+                        rollSecond = 0;
+                        return;
+                    }
 
-                        SecondAugument.onClick.RemoveAllListeners();
+                    SecondAugument.onClick.RemoveAllListeners();
 
 
-                        blessings = blessingsList.ToList();
-                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
+                    blessings = blessingsList.ToList();
+                    blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
 
-                        if (blessing1 != null)
-                        {
-                            blessings.Remove(blessing1);
-                        }
+                    blessings.Remove(blessing2);
+                    blessings.Remove(blessing3);
 
-                        blessings.Remove(blessing2);
-                        blessings.Remove(blessing3);
+                    blessing2 = blessings[Random.Range(0, blessings.Count)];
 
-                        blessing2 = blessings[Random.Range(0, blessings.Count)];
+                    rollSecond--;
+                    if (rollSecond == 0)
+                    {
+                        RollButton2.SetActive(false);
+                    }
+                    SecondAugument.onClick.AddListener(delegate
+                    {
+                        AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
+                    });
+                    break;
+                case 3:
+                    if (rollThird < 0)
+                    {
+                        rollThird = 0;
+                        return;
+                    }
 
-                        rollSecond--;
-                        if (rollSecond == 0)
-                        {
-                            RollButton2.SetActive(false);
-                        }
-                        SecondAugument.onClick.AddListener(delegate
-                        {
-                            AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
-                        });
-                        break;
-                    case 3:
-                        if (rollThird < 0)
-                        {
-                            rollThird = 0;
-                            return;
-                        }
+                    ThirdAugument.onClick.RemoveAllListeners();
 
-                        ThirdAugument.onClick.RemoveAllListeners();
+                    blessings = blessingsList.ToList();
+                    blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
 
-                        blessings = blessingsList.ToList();
-                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
-                        if (blessing1 != null)
-                        {
-                            blessings.Remove(blessing1);
-                        }
+                    blessings.Remove(blessing2);
+                    blessings.Remove(blessing3);
 
-                        blessings.Remove(blessing2);
-                        blessings.Remove(blessing3);
-
-                        blessing3 = blessings[Random.Range(0, blessings.Count)];
-                        rollThird--;
-                        if (rollThird == 0)
-                        {
-                            RollButton3.SetActive(false);
-                        }
-                        ThirdAugument.onClick.AddListener(delegate
-                        {
-                            AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
-                        });
-                        break;
-                }
-            }
-            else
-            {
-                rollSecond = 5;
-                rollThird = 5;
-
-                FirstAugument.gameObject.SetActive(false);
-                blessings = blessingsList.ToList();
-                blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
-                blessing2 = blessings[Random.Range(0, blessings.Count)];
-                blessings.Remove(blessing2);
-                blessing3 = blessings[Random.Range(0, blessings.Count)];
-                blessings.Remove(blessing3);
-
-                SecondAugument.onClick.RemoveAllListeners();
-                ThirdAugument.onClick.RemoveAllListeners();
-
-                SecondAugument.onClick.AddListener(delegate
-                {
-                    AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
-                });
-                ThirdAugument.onClick.AddListener(delegate
-                {
-                    AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
-                });
+                    blessing3 = blessings[Random.Range(0, blessings.Count)];
+                    rollThird--;
+                    if (rollThird == 0)
+                    {
+                        RollButton3.SetActive(false);
+                    }
+                    ThirdAugument.onClick.AddListener(delegate
+                    {
+                        AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
+                    });
+                    break;
             }
         }
         else
         {
-            List<ShopItem> blessings = new List<ShopItem>();
-            if (DoOnlyOne)
+            if (RunManagerSingleton.instance.landType == LandType.mystic)
             {
-                switch (doAugument)
-                {
-                    case 1:
-                        if (rollFirst < 0)
-                        {
-                            rollFirst = 0;
-                            return;
-                        }
-
-                        FirstAugument.onClick.RemoveAllListeners();
-
-                        blessings = blessingsList.ToList();
-                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
-
-                        if (blessing1 != null)
-                        {
-                            blessings.Remove(blessing1);
-                        }
-
-                        blessings.Remove(blessing2);
-                        blessings.Remove(blessing3);
-
-                        blessing1 = blessings[Random.Range(0, blessings.Count)];
-
-                        blessings.Remove(blessing1);
-                        rollFirst--;
-                        if (rollFirst == 0)
-                        {
-                            RollButton1.SetActive(false);
-                        }
-                        FirstAugument.onClick.AddListener(delegate
-                        {
-                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
-                        });
-
-                        break;
-                    case 2:
-                        if (rollSecond < 0)
-                        {
-                            rollSecond = 0;
-                            return;
-                        }
-
-                        SecondAugument.onClick.RemoveAllListeners();
-
-
-                        blessings = blessingsList.ToList();
-                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
-                        if (blessing1 != null)
-                        {
-                            blessings.Remove(blessing1);
-                        }
-
-                        blessings.Remove(blessing2);
-                        blessings.Remove(blessing3);
-
-                        blessing2 = blessings[Random.Range(0, blessings.Count)];
-                        rollSecond--;
-                        if (rollSecond == 0)
-                        {
-                            RollButton2.SetActive(false);
-                        }
-                        SecondAugument.onClick.AddListener(delegate
-                        {
-                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
-                        });
-                        break;
-                    case 3:
-                        if (rollThird < 0)
-                        {
-                            rollThird = 0;
-                            return;
-                        }
-
-                        ThirdAugument.onClick.RemoveAllListeners();
-
-                        blessings = blessingsList.ToList();
-                        blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
-                        if (blessing1 != null)
-                        {
-                            blessings.Remove(blessing1);
-                        }
-
-                        blessings.Remove(blessing2);
-                        blessings.Remove(blessing3);
-
-                        blessing3 = blessings[Random.Range(0, blessings.Count)];
-                        rollThird--;
-                        if (rollThird == 0)
-                        {
-                            RollButton3.SetActive(false);
-                        }
-                        ThirdAugument.onClick.AddListener(delegate
-                        {
-                            AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
-                        });
-                        break;
-                }
+                rollSecond = 4;
+                rollThird = 4;
             }
             else
             {
-                blessings = blessingsList.ToList();
-                blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
-                blessing1 = blessings[Random.Range(0, blessings.Count)];
-
-                blessings.Remove(blessing1);
-                blessing2 = blessings[Random.Range(0, blessings.Count)];
-                blessings.Remove(blessing2);
-                blessing3 = blessings[Random.Range(0, blessings.Count)];
-                blessings.Remove(blessing3);
-
-                FirstAugument.onClick.RemoveAllListeners();
-                SecondAugument.onClick.RemoveAllListeners();
-                ThirdAugument.onClick.RemoveAllListeners();
-
-                FirstAugument.onClick.AddListener(delegate
-                {
-                    AugumentUpgrade((int)blessing1.ItemEffectName, goodTeam);
-                });
-                SecondAugument.onClick.AddListener(delegate
-                {
-                    AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
-                });
-                ThirdAugument.onClick.AddListener(delegate
-                {
-                    AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
-                });
+                rollSecond = 2;
+                rollThird = 2;
             }
+            FirstAugumentText.text = LandBlessing.description;
+            FirstAugumentImage.sprite = LandBlessing.ShopItemImage;
+            if (LandBlessing.ShowValue != ShowValue.none)
+            {
+                switch (LandBlessing.ShowValue)
+                {
+                    case ShowValue.coinSpentReroll:
+
+                        break;
+                    case ShowValue.unspentBlessingRerollDividedByTwo:
+                        FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + ((RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2) + 5).ToString()) + ")";
+                        break;
+                    case ShowValue.coinsEconomyGenesis:
+                        FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + RunManagerSingleton.instance.economyPassive.genesisEconomyGained.ToString()) + ")";
+                        break;
+                    case ShowValue.smoothPotions:
+                        FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + (5 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased).ToString()) + ")";
+                        break;
+                    case ShowValue.rerollsThisGame:
+                        FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + (5 + ShopManager.instance.reRolls).ToString()) + ")";
+                        break;
+                }
+            }
+
+            blessings = blessingsList.ToList();
+            blessings.RemoveAll(x => blessingsSelected.Contains(x.ItemEffectName));
+            blessing2 = blessings[Random.Range(0, blessings.Count)];
+            blessings.Remove(blessing2);
+            blessing3 = blessings[Random.Range(0, blessings.Count)];
+            blessings.Remove(blessing3);
+
+            FirstAugument.onClick.RemoveAllListeners();
+            SecondAugument.onClick.RemoveAllListeners();
+            ThirdAugument.onClick.RemoveAllListeners();
+
+            FirstAugument.onClick.AddListener(delegate
+            {
+                AugumentUpgrade((int)LandBlessing.ItemEffectName, goodTeam);
+            });
+
+            SecondAugument.onClick.AddListener(delegate
+            {
+                AugumentUpgrade((int)blessing2.ItemEffectName, goodTeam);
+            });
+            ThirdAugument.onClick.AddListener(delegate
+            {
+                AugumentUpgrade((int)blessing3.ItemEffectName, goodTeam);
+            });
         }
 
-        if (blessing1 != null)
-        {
-            FirstAugumentText.text = blessing1.description;
-            FirstRollNumberText.text = rollFirst.ToString();
-            FirstAugumentImage.sprite = blessing1.ShopItemImage;
-        }
+
+
+
         SecondAugumentText.text = blessing2.description;
         SecondAugumentImage.sprite = blessing2.ShopItemImage;
         SecondRollNumberText.text = rollSecond.ToString();
@@ -538,6 +460,8 @@ public class AtiaBlessing : MonoBehaviour
         AugumentSelect.SetActive(false);
         Cover.gameObject.SetActive(false);
         InBattleGraphicsManager.Instance.AddUpgradeMe(indexAugument);
+
+        RunManagerSingleton.instance.economyPassive.atiasNotRerolled += (rollSecond + rollThird);
 
         if (((BuffEffect)indexAugument).ToString().ToLower().Contains("prismatic"))
         {

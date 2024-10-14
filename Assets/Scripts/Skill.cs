@@ -395,7 +395,6 @@ public class Skill : MonoBehaviour
             if (pair.onlyShield)
             {
                 var dmg = pair.Value > target.axieIngameStats.currentShield ? target.axieIngameStats.currentShield : pair.Value;
-                Debug.Log("Spiky only shield" + ":" + dmg);
                 target.axieIngameStats.currentShield -= dmg;
 
                 target.axieSkillController.DamageReceived(@class, dmg, self, true);
@@ -403,9 +402,7 @@ public class Skill : MonoBehaviour
             else
             {
                 var dmg = pair.Value;
-                Debug.Log("Ability dmg: " + dmg + "- axie: " + self.AxieId);
                 dmg = AxieStatCalculator.GetSkillDamage(dmg, self.stats, AttackBuff, self.axieSkillController.skillList.Count);
-                Debug.Log("Ability dmg buffed: " + dmg + "- axie: " + self.AxieId);
                 float shieldDamage = dmg - target.axieIngameStats.currentShield;
 
                 if (shieldDamage < 0)
@@ -434,7 +431,7 @@ public class Skill : MonoBehaviour
                 if (axieTargetHealingPair == null)
                     continue;
 
-                target.DoHeal(axieTargetHealingPair.Value);
+                target.DoHeal(axieTargetHealingPair.Value, self.AxieId.ToString());
             }
         }
         catch (Exception ex)
@@ -802,7 +799,7 @@ public class Skill : MonoBehaviour
             {
                 foreach (var skillEffect in skillEffects)
                 {
-                    StatusManager.Instance.SetStatus(skillEffect, target, pair.remove);
+                    StatusManager.Instance.SetStatus(skillEffect, target, pair.remove, self.AxieId.ToString());
                 }
             }
         }

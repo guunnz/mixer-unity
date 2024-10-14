@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPBug
   ItemEffectName: 162
-  ShopItemImage: {fileID: 21300000, guid: 185ed848395009f4eb08f5b2a875b752, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 3af12890a3014f84a9b66653adf8145c, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
@@ -22,3 +23,5 @@ MonoBehaviour:
   description: All stats of your Bug with the most HP are now 1 except HP. Your other
     axies gain its stats
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

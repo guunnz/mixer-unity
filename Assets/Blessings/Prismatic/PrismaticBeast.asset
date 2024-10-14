@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPBeast
   ItemEffectName: 161
-  ShopItemImage: {fileID: 21300000, guid: 2904413c5dbeb1340a71d31e2419eea6, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 0bb745eb430e72845a6ec8cef590c96e, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
@@ -22,3 +23,5 @@ MonoBehaviour:
   description: Your Beast axies swap their Morale for Speed. Gain 1 Skill stat per
     Speed stat
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

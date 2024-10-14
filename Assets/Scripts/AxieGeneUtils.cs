@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using static GetAxiesExample;
 
@@ -107,7 +108,12 @@ public class AxieGeneUtils
 
     const HexType hexType = HexType.Bit512;
     //GeneBinGroup geneBinGroup;
-
+    public static string SpaceCamelCase(string input)
+    {
+        // Use a regular expression to replace uppercase letters with a space followed by the letter
+        // Except it will not add a space at the beginning of the string
+        return Regex.Replace(input, "(\\B[A-Z])", " $1");
+    }
     public static List<string> ParsePartIdsFromHex(string hex)
     {
         try

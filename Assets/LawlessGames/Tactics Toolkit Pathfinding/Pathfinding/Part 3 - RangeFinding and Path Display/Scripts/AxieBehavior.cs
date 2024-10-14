@@ -82,8 +82,14 @@ public class AxieBehavior : MonoBehaviour
     {
         if (axieSkillEffectManager.IsPoisoned())
         {
-            myController.axieIngameStats.currentHP -=
-                AxieStatCalculator.GetPoisonDamage(axieSkillEffectManager.PoisonStacks());
+            var poisonDamage = AxieStatCalculator.GetPoisonDamage(axieSkillEffectManager.PoisonStacks());
+
+            foreach (var axie in axieSkillEffectManager.poisonPlayersList)
+            {
+                PostBattleManager.Instance.SumDamage(axie.axieId, poisonDamage / axie.poisonTimes, !myController.imGood);
+            }
+
+            myController.axieIngameStats.currentHP -= poisonDamage;
         }
     }
 
@@ -173,7 +179,7 @@ public class AxieBehavior : MonoBehaviour
         myController.SkeletonAnim.AnimationName = "attack/melee/shrimp";
         shrimping = true;
         myController.SkeletonAnim.loop = false;
-      
+
         yield return new WaitForSeconds(myController.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / 2);
         myController.SkeletonAnim.GetComponent<Renderer>().enabled = false;
         Vector3 positionToMove = Vector3.zero;
@@ -483,7 +489,7 @@ public class AxieBehavior : MonoBehaviour
 
                 if (myController.axieSkillController.passives.HealOnDamageDealt > 0)
                 {
-                    myController.DoHeal(attackDamage + (attackDamage * (myController.axieSkillController.passives.HealOnDamageDealt / 100f)));
+                    myController.DoHeal(attackDamage + (attackDamage * (myController.axieSkillController.passives.HealOnDamageDealt / 100f)),myController.AxieId.ToString());
                 }
 
                 if (myController.axieSkillController.IgnoresShieldOnAttack())

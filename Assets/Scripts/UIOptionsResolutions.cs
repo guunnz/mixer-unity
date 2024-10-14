@@ -47,6 +47,7 @@ public class ResolutionMenu : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
+        ItemRelicManager.Instance.SetMinMax();
         Resolution resolution = resolutions[resolutionIndex];
         // Corrected the method call to use Screen.fullScreenMode instead of Screen.fullScreen
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed, resolution.refreshRate);

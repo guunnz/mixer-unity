@@ -24,7 +24,6 @@ public class AxiePassives
     public bool AutoattacksIgnoreShield;
     public float AutoattackIncrease;
     public int DamageReductionAmount;
-    public int RangedReflectDamageAmount;
     public int MeleeReflectDamageAmount;
     public int AbilityReflectDamageAmount;
     public int ExtraDamageReceivedByAbilitiesAmount;
@@ -40,6 +39,7 @@ public class AxiePassives
 public class AxieSkillController : MonoBehaviour
 {
     public List<AxieSkill> skillList = new List<AxieSkill>();
+    public List<AxieSkill> skillListNoRepeat = new List<AxieSkill>();
 
     public AxiePassives passives = new AxiePassives();
 
@@ -207,6 +207,7 @@ public class AxieSkillController : MonoBehaviour
     public void AddAndHandleSpecialCases(AxieSkill skill, List<AxieBodyPart> bodyParts, AxieBodyPart bodyPartToExclude)
     {
         skillList.Add(skill);
+        skillListNoRepeat.Add(skill);
         switch (skill.skillName)
         {
             case SkillName.Imp:
@@ -282,6 +283,7 @@ public class AxieSkillController : MonoBehaviour
 
     public void DamageReceived(AxieClass attackClass, float damage, AxieController attacker, bool isSkill = false)
     {
+        PostBattleManager.Instance.SumDamage(attacker.AxieId.ToString(), damage, attacker.imGood);
         if (this.self.axieSkillEffectManager.IsPoisoned())
         {
             self.axieIngameStats.currentHP -=
@@ -295,20 +297,12 @@ public class AxieSkillController : MonoBehaviour
 
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
         {
-            if (passives.RangedReflectDamageAmount > 0)
-            {
-                Debug.Log("Reflected Ranged to: " + attacker.AxieId + " / Damage: " +
-                          damage * passives.RangedReflectDamageAmount / 100f);
-
-                attacker.axieIngameStats.currentHP -= (damage * passives.RangedReflectDamageAmount / 100f);
-            }
-
             if (passives.MeleeReflectDamageAmount > 0)
             {
                 Debug.Log("Reflected melee to: " + attacker.AxieId + " / Damage: " +
                           damage * passives.MeleeReflectDamageAmount / 100f);//
 
-                attacker.axieIngameStats.currentHP -= (damage * passives.MeleeReflectDamageAmount / 100f);
+                attacker.axieIngameStats.currentHP -= damage * (passives.MeleeReflectDamageAmount / 100f);
             }
 
             var currentShield = self.statsManagerUI.shieldValue;
@@ -352,6 +346,7 @@ public class AxieSkillController : MonoBehaviour
     {
         comboCost = 0;
         skillList.Clear();
+        skillListNoRepeat.Clear();
 
         passives = new AxiePassives();
         var pairedBodyParts = new List<AxieBodyPart>();
@@ -391,7 +386,7 @@ public class AxieSkillController : MonoBehaviour
                     }
 
                     passives.MeleeReflectDamageAmount += skillEffect.MeleeReflect;
-                    passives.RangedReflectDamageAmount += skillEffect.RangedReflect;
+                    passives.AbilityReflectDamageAmount += skillEffect.AbilityReflect;
 
                     if (!skillEffect.PotatoLeaf)
                         passives.DamageReductionAmount += skillEffect.ReduceDamagePercentage;

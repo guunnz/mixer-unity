@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPMech
   ItemEffectName: 145
-  ShopItemImage: {fileID: 21300000, guid: 4403060d607e17e4ba559b279b3e7c17, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: e6c4b83d38f29ef44a54f2d7d95440a1, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Mech with the most HP gains an extra combo slot
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

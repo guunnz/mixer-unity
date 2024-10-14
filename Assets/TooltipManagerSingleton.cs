@@ -38,7 +38,8 @@ public enum TooltipType
     HpStat,
     MoraleStat,
     SkillStat,
-    SpeedStat
+    SpeedStat,
+    OnlyTitle
 }
 
 [System.Serializable]
@@ -64,6 +65,8 @@ public class TooltipManagerSingleton : MonoBehaviour
 
     static public TooltipManagerSingleton instance;
     public ShopTooltip ShopItemTooltip;
+    public GameObject TooltipTitleObject;
+    public TextMeshProUGUI TooltipTitleText;
     private void Awake()
     {
         instance = this;
@@ -101,11 +104,11 @@ public class TooltipManagerSingleton : MonoBehaviour
         if (enumName.EndsWith("Reptile")) return "Reptile";
 
         // If no match found, return "Unknown"
-        return "Unknown";
+        return "Land";
     }
 
 
-    public void EnableTooltip(ShopItem shopItem, bool offset = false)
+    public void EnableTooltip(ShopItem shopItem, bool offset = false, bool offsetRight = false)
     {
 #if UNITY_ANDROID || UNITY_IOS
         ShopItemTooltip.TooltipObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 85f);
@@ -116,7 +119,15 @@ public class TooltipManagerSingleton : MonoBehaviour
         {
             if (offset)
             {
-                ShopItemTooltip.TooltipObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, 0f);
+                if (offsetRight)
+                {
+                    ShopItemTooltip.TooltipObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(100, 0f);
+                }
+                else
+                {
+
+                    ShopItemTooltip.TooltipObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100, 0f);
+                }
             }
             ShopItemTooltip.ItemName.text = "<color=\"yellow\">" + shopItem.ShopItemName + "</color>";
         }
@@ -128,8 +139,13 @@ public class TooltipManagerSingleton : MonoBehaviour
             }
             ShopItemTooltip.ItemName.text = "<color=\"yellow\">" + GetClassType(shopItem.ItemEffectName) + " Blessing" + "</color>";
         }
-
         ShopItemTooltip.ItemDescription.text = shopItem.description;
+        if (shopItem.doNotShowShow)
+        {
+            ShopItemTooltip.ItemDescription.text = ShopItemTooltip.ItemDescription.text.Replace("[SHOW]", "");
+        }
+
+
         ShopItemTooltip.TooltipObject.SetActive(true);
     }
 
@@ -138,13 +154,22 @@ public class TooltipManagerSingleton : MonoBehaviour
         TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(false);
     }
 
-    public void EnableTooltip(TooltipType TooltipType)
+    public void EnableTooltip(TooltipType TooltipType, string Title = "")
     {
+        if (TooltipType.OnlyTitle == TooltipType)
+        {
+            TooltipTitleObject.SetActive(true);
+            TooltipTitleText.text = "<color=\"yellow\">" + Title;
+            return;
+        }
         TooltipList.FirstOrDefault(x => x.TooltipType == TooltipType).TooltipObject.SetActive(true);
     }
 
+
     public void DisableTooltip()
     {
+        TooltipList.ForEach(x => x.TooltipObject.SetActive(false));
+        TooltipTitleObject.SetActive(false);
         ShopItemTooltip.TooltipObject.SetActive(false);
     }
 }

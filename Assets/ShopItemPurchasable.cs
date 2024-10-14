@@ -28,6 +28,7 @@ public class ShopItemPurchasable : MonoBehaviour
     public bool isPotion;
     public TooltipType[] tooltips;
     public TextMeshProUGUI[] otherTitles;
+    private int actualPrice;
 
 
     private void OnEnable()
@@ -46,24 +47,33 @@ public class ShopItemPurchasable : MonoBehaviour
         {
             item = item.CreateClone();
             item.price--;
-
-            if (item.price <= 0)
-            {
-                item.price = 1;
-            }
+            if (RunManagerSingleton.instance.economyPassive.premiumForest)
+                item.price--;
         }
+
+
         Sold.gameObject.SetActive(false);
         sold = false;
         shopItem = item;
         Poping.text = item.description.Replace("\\n", Environment.NewLine);
         ItemName.text = item.ShopItemName;
+
+
         if (RunManagerSingleton.instance.economyPassive.ItemCostPercentage != 100 || RunManagerSingleton.instance.landType == LandType.forest)
         {
-            ItemCost.text = "<color=\"green\">" + Math.Floor(item.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage / 100f);
+            var price = Math.Floor(item.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage / 100f);
+            ItemCost.text = "<color=\"green\">" + (price <= 0 ? 1 : price);
+            actualPrice = (int)price;
         }
         else
         {
+            actualPrice = item.price;
             ItemCost.text = item.price.ToString();
+        }
+
+        if (RunManagerSingleton.instance.economyPassive.frozenItemFree && this.Frozen)
+        {
+            ItemCost.text = 0.ToString();
         }
         itemImage.sprite = item.ShopItemImage;
         ItemEffect = item.ItemEffectName;
@@ -129,6 +139,11 @@ public class ShopItemPurchasable : MonoBehaviour
         yield return null;
     }
 
+    public void SetActualPrice()
+    {
+        ItemCost.text = actualPrice.ToString();
+    }
+
     private void OnMouseDown()
     {
         if (AtiasBlessing.activeSelf || sold)
@@ -146,14 +161,24 @@ public class ShopItemPurchasable : MonoBehaviour
 
         if (ShopManager.instance.FreezeMode)
         {
+            if (RunManagerSingleton.instance.economyPassive.frozenItemFree && !this.Frozen)
+            {
+
+                ItemCost.text = 0.ToString();
+            }
+
             SFXManager.instance.PlaySFX(SFXType.Freeze);
             this.Frozen = !Frozen;
             FreezeGraphics.SetActive(!FreezeGraphics.activeSelf);
             return;
         }
 
-        if (RunManagerSingleton.instance.BuyUpgrade(shopItem))
+        if (RunManagerSingleton.instance.BuyUpgrade(shopItem, frozen: this.Frozen))
         {
+            if (this.shopItem.ShopItemName.ToLower().Contains("smooth"))
+            {
+                RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased++;
+            }
             sold = true;
             this.Frozen = false;
             FreezeGraphics.SetActive(false);

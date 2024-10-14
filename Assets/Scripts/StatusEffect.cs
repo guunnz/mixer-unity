@@ -26,7 +26,7 @@ public class SkillEffect : ICloneable
     internal bool isBuffOrDebuff;
     public float GainEnergy;
     public int MeleeReflect;
-    public int RangedReflect;
+    public int AbilityReflect;
     public int GainShield;
     public int GainShieldPercentage;
     public int GainHPPercentage;

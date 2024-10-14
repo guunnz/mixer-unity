@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPDawn
   ItemEffectName: 115
-  ShopItemImage: {fileID: 21300000, guid: e9d6a9ae6ed1198408785f4351f511da, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 64da4731503874f41a8d3ff5fb0d816e, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: Your Dawn axies gain 2 Morale buff after 10 seconds of fight
   price: 0
+  doNotShowShow: 0
+  tooltipType: 

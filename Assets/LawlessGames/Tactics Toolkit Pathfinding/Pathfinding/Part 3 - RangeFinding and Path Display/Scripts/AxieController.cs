@@ -7,6 +7,7 @@ using Spine.Unity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using static GetAxiesExample;
 using Random = System.Random;
 
 [System.Serializable]
@@ -125,12 +126,13 @@ public class AxieController : MonoBehaviour
         axieSkillEffectManager.AddStatusEffect(skillEffect);
     }
 
-    public void DoHeal(float healAmount)
+    public void DoHeal(float healAmount, string axieId)
     {
         if (healAmount <= 0 || this.axieBehavior.axieState == AxieState.Killed)
             return;
         if (this.axieSkillEffectManager.IsHealingBlocked())
             return;
+        PostBattleManager.Instance.SumHealing(axieId, healAmount, imGood);
         this.axieIngameStats.currentHP += healAmount;
     }
 

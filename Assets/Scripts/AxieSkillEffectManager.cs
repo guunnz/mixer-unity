@@ -21,6 +21,12 @@ public class SkillEffectDuration
     }
 }
 
+public class PoisonAxiePlayer
+{
+    public string axieId;
+    public int poisonTimes;
+}
+
 public class AxieSkillEffectManager : MonoBehaviour
 {
     public List<SkillEffect> skillEffects = new List<SkillEffect>();
@@ -34,7 +40,8 @@ public class AxieSkillEffectManager : MonoBehaviour
     private List<SkillEffectDuration> durationToRemove = new List<SkillEffectDuration>();
     private int lastXAxisScale;
 
-    //
+    public List<PoisonAxiePlayer> poisonPlayersList = new List<PoisonAxiePlayer>();
+
     public bool IsDebuff()
     {
         return skillEffects.Any(x =>
@@ -297,7 +304,7 @@ public class AxieSkillEffectManager : MonoBehaviour
                statusEffect == StatusEffectEnum.MoralePositive;
     }
 
-    public void AddStatusEffect(SkillEffect skillEffect)
+    public void AddStatusEffect(SkillEffect skillEffect, string axieId = "")
     {
         StatusEffectEnum statusEffect = skillEffect.statusEffect;
         SkillEffect clone = (SkillEffect)skillEffect.Clone();
@@ -425,6 +432,7 @@ public class AxieSkillEffectManager : MonoBehaviour
         SkillEffectGraphic skillEffectGraphic =
             skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
         SkillEffect skillEffectCounter = null;
+
         switch (statusEffect)
         {
             case StatusEffectEnum.AttackNegative:
@@ -453,6 +461,11 @@ public class AxieSkillEffectManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        if (statusEffect == StatusEffectEnum.Poison && !string.IsNullOrEmpty(axieId))
+        {
+            AddPoisonTarget(skillEffect.PoisonStack, axieId);
         }
 
         if (skillEffectGraphic == null && skillEffectCounter == null)
@@ -494,6 +507,23 @@ public class AxieSkillEffectManager : MonoBehaviour
         }
     }
 
+    public void AddPoisonTarget(int times, string axieId)
+    {
+        if (poisonPlayersList.Any(x => x.axieId == axieId))
+        {
+            var poisonPlayer = poisonPlayersList.Single(x => x.axieId == axieId);
+
+            poisonPlayer.poisonTimes += times;
+        }
+        else
+        {
+            var poisonPlayer = new PoisonAxiePlayer();
+            poisonPlayer.axieId = axieId;
+            poisonPlayer.poisonTimes = times;
+            poisonPlayersList.Add(poisonPlayer);
+        }
+    }
+
     private void SetSkillEffectDuration(SkillEffect skillEffect, StatusEffectEnum statusEffectEnum)
     {
         float duration = skillEffect.skillDuration == 0
@@ -521,6 +551,10 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public void RemoveStatusEffect(StatusEffectEnum statusEffect)
     {
+        if (statusEffect == StatusEffectEnum.Poison)
+        {
+            poisonPlayersList.Clear();
+        }
         SkillEffectGraphic skillEffectGraphic = skillEffectGraphics.FirstOrDefault(x => x.statusEffect == statusEffect);
         skillEffects.RemoveAll(x => x.statusEffect == statusEffect);
         skillEffectGraphics.RemoveAll(x => x.statusEffect == statusEffect);
@@ -529,6 +563,7 @@ public class AxieSkillEffectManager : MonoBehaviour
 
     public void RemoveAllEffects()
     {
+        poisonPlayersList.Clear();
         skillEffects.RemoveAll(x => !x.isPassive);
         foreach (var skillEffectGraphic in skillEffectGraphics)
         {

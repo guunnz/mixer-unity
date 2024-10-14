@@ -25,6 +25,8 @@ public class ItemRelicManager : MonoBehaviour
     private float currentZ;
     public static ItemRelicManager Instance;
     private Dictionary<AtiaBlessing.BuffEffect, GameObject> itemInstances = new Dictionary<AtiaBlessing.BuffEffect, GameObject>();
+
+    public float resolutionOffset;
     private void Awake()
     {
         Instance = this;
@@ -37,6 +39,22 @@ public class ItemRelicManager : MonoBehaviour
         currentZ = startZ;
         plusItemObject.SetActive(false); // Initialize plus item visibility
         UpdatePlusItemText(); // Initialize plus item text
+        SetMinMax();
+    }
+    public void SetMinMax()
+    {
+        float currentAspectRatio = (float)Screen.width / Screen.height;
+
+        if (currentAspectRatio >= 1.77f)
+        {
+            minX = 0;
+            maxX = 1.6f;
+        }
+        else
+        {
+            minX = 0 + ((1.77f - currentAspectRatio) * resolutionOffset);
+            maxX = 1.6f + ((1.77f - currentAspectRatio) * resolutionOffset);
+        }
     }
 
     public void InstantiateItem(Vector3 startPosition, ShopItem shopItem)

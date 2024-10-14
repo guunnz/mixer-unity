@@ -19,7 +19,7 @@ namespace enemies
         public int spawnCountMax = 0;
 
         public TextMeshProUGUI Countdown;
-        public TextMeshProUGUI EnemyUsername;
+        public List<TextMeshProUGUI> EnemyUsernames;
         public GameObject FindingOpponent;
         public GameObject IngameOverlay;
         public GameObject BattleOverlay;
@@ -41,15 +41,10 @@ namespace enemies
             IngameOverlay.SetActive(false);
             await Task.Delay(10);
             string json = "";
-            if (AccountManager.TestMode)
-            {
-                json = battleDataLoader.GetTestRandomOpponent(RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses);
-            }
-            else
-            {
+        
                 int num = RunManagerSingleton.instance.wins + RunManagerSingleton.instance.losses;
                 json = await landBattleTarget.GetScoreAsync(num.ToString());
-            }
+            
 
             if (string.IsNullOrEmpty(json))
             {
@@ -60,7 +55,7 @@ namespace enemies
                 NotificationErrorManager.instance.DoNotification("An error has ocurred when trying to find an opponent, please try again");
                 return;
             }
-            
+
             Opponent opponent = JsonConvert.DeserializeObject<Opponent>(json);
             if (string.IsNullOrEmpty(opponent.axie_captain_genes) || opponent.axie_team.axies.Any(x => string.IsNullOrEmpty(x.genes)))
             {
@@ -164,7 +159,7 @@ namespace enemies
                     axieEnemy.stats, axieForBackend, axieList, axieEnemy, isOpponent);
                 yield return new WaitForSeconds(0.2f);
             }
-            EnemyUsername.text = string.IsNullOrEmpty(opponent.username) ? "Lunacian #" + UnityEngine.Random.Range(1000000, 9999999).ToString() : opponent.username;
+            EnemyUsernames.ForEach(x => x.text = string.IsNullOrEmpty(opponent.username) ? "Lunacian #" + UnityEngine.Random.Range(1000000, 9999999).ToString() : opponent.username);
             //If test mode
             //Grab testing values of abilities, stats and 
 
@@ -206,11 +201,11 @@ namespace enemies
             yield return new WaitForSeconds(0.5f);
             FightManagerSingleton.Instance.StartFight();
 
-            if (AccountManager.TestMode)
-            {
-                TestTool.Instance.SetEnemyAxiesStatuses();
-                TestTool.Instance.SetAllyAxiesStatuses();
-            }
+            //if (AccountManager.TestMode)
+            //{
+            //    TestTool.Instance.SetEnemyAxiesStatuses();
+            //    TestTool.Instance.SetAllyAxiesStatuses();
+            //}
             BattleOverlay.SetActive(true);
             Countdown.gameObject.SetActive(false);
             axieSpawner.enemyTeam.StartBattle();

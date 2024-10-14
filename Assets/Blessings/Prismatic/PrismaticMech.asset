@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: GainHPMech
   ItemEffectName: 163
-  ShopItemImage: {fileID: 21300000, guid: 4403060d607e17e4ba559b279b3e7c17, type: 3}
+  ShowValue: 0
+  ShopItemImage: {fileID: 21300000, guid: 57d6b8f7e84925b49af2e194183b3338, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: The stats of your highest morale mech are doubled
   price: 0
+  doNotShowShow: 0
   tooltipType: 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using UnityEngine;
+using static GetAxiesExample;
 
 public class BuffsManager : MonoBehaviour
 {
@@ -84,8 +85,8 @@ public class BuffsManager : MonoBehaviour
 
         axies.ForEach(axie =>
         {
-            axie.axieSkillController.passives.RangedReflectDamageAmount += 10;
-            axie.axieSkillController.passives.MeleeReflectDamageAmount += 10;
+            axie.axieSkillController.passives.AbilityReflectDamageAmount += 8;
+            axie.axieSkillController.passives.MeleeReflectDamageAmount += 8;
         });
     }
 
@@ -95,8 +96,8 @@ public class BuffsManager : MonoBehaviour
 
         axies.ForEach(axie =>
         {
-            axie.axieSkillController.passives.RangedReflectDamageAmount += 5;
-            axie.axieSkillController.passives.MeleeReflectDamageAmount += 5;
+            axie.axieSkillController.passives.AbilityReflectDamageAmount += 4;
+            axie.axieSkillController.passives.MeleeReflectDamageAmount += 4;
         });
     }
 
@@ -127,14 +128,15 @@ public class BuffsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 10; });
+        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 5; });
     }
 
     public void SteelChainmail(Team team)
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 20; });
+        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 10; });
+        axies.ForEach(axie => { axie.axieSkillController.passives.AbilityReflectDamageAmount += 10; });
     }
 
     public void SteelSword(Team team)
@@ -267,7 +269,7 @@ public class BuffsManager : MonoBehaviour
 
         team.OnBattleStartActions.Add(action);
     }
-    
+
 
 
 
@@ -473,13 +475,13 @@ public class BuffsManager : MonoBehaviour
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(x => x.axieSkillController.passives.MeleeReflectDamageAmount += 20);
+        axies.ForEach(x => x.axieSkillController.passives.AbilityReflectDamageAmount += 15);
     }
     public void IronArmor(Team team)
     {
         var axies = team.GetCharactersAll();
 
-        axies.ForEach(x => x.axieSkillController.passives.RangedReflectDamageAmount += 10);
+        axies.ForEach(x => x.axieSkillController.passives.AbilityReflectDamageAmount += 10);
     }
     public void MeatPie(Team team)
     {
@@ -637,9 +639,9 @@ public class BuffsManager : MonoBehaviour
 
     public void CompositeBow(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
 
-        axies.ForEach(axie => { axie.Range += 2; axie.axieIngameStats.Range += 2; });
+        axies.ForEach(axie => { axie.Range += 2; axie.axieIngameStats.Range += 5; });
     }
 
     public void GoldEmeraldNecklace(Team team)
@@ -770,6 +772,7 @@ public class BuffsManager : MonoBehaviour
     {
         if (!team.isGoodTeam)
             return;
+
         RunManagerSingleton.instance.economyPassive.ItemCostPercentage = 50;
     }
 
@@ -787,7 +790,7 @@ public class BuffsManager : MonoBehaviour
 
         foreach (var axieController in axies.Where(x => x.Range < 2))
         {
-            axieController.Range += 1;
+            axieController.Range += 3;
         }
     }
 
@@ -1534,8 +1537,78 @@ public class BuffsManager : MonoBehaviour
             return;
         foreach (var item in axies)
         {
-            item.axieSkillController.passives.AbilityReflectDamageAmount = 100;
+            item.axieSkillController.passives.AbilityReflectDamageAmount = 50;
             item.axieSkillController.passives.ExtraDamageReceivedByAbilitiesAmount = 100;
         }
+    }
+    public void AxiePark(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        var axies = team.GetCharactersAll();
+
+        foreach (var item in axies)
+        {
+            float amountImprovement = item.stats.hp * 1.03f;
+
+            item.stats.hp += Mathf.RoundToInt(amountImprovement);
+        }
+    }
+    public void Savannah(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        RunManagerSingleton.instance.RemoveCoins(((ShopManager.instance.reRolls/2) + 5) * -1);
+    }
+
+    public void Forest(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        RunManagerSingleton.instance.economyPassive.premiumForest = true;
+        foreach (var item in ShopManager.instance.Potions.ToList())
+        {
+            item.SetItem(item.shopItem);
+        };
+        foreach (var item in ShopManager.instance.Items.ToList())
+        {
+            item.SetItem(item.shopItem);
+        };
+    }
+
+
+    public void Arctic(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        RunManagerSingleton.instance.economyPassive.frozenItemFree = true;
+    }
+
+    public void Mystic(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        RunManagerSingleton.instance.RemoveCoins((5+RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2) * -1);
+    }
+
+    public void Genesis(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        RunManagerSingleton.instance.RemoveCoins((RunManagerSingleton.instance.economyPassive.genesisEconomyGained) * -1);
+    }
+
+    public void LunasLanding(Team team)
+    {
+        if (!team.isGoodTeam)
+            return;
+
+        RunManagerSingleton.instance.RemoveCoins((5+RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased) * -1);
     }
 }

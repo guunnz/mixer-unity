@@ -265,7 +265,7 @@ public class AxiesView : MonoBehaviour
 
             axieUICombo.Description.text = ability.description;
             axieUICombo.Description.GetComponent<AbilityDescriptionTooltip>().SetTooltips(ability.tooltipTypes);
-            axieUICombo.Title.text = ability.skillName.ToString().Replace("_", " ");
+            axieUICombo.Title.text = AxieGeneUtils.SpaceCamelCase(ability.skillName.ToString().Replace("_", " "));
             axieUICombo.AxieClass.sprite = classSprite;
             if (ability.isPassive)
             {
