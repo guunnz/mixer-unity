@@ -21,7 +21,7 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
   description: All stats of your Bug with the most HP are now 1 except HP. Your other
-    axies gain its stats
+    axies gain a third of its stats
   price: 0
   doNotShowShow: 0
   tooltipType: 

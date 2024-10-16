@@ -25,7 +25,9 @@ public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public Sprite selectedSprite;
     public Sprite unselectedSprite;
     public FakeLandManager fakeLandManager;
+    public Image freeRotation;
     private Button button;
+    private bool free;
 
     private void Start()
     {
@@ -36,6 +38,12 @@ public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (land == null || land.locked)
         {
             landImage.color = new Color(0.4f, 0.4f, 0.4f, 1);
+        }
+
+        if (land != null && land.row == "0" && land.col == "0")
+        {
+            free = true;
+            freeRotation.enabled = true;
         }
     }
 
@@ -51,11 +59,19 @@ public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (free)
+        {
+            TooltipManagerSingleton.instance.EnableTooltip(TooltipType.FreeLand);
+        }
         TooltipManagerSingleton.instance.EnableTooltip((TooltipType)Enum.Parse(typeof(TooltipType), land.LandTypeEnum.ToString(), true));
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (free)
+        {
+            TooltipManagerSingleton.instance.DisableTooltip(TooltipType.FreeLand);
+        }
         TooltipManagerSingleton.instance.DisableTooltip((TooltipType)Enum.Parse(typeof(TooltipType), land.LandTypeEnum.ToString(), true));
     }
 

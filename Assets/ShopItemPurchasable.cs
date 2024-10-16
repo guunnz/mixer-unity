@@ -19,6 +19,7 @@ public class ShopItemPurchasable : MonoBehaviour
     public SpriteRenderer itemImage;
     public TextMeshProUGUI Sold;
     public ShopItem shopItem;
+    public ShopItem shopItemPurchase;
     public bool sold;
     private bool scaling = false;
     public bool Frozen;
@@ -43,18 +44,21 @@ public class ShopItemPurchasable : MonoBehaviour
     public void SetItem(ShopItem item)
     {
         tooltips = item.tooltipType;
+        shopItem = item;
         if (RunManagerSingleton.instance.landType == LandType.forest)
         {
             item = item.CreateClone();
-            item.price--;
-            if (RunManagerSingleton.instance.economyPassive.premiumForest)
+            if (item.price > 1)
+                item.price--;
+            if (RunManagerSingleton.instance.economyPassive.premiumForest && item.price > 1)
                 item.price--;
         }
 
+        shopItemPurchase = item;
 
         Sold.gameObject.SetActive(false);
         sold = false;
-        shopItem = item;
+
         Poping.text = item.description.Replace("\\n", Environment.NewLine);
         ItemName.text = item.ShopItemName;
 
@@ -71,9 +75,9 @@ public class ShopItemPurchasable : MonoBehaviour
             ItemCost.text = item.price.ToString();
         }
 
-        if (RunManagerSingleton.instance.economyPassive.frozenItemFree && this.Frozen)
+        if (RunManagerSingleton.instance.economyPassive.frozenItemFree > 0 && this.Frozen)
         {
-            ItemCost.text = 0.ToString();
+            ItemCost.text = "<color=\"green\">" + 0.ToString();
         }
         itemImage.sprite = item.ShopItemImage;
         ItemEffect = item.ItemEffectName;
@@ -161,10 +165,9 @@ public class ShopItemPurchasable : MonoBehaviour
 
         if (ShopManager.instance.FreezeMode)
         {
-            if (RunManagerSingleton.instance.economyPassive.frozenItemFree && !this.Frozen)
+            if (RunManagerSingleton.instance.economyPassive.frozenItemFree > 0 && !this.Frozen)
             {
-
-                ItemCost.text = 0.ToString();
+                ItemCost.text = "<color=\"green\">" + 0.ToString();
             }
 
             SFXManager.instance.PlaySFX(SFXType.Freeze);
@@ -172,10 +175,17 @@ public class ShopItemPurchasable : MonoBehaviour
             FreezeGraphics.SetActive(!FreezeGraphics.activeSelf);
             return;
         }
-
-        if (RunManagerSingleton.instance.BuyUpgrade(shopItem, frozen: this.Frozen))
+        else
         {
-            if (this.shopItem.ShopItemName.ToLower().Contains("smooth"))
+            if (RunManagerSingleton.instance.economyPassive.frozenItemFree == 1)
+            {
+                SetActualPrice();
+            }
+        }
+
+        if (RunManagerSingleton.instance.BuyUpgrade(shopItemPurchase, frozen: this.Frozen))
+        {
+            if (this.shopItemPurchase.ShopItemName.ToLower().Contains("smooth"))
             {
                 RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased++;
             }
@@ -183,8 +193,8 @@ public class ShopItemPurchasable : MonoBehaviour
             this.Frozen = false;
             FreezeGraphics.SetActive(false);
             Dictionary<string, string> itemDict = new Dictionary<string, string>();
-            itemDict["item_purchased_id"] = ((int)shopItem.ItemEffectName).ToString();
-            itemDict["item_purchased_name"] = shopItem.ItemEffectName.ToString();
+            itemDict["item_purchased_id"] = ((int)shopItemPurchase.ItemEffectName).ToString();
+            itemDict["item_purchased_name"] = shopItemPurchase.ItemEffectName.ToString();
             MavisTracking.Instance.TrackAction("buy-item", itemDict);
             StartCoroutine(Purchased());
         }

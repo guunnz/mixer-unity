@@ -611,7 +611,7 @@ public class BuffsManager : MonoBehaviour
         var axies = team.GetCharactersAll().Where(x =>
             x.axieIngameStats.axieClass == AxieClass.Plant).ToList();
 
-        axies.ForEach(axie => { axie.stats.hp *= 3; });
+        axies.ForEach(axie => { axie.stats.hp *= 2; });
     }
 
     public void DeluxeRamen(Team team)
@@ -1489,10 +1489,10 @@ public class BuffsManager : MonoBehaviour
             axies.Remove(axie);
             foreach (var item in axies)
             {
-                item.stats.hp += hpFromBug;
-                item.stats.speed += speedFromBug;
-                item.stats.morale += moraleFromBug;
-                item.stats.skill += skillFromBug;
+                item.stats.hp += hpFromBug / 3;
+                item.stats.speed += speedFromBug / 3;
+                item.stats.morale += moraleFromBug / 3;
+                item.stats.skill += skillFromBug / 3;
             }
         }
     }
@@ -1552,15 +1552,15 @@ public class BuffsManager : MonoBehaviour
         {
             float amountImprovement = item.stats.hp * 1.03f;
 
-            item.stats.hp += Mathf.RoundToInt(amountImprovement);
+            item.stats.hp = Mathf.RoundToInt(amountImprovement);
         }
     }
     public void Savannah(Team team)
     {
         if (!team.isGoodTeam)
             return;
-
-        RunManagerSingleton.instance.RemoveCoins(((ShopManager.instance.reRolls/2) + 5) * -1);
+        RunManagerSingleton.instance.RemoveCoins(((ShopManager.instance.reRolls / 2) + 5) * -1);
+        ShopManager.instance.reRolls = 0;
     }
 
     public void Forest(Team team)
@@ -1585,7 +1585,15 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.economyPassive.frozenItemFree = true;
+        RunManagerSingleton.instance.economyPassive.frozenItemFree += 2;
+        foreach (var item in ShopManager.instance.Potions.ToList())
+        {
+            item.SetItem(item.shopItem);
+        };
+        foreach (var item in ShopManager.instance.Items.ToList())
+        {
+            item.SetItem(item.shopItem);
+        };
     }
 
     public void Mystic(Team team)
@@ -1593,7 +1601,8 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((5+RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2) * -1);
+        RunManagerSingleton.instance.RemoveCoins((5 + RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2) * -1);
+        RunManagerSingleton.instance.economyPassive.atiasNotRerolled = 0;
     }
 
     public void Genesis(Team team)
@@ -1602,6 +1611,7 @@ public class BuffsManager : MonoBehaviour
             return;
 
         RunManagerSingleton.instance.RemoveCoins((RunManagerSingleton.instance.economyPassive.genesisEconomyGained) * -1);
+        RunManagerSingleton.instance.economyPassive.genesisEconomyGained = 0;
     }
 
     public void LunasLanding(Team team)
@@ -1609,6 +1619,7 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((5+RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased) * -1);
+        RunManagerSingleton.instance.RemoveCoins((5 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased) * -1);
+        RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased = 0;
     }
 }

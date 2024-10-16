@@ -31,6 +31,7 @@ public class PostBattleManager : MonoBehaviour
 
     public void Show()
     {
+        TooltipManagerSingleton.instance.DisableTooltip();
         Container.SetActive(true);
         LoadPostBattleAxies();
     }

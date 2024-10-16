@@ -23,11 +23,11 @@ public class EconomyPassive
     public int RollsThisRound = 0;
     public int RollCost = 1;
     public int CoinsOnStart = 10;
-    public bool frozenItemFree = false;
+    public int frozenItemFree = 0;
     public int atiasNotRerolled;
     public int genesisEconomyGained;
     public int smoothPotionsPurchased;
-    public bool premiumForest = true;
+    public bool premiumForest = false;
 
     public int
         ItemCostPercentage =
@@ -253,14 +253,22 @@ public class RunManagerSingleton : MonoBehaviour
         int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
                                     100f);
 
-       
 
-        if (frozen && RunManagerSingleton.instance.economyPassive.frozenItemFree)
+
+        if (frozen)
         {
-            RunManagerSingleton.instance.economyPassive.frozenItemFree = false;
-            ShopManager.instance.Items.ToList().ForEach(x => x.SetActualPrice());
-            ShopManager.instance.Potions.ToList().ForEach(x => x.SetActualPrice());
-            price = 0;
+            if (RunManagerSingleton.instance.economyPassive.frozenItemFree > 0)
+            {
+                price = 0;
+            }
+            RunManagerSingleton.instance.economyPassive.frozenItemFree--;
+            if (RunManagerSingleton.instance.economyPassive.frozenItemFree == 0)
+            {
+                ShopManager.instance.Items.ToList().ForEach(x => x.SetActualPrice());
+                ShopManager.instance.Potions.ToList().ForEach(x => x.SetActualPrice());
+
+            }
+
         }
         else
         {

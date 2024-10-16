@@ -289,7 +289,7 @@ public class AxiesView : MonoBehaviour
         var axieUICombo = axieViewCombo.Single(x => x.BodyPart == ability.bodyPart);
         axieUICombo.vfxPlayer.SetUp(lastAxieChosen.skeletonDataAsset);
         yield return new WaitForFixedUpdate();
-        PlayAnimation(ability.bodyPart);
+        StopAnimation(ability.bodyPart);
     }
 
     public void PlayAnimation(BodyPart bodyPart)

@@ -39,7 +39,8 @@ public enum TooltipType
     MoraleStat,
     SkillStat,
     SpeedStat,
-    OnlyTitle
+    OnlyTitle,
+    FreeLand
 }
 
 [System.Serializable]

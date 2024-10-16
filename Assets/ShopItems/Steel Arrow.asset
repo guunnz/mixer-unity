@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: Steel Arrow
   ItemEffectName: 58
+  ShowValue: 0
   ShopItemImage: {fileID: 1620622872, guid: 5703b7d4247f988479f61ef629685102, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies abilities always critical strike
+  description: Your ranged axies abilities always critical strike
   price: 7
+  doNotShowShow: 0
   tooltipType: 

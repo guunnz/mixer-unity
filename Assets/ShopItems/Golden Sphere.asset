@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: Golden Sphere
   ItemEffectName: 20
+  ShowValue: 0
   ShopItemImage: {fileID: 61942010, guid: 5703b7d4247f988479f61ef629685102, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies skill is reduced by half. Every stat point gets divided
-    between all other stats
+  description: 'Your axies skill is reduced by half. Increase all your axie stats
+    that are not Skill by the Skill reduced divided by 4 '
   price: 5
+  doNotShowShow: 0
   tooltipType: 1e000000

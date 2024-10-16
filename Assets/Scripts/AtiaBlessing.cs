@@ -287,6 +287,7 @@ public class AtiaBlessing : MonoBehaviour
 
     public void ShowRandomAuguments(bool DoOnlyOne = false, int doAugument = 0)
     {
+        TooltipManagerSingleton.instance.DisableTooltip();
         if (!DoOnlyOne)
         {
             blessingsRolledFor.Clear();

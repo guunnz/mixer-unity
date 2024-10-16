@@ -20,7 +20,8 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Gain 5 coins + 1 coin for every two re-rolls you made this game <color="green">[SHOW]
+  description: '[Resets when selected] Gain 5 coins + 1 coin for every two re-rolls
+    you made this game <color="green">[SHOW]'
   price: 0
   doNotShowShow: 1
   tooltipType: 

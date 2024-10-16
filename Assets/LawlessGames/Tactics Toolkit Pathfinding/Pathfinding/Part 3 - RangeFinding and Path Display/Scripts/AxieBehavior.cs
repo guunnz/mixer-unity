@@ -86,7 +86,9 @@ public class AxieBehavior : MonoBehaviour
 
             foreach (var axie in axieSkillEffectManager.poisonPlayersList)
             {
-                PostBattleManager.Instance.SumDamage(axie.axieId, poisonDamage / axie.poisonTimes, !myController.imGood);
+                var dmg = poisonDamage / axie.poisonTimes;
+
+                PostBattleManager.Instance.SumDamage(axie.axieId, dmg, !myController.imGood);
             }
 
             myController.axieIngameStats.currentHP -= poisonDamage;
@@ -489,7 +491,7 @@ public class AxieBehavior : MonoBehaviour
 
                 if (myController.axieSkillController.passives.HealOnDamageDealt > 0)
                 {
-                    myController.DoHeal(attackDamage + (attackDamage * (myController.axieSkillController.passives.HealOnDamageDealt / 100f)),myController.AxieId.ToString());
+                    myController.DoHeal(attackDamage + (attackDamage * (myController.axieSkillController.passives.HealOnDamageDealt / 100f)), myController.AxieId.ToString());
                 }
 
                 if (myController.axieSkillController.IgnoresShieldOnAttack())
@@ -512,8 +514,8 @@ public class AxieBehavior : MonoBehaviour
                         target.axieIngameStats.currentHP -= shieldDamage;
                     }
 
-                    target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, shieldDamage,
-                        myController);
+                    target.axieSkillController.DamageReceived(myController.axieIngameStats.axieClass, attackDamage,
+               myController);
                 }
             }
 

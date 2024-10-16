@@ -52,7 +52,7 @@ public class AxieController : MonoBehaviour
         set
         {
             // If the current tile is not null, set its 'occupied' to false
-            if (_standingOnTile != null)
+            if (_standingOnTile != null && _standingOnTile.currentOccupier == this)
             {
                 _standingOnTile.occupied = false;
                 _standingOnTile.currentOccupier = null;

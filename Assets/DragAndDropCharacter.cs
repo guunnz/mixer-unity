@@ -19,6 +19,8 @@ public class DragAndDropCharacter : MonoBehaviour
     private float hold = 0f;
     public AxieStatsTooltip statsToolitp;
     private Vector3 mousePos;
+    bool swappingChar1 = false;
+    bool swappingChar2 = false;
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
@@ -38,7 +40,7 @@ public class DragAndDropCharacter : MonoBehaviour
             return;
         }
 
-        if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null)
+        if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null || swappingChar1 || swappingChar2)
             return;
 
         moveDelay -= Time.deltaTime;
@@ -204,6 +206,8 @@ public class DragAndDropCharacter : MonoBehaviour
         // Set the target positions
         Vector3 targetPositionA = tileB.transform.position;
         Vector3 targetPositionB = tileA.transform.position;
+        swappingChar1 = true;
+        swappingChar2 = true;
 
         StartCoroutine(MoveCharacter(characterA, targetPositionA));
         StartCoroutine(MoveCharacter(characterB, targetPositionB));
@@ -237,13 +241,25 @@ public class DragAndDropCharacter : MonoBehaviour
 
     IEnumerator MoveCharacter(AxieController character, Vector3 targetPosition)
     {
-        while (character.transform.position != targetPosition)
+        float timeMoving = 0;
+        while (character.transform.position != targetPosition && timeMoving < 1)
         {
             character.transform.position =
                 Vector3.MoveTowards(character.transform.position, targetPosition, Time.deltaTime * 10);
+
+            timeMoving += Time.deltaTime;
             yield return null;
         }
-
+        if (swappingChar1)
+        {
+            swappingChar1 = false;
+        }
+        if (swappingChar2)
+        {
+            swappingChar1 = false;
+            swappingChar2 = false;
+        }
+        character.transform.position = targetPosition;
     }
 
     private void MoveCharacterToTile(AxieController character, OverlayTile targetTile)

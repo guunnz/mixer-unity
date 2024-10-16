@@ -20,8 +20,8 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Gain 1 coin for every coin earned by the Genesis Land Effect this
-    game <color="green">[SHOW]
+  description: '[Resets when selected] Gain 1 coin for every coin earned by the Genesis
+    Land Effect this game <color="green">[SHOW]'
   price: 0
   doNotShowShow: 1
   tooltipType: 

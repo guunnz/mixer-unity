@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: Fruit 'n vegetables Salad
   ItemEffectName: 13
+  ShowValue: 0
   ShopItemImage: {fileID: 1971798345, guid: eafe57727f5ad904f9e97eaf44e5fe47, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your plant axies HP stat gets multiplied by 3
+  description: Your plant axies HP stat gets multiplied by 2
   price: 10
+  doNotShowShow: 0
   tooltipType: 1c000000

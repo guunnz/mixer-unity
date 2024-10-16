@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: The next frozen item you buy is free
+  description: The next two frozen items you buy are free
   price: 0
   doNotShowShow: 0
   tooltipType: 
