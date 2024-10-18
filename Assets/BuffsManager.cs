@@ -1610,7 +1610,7 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((RunManagerSingleton.instance.economyPassive.genesisEconomyGained) * -1);
+        RunManagerSingleton.instance.RemoveCoins((5 + (RunManagerSingleton.instance.economyPassive.genesisEconomyGained)) * -1);
         RunManagerSingleton.instance.economyPassive.genesisEconomyGained = 0;
     }
 

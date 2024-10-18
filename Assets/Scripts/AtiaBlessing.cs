@@ -393,7 +393,7 @@ public class AtiaBlessing : MonoBehaviour
                         FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + ((RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2) + 5).ToString()) + ")";
                         break;
                     case ShowValue.coinsEconomyGenesis:
-                        FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + RunManagerSingleton.instance.economyPassive.genesisEconomyGained.ToString()) + ")";
+                        FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + (5 + RunManagerSingleton.instance.economyPassive.genesisEconomyGained.ToString()) + ")");
                         break;
                     case ShowValue.smoothPotions:
                         FirstAugumentText.text = FirstAugumentText.text.Replace("[SHOW]", Environment.NewLine + "(Coins = " + (5 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased).ToString()) + ")";

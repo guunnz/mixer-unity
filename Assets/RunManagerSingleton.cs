@@ -146,7 +146,7 @@ public class RunManagerSingleton : MonoBehaviour
         skere = 0;
         eNetWorth = 0;
         resultsBools.Add(won);
-        atiaBlessing.ShowRandomAuguments();
+    
 
         if (landType == LandType.genesis)
         {
@@ -156,7 +156,7 @@ public class RunManagerSingleton : MonoBehaviour
         {
             SavannahLandBehavior();
         }
-
+        atiaBlessing.ShowRandomAuguments();
         coins += economyPassive.CoinsOnStart + economyPassive.ExtraCoinsPerRound;
         MaxCoinsThisRound = coins;
         economyPassive.RollsThisRound = 0;
