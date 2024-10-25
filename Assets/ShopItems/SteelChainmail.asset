@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: Steel Chainmail
   ItemEffectName: 62
+  ShowValue: 0
   ShopItemImage: {fileID: 442735689, guid: cbd3b5c47c4ab254788086ae8d513764, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies reflect +10% of melee damage received
+  description: Your axies reflect +10% of attack damage received <color="yellow">(0.5s
+    cooldown)
   price: 6
+  doNotShowShow: 0
   tooltipType: 

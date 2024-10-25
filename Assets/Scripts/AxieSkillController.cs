@@ -44,10 +44,13 @@ public class AxieSkillController : MonoBehaviour
     public AxiePassives passives = new AxiePassives();
 
     public AxieController self;
+    private float LastTimeReflected = 0.5f;
 
     private int comboCost;
 
     private Dictionary<string, float> lastActivationTimes = new Dictionary<string, float>();
+
+    
 
     public int GetComboCost()
     {
@@ -66,6 +69,7 @@ public class AxieSkillController : MonoBehaviour
 
     public void Update()
     {
+        LastTimeReflected -= Time.deltaTime;
         if (self != null && self.goodTeam != null)
         {
             if (self.goodTeam.battleStarted)
@@ -283,6 +287,8 @@ public class AxieSkillController : MonoBehaviour
 
     public void DamageReceived(AxieClass attackClass, float damage, AxieController attacker, bool isSkill = false)
     {
+        if (!self.imGood)
+            self.statsManagerUI.SpawnDamage(damage.ToString(), isSkill);
         PostBattleManager.Instance.SumDamage(attacker.AxieId.ToString(), damage, attacker.imGood);
         if (this.self.axieSkillEffectManager.IsPoisoned())
         {
@@ -292,16 +298,14 @@ public class AxieSkillController : MonoBehaviour
 
         if (passives.AbilityReflectDamageAmount != 0 && isSkill)
         {
-            attacker.axieIngameStats.maxHP -= damage * ((passives.AbilityReflectDamageAmount / 100) + 1);
+            attacker.axieIngameStats.currentHP -= damage * (passives.AbilityReflectDamageAmount / 100);
         }
 
         foreach (AxieBodyPart bodyPartPassive in passives.bodyPartList)
         {
-            if (passives.MeleeReflectDamageAmount > 0)
+            if (passives.MeleeReflectDamageAmount > 0 && LastTimeReflected <= 0)
             {
-                Debug.Log("Reflected melee to: " + attacker.AxieId + " / Damage: " +
-                          damage * passives.MeleeReflectDamageAmount / 100f);//
-
+                LastTimeReflected = 0.5f;
                 attacker.axieIngameStats.currentHP -= damage * (passives.MeleeReflectDamageAmount / 100f);
             }
 

@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShopItemName: Iron Chainmail
   ItemEffectName: 25
+  ShowValue: 0
   ShopItemImage: {fileID: -2043546289, guid: cbd3b5c47c4ab254788086ae8d513764, type: 3}
   ItemEffect:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: All axies reflect 5% of melee damage received
+  description: All axies reflect 5% of attack damage received
   price: 2
+  doNotShowShow: 0
   tooltipType: 

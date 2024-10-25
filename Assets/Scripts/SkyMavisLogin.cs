@@ -96,6 +96,7 @@ public class SkyMavisLogin : MonoBehaviour
 
         while (!version)
         {
+            Debug.Log("Waiting to receive game version");
             yield return null;
         }
 
@@ -165,6 +166,7 @@ public class SkyMavisLogin : MonoBehaviour
 
     public IEnumerator CheckVersion(int retries = 5)
     {
+
         using (UnityWebRequest www = new UnityWebRequest(buildVersion, "GET"))
         {
             Debug.Log("REQ LINK: " + buildVersion);
@@ -181,6 +183,11 @@ public class SkyMavisLogin : MonoBehaviour
                     Debug.Log("Retrying POST request. CHECK VERSION Attempts remaining: " + (retries - 1));
                     StartCoroutine(CheckVersion(retries - 1));
                 }
+                else
+                {
+                    SceneManager.LoadScene(0);
+                    Loading.instance.DisableLoading();
+                }
             }
             else
             {
@@ -195,17 +202,26 @@ public class SkyMavisLogin : MonoBehaviour
                     version = true;
                 }
             }
+
         }
     }
 
     // Method to compare Application.version with a specified version string
     public bool IsCurrentVersionHigher(string versionToCheck)
     {
-        // Parse the Application's version and the versionToCheck
-        string currentVersion = Application.version;
+        try
+        {
+            // Parse the Application's version and the versionToCheck
+            string currentVersion = Application.version;
 
-        // Compare versions
-        return CompareVersions(versionToCheck, currentVersion) > 0;
+            // Compare versions
+            return CompareVersions(versionToCheck, currentVersion) > 0;
+        }
+        catch
+        {
+            return true;
+        }
+
     }
 
     // Method to compare two version strings

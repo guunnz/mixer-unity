@@ -90,6 +90,14 @@ public class RunManagerSingleton : MonoBehaviour
         instance = this;
     }
 
+    private void Update()
+    {
+        if ((int)(Math.Round(skere / 1.3245f, 5) + coins) != MaxCoinsThisRound)
+        {
+            Application.Quit();
+        }
+    }
+
     public void GenesisLandBehavior()
     {
         RunManagerSingleton.instance.economyPassive.genesisEconomyGained += coins / 2;
@@ -146,7 +154,7 @@ public class RunManagerSingleton : MonoBehaviour
         skere = 0;
         eNetWorth = 0;
         resultsBools.Add(won);
-    
+
 
         if (landType == LandType.genesis)
         {
@@ -284,6 +292,7 @@ public class RunManagerSingleton : MonoBehaviour
 
         if ((int)(Math.Round(skere / 1.3245f, 5) + coins) != MaxCoinsThisRound)
         {
+            Application.Quit();
             Debug.LogError("CHEATING");
         }
         if (PlayBuyAudio)

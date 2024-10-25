@@ -857,10 +857,10 @@ public class SkillLauncher : MonoBehaviour
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
             }
 
-            if (damagePair.axieController.axieSkillEffectManager.IsLethal())
+            if (damagePair.axieController.axieSkillEffectManager.IsLethal() || UnityEngine.Random.Range(0, 1f) <= AxieStatCalculator.GetCritChance(self.stats, moraleBuff))
             {
                 damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
-
+                damagePair.axieController.statsManagerUI.SetCritical();
                 damagePair.axieController.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);
             }
         }

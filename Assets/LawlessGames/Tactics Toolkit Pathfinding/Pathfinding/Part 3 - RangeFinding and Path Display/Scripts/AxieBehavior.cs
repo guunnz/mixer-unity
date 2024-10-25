@@ -481,7 +481,7 @@ public class AxieBehavior : MonoBehaviour
                     if (isLethal || Random.Range(0, 1f) <= AxieStatCalculator.GetCritChance(myController.stats, moraleBuff))
                     {
                         attackDamage *= AxieStatCalculator.GetCritDamage(myController.stats, moraleBuff);
-
+                        target.statsManagerUI.SetCritical();
                         if (isLethal)
                         {
                             target.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);

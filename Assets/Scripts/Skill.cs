@@ -313,7 +313,7 @@ public class Skill : MonoBehaviour
     private List<DamageTargetPair> damageTargetPairs = new List<DamageTargetPair>();
     private List<HealTargetPair> healTargetPairs = new List<HealTargetPair>();
     private List<StatusEffectTargetPair> statusEffectTargetPair = new List<StatusEffectTargetPair>();
-    internal float damageOrHealTiming;
+    internal float damageOrHealTiming = 0.4f;
     internal float ExtraTimerCast;
     public float totalDuration;
     public float attackAudioTiming;
