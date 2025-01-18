@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using SimpleGraphQL;
 
 public class GraphQLClientExample : MonoBehaviour
 {

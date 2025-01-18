@@ -1,6 +1,5 @@
 using AxieCore.SimpleJSON;
 using Newtonsoft.Json;
-using SimpleGraphQL.GraphQLParser;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;

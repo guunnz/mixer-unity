@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using TMPro;
-using SimpleGraphQL;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using Newtonsoft.Json.Linq;

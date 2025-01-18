@@ -94,8 +94,8 @@ public class Run
 
 public class AxieLandBattleTarget : MonoBehaviour
 {
-    private string postUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
-    private string getUrl = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/run";
+    private string postUrl = "https://run-api-591836497394.us-east1.run.app/api/v1/run";
+    private string getUrl = "https://run-api-591836497394.us-east1.run.app/api/v1/run";
     private int maxRetries = 5;
     public SkyMavisLogin skymavisLogin;
 

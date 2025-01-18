@@ -30,7 +30,7 @@ public class LeaderboardManager : MonoBehaviour
     public TextMeshProUGUI loading;
     public Transform leaderboardContainer;
     private List<LeaderboardDTO> leaderboardData = new List<LeaderboardDTO>();
-    private string leaderboardEndpoint = "http://34.23.94.40:8081/api/v1/leaderboard";
+    private string leaderboardEndpoint = "https://leaderboard-api-591836497394.us-east1.run.app/api/v1/leaderboard";
     public LeaderboardUIItem myData;
     private bool isLoading;
 

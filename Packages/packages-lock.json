@@ -1,14 +1,5 @@
 {
   "dependencies": {
-    "com.lastabyss.simplegraphql": {
-      "version": "https://github.com/ngoninteractive/SimpleGraphQL-For-Unity.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "2.0.0"
-      },
-      "hash": "78d6962a171b2b27f7109bbdd6751f8af79d6b5b"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -195,13 +186,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "net.gree.unity-webview": {
-      "version": "https://github.com/gree/unity-webview.git?path=/dist/package",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "2ae3cb08093914eb31a3995c9d2b1f41b9fc745a"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

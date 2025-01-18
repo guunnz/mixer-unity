@@ -138,7 +138,8 @@ public class DragAndDropCharacter : MonoBehaviour
             {
                 var tappedChar = hit.collider.gameObject;
                 AxieController axieController = tappedChar.GetComponent<AxieController>();
-
+                if (axieController.mode == AxieMode.Menu)
+                    return;
                 SFXManager.instance.PlaySFX(SFXType.UIButtonTap);
 
                 statsToolitp.Enable(axieController);
