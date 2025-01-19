@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AxieCore.AxieMixer;
 using Spine.Unity;
 using UnityEngine;
 
-namespace AxieMixer.Unity {
+namespace SkyMavis.AxieMixer.Unity
+{
     public class SplatAtlasStuff
     {
         public string tag;

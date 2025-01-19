@@ -1,16 +1,19 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using AxieCore.AxieMixer;
-using Newtonsoft.Json.Linq;
 using Spine.Unity;
 using UnityEngine;
 
-namespace AxieMixer.Unity
+namespace SkyMavis.AxieMixer.Unity
 {
     public static class Mixer
     {
         private const string StuffName = "axie-2d-v3-stuff";
+        private static Dictionary<string, string> BASE_SHADERS = new Dictionary<string, string> ()
+        {
+            { "default", "Custom/Texture Splatting Palette" },
+            { "graphic", "Custom/Texture Splatting Graphic Palette" },
+            //{ "graphic-linear", "Custom/Texture Splatting Graphic Linear Palette" },
+        };
 
         public static bool initialized;
         private static Axie2dBuilder builder;
@@ -79,9 +82,8 @@ namespace AxieMixer.Unity
             string genesStuffJsonString = Resources.Load<TextAsset>($"{StuffName}/axie-2d-v3-stuff-genes").text;
             string stuffSamplesJsonString = Resources.Load<TextAsset>($"{StuffName}/axie-2d-v3-stuff-samples").text;
             string stuffAnimationsJsonString = Resources.Load<TextAsset>($"{StuffName}/axie-2d-v3-stuff-animations").text;
-            string stuffMaterialsString = Resources.Load<TextAsset>($"{StuffName}/axie-2d-v3-stuff-materials").text;
-
-            var baseMaterials = LoadAxieMaterials(stuffMaterialsString);
+         
+            var baseMaterials = LoadAxieMaterials();
             var atlasStuffMap = LoadAxieAtlasStuff();
 
             atlasStuffMap.TryGetValue("atlas-single", out var singleAtlasAsset);
@@ -138,38 +140,27 @@ namespace AxieMixer.Unity
             return atlasStuffMap;
         }
 
-        private static Dictionary<string, Material> LoadAxieMaterials(string stuffMaterialsString)
+        private static Dictionary<string, Material> LoadAxieMaterials()
         {
             Dictionary<string, Material> materialGroups = new Dictionary<string, Material>();
-            JObject jData = JObject.Parse(stuffMaterialsString);
-            int version = 0;
-            if (jData != null && jData["version"] != null)
+            foreach(var p in BASE_SHADERS)
             {
-                version = (int)jData["version"];
-            }
-            if (version == 2)
-            {
-                var jItems = jData["items"] as JArray;
-
-                for (int i = 0; i < jItems.Count; i++)
+                var matName = p.Key;
+                var shaderName = p.Value;
+                var shader = Shader.Find(shaderName);
+                if (shader == null)
                 {
-                    var jItem = jItems[i] as JObject;
-                    var matName = (string)jItem["name"];
-                    var shaderName = (string)jItem["shaderName"];
-                    var shader = Shader.Find(shaderName);
-                    if (shader == null)
-                    {
-                        Debug.LogWarning($"Shader {shaderName} not found");
-                        continue;
-                    }
-                    var material = new Material(shader);
-                    material.hideFlags = HideFlags.HideAndDontSave;
-                    material.renderQueue = 3000;
-                    material.enableInstancing = false;
-
-                    materialGroups.Add(matName, material);
+                    Debug.LogWarning($"Shader {shaderName} not found");
+                    continue;
                 }
+                var material = new Material(shader);
+                material.hideFlags = HideFlags.HideAndDontSave;
+                material.renderQueue = 3000;
+                material.enableInstancing = false;
+
+                materialGroups.Add(matName, material);
             }
+           
             return materialGroups;
         }
     }

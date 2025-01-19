@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AxieMixer.Unity;
 using Game;
+using SkyMavis.AxieMixer.Unity;
 using Spine.Unity;
 using UnityEngine;
 using UnityEngine.UIElements;

@@ -1,7 +1,7 @@
 using Spine.Unity;
 using UnityEngine;
 
-namespace AxieMixer.Unity
+namespace SkyMavis.AxieMixer.Unity
 {
     public class MysticIdGraphicController : MonoBehaviour
     {

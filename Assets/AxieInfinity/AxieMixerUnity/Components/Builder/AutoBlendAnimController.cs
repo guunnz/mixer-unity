@@ -1,9 +1,8 @@
-using AxieCore.AxieMixer;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
 
-namespace AxieMixer.Unity
+namespace SkyMavis.AxieMixer.Unity
 {
     public class AutoBlendAnimController : MonoBehaviour
     {

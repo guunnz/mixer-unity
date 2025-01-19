@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Spine;
-using AxieCore.AxieMixer;
 using System.Globalization;
 
-namespace AxieMixer.Unity
+namespace SkyMavis.AxieMixer.Unity
 {
-	public class SkeletonMixed
+    public class SkeletonMixed
 	{
 		public float Scale { get; set; }
 

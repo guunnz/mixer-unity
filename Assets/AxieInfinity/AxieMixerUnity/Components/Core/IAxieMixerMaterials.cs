@@ -1,8 +1,7 @@
-﻿using AxieCore.AxieMixer;
-using Spine.Unity;
+﻿using Spine.Unity;
 using UnityEngine;
 
-namespace AxieMixer.Unity
+namespace SkyMavis.AxieMixer.Unity
 {
     public enum AxieFormType
     {
