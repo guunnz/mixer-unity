@@ -382,7 +382,7 @@ public class SkyMavisLogin : MonoBehaviour
 
             if (!string.IsNullOrEmpty(authorizationCode))
             {
-                StartCoroutine(HandleAuthorizationResponse(authorizationCode));
+                StartCoroutine(HandleAuthorizationResponse(authorizationCode, state));
             }
             else
             {
@@ -415,9 +415,10 @@ public class SkyMavisLogin : MonoBehaviour
             if (request.Url.AbsolutePath == "/login/callback" && request.QueryString["code"] != null)
             {
                 string authorizationCode = request.QueryString["code"];
+                string stateReq = request.QueryString["state"];
                 //Debug.Log("Authorization code received: " + authorizationCode);
 
-                actions.Enqueue(() => StartCoroutine(HandleAuthorizationResponse(authorizationCode)));
+                actions.Enqueue(() => StartCoroutine(HandleAuthorizationResponse(authorizationCode, stateReq)));
 
                 string responseString = "<html><body>Login successful! You can close this window.</body></html>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
@@ -445,11 +446,12 @@ public class SkyMavisLogin : MonoBehaviour
 
     }
 #endif
-    private IEnumerator HandleAuthorizationResponse(string authorizationCode, int retries = 5)
+    private IEnumerator HandleAuthorizationResponse(string authorizationCode, string state, int retries = 5)
     {
         Debug.Log("AUTHORIZATION CODE: " + authorizationCode);
         UnityWebRequest webRequest = new UnityWebRequest(userInfoEndpoint, "POST");
         webRequest.SetRequestHeader("auth-code", authorizationCode);
+        webRequest.SetRequestHeader("state", state);
 
 #if UNITY_ANDROID || UNITY_IOS
         webRequest.SetRequestHeader("mobile", "true");
