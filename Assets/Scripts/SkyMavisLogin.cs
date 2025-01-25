@@ -89,15 +89,15 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
         cursor.SetActive(true);
-        StartCoroutine(CheckVersion());
+        //StartCoroutine(CheckVersion());
 
 
 
-        while (!version)
-        {
-            Debug.Log("Waiting to receive game version");
-            yield return null;
-        }
+        //while (!version)
+        //{
+        //    Debug.Log("Waiting to receive game version");
+        //    yield return null;
+        //}
 
 
         if (Loading.instance.GameOpened && !string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))
@@ -120,6 +120,7 @@ public class SkyMavisLogin : MonoBehaviour
             mainMenuSong.enabled = true;
             introVideoPlayer.Stop();
             authToken = new AuthToken { AccessToken = token };
+            PlayerPrefs.SetString("Auth", token);
             StartCoroutine(GetNFTS());  // Proceed directly with NFT fetching if token is valid
         }
         else
