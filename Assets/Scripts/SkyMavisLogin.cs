@@ -89,15 +89,15 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
         cursor.SetActive(true);
-        StartCoroutine(CheckVersion());
+        //StartCoroutine(CheckVersion());
 
 
 
-        while (!version)
-        {
-            Debug.Log("Waiting to receive game version");
-            yield return null;
-        }
+        //while (!version)
+        //{
+        //    Debug.Log("Waiting to receive game version");
+        //    yield return null;
+        //}
 
 
         if (Loading.instance.GameOpened && !string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))

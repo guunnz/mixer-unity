@@ -95,12 +95,52 @@ public class InBattleGraphicsManager : MonoBehaviour
 
             if (buff > (int)AtiaBlessing.BuffEffect.Topaz)
             {
-                ItemImageTooltip item = Instantiate(ItemPrefab, EnemyBlessingsContainer).GetComponent<ItemImageTooltip>();
-                ItemImageTooltip item2 = Instantiate(ItemPrefab, EnemyBlessingsContainerPostMatch).GetComponent<ItemImageTooltip>();
-                item.SetItem(blessingsList.Single(x => x.ItemEffectName == effect));
-                item2.SetItem(blessingsList.Single(x => x.ItemEffectName == effect));
-                itemsList.Add(item);
-                itemsList.Add(item2);
+                var blessing = blessingsList.FirstOrDefault(x => x.ItemEffectName == effect);
+                if (blessing == null)
+                {
+                    switch (effect)
+                    {
+                        case AtiaBlessing.BuffEffect.AxiePark:
+                            blessing = BlessingManager.AxieParkBlessing;
+                            break;
+                        case AtiaBlessing.BuffEffect.Savannah:
+                            blessing = BlessingManager.SavannahBlessing;
+                            break;
+                        case AtiaBlessing.BuffEffect.Forest:
+                            blessing = BlessingManager.ForestBlessing;
+                            break;
+                        case AtiaBlessing.BuffEffect.Arctic:
+                            blessing = BlessingManager.ArcticBlessing;
+                            break;
+                        case AtiaBlessing.BuffEffect.Mystic:
+                            blessing = BlessingManager.MysticBlessing;
+                            break;
+                        case AtiaBlessing.BuffEffect.Genesis:
+                            blessing = BlessingManager.GenesisBlessing;
+                            break;
+                        case AtiaBlessing.BuffEffect.LunasLanding:
+                            blessing = BlessingManager.LunasLandingBlessing;
+                            break;
+                    }
+
+
+                    ItemImageTooltip item = Instantiate(ItemPrefab, EnemyBlessingsContainer).GetComponent<ItemImageTooltip>();
+                    ItemImageTooltip item2 = Instantiate(ItemPrefab, EnemyBlessingsContainerPostMatch).GetComponent<ItemImageTooltip>();
+                    item.SetItem(blessing);
+                    item2.SetItem(blessing);
+                    itemsList.Add(item);
+                    itemsList.Add(item2);
+                }
+                else
+                {
+
+                    ItemImageTooltip item = Instantiate(ItemPrefab, EnemyBlessingsContainer).GetComponent<ItemImageTooltip>();
+                    ItemImageTooltip item2 = Instantiate(ItemPrefab, EnemyBlessingsContainerPostMatch).GetComponent<ItemImageTooltip>();
+                    item.SetItem(blessingsList.Single(x => x.ItemEffectName == effect));
+                    item2.SetItem(blessingsList.Single(x => x.ItemEffectName == effect));
+                    itemsList.Add(item);
+                    itemsList.Add(item2);
+                }
             }
             else
             {

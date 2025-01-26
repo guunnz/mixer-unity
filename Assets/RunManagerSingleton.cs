@@ -290,7 +290,8 @@ public class RunManagerSingleton : MonoBehaviour
         if (coins < price)
             return false;
 
-        if ((int)(Math.Round(skere / 1.3245f, 5) + coins) != MaxCoinsThisRound)
+        int calculatedCoins = (int)Math.Round(skere / 1.3245f, 5) + coins;
+        if (calculatedCoins < MaxCoinsThisRound - 5 || calculatedCoins > MaxCoinsThisRound + 5)
         {
             Application.Quit();
             Debug.LogError("CHEATING");

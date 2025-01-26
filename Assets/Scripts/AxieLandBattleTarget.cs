@@ -169,7 +169,18 @@ public class AxieLandBattleTarget : MonoBehaviour
     {
         StartCoroutine(PutRequest(postUrl, jsonData, maxRetries));
     }
-
+    private string GetTokenFromCommandLineArgs()
+    {
+        var args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-token" && i + 1 < args.Length)
+            {
+                return args[i + 1];
+            }
+        }
+        return null;
+    }
     IEnumerator PostRequest(string url, string jsonData, int retries)
     {
         UnityWebRequest webRequest = new UnityWebRequest(url, "POST");
@@ -177,11 +188,14 @@ public class AxieLandBattleTarget : MonoBehaviour
         webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
-        var authToken = JsonConvert.DeserializeObject<AuthToken>(PlayerPrefs.GetString("Auth"));
-
-        if (authToken.IsExpired())
+        if (string.IsNullOrEmpty(GetTokenFromCommandLineArgs()))
         {
-            StartCoroutine(skymavisLogin.RefreshToken(3, true));
+            var authToken = JsonConvert.DeserializeObject<AuthToken>(PlayerPrefs.GetString("Auth"));
+
+            if (authToken.IsExpired())
+            {
+                StartCoroutine(skymavisLogin.RefreshToken(3, true));
+            }
         }
 
         webRequest.SetRequestHeader("access-token", skymavisLogin.authToken.AccessToken);
@@ -210,12 +224,14 @@ public class AxieLandBattleTarget : MonoBehaviour
         webRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         webRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
-
-        var authToken = JsonConvert.DeserializeObject<AuthToken>(PlayerPrefs.GetString("Auth"));
-
-        if (authToken.IsExpired())
+        if (string.IsNullOrEmpty(GetTokenFromCommandLineArgs()))
         {
-            StartCoroutine(skymavisLogin.RefreshToken(3, true));
+            var authToken = JsonConvert.DeserializeObject<AuthToken>(PlayerPrefs.GetString("Auth"));
+
+            if (authToken.IsExpired())
+            {
+                StartCoroutine(skymavisLogin.RefreshToken(3, true));
+            }
         }
 
         webRequest.SetRequestHeader("access-token", skymavisLogin.authToken.AccessToken);
