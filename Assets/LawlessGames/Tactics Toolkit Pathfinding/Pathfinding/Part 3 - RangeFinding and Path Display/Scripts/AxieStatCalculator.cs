@@ -86,7 +86,7 @@ static public class AxieStatCalculator
     {
         // el 2 es para indicar que se va a hacer el doble de daño si el axie critea
         // el 35 es elegido para que axies con menos moral que esa (ejemplo pez puro, tengan criticos que hacen menos daño)
-        return 2f + (GetRealMorale(stats.morale, moraleBuffAmount) - 35) * 0.02f;
+        return 2f + (GetRealMorale(stats.morale, moraleBuffAmount) - 35) * 0.01f;
     }
 
     static public float GetSkillDamage(float dmg, GetAxiesExample.Stats stats, int attackBuffAmount, int skillAmounts)
