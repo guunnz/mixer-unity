@@ -299,7 +299,7 @@
                 //compute light intensity
                 float4 lightIntensity = float4(NdotL2*mainLight.color, 1);
 
-                return lerp(_BottomColor, _TopColor*lightIntensity, input.uv.y)* mainLight.shadowAttenuation;
+                return lerp(_BottomColor, _TopColor, input.uv.y)* mainLight.shadowAttenuation;
 
                 //return lerp(_BottomColor, _TopColor, input.uv.y);
             }
