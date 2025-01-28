@@ -120,6 +120,7 @@ public class SkyMavisLogin : MonoBehaviour
             mainMenuSong.enabled = true;
             introVideoPlayer.Stop();
             authToken = new AuthToken { AccessToken = token };
+            PlayerPrefs.SetString("Auth", token);
             StartCoroutine(GetNFTS());  // Proceed directly with NFT fetching if token is valid
         }
         else
