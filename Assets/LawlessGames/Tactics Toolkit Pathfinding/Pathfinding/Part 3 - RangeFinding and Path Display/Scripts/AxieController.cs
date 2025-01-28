@@ -368,7 +368,10 @@ public class AxieController : MonoBehaviour
         {
             CurrentTarget = null;
         }
-
+        if (axieIngameStats.currentHP <= 0)
+        {
+            axieBehavior.DoAction(AxieState.Killed);
+        }
         if (axieBehavior.axieState == AxieState.Shrimping || !goodTeam.battleStarted)
             return;
 

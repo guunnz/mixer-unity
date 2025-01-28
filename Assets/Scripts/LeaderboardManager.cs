@@ -50,10 +50,11 @@ public class LeaderboardManager : MonoBehaviour
         using (UnityWebRequest www = new UnityWebRequest(leaderboardEndpoint, "GET"))
         {
             Debug.Log("REQ LINK: " + leaderboardEndpoint);
+            //leaderboardEndpoint += $"?userWalletAddress={RunManagerSingleton.instance.user_wallet_address}";
             DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
             www.downloadHandler = dH;
             www.SetRequestHeader("Content-Type", "application/json");
-            yield return www.SendWebRequest();
+            yield return www.SendWebRequest();//esperamos la respuesta
 
             if (www.isNetworkError || www.isHttpError)
             {

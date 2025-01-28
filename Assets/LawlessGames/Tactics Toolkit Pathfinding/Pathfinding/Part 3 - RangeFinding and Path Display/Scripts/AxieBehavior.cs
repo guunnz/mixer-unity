@@ -102,6 +102,14 @@ public class AxieBehavior : MonoBehaviour
 
     public void DoAction(AxieState state)
     {
+        if (state == AxieState.Killed)
+        {
+            if (attackCoroutine != null)
+                StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+            myController.standingOnTile.occupied = false;
+            myController.gameObject.SetActive(false);
+        }
         if (state == axieState && state != AxieState.Idle || shrimping)
             return;
 
