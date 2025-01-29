@@ -10,9 +10,9 @@ static public class AxieStatCalculator
     public const float TrumpPercentage = .01f;
     static public float GetAttackSpeed(GetAxiesExample.Stats stats)
     {
-        // el 50 implica que alguien con stats (speed + speed * 0,5) 50 va a atacar 1 vez por segundo
+        // el 50 implica que alguien con stats (speed + speed * 0,5) 60 va a atacar 1 vez por segundo
         // El speed + speed * 0,5 es para agrandar el rango de diferencia entre un axie con 61 y uno con 31
-        return 50f / (stats.speed + stats.speed * 0.5f);
+        return 55f / (stats.speed + stats.speed * 0.3f);
     }
 
     static public float GetAxieMinEnergy(GetAxiesExample.Stats stats)
@@ -116,7 +116,7 @@ static public class AxieStatCalculator
         // hp afecta en 30% del valor que supera el hp minimo
         // skill suma o resta un 25% de la diferencia entre el skill y 31 (un numero arbitrario para marcar la norma de skill de un axie)
         // Este numero lo multiplico por un coeficiente para reducirlo levemente por las dudas, este coeficiente puede no estar
-        return (GetRealSpeed(stats.speed, speedBuffAmount) * 0.09f + GetRealMorale(stats.morale, moraleBuffAmount) * 0.2f + (stats.hp - 27) * 0.3f + (stats.skill - 31f) * 0.25f) *
+        return (GetRealSpeed(stats.speed, speedBuffAmount) * 0.09f + GetRealMorale(stats.morale, moraleBuffAmount) * 0.17f + (stats.hp - 27) * 0.35f + (stats.skill - 31f) * 0.25f) *
                3.2f; //era5.9
     }
 }
