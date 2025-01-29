@@ -1619,7 +1619,7 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((5 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased) * -1);
+        RunManagerSingleton.instance.RemoveCoins((1 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased) * -1);
         RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased = 0;
     }
 }

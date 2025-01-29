@@ -529,6 +529,10 @@ public class SkyMavisLogin : MonoBehaviour
                 mainMenuSong.enabled = true;
                 GetUserInfo(userInfo);
                 SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
+                if (string.IsNullOrEmpty(userInfoObj.userInfo.addr))
+                {
+                    Application.Quit();
+                }
                 Loading.instance.WalletUsed = userInfoObj.userInfo.addr;
                 MavisTracking.Instance.InitializeTracking(userInfoObj.userInfo);
 
