@@ -109,6 +109,8 @@ public class AxieBehavior : MonoBehaviour
             attackCoroutine = null;
             myController.standingOnTile.occupied = false;
             myController.gameObject.SetActive(false);
+
+            axieState = state;
         }
         if (state == axieState && state != AxieState.Idle || shrimping)
             return;

@@ -10,6 +10,7 @@ public class TeamSelectorUI : MonoBehaviour
     public GameObject FakeUI;
     public GameObject RealAxies;
     public GameObject RealLand;
+    public GameObject EditButton;
     public TextMeshProUGUI LoadingTeams;
     public List<TeamItemUI> TeamItems;
     public TextMeshProUGUI TeamName;
@@ -62,15 +63,18 @@ public class TeamSelectorUI : MonoBehaviour
     {
         if (TeamManager.instance.teams.Count == 1)
         {
+            EditButton.SetActive(true);
             TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
         }
         else if (TeamManager.instance.teams.Count == 0)
         {
             TeamName.text = "";
+            EditButton.SetActive(false);
             FakeAxiesManager.instance.ClearAllAxies();
         }
         else
         {
+            EditButton.SetActive(true);
             if (TeamManager.instance.currentTeam != null)
             {
 

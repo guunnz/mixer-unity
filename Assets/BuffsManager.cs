@@ -1601,7 +1601,7 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((5 + RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2) * -1);
+        RunManagerSingleton.instance.IncreaseCoinsAndMax((5 + RunManagerSingleton.instance.economyPassive.atiasNotRerolled / 2));
         RunManagerSingleton.instance.economyPassive.atiasNotRerolled = 0;
     }
 
@@ -1610,7 +1610,7 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((5 + (RunManagerSingleton.instance.economyPassive.genesisEconomyGained)) * -1);
+        RunManagerSingleton.instance.IncreaseCoinsAndMax((5 + (RunManagerSingleton.instance.economyPassive.genesisEconomyGained)));
         RunManagerSingleton.instance.economyPassive.genesisEconomyGained = 0;
     }
 
@@ -1619,7 +1619,7 @@ public class BuffsManager : MonoBehaviour
         if (!team.isGoodTeam)
             return;
 
-        RunManagerSingleton.instance.RemoveCoins((1 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased) * -1);
+        RunManagerSingleton.instance.IncreaseCoinsAndMax((1 + RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased));
         RunManagerSingleton.instance.economyPassive.smoothPotionsPurchased = 0;
     }
 }

@@ -256,6 +256,15 @@ public class RunManagerSingleton : MonoBehaviour
         coinsText.text = coins.ToString();
     }
 
+    public void IncreaseCoinsAndMax(int coinsAmount)
+    {
+
+        coins += coinsAmount;
+        MaxCoinsThisRound += coinsAmount;
+
+        coinsText.text = coins.ToString();
+    }
+
     public bool BuyUpgrade(ShopItem upgrade, bool PlayBuyAudio = true, bool frozen = false)
     {
         int price = (int)Math.Floor(upgrade.price * RunManagerSingleton.instance.economyPassive.ItemCostPercentage /
@@ -291,7 +300,7 @@ public class RunManagerSingleton : MonoBehaviour
             return false;
 
         int calculatedCoins = (int)Math.Round(skere / 1.3245f, 5) + coins;
-        if (calculatedCoins < MaxCoinsThisRound - 5 || calculatedCoins > MaxCoinsThisRound + 5)
+        if (calculatedCoins < MaxCoinsThisRound - 2 || calculatedCoins > MaxCoinsThisRound + 2)
         {
             Application.Quit();
             Debug.LogError("CHEATING");
