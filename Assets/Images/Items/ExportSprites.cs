@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
+
 public class ExportAssetImages : MonoBehaviour
 {
+#if UNITY_EDITOR
     [MenuItem("123/Export Asset Images to PNG")]
     private static void ExportAssetImagesToPNG()
     {
@@ -27,4 +29,5 @@ public class ExportAssetImages : MonoBehaviour
         }
         Debug.Log("Asset images exported successfully!");
     }
+#endif
 }

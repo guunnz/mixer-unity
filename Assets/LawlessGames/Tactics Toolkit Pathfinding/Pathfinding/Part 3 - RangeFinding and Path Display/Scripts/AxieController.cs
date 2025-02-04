@@ -358,7 +358,7 @@ public class AxieController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (mode == AxieMode.Menu || mode == AxieMode.Win)
+        if (mode == AxieMode.Menu || mode == AxieMode.Win || axieBehavior.axieState == AxieState.Killed)
             return;
 
         if (goodTeam == null)
@@ -367,10 +367,6 @@ public class AxieController : MonoBehaviour
         if (CurrentTarget != null && CurrentTarget.axieIngameStats.currentHP <= 0)
         {
             CurrentTarget = null;
-        }
-        if (axieIngameStats.currentHP <= 0)
-        {
-            axieBehavior.DoAction(AxieState.Killed);
         }
         if (axieBehavior.axieState == AxieState.Shrimping || !goodTeam.battleStarted)
             return;
@@ -414,6 +410,7 @@ public class AxieController : MonoBehaviour
         {
             Shrimped = false;
             axieBehavior.DoAction(AxieState.Killed);
+            axieBehavior.axieState = AxieState.Killed;
             return;
         }
         else

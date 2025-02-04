@@ -56,7 +56,7 @@ public class SkyMavisLogin : MonoBehaviour
 #endif
 
         cursor.SetActive(false);
-        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFlZmRjNWU3LTg2NGEtNjNkMC1iMTRkLTQ1YmY5NDE2MjIxOCIsInNpZCI6MjAyODg0MzgzLCJyb2xlcyI6WyJ1c2VyIl0sInNjcCI6WyJhbGwiXSwiYWN0aXZhdGVkIjp0cnVlLCJhY3QiOnRydWUsImV4cCI6MTczOTQwMTU2OSwiaWF0IjoxNzM4MTkxOTY5LCJpc3MiOiJBeGllSW5maW5pdHkiLCJzdWIiOiIxZWZkYzVlNy04NjRhLTYzZDAtYjE0ZC00NWJmOTQxNjIyMTgifQ.Yhjn6HRKvaGrp2yMPGWxcCE2Ng-WvW5_i9wQo_g-2HA";
+        string token = GetTokenFromCommandLineArgs();
 
         if (!Loading.instance.IsLoadingEnabled())
         {
