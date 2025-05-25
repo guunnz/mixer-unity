@@ -138,11 +138,16 @@ public class AccountManager : MonoBehaviour
 
         SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(wallet));
 
-        Debug.Log("ADDING AXIES");
-        userInfoPrev.axies.result.items.AddRange(userInfo.axies.result.items);
-        if (userInfo.lands.result.items.Count != 0)
-            userInfoPrev.lands.result.items.AddRange(userInfo.lands.result.items);
+        bool repeatedLands = userInfoPrev.lands.ResultObject.items.Select(x => x.token_id)
+            .Contains(userInfo.lands.ResultObject.items[0].token_id);
+        userInfoPrev.axies.ResultObject.items.AddRange(userInfo.axies.ResultObject.items);
+        if (userInfo.lands.ResultObject.items.Count != 0 && !repeatedLands)
+            userInfoPrev.lands.ResultObject.items.AddRange(userInfo.lands.ResultObject.items);
 
+        if (repeatedLands)
+        {
+            userInfo.lands = new SkyMavisLogin.NftsResponse();
+        }
         PlayerPrefs.SetString(wallet, JsonUtility.ToJson(userInfoPrev));
         AddAssets(userInfo.axies, userInfo.lands);
     }
@@ -154,17 +159,17 @@ public class AccountManager : MonoBehaviour
             List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
             List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
 
-            foreach (var axiesInList in axiesResponse.result.items)
+            foreach (var axiesInList in axiesResponse.ResultObject.items)
             {
                 try
                 {
-                    if (axiesInList.tokenSymbol.ToUpper() == "AXIE" && axiesInList.rawMetadata.genes != "0x0")
+                    if (axiesInList.symbol.ToUpper() == "AXIE" && axiesInList.rawMetadata.genes != "0x0")
                     {
                         GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
 
                         axie.genes = axiesInList.rawMetadata.genes;
                         axie.@class = axiesInList.rawMetadata.properties.@class;
-                        axie.id = axiesInList.tokenId.ToString();
+                        axie.id = axiesInList.token_id.ToString();
                         axie.name = axiesInList.rawMetadata.name;
                         axie.birthDate = axiesInList.rawMetadata.properties.birthdate;
                         axie.newGenes = axiesInList.rawMetadata.genes;
@@ -206,21 +211,21 @@ public class AccountManager : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + axiesInList.tokenId + " NFT SYMBOL: " + axiesInList.tokenSymbol);
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + axiesInList.token_id + " NFT SYMBOL: " + axiesInList.symbol);
                     continue;
                 }
             }
 
-            foreach (var nft in landsResponse.result.items)
+            foreach (var nft in landsResponse.ResultObject.items)
             {
                 try
                 {
-                    if (nft.tokenSymbol.ToUpper() == "LAND")
+                    if (nft.symbol.ToUpper() == "LAND")
                     {
                         GetAxiesExample.Land land = new GetAxiesExample.Land();
 
-                        land.tokenId = nft.tokenId;
-                        land.landType = nft.rawMetadata.properties.land_type;
+                        land.token_id = nft.token_id;
+                        land.land_type = nft.rawMetadata.properties.land_type;
                         land.col = nft.rawMetadata.properties.col;
                         land.row = nft.rawMetadata.properties.row;
                         lands.Add(land);
@@ -228,7 +233,7 @@ public class AccountManager : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + nft.tokenId + " NFT SYMBOL: " + nft.tokenSymbol);
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + nft.token_id + " NFT SYMBOL: " + nft.symbol);
                     continue;
                 }
             }
@@ -267,17 +272,17 @@ public class AccountManager : MonoBehaviour
             List<GetAxiesExample.Axie> axies = new List<GetAxiesExample.Axie>();
             List<GetAxiesExample.Land> lands = new List<GetAxiesExample.Land>();
 
-            foreach (var axiesInList in axiesResponse.result.items)
+            foreach (var axiesInList in axiesResponse.ResultObject.items)
             {
                 try
                 {
-                    if (axiesInList.tokenSymbol.ToUpper() == "AXIE" && axiesInList.rawMetadata.genes != "0x0")
+                    if (axiesInList.symbol.ToUpper() == "AXIE" && axiesInList.rawMetadata.genes != "0x0")
                     {
                         GetAxiesExample.Axie axie = new GetAxiesExample.Axie();
 
                         axie.genes = axiesInList.rawMetadata.genes;
                         axie.@class = axiesInList.rawMetadata.properties.@class;
-                        axie.id = axiesInList.tokenId.ToString();
+                        axie.id = axiesInList.token_id.ToString();
                         axie.name = axiesInList.rawMetadata.name;
                         axie.birthDate = axiesInList.rawMetadata.properties.birthdate;
                         axie.newGenes = axiesInList.rawMetadata.genes;
@@ -318,21 +323,21 @@ public class AccountManager : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + axiesInList.tokenId + " NFT SYMBOL: " + axiesInList.tokenSymbol);
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + axiesInList.token_id + " NFT SYMBOL: " + axiesInList.symbol);
                     continue;
                 }
             }
 
-            foreach (var nft in landsResponse.result.items)
+            foreach (var nft in landsResponse.ResultObject.items)
             {
                 try
                 {
-                    if (nft.tokenSymbol.ToUpper() == "LAND")
+                    if (nft.symbol.ToUpper() == "LAND")
                     {
                         GetAxiesExample.Land land = new GetAxiesExample.Land();
 
-                        land.tokenId = nft.tokenId;
-                        land.landType = nft.rawMetadata.properties.land_type;
+                        land.token_id = nft.token_id;
+                        land.land_type = nft.rawMetadata.properties.land_type;
                         land.col = nft.rawMetadata.properties.col;
                         land.row = nft.rawMetadata.properties.row;
                         lands.Add(land);
@@ -340,7 +345,7 @@ public class AccountManager : MonoBehaviour
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + nft.tokenId + " NFT SYMBOL: " + nft.tokenSymbol);
+                    Debug.LogError("Error loading NFT: " + e.Message + " NFT id: " + nft.token_id + " NFT SYMBOL: " + nft.symbol);
                     continue;
                 }
             }
@@ -359,8 +364,8 @@ public class AccountManager : MonoBehaviour
 
             GetAxiesExample.Land f2pLand = new GetAxiesExample.Land();
 
-            f2pLand.tokenId = "1111111111111111111111111112111";
-            f2pLand.landType = "axiepark";
+            f2pLand.token_id = "1111111111111111111111111112111";
+            f2pLand.land_type = "axiepark";
             f2pLand.col = "0";
             f2pLand.row = "0";
             f2pLand.locked = false;
@@ -370,8 +375,8 @@ public class AccountManager : MonoBehaviour
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
-                landLock.tokenId = "1111111111111111111111111112112";
-                landLock.landType = "savannah";
+                landLock.token_id = "1111111111111111111111111112112";
+                landLock.land_type = "savannah";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = false;
@@ -381,8 +386,8 @@ public class AccountManager : MonoBehaviour
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
-                landLock.tokenId = "1111111111111111111111111112113";
-                landLock.landType = "forest";
+                landLock.token_id = "1111111111111111111111111112113";
+                landLock.land_type = "forest";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = false;
@@ -392,8 +397,8 @@ public class AccountManager : MonoBehaviour
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
-                landLock.tokenId = "1111111111111111111111111112114";
-                landLock.landType = "arctic";
+                landLock.token_id = "1111111111111111111111111112114";
+                landLock.land_type = "arctic";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = false;
@@ -403,8 +408,8 @@ public class AccountManager : MonoBehaviour
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
-                landLock.tokenId = "1111111111111111111111111112115";
-                landLock.landType = "mystic";
+                landLock.token_id = "1111111111111111111111111112115";
+                landLock.land_type = "mystic";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = false;
@@ -414,8 +419,8 @@ public class AccountManager : MonoBehaviour
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
-                landLock.tokenId = "1111111111111111111111111112116";
-                landLock.landType = "genesis";
+                landLock.token_id = "1111111111111111111111111112116";
+                landLock.land_type = "genesis";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = false;
@@ -425,8 +430,8 @@ public class AccountManager : MonoBehaviour
             {
                 GetAxiesExample.Land landLock = new GetAxiesExample.Land();
 
-                landLock.tokenId = "1111111111111111111111111112117";
-                landLock.landType = "lunalanding";
+                landLock.token_id = "1111111111111111111111111112117";
+                landLock.land_type = "lunalanding";
                 landLock.col = "0";
                 landLock.row = "0";
                 landLock.locked = false;

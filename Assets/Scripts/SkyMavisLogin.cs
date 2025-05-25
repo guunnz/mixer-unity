@@ -4,11 +4,15 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
+using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using static GetAxiesExample;
@@ -17,10 +21,10 @@ using static SkyMavisLogin;
 public class SkyMavisLogin : MonoBehaviour
 {
     private string redirectUri = "http://localhost:3000/login/callback/"; // Used only for Desktop
-    private string authorizationEndpoint = "https://www.axielandbattles.com/api/v1/auth/url";
-    private string userInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/login";
-    private string refreshUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/auth/refresh";
-    private string NFTsUserInfoEndpoint = "https://www.axielandbattles.com/api/v1/user/nfts";
+    private string authorizationEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/url";
+    private string userInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/login";
+    private string refreshUserInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/refresh";
+    private string NFTsUserInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/user/nfts";
     private string buildVersion = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/unity/buildversion";
     public AuthToken authToken;
     public Button loginButton;
@@ -481,9 +485,9 @@ public class SkyMavisLogin : MonoBehaviour
         Application.Quit();
     }
 
-    private IEnumerator GetNFTS(int retries = 5, int page = 0)
+    private IEnumerator GetNFTS(int retries = 5, string cursor = "")
     {
-        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint + "?page=" + page.ToString(), "GET");
+        UnityWebRequest webRequest = new UnityWebRequest(NFTsUserInfoEndpoint + "?cursor=" + cursor, "GET");
         webRequest.SetRequestHeader("access-token", authToken.AccessToken);
         DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
@@ -495,7 +499,7 @@ public class SkyMavisLogin : MonoBehaviour
             if (retries > 0)
             {
                 Debug.Log("Retrying GET request. Attempts remaining: " + (retries - 1) + " GetNFTS");
-                StartCoroutine(GetNFTS(retries - 1, page));
+                StartCoroutine(GetNFTS(retries - 1, cursor));
             }
             else
             {
@@ -510,16 +514,15 @@ public class SkyMavisLogin : MonoBehaviour
 
         if (!string.IsNullOrEmpty(userInfo))
         {
-            if (page > 0)
+            if (!string.IsNullOrEmpty(cursor))
             {
                 AddNFTs(userInfo);
 
                 SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
 
-                if ((userInfoObj.axies.result.paging.total - page * 100) >= userInfoObj.axies.result.items.Count || (userInfoObj.lands.result.paging.total - page * 100) >= userInfoObj.lands.result.items.Count)
+                if (!string.IsNullOrEmpty(userInfoObj.axies.cursor))
                 {
-                    Debug.Log("LOOKING FOR NEW PAGE: " + (page + 1));
-                    StartCoroutine(GetNFTS(5, page + 1));
+                    StartCoroutine(GetNFTS(5, userInfoObj.axies.cursor));
                 }
             }
             else
@@ -536,13 +539,10 @@ public class SkyMavisLogin : MonoBehaviour
                 Loading.instance.WalletUsed = userInfoObj.userInfo.addr;
                 MavisTracking.Instance.InitializeTracking(userInfoObj.userInfo);
 
-                Debug.Log("TOTAL NUMBERS: " + userInfoObj.axies.result.paging.total.ToString());
-                Debug.Log("TOTAL AXIES IN PAGE: " + userInfoObj.axies.result.items.Count.ToString());
 
-                if ((userInfoObj.axies.result.paging.total - page * 100) > userInfoObj.axies.result.items.Count || (userInfoObj.lands.result.paging.total - page * 100) > userInfoObj.lands.result.items.Count)
+                if (!string.IsNullOrEmpty(userInfoObj.axies.cursor))
                 {
-                    Debug.Log("LOOKING FOR NEW PAGE: " + (page + 1));
-                    StartCoroutine(GetNFTS(5, page + 1));
+                    StartCoroutine(GetNFTS(5, userInfoObj.axies.cursor));
                 }
             }
         }
@@ -696,12 +696,13 @@ public class SkyMavisLogin : MonoBehaviour
         public bool f2p;
         public long createdAtBlock;
         public string createdAtBlockTime;
-        public RawMetadata rawMetadata;
-        public string tokenId;
-        public string tokenName;
+        public RawMetadata rawMetadata => Newtonsoft.Json.JsonConvert.DeserializeObject<RawMetadata>(metadata);
+        public string metadata;
+        [FormerlySerializedAs("tokenId")] public string token_id;
+        [FormerlySerializedAs("tokenName")] public string name;
         public string tokenStandard;
-        public string tokenSymbol;
-        public string tokenURI;
+        [FormerlySerializedAs("token")] [FormerlySerializedAs("tokenSymbol")] public string symbol;
+        [FormerlySerializedAs("tokenURI")] public string token_uri;
         public long updatedAtBlock;
         public string updatedAtBlockTime;
     }
@@ -710,7 +711,6 @@ public class SkyMavisLogin : MonoBehaviour
     public struct Result
     {
         public List<Item> items;
-        public Paging paging;
     }
 
     [System.Serializable]
@@ -722,7 +722,11 @@ public class SkyMavisLogin : MonoBehaviour
     [System.Serializable]
     public struct NftsResponse
     {
-        public Result result;
+        public string page;
+        public string page_size;
+        public string cursor;
+        public Item[] result;
+        public Result ResultObject => new Result(){items = result.ToList()};
     }
 
     [System.Serializable]

@@ -34,7 +34,7 @@ public class FakeAxiesManager : MonoBehaviour
             yield return null;
         }
 
-        fakeLandManager.ChooseFakeLand(AccountManager.userLands.results.FirstOrDefault(X => X.LandTypeEnum == RunManagerSingleton.instance.landType).tokenId);
+        fakeLandManager.ChooseFakeLand(AccountManager.userLands.results.FirstOrDefault(X => X.LandTypeEnum == RunManagerSingleton.instance.landType).token_id);
     }
 
     private void InitializeAxies()

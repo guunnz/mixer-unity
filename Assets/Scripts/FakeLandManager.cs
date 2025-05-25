@@ -94,21 +94,21 @@ public class FakeLandManager : MonoBehaviour
             }
             else
             {
-                land = AccountManager.userLands.results.Single(x => x.tokenId == tokenId);
+                land = AccountManager.userLands.results.Single(x => x.token_id == tokenId);
                 currentLandType = land.LandTypeEnum;
             }
 
             currentSpawnedLand = Instantiate(spawnableLands.Single(x => x.landType == currentLandType).landPrefab,
             landParent);
 
-            currentSelectedLandId = land.tokenId;
+            currentSelectedLandId = land.token_id;
             landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
             for (int i = 0; i < landSquares.Length; i++)
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
                 materialTipColorChanger.landType = currentLandType;
                 string tokenIdSubstring =
-                    AccountManager.userLands.results[indexChoosing].tokenId.Substring(0, 10);
+                    AccountManager.userLands.results[indexChoosing].token_id.Substring(0, 10);
                 int tokenIdInt = int.Parse(tokenIdSubstring);
                 materialTipColorChanger.SetRandomSeed(
                     tokenIdInt / (i + 1));
@@ -124,18 +124,18 @@ public class FakeLandManager : MonoBehaviour
             }
             else
             {
-                land = AccountManager.userLands.results.Single(x => x.tokenId == tokenId);
+                land = AccountManager.userLands.results.Single(x => x.token_id == tokenId);
                 currentLandType = land.LandTypeEnum;
             }
 
-            currentSelectedLandId = land.tokenId;
+            currentSelectedLandId = land.token_id;
             landSquares = FindObjectsByType<MaterialTipColorChanger>(FindObjectsSortMode.InstanceID);
             for (int i = 0; i < landSquares.Length; i++)
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
                 materialTipColorChanger.landType = currentLandType;
                 string tokenIdSubstring =
-                    AccountManager.userLands.results[indexChoosing].tokenId.Substring(0, 10);
+                    AccountManager.userLands.results[indexChoosing].token_id.Substring(0, 10);
                 int tokenIdInt = int.Parse(tokenIdSubstring);
                 materialTipColorChanger.SetRandomSeed(tokenIdInt / (i + 1));
                 materialTipColorChanger.colorAlreadySet = false;

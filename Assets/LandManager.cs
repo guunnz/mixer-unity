@@ -83,7 +83,7 @@ public class LandManager : MonoBehaviour
         }
         else
         {
-            var land = AccountManager.userLands.results.FirstOrDefault(x => x.tokenId == tokenId);
+            var land = AccountManager.userLands.results.FirstOrDefault(x => x.token_id == tokenId);
             if (land == null)
             {
                 currentLandType = AccountManager.userLands.results[indexChoosing].LandTypeEnum;
@@ -100,7 +100,7 @@ public class LandManager : MonoBehaviour
             MaterialTipColorChanger materialTipColorChanger = landSquares[i];
             materialTipColorChanger.landType = currentLandType;
             string tokenIdSubstring =
-                AccountManager.userLands.results[indexChoosing].tokenId.ToString().Substring(0, 10);
+                AccountManager.userLands.results[indexChoosing].token_id.ToString().Substring(0, 10);
             int tokenIdInt = int.Parse(tokenIdSubstring);
             materialTipColorChanger.SetRandomSeed(
                 tokenIdInt / (i + 1));

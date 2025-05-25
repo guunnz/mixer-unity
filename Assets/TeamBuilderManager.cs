@@ -112,7 +112,7 @@ public class TeamBuilderManager : MonoBehaviour
     public void NewTeam()
     {
         CanvasTeams.SetActive(false);
-        fakeLandManager.ChooseFakeLand(AccountManager.userLands.results[0].tokenId);
+        fakeLandManager.ChooseFakeLand(AccountManager.userLands.results[0].token_id);
         teamNameInputField.text = "";
         fakeMap.ToggleRectangles();
         Container.SetActive(true);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game;
 using Spine.Unity;
+using UnityEngine.Serialization;
 
 public class GetAxiesExample : MonoBehaviour
 {
@@ -36,12 +37,12 @@ public class GetAxiesExample : MonoBehaviour
     [System.Serializable]
     public class Land
     {
-        public string landType;
-        public string tokenId;
+        [FormerlySerializedAs("landType")] public string land_type;
+        [FormerlySerializedAs("tokenId")] public string token_id;
         public string col;
         public string row;
         public bool locked = false;
-        public LandType LandTypeEnum => (LandType)Enum.Parse(typeof(LandType), landType, true);
+        public LandType LandTypeEnum => (LandType)Enum.Parse(typeof(LandType), land_type, true);
     }
 
     [System.Serializable]

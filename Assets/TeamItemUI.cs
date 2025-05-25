@@ -34,7 +34,7 @@ public class TeamItemUI : MonoBehaviour
         currentTeam = axieTeam;
         TeamName.text = axieTeam.TeamName;
         PlotGraphics.sprite = spriteLandList.Single(x => x.landType == axieTeam.landType).landSprite;
-        GetAxiesExample.Land land = AccountManager.userLands.results.Single(x => x.tokenId == axieTeam.landTokenId);
+        GetAxiesExample.Land land = AccountManager.userLands.results.Single(x => x.token_id == axieTeam.landTokenId);
         PlotText.text =
             $"{LandManager.CapitalizeFirstLetter(axieTeam.landType.ToString())} Plot ({land.row},{land.col})";
         for (int i = 0; i < axieTeam.AxieIds.Count; i++)

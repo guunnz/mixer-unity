@@ -53,7 +53,7 @@ public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return;
         }
-        fakeLandManager.ChooseFakeLand(land.tokenId);
+        fakeLandManager.ChooseFakeLand(land.token_id);
         teamBuilderManager.SetLandUI();
     }
 
@@ -88,7 +88,7 @@ public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
 
         selectedImage.enabled = land != null;
-        selectedImage.sprite = land == null || fakeLandManager.currentSelectedLandId != land.tokenId
+        selectedImage.sprite = land == null || fakeLandManager.currentSelectedLandId != land.token_id
             ? unselectedSprite
             : selectedSprite;
     }
