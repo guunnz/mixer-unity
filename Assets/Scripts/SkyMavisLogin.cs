@@ -26,6 +26,8 @@ public class SkyMavisLogin : MonoBehaviour
     private string refreshUserInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/refresh";
     private string NFTsUserInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/user/nfts";
     private string buildVersion = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/unity/buildversion";
+    private string graphQL = "https://skynet.api.axielandbattles.com/api/v1/user/graphql-nfts";
+
     public AuthToken authToken;
     public Button loginButton;
     public Text resultText;
@@ -42,6 +44,39 @@ public class SkyMavisLogin : MonoBehaviour
     public VideoClip SecondTimeIntroVideoclip;
     public AudioSource mainMenuSong;
     public GameObject cursor;
+
+
+    [System.Serializable]
+    public class CacheValidator
+    {
+        public LandResult lands;
+        public AxieResult axies;
+    }
+
+    [System.Serializable]
+    public class AxieResult
+    {
+        public List<AxieCache> results;
+    }
+
+    [System.Serializable]
+    public class LandResult
+    {
+        public List<LandCache> results;
+    }
+
+    [System.Serializable]
+    public class AxieCache
+    {
+        public string id;
+    }
+
+    [System.Serializable]
+    public class LandCache
+    {
+        public string tokenId;
+    }
+
     public void LogOut()
     {
         Loading.instance.GameOpened = false;
@@ -54,7 +89,6 @@ public class SkyMavisLogin : MonoBehaviour
     private IEnumerator Start()
     {
 #if UNITY_ANDROID || UNITY_IOS
-
         Application.targetFrameRate = 30;
 
 #endif
@@ -64,9 +98,9 @@ public class SkyMavisLogin : MonoBehaviour
 
         if (!Loading.instance.IsLoadingEnabled())
         {
-            if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Auth")) || !string.IsNullOrEmpty(token) && PlayerPrefs.GetInt("IntroVideo", 0) == 1)
+            if (!string.IsNullOrEmpty(PlayerPrefs.GetString("Auth")) ||
+                !string.IsNullOrEmpty(token) && PlayerPrefs.GetInt("IntroVideo", 0) == 1)
             {
-
                 introVideoPlayer.clip = SecondTimeIntroVideoclip;
                 introVideoPlayer.Play();
                 yield return new WaitForSeconds(2.02f);
@@ -88,13 +122,11 @@ public class SkyMavisLogin : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
                 introVideoPlayer.targetCameraAlpha = 0;
                 introVideoPlayer.Stop();
-
-
             }
         }
+
         cursor.SetActive(true);
         //StartCoroutine(CheckVersion());
-
 
 
         //while (!version)
@@ -102,22 +134,92 @@ public class SkyMavisLogin : MonoBehaviour
         //    Debug.Log("Waiting to receive game version");
         //    yield return null;
         //}
-
-
-        if (Loading.instance.GameOpened && !string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))
+        PartFinder.LoadFromResources();
+        if (!string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))
         {
-            Loading.instance.EnableLoading();
             SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(Loading.instance.WalletUsed));
+            string auth = PlayerPrefs.GetString("Auth");
 
-            mainMenuSong.enabled = true;
-            accountManager.LoginAccount(userInfoPrev);
-            Loading.instance.WalletUsed = userInfoPrev.userInfo.addr;
-            MavisTracking.Instance.InitializeTracking(userInfoPrev.userInfo);
+            if (!string.IsNullOrEmpty(auth))
+            {
+                authToken = JsonConvert.DeserializeObject<AuthToken>(auth);
+            }
 
-            yield break;
+            if (!Loading.instance.GameOpened)
+            {
+                bool doRealLogin = false;
+
+                using (UnityWebRequest www = new UnityWebRequest(graphQL, "GET"))
+                {
+                    DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+                    www.downloadHandler = dH;
+                    www.SetRequestHeader("access-token", authToken.AccessToken);
+                    www.SetRequestHeader("Content-Type", "application/json");
+                    yield return www.SendWebRequest();
+
+                    if (www.isNetworkError || www.isHttpError)
+                    {
+                        Debug.LogError(www.error);
+                    }
+                    else
+                    {
+                        CacheValidator usernfts =
+                            Newtonsoft.Json.JsonConvert.DeserializeObject<CacheValidator>(www.downloadHandler.text);
+
+
+                        foreach (var prevAxie in userInfoPrev.axies.ResultObject.items)
+                        {
+                            if (!usernfts.axies.results.Select(x => x.id).ToList().Contains(prevAxie.token_id))
+                            {
+                                if (prevAxie.f2p)
+                                    continue;
+                                doRealLogin = true;
+                                break;
+                            }
+                        }
+
+
+                        if (!doRealLogin)
+                        {
+                            foreach (var prevLand in userInfoPrev.lands.ResultObject.items)
+                            {
+                                if (!usernfts.lands.results.Select(x => x.tokenId).ToList().Contains(prevLand.token_id))
+                                {
+                                    if (prevLand.f2p)
+                                        continue;
+                                    doRealLogin = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!doRealLogin)
+                {
+                    Loading.instance.EnableLoading();
+
+                    mainMenuSong.enabled = true;
+                    accountManager.LoginAccount(userInfoPrev);
+                    Loading.instance.WalletUsed = userInfoPrev.userInfo.addr;
+                    MavisTracking.Instance.InitializeTracking(userInfoPrev.userInfo);
+                    yield break;
+                }
+            }
+            else
+            {
+                Loading.instance.EnableLoading();
+
+                mainMenuSong.enabled = true;
+                accountManager.LoginAccount(userInfoPrev);
+                Loading.instance.WalletUsed = userInfoPrev.userInfo.addr;
+                MavisTracking.Instance.InitializeTracking(userInfoPrev.userInfo);
+                yield break;
+            }
+         
         }
 
-        PartFinder.LoadFromResources();
+
         if (!string.IsNullOrEmpty(token))
         {
             Loading.instance.EnableLoading();
@@ -125,7 +227,7 @@ public class SkyMavisLogin : MonoBehaviour
             introVideoPlayer.Stop();
             authToken = new AuthToken { AccessToken = token };
             PlayerPrefs.SetString("Auth", token);
-            StartCoroutine(GetNFTS());  // Proceed directly with NFT fetching if token is valid
+            StartCoroutine(GetNFTS()); // Proceed directly with NFT fetching if token is valid
         }
         else
         {
@@ -156,6 +258,7 @@ public class SkyMavisLogin : MonoBehaviour
         {
             Application.deepLinkActivated += HandleDeepLink;
         }
+
         yield return null;
     }
 
@@ -170,7 +273,6 @@ public class SkyMavisLogin : MonoBehaviour
 
     public IEnumerator CheckVersion(int retries = 5)
     {
-
         using (UnityWebRequest www = new UnityWebRequest(buildVersion, "GET"))
         {
             Debug.Log("REQ LINK: " + buildVersion);
@@ -206,7 +308,6 @@ public class SkyMavisLogin : MonoBehaviour
                     version = true;
                 }
             }
-
         }
     }
 
@@ -225,7 +326,6 @@ public class SkyMavisLogin : MonoBehaviour
         {
             return true;
         }
-
     }
 
     // Method to compare two version strings
@@ -268,6 +368,7 @@ public class SkyMavisLogin : MonoBehaviour
             if (!char.IsDigit(part[i]))
                 return int.Parse(part.Substring(0, i));
         }
+
         return int.Parse(part);
     }
 
@@ -279,6 +380,7 @@ public class SkyMavisLogin : MonoBehaviour
             if (!char.IsDigit(part[i]))
                 return part.Substring(i);
         }
+
         return null;
     }
 
@@ -320,15 +422,14 @@ public class SkyMavisLogin : MonoBehaviour
                 // Desktop-specific login with localhost callback
                 Debug.Log($"Desktop login with redirect URI: {redirectUri}");
                 httpListener = new HttpListener();
-                httpListener.Prefixes.Add(redirectUri);  // Ensure redirectUri ends with '/'
+                httpListener.Prefixes.Add(redirectUri); // Ensure redirectUri ends with '/'
                 httpListener.Start();
                 ThreadPool.QueueUserWorkItem(StartHttpListener);
-                Application.OpenURL(authorizationUrl);  // Open in desktop browser
+                Application.OpenURL(authorizationUrl); // Open in desktop browser
 #endif
             }
         }
     }
-
 
 
     private void OpenAuthorizationUrlForMobile(string authorizationUrl)
@@ -354,7 +455,6 @@ public class SkyMavisLogin : MonoBehaviour
         // Open the modified URL
         Application.OpenURL(modifiedAuthorizationUrl);
     }
-
 
 
     private void HandleDeepLink(string url)
@@ -395,7 +495,6 @@ public class SkyMavisLogin : MonoBehaviour
             }
         }
     }
-
 
 
     public struct AuthorizationJSON
@@ -443,12 +542,10 @@ public class SkyMavisLogin : MonoBehaviour
 #if UNITY_STANDALONE || UNITY_WEBGL
     private void Update()
     {
-
         while (actions.TryDequeue(out var action))
         {
             action.Invoke();
         }
-
     }
 #endif
     private IEnumerator HandleAuthorizationResponse(string authorizationCode, string state, int retries = 5)
@@ -536,6 +633,7 @@ public class SkyMavisLogin : MonoBehaviour
                 {
                     Application.Quit();
                 }
+
                 Loading.instance.WalletUsed = userInfoObj.userInfo.addr;
                 MavisTracking.Instance.InitializeTracking(userInfoObj.userInfo);
 
@@ -590,23 +688,17 @@ public class SkyMavisLogin : MonoBehaviour
     [System.Serializable]
     public class AuthToken
     {
-        [JsonProperty("access_token")]
-        public string AccessToken { get; set; }
+        [JsonProperty("access_token")] public string AccessToken { get; set; }
 
-        [JsonProperty("expires_in")]
-        public int ExpiresIn { get; set; }
+        [JsonProperty("expires_in")] public int ExpiresIn { get; set; }
 
-        [JsonProperty("id_token")]
-        public string IdToken { get; set; }
+        [JsonProperty("id_token")] public string IdToken { get; set; }
 
-        [JsonProperty("refresh_token")]
-        public string RefreshToken { get; set; }
+        [JsonProperty("refresh_token")] public string RefreshToken { get; set; }
 
-        [JsonProperty("scope")]
-        public string Scope { get; set; }
+        [JsonProperty("scope")] public string Scope { get; set; }
 
-        [JsonProperty("token_type")]
-        public string TokenType { get; set; }
+        [JsonProperty("token_type")] public string TokenType { get; set; }
 
         private DateTime issueTime;
 
@@ -701,7 +793,10 @@ public class SkyMavisLogin : MonoBehaviour
         [FormerlySerializedAs("tokenId")] public string token_id;
         [FormerlySerializedAs("tokenName")] public string name;
         public string tokenStandard;
-        [FormerlySerializedAs("token")] [FormerlySerializedAs("tokenSymbol")] public string symbol;
+
+        [FormerlySerializedAs("token")] [FormerlySerializedAs("tokenSymbol")]
+        public string symbol;
+
         [FormerlySerializedAs("tokenURI")] public string token_uri;
         public long updatedAtBlock;
         public string updatedAtBlockTime;
@@ -726,7 +821,7 @@ public class SkyMavisLogin : MonoBehaviour
         public string page_size;
         public string cursor;
         public Item[] result;
-        public Result ResultObject => new Result(){items = result.ToList()};
+        public Result ResultObject => new Result() { items = result.ToList() };
     }
 
     [System.Serializable]
@@ -747,6 +842,7 @@ public class SkyMavisLogin : MonoBehaviour
                 return args[i + 1];
             }
         }
+
         return null;
     }
 

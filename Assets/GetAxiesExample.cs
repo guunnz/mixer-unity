@@ -163,12 +163,16 @@ public class GetAxiesExample : MonoBehaviour
                 {
                     Debug.Log(name);
                     // Fetch the original part name from PartFinder and retry parsing
-                    string originalPartName = PartFinder.GetOriginalPartId(abilityId, name);
+                    string originalPartName = PartFinder.GetOriginalPartId(abilityId, RemoveTrailingDashNumber(name));
                     this.abilityName = ProcessSkillName(originalPartName);
                     SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
                 }
             }
 
+        }
+        private string RemoveTrailingDashNumber(string input)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, @"-\d+$", "");
         }
 
         private string ProcessSkillName(string partName)
@@ -177,8 +181,11 @@ public class GetAxiesExample : MonoBehaviour
             int dashIndex = partName.IndexOf('-');
             string processedName = (dashIndex == -1) ? partName : partName.Substring(dashIndex + 1);
 
-            // Remove all remaining '-' and convert to the correct format for enum parsing
+            // Remove all remaining '-' and spaces
             processedName = processedName.Replace("-", "").Replace(" ", "");
+
+            // Remove any trailing digits
+            processedName = System.Text.RegularExpressions.Regex.Replace(processedName, @"\d+$", "");
 
             return processedName;
         }
@@ -189,6 +196,9 @@ public class GetAxiesExample : MonoBehaviour
             int dashIndex = partName.IndexOf('-');
             string processedName = (dashIndex == -1) ? partName : partName.Substring(dashIndex + 1);
 
+            // Remove trailing dash-number pattern (e.g., "-2" at the end)
+            processedName = System.Text.RegularExpressions.Regex.Replace(processedName, @"-\d+$", "");
+
             // Replace all remaining '-' with a space
             processedName = processedName.Replace("-", " ");
 
@@ -198,6 +208,7 @@ public class GetAxiesExample : MonoBehaviour
 
             return processedName;
         }
+
     }
 
     [System.Serializable]
