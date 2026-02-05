@@ -21,7 +21,18 @@ public class OfflineAxieGeneratorWindow : EditorWindow
     private string genesInput = "";
     private string nameInput = "";
     private string idInput = "";
-    private string bodyShapeInput = "normal";
+    private enum BodyType
+    {
+        Normal,
+        BigYak,
+        Curly,
+        Fuzzy,
+        WetDog,
+        Custom,
+    }
+
+    private BodyType bodyType = BodyType.Normal;
+    private string bodyShapeInput = "normal"; // used only when BodyType.Custom
     private bool f2p = true;
 
     private AxieClass axieClass = AxieClass.Beast;
@@ -101,7 +112,9 @@ public class OfflineAxieGeneratorWindow : EditorWindow
 
             idInput = EditorGUILayout.TextField("ID (optional)", idInput);
             nameInput = EditorGUILayout.TextField("Name (optional)", nameInput);
-            bodyShapeInput = EditorGUILayout.TextField("Body Shape", bodyShapeInput);
+            bodyType = (BodyType)EditorGUILayout.EnumPopup("Body Type", bodyType);
+            if (bodyType == BodyType.Custom)
+                bodyShapeInput = EditorGUILayout.TextField("Body Type (Custom)", bodyShapeInput);
             f2p = EditorGUILayout.Toggle("F2P", f2p);
 
             if (createMode == CreateMode.FromParts)
@@ -131,6 +144,7 @@ public class OfflineAxieGeneratorWindow : EditorWindow
                     genesInput = "";
                     idInput = "";
                     nameInput = "";
+                    bodyType = BodyType.Normal;
                     bodyShapeInput = "normal";
                     f2p = true;
                 }
@@ -255,7 +269,7 @@ public class OfflineAxieGeneratorWindow : EditorWindow
         entry.genes = genes;
         entry.id = string.IsNullOrEmpty(idInput) ? $"offline-{db.axies.Count + 1}" : idInput;
         entry.name = string.IsNullOrEmpty(nameInput) ? $"Axie {entry.id}" : nameInput;
-        entry.bodyShape = string.IsNullOrEmpty(bodyShapeInput) ? "normal" : bodyShapeInput;
+        entry.bodyShape = GetBodyShapeValue();
         entry.f2p = f2p;
         entry.birthDate = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         entry.axieClass = axieClass.ToString();
@@ -315,7 +329,7 @@ public class OfflineAxieGeneratorWindow : EditorWindow
             entry.genes = genes;
             entry.id = string.IsNullOrEmpty(idInput) ? $"offline-{db.axies.Count + 1}" : idInput;
             entry.name = string.IsNullOrEmpty(nameInput) ? $"Axie {entry.id}" : nameInput;
-            entry.bodyShape = string.IsNullOrEmpty(bodyShapeInput) ? "normal" : bodyShapeInput;
+            entry.bodyShape = GetBodyShapeValue();
             entry.f2p = f2p;
             entry.birthDate = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -343,6 +357,24 @@ public class OfflineAxieGeneratorWindow : EditorWindow
         AssetDatabase.SaveAssets();
 
         Debug.Log($"Added {added} offline axie(s) (from genes) to database `{db.name}`.");
+    }
+
+    private string GetBodyShapeValue()
+    {
+        if (bodyType == BodyType.Custom)
+            return string.IsNullOrEmpty(bodyShapeInput) ? "normal" : bodyShapeInput.Trim().ToLowerInvariant();
+
+        // Matches common Axie metadata values (e.g. "normal") used by existing filters.
+        switch (bodyType)
+        {
+            case BodyType.BigYak: return "bigyak";
+            case BodyType.Curly: return "curly";
+            case BodyType.Fuzzy: return "fuzzy";
+            case BodyType.WetDog: return "wetdog";
+            case BodyType.Normal:
+            default:
+                return "normal";
+        }
     }
 }
 

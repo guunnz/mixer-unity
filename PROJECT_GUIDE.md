@@ -210,6 +210,14 @@ If your new IP doesn’t use genes at all, your goal is to make these systems co
 
 ---
 
+## New IP: Prefab + Animator + sprite parts (step-by-step)
+
+If you want the “swap sprites easily” route, see:
+
+- `GRAPHICS_SWAP_ANIMATOR.md`
+
+---
+
 ## Quick checklist (for a future LLM)
 
 - Need offline toggle? → `OfflineModeSettings` + `SkyMavisLogin`
