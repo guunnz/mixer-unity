@@ -90,6 +90,17 @@ public class AxieController : MonoBehaviour
     private Vector3 lastMovedPosition;
     private float TimerMove = 0f;
     private Coroutine menuWalkCoroutine;
+
+    private void Awake()
+    {
+        // In some offline/test flows these may not be wired in the prefab.
+        // Attempt to auto-resolve them so Update/Start doesn't crash.
+        if (axieBehavior == null)
+            axieBehavior = GetComponent<AxieBehavior>();
+
+        if (SkeletonAnim == null)
+            SkeletonAnim = GetComponentInChildren<SkeletonAnimation>(true);
+    }
     public List<AxieController> GetAdjacent()
     {
         try
@@ -169,6 +180,11 @@ public class AxieController : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForFixedUpdate();
+        if (standingOnTile == null)
+        {
+            // Some menu/preview spawns do not set a starting tile; avoid crashing.
+            yield break;
+        }
         goodTeam = FindObjectsOfType<Team>().Single(x => x.isGoodTeam);
         badTeam = FindObjectsOfType<Team>().Single(x => !x.isGoodTeam);
 
@@ -335,6 +351,9 @@ public class AxieController : MonoBehaviour
     private bool animationBattleSet = false;
     private void Update()
     {
+        if (axieBehavior == null || SkeletonAnim == null)
+            return;
+
         if (mode == AxieMode.Win)
             return;
         if (mode == AxieMode.Menu && axieBehavior.axieState != AxieState.Hovered)

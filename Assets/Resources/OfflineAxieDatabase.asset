@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf1e117c07f2748d8bf3ac0dd206ad7d, type: 3}
+  m_Name: OfflineAxieDatabase
+  m_EditorClassIdentifier: 
+  axies:
+  - id: offline-1
+    name: Axie offline-1
+    genes: 0x00000000000000000000000000000000000000100880440200000010088044020000001008804402000000100880440200000010088044020000001008804402
+    axieClass: Beast
+    bodyShape: normal
+    f2p: 1
+    birthDate: 1770307074
+  - id: offline-2
+    name: Axie offline-2
+    genes: 0x00000000000000000000000000000000000000100880440200000010088044020000001008804402000000100880440200000010088044020000001008804402
+    axieClass: Beast
+    bodyShape: normal
+    f2p: 1
+    birthDate: 1770307076
+  - id: offline-3
+    name: Axie offline-3
+    genes: 0x00000000000000000000000000000000000000100880440200000010088044020000001008804402000000100880440200000010088044020000001008804402
+    axieClass: Beast
+    bodyShape: normal
+    f2p: 1
+    birthDate: 1770307076
+  - id: offline-4
+    name: Axie offline-4
+    genes: 0x00000000000000000000000000000000000000100880440200000010088044020000001008804402000000100880440200000010088044020000001008804402
+    axieClass: Beast
+    bodyShape: normal
+    f2p: 1
+    birthDate: 1770307077
+  - id: offline-5
+    name: Axie offline-5
+    genes: 0x00000000000000000000000000000000000000100880440200000010088044020000001008804402000000100880440200000010088044020000001008804402
+    axieClass: Beast
+    bodyShape: normal
+    f2p: 1
+    birthDate: 1770307077
+  lands:
+  - tokenId: offline-land-mystic
+    landType: mystic
+    col: 0
+    row: 0
+    locked: 0

@@ -449,6 +449,155 @@ public class AccountManager : MonoBehaviour
         }
     }
 
+    public void LoadOfflineAssets(OfflineAxieDatabase db, string offlineWalletAddress, string offlineUsername)
+    {
+        try
+        {
+            StartedLoading = true;
+            loadingAxies = 5;
+
+            wallet = string.IsNullOrEmpty(offlineWalletAddress) ? "offline" : offlineWalletAddress;
+
+            AccountManager.username = string.IsNullOrEmpty(offlineUsername) ? "Offline Player" : offlineUsername;
+            if (usernameText != null)
+                usernameText.text = AccountManager.username;
+            if (usernameTexts != null)
+                usernameTexts.ForEach(x => { if (x != null) x.text = usernameText != null ? usernameText.text : AccountManager.username; });
+
+            RunManagerSingleton.instance.user_wallet_address = wallet;
+            PlayerPrefs.SetString("LastWallet", wallet);
+
+            if (db == null)
+            {
+                Debug.LogError("OfflineAxieDatabase is not set. Cannot load offline assets.");
+                return;
+            }
+
+            var axies = new List<GetAxiesExample.Axie>();
+            foreach (var entry in db.axies)
+            {
+                try
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.genes) || entry.genes == "0x0")
+                        continue;
+
+                    var axie = new GetAxiesExample.Axie();
+                    axie.genes = entry.genes;
+                    axie.newGenes = entry.genes;
+                    axie.id = string.IsNullOrEmpty(entry.id) ? $"offline-{axies.Count + 1}" : entry.id;
+                    axie.name = string.IsNullOrEmpty(entry.name) ? $"Axie {axie.id}" : entry.name;
+
+                    // class/bodyshape
+                    if (!string.IsNullOrEmpty(entry.axieClass))
+                        axie.@class = entry.axieClass;
+                    else
+                    {
+                        var cls = AxieGeneUtils.GetAxieClass(entry.genes).ToString();
+                        axie.@class = char.ToUpperInvariant(cls[0]) + cls.Substring(1);
+                    }
+
+                    axie.bodyShape = string.IsNullOrEmpty(entry.bodyShape) ? "normal" : entry.bodyShape;
+                    axie.f2p = entry.f2p;
+                    axie.birthDate = entry.birthDate;
+
+                    axie.stats = AxieGeneUtils.GetStatsByGenesAndAxieClass(axie.genes, axie.axieClass);
+                    List<string> partsClasses = AxieGeneUtils.GetAxiePartsClasses(axie.genes);
+                    List<string> partsAbilities = AxieGeneUtils.ParsePartIdsFromHex(axie.genes);
+                    if (partsAbilities == null || partsClasses == null)
+                        continue;
+
+                    var axieParts = new List<GetAxiesExample.Part>();
+                    var horn = new GetAxiesExample.Part(partsClasses[2], "", "horn", 0, false, partsAbilities[2]);
+                    var tail = new GetAxiesExample.Part(partsClasses[5], "", "tail", 0, false, partsAbilities[5]);
+                    var back = new GetAxiesExample.Part(partsClasses[4], "", "back", 0, false, partsAbilities[4]);
+                    var mouth = new GetAxiesExample.Part(partsClasses[3], "", "mouth", 0, false, partsAbilities[3]);
+
+                    axieParts.Add(horn);
+                    axieParts.Add(tail);
+                    axieParts.Add(back);
+                    axieParts.Add(mouth);
+                    axie.parts = axieParts.ToArray();
+
+                    axies.Add(axie);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error loading offline axie entry: " + e.Message);
+                }
+            }
+
+            userAxies = new GetAxiesExample.Axies();
+            userAxies.results = axies.ToArray();
+
+            foreach (var userAxiesResult in userAxies.results)
+            {
+                userAxiesResult.LoadGraphicAssets();
+            }
+
+            var lands = new List<GetAxiesExample.Land>();
+            if (db.lands != null)
+            {
+                foreach (var landEntry in db.lands)
+                {
+                    if (landEntry == null)
+                        continue;
+
+                    var land = new GetAxiesExample.Land();
+                    land.token_id = string.IsNullOrEmpty(landEntry.tokenId) ? Guid.NewGuid().ToString() : landEntry.tokenId;
+                    land.land_type = string.IsNullOrEmpty(landEntry.landType) ? "axiepark" : landEntry.landType;
+                    land.col = string.IsNullOrEmpty(landEntry.col) ? "0" : landEntry.col;
+                    land.row = string.IsNullOrEmpty(landEntry.row) ? "0" : landEntry.row;
+                    land.locked = landEntry.locked;
+                    lands.Add(land);
+                }
+            }
+
+            userLands = new GetAxiesExample.Lands();
+
+            // Preserve existing "always add F2P + unlock missing land types" behavior.
+            GetAxiesExample.Land f2pLand = new GetAxiesExample.Land();
+            f2pLand.token_id = "1111111111111111111111111112111";
+            f2pLand.land_type = "axiepark";
+            f2pLand.col = "0";
+            f2pLand.row = "0";
+            f2pLand.locked = false;
+            lands.Add(f2pLand);
+
+            if (lands.Count(x => x.LandTypeEnum == LandType.savannah) == 0)
+            {
+                lands.Add(new GetAxiesExample.Land { token_id = "1111111111111111111111111112112", land_type = "savannah", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.forest) == 0)
+            {
+                lands.Add(new GetAxiesExample.Land { token_id = "1111111111111111111111111112113", land_type = "forest", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.arctic) == 0)
+            {
+                lands.Add(new GetAxiesExample.Land { token_id = "1111111111111111111111111112114", land_type = "arctic", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.mystic) == 0)
+            {
+                lands.Add(new GetAxiesExample.Land { token_id = "1111111111111111111111111112115", land_type = "mystic", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.genesis) == 0)
+            {
+                lands.Add(new GetAxiesExample.Land { token_id = "1111111111111111111111111112116", land_type = "genesis", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.lunalanding) == 0)
+            {
+                lands.Add(new GetAxiesExample.Land { token_id = "1111111111111111111111111112117", land_type = "lunalanding", col = "0", row = "0", locked = false });
+            }
+
+            userLands.results = lands.ToArray();
+            loadLand();
+            TeamManager.instance.LoadLastAccountAxies();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error loading offline assets: " + ex.Message);
+        }
+    }
+
     public void loadLand()
     {
         RoninMenu.SetActive(false);

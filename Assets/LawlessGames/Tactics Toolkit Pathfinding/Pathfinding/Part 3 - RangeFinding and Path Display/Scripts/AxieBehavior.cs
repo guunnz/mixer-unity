@@ -35,6 +35,9 @@ public class AxieBehavior : MonoBehaviour
 
     public void SetAttackSpeed()
     {
+        if (myController == null)
+            return;
+
         AttackSpeed = AxieStatCalculator.GetAttackSpeed(myController.stats);
     }
 

@@ -271,7 +271,7 @@ namespace Game
 
                 AxieController controller = go.GetComponent<AxieController>();
                 controller.axieBehavior = go.AddComponent<AxieBehavior>();
-                controller.AxieId = int.Parse(axieId);
+                controller.AxieId = AxieIdUtil.ToStableInt(axieId);
                 controller.axieIngameStats = new IngameStats();
                 controller.axieIngameStats.axieId = axieId;
                 controller.axieIngameStats.maxHP = stats.hp * 2;

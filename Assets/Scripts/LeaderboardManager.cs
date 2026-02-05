@@ -36,6 +36,20 @@ public class LeaderboardManager : MonoBehaviour
 
     private void OnEnable()
     {
+        if (OfflineMode.Enabled)
+        {
+            isLoading = false;
+            if (loading != null)
+            {
+                loading.gameObject.SetActive(true);
+                loading.text = "Offline mode";
+            }
+
+            if (myData != null)
+                myData.gameObject.SetActive(false);
+            return;
+        }
+
         if (leaderboardContainer.childCount > 0)
             return;
 

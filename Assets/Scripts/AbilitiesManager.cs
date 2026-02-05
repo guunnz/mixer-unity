@@ -295,8 +295,15 @@ public class AbilitiesManager : MonoBehaviour
 
         var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 
-        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController.SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
-                AxieSelecteds.Select(x => x.BodyPart).ToList());
+        var currentController = axiesManager.axieControllers
+            .FirstOrDefault(x => x != null && x.axieIngameStats != null && x.axieIngameStats.axieId == currentSelectedAxie.id);
+        if (currentController != null && currentController.axieSkillController != null)
+        {
+            currentController.axieSkillController.SetAxieSkills(
+                AxieSelecteds.Select(x => x.SkillName).ToList(),
+                AxieSelecteds.Select(x => x.BodyPart).ToList()
+            );
+        }
 
         ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
@@ -417,8 +424,15 @@ public class AbilitiesManager : MonoBehaviour
         // Sort and update the button sprites for the body parts
         var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 
-        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController.SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
-                AxieSelecteds.Select(x => x.BodyPart).ToList());
+        var currentController = axiesManager.axieControllers
+            .FirstOrDefault(x => x != null && x.axieIngameStats != null && x.axieIngameStats.axieId == currentSelectedAxie.id);
+        if (currentController != null && currentController.axieSkillController != null)
+        {
+            currentController.axieSkillController.SetAxieSkills(
+                AxieSelecteds.Select(x => x.SkillName).ToList(),
+                AxieSelecteds.Select(x => x.BodyPart).ToList()
+            );
+        }
         ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
@@ -457,15 +471,31 @@ public class AbilitiesManager : MonoBehaviour
 
         SFXManager.instance.PlaySFX(SFXType.UIButtonTap, 0.12f, true);
 
-        GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
+        GetAxiesExample.Axie axie = AccountManager.userAxies?.results?.FirstOrDefault(x => x != null && x.id == axieId);
+        if (axie == null)
+        {
+            Debug.LogWarning($"AbilitiesManager.SelectAxie: couldn't find axie `{axieId}` in AccountManager.userAxies.");
+            return;
+        }
 
         if (RunManagerSingleton.instance.goodTeam.GetCharactersAll().Count > 0)
         {
-            AxieController axieFromTeam = RunManagerSingleton.instance.goodTeam.GetCharactersAll().Single(x => x.AxieId.ToString() == axieId);
-            HealthText.text = axieFromTeam.stats.hp.ToString();
-            SpeedText.text = axieFromTeam.stats.speed.ToString();
-            SkillText.text = axieFromTeam.stats.skill.ToString();
-            MoraleText.text = axieFromTeam.stats.morale.ToString();
+            AxieController axieFromTeam = RunManagerSingleton.instance.goodTeam.GetCharactersAll()
+                .FirstOrDefault(x => x != null && x.axieIngameStats != null && x.axieIngameStats.axieId == axieId);
+            if (axieFromTeam != null)
+            {
+                HealthText.text = axieFromTeam.stats.hp.ToString();
+                SpeedText.text = axieFromTeam.stats.speed.ToString();
+                SkillText.text = axieFromTeam.stats.skill.ToString();
+                MoraleText.text = axieFromTeam.stats.morale.ToString();
+            }
+            else
+            {
+                HealthText.text = axie.stats.hp.ToString();
+                SpeedText.text = axie.stats.speed.ToString();
+                SkillText.text = axie.stats.skill.ToString();
+                MoraleText.text = axie.stats.morale.ToString();
+            }
         }
         else
         {
@@ -474,24 +504,26 @@ public class AbilitiesManager : MonoBehaviour
             SkillText.text = axie.stats.skill.ToString();
             MoraleText.text = axie.stats.morale.ToString();
         }
-        axieClassImage.sprite = AxieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
+        var classGraphic = AxieClassGraphics.FirstOrDefault(x => x != null && x.axieClass == axie.axieClass);
+        if (classGraphic != null)
+            axieClassImage.sprite = classGraphic.axieClassSprite;
 
         AxieNameText.text = axie.name;
 
         currentSelectedAxie = axie;
-        AxieClass hornClass = axie.parts.Single(x => x.BodyPart == BodyPart.Horn).partClass;
-        AxieClass backClass = axie.parts.Single(x => x.BodyPart == BodyPart.Back).partClass;
-        AxieClass mouthClass = axie.parts.Single(x => x.BodyPart == BodyPart.Mouth).partClass;
-        AxieClass tailClass = axie.parts.Single(x => x.BodyPart == BodyPart.Tail).partClass;
+        var hornPart = axie.parts?.FirstOrDefault(x => x != null && x.BodyPart == BodyPart.Horn);
+        var backPart = axie.parts?.FirstOrDefault(x => x != null && x.BodyPart == BodyPart.Back);
+        var mouthPart = axie.parts?.FirstOrDefault(x => x != null && x.BodyPart == BodyPart.Mouth);
+        var tailPart = axie.parts?.FirstOrDefault(x => x != null && x.BodyPart == BodyPart.Tail);
 
-        HornBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == hornClass && x.bodyPart == BodyPart.Horn)
-            .bodyPartSprite;
-        MouthBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == mouthClass && x.bodyPart == BodyPart.Mouth)
-            .bodyPartSprite;
-        BackBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == backClass && x.bodyPart == BodyPart.Back)
-            .bodyPartSprite;
-        TailBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == tailClass && x.bodyPart == BodyPart.Tail)
-            .bodyPartSprite;
+        if (hornPart != null)
+            HornBodyPart.sprite = BodyPartGraphics.FirstOrDefault(x => x.axieClass == hornPart.partClass && x.bodyPart == BodyPart.Horn)?.bodyPartSprite;
+        if (mouthPart != null)
+            MouthBodyPart.sprite = BodyPartGraphics.FirstOrDefault(x => x.axieClass == mouthPart.partClass && x.bodyPart == BodyPart.Mouth)?.bodyPartSprite;
+        if (backPart != null)
+            BackBodyPart.sprite = BodyPartGraphics.FirstOrDefault(x => x.axieClass == backPart.partClass && x.bodyPart == BodyPart.Back)?.bodyPartSprite;
+        if (tailPart != null)
+            TailBodyPart.sprite = BodyPartGraphics.FirstOrDefault(x => x.axieClass == tailPart.partClass && x.bodyPart == BodyPart.Tail)?.bodyPartSprite;
 
         currentSelectedAxie = axie;
         SkeletonGraphicCombo.skeletonDataAsset = axie.skeletonDataAsset;
@@ -505,7 +537,9 @@ public class AbilitiesManager : MonoBehaviour
         }
         else
         {
-            axie.parts = TeamManager.instance.currentTeam.AxieIds.Single(x => x.id == axieId).parts;
+            var teamAxie = TeamManager.instance.currentTeam.AxieIds.FirstOrDefault(x => x != null && x.id == axieId);
+            if (teamAxie != null && teamAxie.parts != null)
+                axie.parts = teamAxie.parts;
 
             if (axie.parts.Count(x => x.selected) == 0)
             {

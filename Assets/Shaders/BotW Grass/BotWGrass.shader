@@ -360,6 +360,8 @@ Shader "Custom/BotWGrass"
 			Tags { "LightMode" = "UniversalForward" }
 
             HLSLPROGRAM
+			// Metal doesn't support geometry shaders. Provide a Metal-only fallback SubShader below.
+			#pragma exclude_renderers metal
 			#pragma require geometry
 			#pragma require tessellation tessHW
 
@@ -419,4 +421,86 @@ Shader "Custom/BotWGrass"
 		}
 		*/
     }
+
+	// ------------------------------------------------------------------
+	// Metal fallback: Metal doesn't support geometry shaders, so the real procedural blade pass can't run.
+	// Keep it simple and good-looking: render the base mesh tinted by _TipColor (set per-tile in gameplay).
+	SubShader
+	{
+		Tags
+		{
+			"RenderType" = "Opaque"
+			"Queue" = "Geometry"
+			"RenderPipeline" = "UniversalPipeline"
+		}
+		LOD 100
+		Cull Off
+
+		Pass
+		{
+			Name "GrassPass_MetalFlat"
+			Tags { "LightMode" = "UniversalForward" }
+			HLSLPROGRAM
+			#pragma only_renderers metal
+			#pragma vertex vertFlat
+			#pragma fragment fragFlat
+			#pragma target 3.0
+
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+			struct Attributes
+			{
+				float4 positionOS : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+			struct Varyings
+			{
+				float4 positionHCS : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			Varyings vertFlat(Attributes v)
+			{
+				Varyings o;
+				o.positionHCS = TransformObjectToHClip(v.positionOS.xyz);
+				o.uv = v.uv;
+				return o;
+			}
+
+			half4 fragFlat(Varyings i) : SV_Target
+			{
+				// Pretty animated tint for Mac/Metal (no geometry shaders available):
+				// Blend _BaseColor -> _TipColor using wind noise + a subtle time-based shimmer.
+				float2 uvWind = i.uv * _WindMap_ST.xy + _WindMap_ST.zw;
+				// Slow movement on Metal fallback (keep it subtle)
+				uvWind += _WindVelocity.xy * (_Time.y * max(_WindFrequency, 0.001) * 0.25);
+
+				float n = tex2D(_WindMap, uvWind).r; // 0..1
+				half4 col = lerp(_BaseColor, _TipColor, n);
+
+				// Gentle shimmer that won't distract (keeps tiles readable)
+				// Slower glow/pulse
+				float pulse = 0.90 + 0.10 * sin(_Time.y * 0.6 + n * 6.28318);
+				col.rgb *= pulse;
+
+				// Subtle "grass dots" speckle (replaces scanline look)
+				// Stable in UV space, lightly animated via time.
+				float2 cell = floor(i.uv * 80.0); // density of dots
+				float rnd = frac(sin(dot(cell, float2(12.9898, 78.233))) * 43758.5453);
+				// Make it flicker very gently so it feels alive, not noisy
+				rnd = frac(rnd + _Time.y * 0.015);
+				float dots = smoothstep(0.92, 1.0, rnd); // sparse bright dots
+
+				// Add a second, soft mottling layer from wind map at higher frequency
+				float m = tex2D(_WindMap, i.uv * 12.0 + _Time.y * 0.006).g; // 0..1
+				float mottled = (m - 0.5) * 0.06;
+
+				col.rgb += dots * 0.05 + mottled;
+
+				col.a = 1;
+				return col;
+			}
+			ENDHLSL
+		}
+	}
 }

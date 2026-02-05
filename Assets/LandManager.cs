@@ -99,9 +99,8 @@ public class LandManager : MonoBehaviour
         {
             MaterialTipColorChanger materialTipColorChanger = landSquares[i];
             materialTipColorChanger.landType = currentLandType;
-            string tokenIdSubstring =
-                AccountManager.userLands.results[indexChoosing].token_id.ToString().Substring(0, 10);
-            int tokenIdInt = int.Parse(tokenIdSubstring);
+            string tokenIdStr = AccountManager.userLands.results[indexChoosing].token_id?.ToString();
+            int tokenIdInt = LandSeedUtil.SeedFromTokenId(tokenIdStr);
             materialTipColorChanger.SetRandomSeed(
                 tokenIdInt / (i + 1));
             materialTipColorChanger.colorAlreadySet = false;

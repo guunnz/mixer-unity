@@ -148,6 +148,7 @@ public class GetAxiesExample : MonoBehaviour
             {
                 // Fetch the original part name from PartFinder and retry parsing
                 string originalPartName = PartFinder.GetPartById(abilityId);
+                this.name = ProcessDisplaySkillName(originalPartName);
                 this.abilityName = ProcessSkillName(originalPartName);
                 SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
             }
@@ -164,6 +165,7 @@ public class GetAxiesExample : MonoBehaviour
                     Debug.Log(name);
                     // Fetch the original part name from PartFinder and retry parsing
                     string originalPartName = PartFinder.GetOriginalPartId(abilityId, RemoveTrailingDashNumber(name));
+                    this.name = ProcessDisplaySkillName(originalPartName);
                     this.abilityName = ProcessSkillName(originalPartName);
                     SkillName = (SkillName)Enum.Parse(typeof(SkillName), this.abilityName, true);
                 }

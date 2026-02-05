@@ -135,6 +135,30 @@ public class SkyMavisLogin : MonoBehaviour
         //    yield return null;
         //}
         PartFinder.LoadFromResources();
+
+        // Offline bootstrap: bypass any network/API requirements and populate the same
+        // AccountManager.userAxies / userLands structures from a local ScriptableObject database.
+        if (OfflineMode.Enabled)
+        {
+            var settings = OfflineMode.Settings;
+            loginButton.gameObject.SetActive(false);
+            introVideoPlayer.Stop();
+            loopedVideoPlayer.Play();
+
+            Loading.instance.EnableLoading();
+            mainMenuSong.enabled = true;
+
+            Loading.instance.WalletUsed = string.IsNullOrEmpty(settings.offlineWalletAddress) ? "offline" : settings.offlineWalletAddress;
+            RunManagerSingleton.instance.user_wallet_address = Loading.instance.WalletUsed;
+
+            // Ensure mixer is ready before any axie graphics are built.
+            SkyMavis.AxieMixer.Unity.Mixer.Init();
+
+            accountManager.LoadOfflineAssets(settings.axieDatabase, Loading.instance.WalletUsed, settings.offlineUsername);
+            Loading.instance.DisableLoading();
+            yield break;
+        }
+
         if (!string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))
         {
             SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(Loading.instance.WalletUsed));

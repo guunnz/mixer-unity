@@ -129,7 +129,7 @@ namespace enemies
                         axieEnemies.Add(axie);
                     }
 
-                    axieEnemies = axieEnemies.OrderBy(x => int.Parse(x.id)).ToList();
+                    axieEnemies = axieEnemies.OrderBy(x => AxieIdUtil.ToStableInt(x.id)).ToList();
                     StartCoroutine(SpawnAxies(axieEnemies, opponent, isOpponent));
                     StartCoroutine(OpponentTeamManager.instance.SetupTeam(opponent, axieEnemies));
                 }

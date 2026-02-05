@@ -58,8 +58,11 @@ public class AxiesManager : MonoBehaviour
             AxieController axieController =
                 axieSpawner.ProcessMixer(axie.id, axie.newGenes, false, axie.axieClass, axie.stats, false);
 
-            axieController.ChangeMode(AxieMode.Menu);
-            axieControllers.Add(axieController);
+            if (axieController != null)
+            {
+                axieController.ChangeMode(AxieMode.Menu);
+                axieControllers.Add(axieController);
+            }
         }
     }
 
