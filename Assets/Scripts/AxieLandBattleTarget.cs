@@ -94,8 +94,8 @@ public class Run
 
 public class AxieLandBattleTarget : MonoBehaviour
 {
-    private string postUrl = "https://run.api.axielandbattles.com/api/v1/run";
-    private string getUrl = "https://run.api.axielandbattles.com/api/v1/run";
+    private string postUrl = "https://axielandbattles-apis-monorepo-production.up.railway.app/api/v1/run";
+    private string getUrl = "https://axielandbattles-apis-monorepo-production.up.railway.app/api/v1/run";
     private int maxRetries = 5;
     public SkyMavisLogin skymavisLogin;
 
@@ -162,20 +162,20 @@ public class AxieLandBattleTarget : MonoBehaviour
     // Method to post data
     public void PostScore(string jsonData)
     {
-        if (OfflineMode.Enabled)
-        {
-            RunManagerSingleton.instance.runId = "offline-" + DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            return;
-        }
+        // if (OfflineMode.Enabled)
+        // {
+        //     RunManagerSingleton.instance.runId = "offline-" + DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        //     return;
+        // }
         StartCoroutine(PostRequest(postUrl, jsonData, maxRetries));
     }
 
     public void PutScore(string jsonData)
     {
-        if (OfflineMode.Enabled)
-        {
-            return;
-        }
+        // if (OfflineMode.Enabled)
+        // {
+        //     return;
+        // }
         StartCoroutine(PutRequest(postUrl, jsonData, maxRetries));
     }
     private string GetTokenFromCommandLineArgs()
@@ -264,20 +264,20 @@ public class AxieLandBattleTarget : MonoBehaviour
     // Method to get data as an async Task
     public async Task<string> GetScoreAsync(string played_rounds)
     {
-        if (OfflineMode.Enabled)
-        {
-            int score = 0;
-            int.TryParse(played_rounds, out score);
+        // if (OfflineMode.Enabled)
+        // {
+        //     int score = 0;
+        //     int.TryParse(played_rounds, out score);
 
-            // Offline: generate an opponent from the player's currently selected team.
-            // This keeps the "endpoint schema" intact while not requiring any network calls.
-            var opponent = BuildOfflineOpponentFromCurrentTeam(score);
-            if (opponent == null)
-                return await Task.FromResult<string>(null);
+        //     // Offline: generate an opponent from the player's currently selected team.
+        //     // This keeps the "endpoint schema" intact while not requiring any network calls.
+        //     var opponent = BuildOfflineOpponentFromCurrentTeam(score);
+        //     if (opponent == null)
+        //         return await Task.FromResult<string>(null);
 
-            RunManagerSingleton.instance.currentOpponent = opponent.user_wallet_address;
-            return await Task.FromResult(JsonConvert.SerializeObject(opponent));
-        }
+        //     RunManagerSingleton.instance.currentOpponent = opponent.user_wallet_address;
+        //     return await Task.FromResult(JsonConvert.SerializeObject(opponent));
+        // }
 
         string url = $"{getUrl}?played_rounds={played_rounds}&user_wallet_address={RunManagerSingleton.instance.user_wallet_address}";
         Debug.Log("requested " + url);
