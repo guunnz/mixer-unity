@@ -107,9 +107,8 @@ public class FakeLandManager : MonoBehaviour
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
                 materialTipColorChanger.landType = currentLandType;
-                string tokenIdSubstring =
-                    AccountManager.userLands.results[indexChoosing].token_id.Substring(0, 10);
-                int tokenIdInt = int.Parse(tokenIdSubstring);
+                string tokenIdStr = AccountManager.userLands.results[indexChoosing].token_id;
+                int tokenIdInt = LandSeedUtil.SeedFromTokenId(tokenIdStr);
                 materialTipColorChanger.SetRandomSeed(
                     tokenIdInt / (i + 1));
                 materialTipColorChanger.colorAlreadySet = false;
@@ -134,9 +133,8 @@ public class FakeLandManager : MonoBehaviour
             {
                 MaterialTipColorChanger materialTipColorChanger = landSquares[i];
                 materialTipColorChanger.landType = currentLandType;
-                string tokenIdSubstring =
-                    AccountManager.userLands.results[indexChoosing].token_id.Substring(0, 10);
-                int tokenIdInt = int.Parse(tokenIdSubstring);
+                string tokenIdStr = AccountManager.userLands.results[indexChoosing].token_id;
+                int tokenIdInt = LandSeedUtil.SeedFromTokenId(tokenIdStr);
                 materialTipColorChanger.SetRandomSeed(tokenIdInt / (i + 1));
                 materialTipColorChanger.colorAlreadySet = false;
             }

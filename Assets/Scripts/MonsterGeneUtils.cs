@@ -108,6 +108,11 @@ public class MonsterGeneUtils
     //GeneBinGroup geneBinGroup;
     public static string SpaceCamelCase(string input)
     {
+        if (string.IsNullOrEmpty(input))
+        {
+            return string.Empty;
+        }
+
         // Use a regular expression to replace uppercase letters with a space followed by the letter
         // Except it will not add a space at the beginning of the string
         return Regex.Replace(input, "(\\B[A-Z])", " $1");

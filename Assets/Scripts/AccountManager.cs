@@ -453,6 +453,154 @@ public class AccountManager : MonoBehaviour
         }
     }
 
+    public void LoadOfflineAssets(OfflineMonsterDatabase db, string offlineWalletAddress, string offlineUsername)
+    {
+        try
+        {
+            StartedLoading = true;
+            loadingMonsters = 5;
+
+            wallet = string.IsNullOrEmpty(offlineWalletAddress) ? "offline" : offlineWalletAddress;
+
+            AccountManager.username = string.IsNullOrEmpty(offlineUsername) ? "Offline Player" : offlineUsername;
+            if (usernameText != null)
+                usernameText.text = AccountManager.username;
+            if (usernameTexts != null)
+                usernameTexts.ForEach(x => { if (x != null) x.text = usernameText != null ? usernameText.text : AccountManager.username; });
+
+            RunManagerSingleton.instance.user_wallet_address = wallet;
+            PlayerPrefs.SetString("LastWallet", wallet);
+
+            if (db == null)
+            {
+                Debug.LogError("OfflineMonsterDatabase is not set. Cannot load offline assets.");
+                return;
+            }
+
+            var monsters = new List<GetMonstersExample.Monster>();
+            foreach (var entry in db.monsters)
+            {
+                try
+                {
+                    if (entry == null || string.IsNullOrEmpty(entry.genes) || entry.genes == "0x0")
+                        continue;
+
+                    var monster = new GetMonstersExample.Monster();
+                    monster.genes = entry.genes;
+                    monster.newGenes = entry.genes;
+                    monster.id = string.IsNullOrEmpty(entry.id) ? $"offline-{monsters.Count + 1}" : entry.id;
+                    monster.name = string.IsNullOrEmpty(entry.name) ? $"Monster {monster.id}" : entry.name;
+
+                    if (!string.IsNullOrEmpty(entry.monsterClass))
+                        monster.@class = entry.monsterClass;
+                    else
+                    {
+                        var cls = MonsterGeneUtils.GetMonsterClass(entry.genes).ToString();
+                        monster.@class = char.ToUpperInvariant(cls[0]) + cls.Substring(1);
+                    }
+
+                    monster.bodyShape = string.IsNullOrEmpty(entry.bodyShape) ? "normal" : entry.bodyShape;
+                    monster.f2p = entry.f2p;
+                    monster.birthDate = entry.birthDate;
+
+                    monster.stats = MonsterGeneUtils.GetStatsByGenesAndMonsterClass(monster.genes, monster.monsterClass);
+                    List<string> partsClasses = MonsterGeneUtils.GetMonsterPartsClasses(monster.genes);
+                    List<string> partsAbilities = MonsterGeneUtils.ParsePartIdsFromHex(monster.genes);
+                    if (partsAbilities == null || partsClasses == null || partsAbilities.Count < 6 || partsClasses.Count < 6)
+                        continue;
+
+                    var monsterParts = new List<GetMonstersExample.Part>();
+                    var horn = new GetMonstersExample.Part(partsClasses[2], "", "horn", 0, false, partsAbilities[2]);
+                    var tail = new GetMonstersExample.Part(partsClasses[5], "", "tail", 0, false, partsAbilities[5]);
+                    var back = new GetMonstersExample.Part(partsClasses[4], "", "back", 0, false, partsAbilities[4]);
+                    var mouth = new GetMonstersExample.Part(partsClasses[3], "", "mouth", 0, false, partsAbilities[3]);
+
+                    monsterParts.Add(horn);
+                    monsterParts.Add(tail);
+                    monsterParts.Add(back);
+                    monsterParts.Add(mouth);
+                    monster.parts = monsterParts.ToArray();
+
+                    monsters.Add(monster);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error loading offline monster entry: " + e.Message);
+                }
+            }
+
+            userMonsters = new GetMonstersExample.Monsters();
+            userMonsters.results = monsters.ToArray();
+
+            foreach (var userMonstersResult in userMonsters.results)
+            {
+                userMonstersResult.LoadGraphicAssets();
+            }
+
+            var lands = new List<GetMonstersExample.Land>();
+            if (db.lands != null)
+            {
+                foreach (var landEntry in db.lands)
+                {
+                    if (landEntry == null)
+                        continue;
+
+                    var land = new GetMonstersExample.Land();
+                    land.token_id = string.IsNullOrEmpty(landEntry.tokenId) ? Guid.NewGuid().ToString() : landEntry.tokenId;
+                    land.land_type = string.IsNullOrEmpty(landEntry.landType) ? "monsterpark" : landEntry.landType;
+                    land.col = string.IsNullOrEmpty(landEntry.col) ? "0" : landEntry.col;
+                    land.row = string.IsNullOrEmpty(landEntry.row) ? "0" : landEntry.row;
+                    land.locked = landEntry.locked;
+                    lands.Add(land);
+                }
+            }
+
+            userLands = new GetMonstersExample.Lands();
+
+            // Preserve existing "always add F2P + unlock missing land types" behavior.
+            GetMonstersExample.Land f2pLand = new GetMonstersExample.Land();
+            f2pLand.token_id = "1111111111111111111111111112111";
+            f2pLand.land_type = "monsterpark";
+            f2pLand.col = "0";
+            f2pLand.row = "0";
+            f2pLand.locked = false;
+            lands.Add(f2pLand);
+
+            if (lands.Count(x => x.LandTypeEnum == LandType.savannah) == 0)
+            {
+                lands.Add(new GetMonstersExample.Land { token_id = "1111111111111111111111111112112", land_type = "savannah", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.forest) == 0)
+            {
+                lands.Add(new GetMonstersExample.Land { token_id = "1111111111111111111111111112113", land_type = "forest", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.arctic) == 0)
+            {
+                lands.Add(new GetMonstersExample.Land { token_id = "1111111111111111111111111112114", land_type = "arctic", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.mystic) == 0)
+            {
+                lands.Add(new GetMonstersExample.Land { token_id = "1111111111111111111111111112115", land_type = "mystic", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.genesis) == 0)
+            {
+                lands.Add(new GetMonstersExample.Land { token_id = "1111111111111111111111111112116", land_type = "genesis", col = "0", row = "0", locked = false });
+            }
+            if (lands.Count(x => x.LandTypeEnum == LandType.lunalanding) == 0)
+            {
+                lands.Add(new GetMonstersExample.Land { token_id = "1111111111111111111111111112117", land_type = "lunalanding", col = "0", row = "0", locked = false });
+            }
+
+            userLands.results = lands.ToArray();
+            loadLand();
+            TeamManager.instance.LoadLastAccountMonsters();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error loading offline assets: " + ex.Message);
+        }
+    }
+
     public void loadLand()
     {
         RoninMenu.SetActive(false);
