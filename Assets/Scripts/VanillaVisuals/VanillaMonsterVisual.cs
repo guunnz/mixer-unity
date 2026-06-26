@@ -17,6 +17,7 @@ public class VanillaMonsterVisual : MonoBehaviour
     private readonly List<SpriteRenderer> renderers = new List<SpriteRenderer>();
 
     private Transform visualRoot;
+    private Transform scaledRoot;
     private SpriteRenderer bodyRenderer;
     private SpriteRenderer bellyRenderer;
     private SpriteRenderer faceRenderer;
@@ -119,6 +120,8 @@ public class VanillaMonsterVisual : MonoBehaviour
 
         facingPositiveX = positiveX;
         baseLocalScale = desiredScale;
+        if (scaledRoot != null)
+            scaledRoot.localScale = baseLocalScale;
         ApplyAnchorFacing();
 
         if (!CanReusePose(currentState, loop))
@@ -150,7 +153,8 @@ public class VanillaMonsterVisual : MonoBehaviour
                 AnimateWalk(duration);
                 break;
             case MonsterVisualState.Hover:
-                visualRoot.DOScale(baseLocalScale * 1.08f, duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+                visualRoot.DOLocalMoveY(baseLocalPosition.y + 0.08f, duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+                visualRoot.DORotate(new Vector3(0f, 0f, facingPositiveX ? -3f : 3f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
             case MonsterVisualState.Grabbed:
                 visualRoot.DORotate(new Vector3(0f, 0f, 7f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
@@ -175,8 +179,8 @@ public class VanillaMonsterVisual : MonoBehaviour
                 AnimateMeleeAttack(duration, shouldLoop);
                 break;
             case MonsterVisualState.Appear:
-                visualRoot.localScale = Vector3.zero;
-                visualRoot.DOScale(baseLocalScale, duration).SetEase(Ease.OutBack);
+                visualRoot.localPosition = baseLocalPosition + new Vector3(0f, -0.18f, 0f);
+                visualRoot.DOLocalMove(baseLocalPosition, duration).SetEase(Ease.OutBack);
                 break;
             case MonsterVisualState.Idle:
             default:
@@ -240,6 +244,8 @@ public class VanillaMonsterVisual : MonoBehaviour
 
         visualRoot = new GameObject("Visual Root").transform;
         visualRoot.SetParent(transform, false);
+        scaledRoot = new GameObject("Scaled Root").transform;
+        scaledRoot.SetParent(visualRoot, false);
         baseLocalPosition = Vector3.zero;
         baseLocalScale = MonsterScale.WorldVector;
 
@@ -270,7 +276,8 @@ public class VanillaMonsterVisual : MonoBehaviour
     private SpriteRenderer CreateRenderer(string name, VanillaSpriteShape shape, Vector3 localPosition, Vector3 localScale, int order, bool tracked = true)
     {
         GameObject go = new GameObject(name);
-        go.transform.SetParent(visualRoot, false);
+        Transform parent = scaledRoot != null ? scaledRoot : visualRoot;
+        go.transform.SetParent(parent, false);
         go.transform.localPosition = localPosition;
         go.transform.localScale = localScale;
 
@@ -287,8 +294,14 @@ public class VanillaMonsterVisual : MonoBehaviour
         KillPoseTweens();
 
         visualRoot.localPosition = baseLocalPosition;
-        visualRoot.localScale = baseLocalScale;
+        visualRoot.localScale = Vector3.one;
         visualRoot.localRotation = Quaternion.identity;
+        if (scaledRoot != null)
+        {
+            scaledRoot.localPosition = Vector3.zero;
+            scaledRoot.localScale = baseLocalScale;
+            scaledRoot.localRotation = Quaternion.identity;
+        }
 
         ResetRendererTransform(frontFootRenderer, FrontFootBasePosition, FootBaseScale);
         ResetRendererTransform(backFootRenderer, BackFootBasePosition, FootBaseScale);
@@ -299,6 +312,7 @@ public class VanillaMonsterVisual : MonoBehaviour
     private void KillPoseTweens()
     {
         visualRoot?.DOKill();
+        scaledRoot?.DOKill();
         frontFootRenderer?.transform.DOKill();
         backFootRenderer?.transform.DOKill();
         attackFlashRenderer?.transform.DOKill();
@@ -336,9 +350,7 @@ public class VanillaMonsterVisual : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.AppendInterval(delay);
         sequence.Append(foot.DOLocalMove(new Vector3(basePosition.x + stride, basePosition.y + 0.05f, basePosition.z), duration * 0.25f).SetEase(Ease.OutSine));
-        sequence.Join(foot.DOScale(new Vector3(FootBaseScale.x * 1.12f, FootBaseScale.y * 0.82f, FootBaseScale.z), duration * 0.25f).SetEase(Ease.OutSine));
         sequence.Append(foot.DOLocalMove(new Vector3(basePosition.x - stride, basePosition.y, basePosition.z), duration * 0.25f).SetEase(Ease.InSine));
-        sequence.Join(foot.DOScale(FootBaseScale, duration * 0.25f).SetEase(Ease.InSine));
         sequence.AppendInterval(Mathf.Max(0.01f, duration * 0.5f - delay));
         sequence.SetLoops(-1);
     }
