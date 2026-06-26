@@ -3,7 +3,7 @@ using UnityEngine;
 public static class MonsterScale
 {
     public const float WorldVisual = 0.55f;
-    public const float WorldHud = 0.34f;
+    public const float WorldHud = 0.48f;
     public const float WorldStatus = 0.30f;
     public const float World = WorldVisual;
 
@@ -72,6 +72,35 @@ public static class MonsterScale
             return visual.FacingPositiveX;
 
         return target.localScale.x >= 0f;
+    }
+
+    public static void ApplyReadableWorldOverlay(Transform target, float scale)
+    {
+        ApplyReadableWorldOverlay(target, scale, target != null ? target.rotation : Quaternion.identity);
+    }
+
+    public static void ApplyReadableWorldOverlay(Transform target, float scale, Quaternion worldRotation)
+    {
+        if (target == null)
+            return;
+
+        target.rotation = worldRotation;
+        if (target.parent == null)
+        {
+            target.localScale = Vector3.one * scale;
+            return;
+        }
+
+        Vector3 parentScale = target.parent.lossyScale;
+        target.localScale = new Vector3(
+            DivideScale(scale, parentScale.x),
+            DivideScale(scale, parentScale.y),
+            DivideScale(scale, parentScale.z));
+    }
+
+    private static float DivideScale(float scale, float parentScale)
+    {
+        return Mathf.Abs(parentScale) < MinMagnitude ? scale : scale / parentScale;
     }
 }
 

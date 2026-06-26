@@ -36,8 +36,9 @@ public class MonsterSkillEffectManager : MonoBehaviour
     public GameObject skillEffectGraphicPrefab;
     public Transform HorizontalLayoutGroup;
     private Transform mainCharacter;
+    private Quaternion readableWorldRotation;
+    private float readableXSign = 1f;
     private List<SkillEffectDuration> durationToRemove = new List<SkillEffectDuration>();
-    private int lastXAxisScale;
 
     public List<PoisonMonsterPlayer> poisonPlayersList = new List<PoisonMonsterPlayer>();
 
@@ -241,8 +242,10 @@ public class MonsterSkillEffectManager : MonoBehaviour
     {
         MonsterController controller = GetComponentInParent<MonsterController>();
         mainCharacter = controller != null ? controller.transform : transform.root;
+        readableXSign = controller != null && controller.imGood ? -1f : 1f;
         transform.localPosition = Vector3.zero;
-        ApplyFacingScale();
+        readableWorldRotation = transform.rotation;
+        ApplyReadableOverlay();
     }
 
 
@@ -251,21 +254,23 @@ public class MonsterSkillEffectManager : MonoBehaviour
         if (mainCharacter == null)
             return;
 
-        int scaleWished = MonsterScale.IsFacingPositive(mainCharacter) ? 1 : -1;
-        if (lastXAxisScale != scaleWished)
-            ApplyFacingScale();
+        ApplyReadableOverlay();
 
         ManageDurations();
     }
 
-    private void ApplyFacingScale()
+    private void LateUpdate()
     {
-        int scaleWished = MonsterScale.IsFacingPositive(mainCharacter) ? 1 : -1;
-        this.transform.localScale = new Vector3(
-            MonsterScale.WorldStatus,
-            MonsterScale.WorldStatus,
-            MonsterScale.WorldStatus);
-        lastXAxisScale = scaleWished;
+        ApplyReadableOverlay();
+    }
+
+    private void ApplyReadableOverlay()
+    {
+        MonsterScale.ApplyReadableWorldOverlay(transform, MonsterScale.WorldStatus, readableWorldRotation);
+        transform.localScale = new Vector3(
+            transform.localScale.x * readableXSign,
+            transform.localScale.y,
+            transform.localScale.z);
     }
 
     private void ManageDurations()

@@ -574,29 +574,45 @@ public class AbilitiesManager : MonoBehaviour
             return;
 
         RectTransform rect = graphic.GetComponent<RectTransform>();
+        bool forceFallbackLayout = false;
         if (rect != null)
         {
             rect.SetAsLastSibling();
-            rect.localScale = Vector3.one;
             rect.localRotation = Quaternion.identity;
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = Vector2.zero;
+            forceFallbackLayout = !HasUsableGraphicRect(rect);
 
-            if (rect.parent is RectTransform parentRect)
+            if (forceFallbackLayout)
             {
-                Vector2 parentSize = parentRect.rect.size;
-                if (parentSize.x <= 1f || parentSize.y <= 1f)
-                    parentSize = parentRect.sizeDelta;
-                if (parentSize.x <= 1f || parentSize.y <= 1f)
-                    parentSize = new Vector2(90f, 90f);
+                rect.localScale = Vector3.one;
+                rect.anchorMin = new Vector2(0.5f, 0.5f);
+                rect.anchorMax = new Vector2(0.5f, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.anchoredPosition = Vector2.zero;
 
-                rect.sizeDelta = parentSize;
+                if (rect.parent is RectTransform parentRect)
+                {
+                    Vector2 parentSize = parentRect.rect.size;
+                    if (parentSize.x <= 1f || parentSize.y <= 1f)
+                        parentSize = parentRect.sizeDelta;
+                    if (parentSize.x <= 1f || parentSize.y <= 1f)
+                        parentSize = new Vector2(90f, 90f);
+
+                    rect.sizeDelta = parentSize;
+                }
             }
         }
 
-        graphic.CenterInParent();
+        graphic.CenterInParent(forceFallbackLayout);
+    }
+
+    private static bool HasUsableGraphicRect(RectTransform rect)
+    {
+        Vector2 size = rect.rect.size;
+        if (size.x > 1f && size.y > 1f)
+            return true;
+
+        size = rect.sizeDelta;
+        return size.x > 1f && size.y > 1f;
     }
 
     private VanillaMonsterGraphic EnsureComboGraphic()

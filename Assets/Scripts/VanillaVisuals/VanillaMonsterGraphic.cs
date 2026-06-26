@@ -10,6 +10,7 @@ public class VanillaMonsterGraphic : MonoBehaviour
     private static readonly Vector2 DefaultVisualSize = new Vector2(160f, 120f);
     private static readonly Vector2 AttackFlashPosition = new Vector2(-72f, 8f);
     private static readonly Vector2 AttackFlashSize = new Vector2(28f, 28f);
+    private const float MinUsableRectSize = 1f;
     private const string DefaultCenteredChildName = "Vanilla Monster Graphic";
 
     private readonly List<Image> images = new List<Image>();
@@ -58,6 +59,7 @@ public class VanillaMonsterGraphic : MonoBehaviour
             return current;
 
         VanillaMonsterGraphic graphic = null;
+        bool createdGraphic = false;
         Transform existing = parent.Find(childName);
         if (existing != null)
         {
@@ -72,6 +74,7 @@ public class VanillaMonsterGraphic : MonoBehaviour
             GameObject graphicGo = new GameObject(childName, typeof(RectTransform));
             graphicGo.transform.SetParent(parent, false);
             graphic = Ensure(graphicGo);
+            createdGraphic = true;
         }
 
         if (current != null && current != graphic)
@@ -80,24 +83,68 @@ public class VanillaMonsterGraphic : MonoBehaviour
             current.enabled = false;
         }
 
-        graphic.CenterInParent();
+        graphic.CenterInParent(createdGraphic);
         return graphic;
     }
 
-    public void CenterInParent()
+    public static VanillaMonsterGraphic EnsureExistingChildOrCentered(Transform parent, VanillaMonsterGraphic current, string centeredChildName, params string[] existingChildNames)
+    {
+        if (parent == null)
+            return current;
+
+        VanillaMonsterGraphic graphic = FindExistingChildGraphic(parent, existingChildNames);
+        if (graphic == null && current != null && current.transform != parent && current.transform.parent == parent)
+            graphic = Ensure(current.gameObject);
+
+        if (graphic == null)
+            return EnsureCenteredChild(parent, current, centeredChildName);
+
+        if (current != null && current != graphic)
+        {
+            current.Clear();
+            current.enabled = false;
+        }
+
+        return graphic;
+    }
+
+    public void CenterInParent(bool forceLayout = false)
     {
         RectTransform rect = GetComponent<RectTransform>();
         if (rect == null)
             return;
 
-        rect.localScale = Vector3.one;
         rect.localRotation = Quaternion.identity;
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = Vector2.zero;
-        rect.sizeDelta = GetAvailableSize(rect);
+
+        if (forceLayout || !HasUsableSize(rect))
+        {
+            rect.localScale = Vector3.one;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = Vector2.zero;
+            rect.sizeDelta = GetAvailableSize(rect);
+        }
+
         UpdateLayoutScale();
+    }
+
+    private static VanillaMonsterGraphic FindExistingChildGraphic(Transform parent, string[] childNames)
+    {
+        if (childNames == null)
+            return null;
+
+        foreach (string childName in childNames)
+        {
+            if (string.IsNullOrEmpty(childName))
+                continue;
+
+            Transform child = parent.Find(childName);
+            if (child != null)
+                return Ensure(child.gameObject);
+        }
+
+        return null;
     }
 
     public void SetDescriptor(MonsterVisualDescriptor newDescriptor)
@@ -287,16 +334,26 @@ public class VanillaMonsterGraphic : MonoBehaviour
     private static Vector2 GetAvailableSize(RectTransform rect)
     {
         Vector2 size = rect.rect.size;
-        if (size.x <= 1f || size.y <= 1f)
+        if (size.x <= MinUsableRectSize || size.y <= MinUsableRectSize)
             size = rect.sizeDelta;
 
-        if ((size.x <= 1f || size.y <= 1f) && rect.parent is RectTransform parentRect)
+        if ((size.x <= MinUsableRectSize || size.y <= MinUsableRectSize) && rect.parent is RectTransform parentRect)
             size = parentRect.rect.size;
 
-        if (size.x <= 1f || size.y <= 1f)
+        if (size.x <= MinUsableRectSize || size.y <= MinUsableRectSize)
             size = DefaultVisualSize;
 
         return new Vector2(Mathf.Max(48f, size.x), Mathf.Max(48f, size.y));
+    }
+
+    private static bool HasUsableSize(RectTransform rect)
+    {
+        Vector2 size = rect.rect.size;
+        if (size.x > MinUsableRectSize && size.y > MinUsableRectSize)
+            return true;
+
+        size = rect.sizeDelta;
+        return size.x > MinUsableRectSize && size.y > MinUsableRectSize;
     }
 
     private RectTransform CreateRect(string name, RectTransform parent, Vector2 anchoredPosition, Vector2 size)

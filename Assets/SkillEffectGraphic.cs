@@ -53,6 +53,11 @@ public class SkillEffectGraphic : MonoBehaviour
         tmPro.text = Times.ToString();
     }
 
+    private void LateUpdate()
+    {
+        NormalizeStackText();
+    }
+
     public void SetSprite(Sprite sprite)
     {
         if (image == null)
@@ -91,7 +96,8 @@ public class SkillEffectGraphic : MonoBehaviour
             return;
 
         RectTransform rectTransform = tmPro.rectTransform;
-        rectTransform.localScale = Vector3.one;
+        float xSign = rectTransform.parent != null && rectTransform.parent.lossyScale.x < 0f ? -1f : 1f;
+        rectTransform.localScale = new Vector3(xSign, 1f, 1f);
         rectTransform.localRotation = Quaternion.identity;
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchorMax = new Vector2(0.5f, 0.5f);

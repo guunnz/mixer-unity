@@ -11,6 +11,7 @@ using Game;
 public class MonsterStatsTooltip : MonoBehaviour
 {
     private const string TooltipGraphicName = "Tooltip Monster Graphic";
+    private const string LegacyTooltipGraphicName = "VanillaMonsterGraphic (olek)";
 
     private bool tooltipEnabled;
     public RectTransform Container;
@@ -105,13 +106,12 @@ public class MonsterStatsTooltip : MonoBehaviour
 
     private void EnsureGraphic()
     {
-        if (monsterGraphic != null)
-        {
-            monsterGraphic.CenterInParent();
-            return;
-        }
-
         Transform parent = Container != null ? Container : transform;
-        monsterGraphic = VanillaMonsterGraphic.EnsureCenteredChild(parent, monsterGraphic, TooltipGraphicName);
+        monsterGraphic = VanillaMonsterGraphic.EnsureExistingChildOrCentered(
+            parent,
+            monsterGraphic,
+            TooltipGraphicName,
+            LegacyTooltipGraphicName,
+            "Monster");
     }
 }

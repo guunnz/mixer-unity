@@ -11,8 +11,9 @@ public class StatsManager : MonoBehaviour
 {
     public Rectangle HPRectangle;
     public SpriteRenderer sr;
-    private int lastXAxisScale;
     private Transform mainCharacter;
+    private Quaternion readableWorldRotation;
+    private float readableXSign = 1f;
     public TextMeshProUGUI shield;
     public GameObject shieldObject;
     public SpriteRenderer Selected;
@@ -36,8 +37,11 @@ public class StatsManager : MonoBehaviour
     {
         MonsterController controller = GetComponentInParent<MonsterController>();
         mainCharacter = controller != null ? controller.transform : transform.root;
+        readableXSign = controller != null && controller.imGood ? -1f : 1f;
         transform.localPosition = Vector3.zero;
-        ApplyFacingScale();
+        readableWorldRotation = transform.rotation;
+        ApplyReadableOverlay();
+        NormalizeTextTransforms();
 
         // Initialize object pool
         InitializeDamagePool();
@@ -66,6 +70,9 @@ public class StatsManager : MonoBehaviour
         {
             var tmpro = obj.GetComponent<TextMeshProUGUI>();
             var rect = obj.GetComponent<RectTransform>();
+            NormalizeTextTransform(tmpro);
+            rect.localScale = Vector3.one;
+            rect.localRotation = Quaternion.identity;
             var spawnPoint = rectTransformSpawnPoints[UnityEngine.Random.Range(0, rectTransformSpawnPoints.Count)];
             rect.localPosition = spawnPoint.localPosition;
             rect.anchoredPosition = spawnPoint.anchoredPosition;
@@ -112,6 +119,7 @@ public class StatsManager : MonoBehaviour
     public void SetCritical()
     {
         var textChosen = bonusTextsCritical[UnityEngine.Random.Range(0, bonusTextsCritical.Count)];
+        NormalizeTextTransform(textChosen);
 
         textChosen.enabled = true;
         if (UnityEngine.Random.value > 0.5f)
@@ -261,18 +269,44 @@ public class StatsManager : MonoBehaviour
         if (mainCharacter == null)
             return;
 
-        int scaleWished = MonsterScale.IsFacingPositive(mainCharacter) ? -1 : 1;
-        if (lastXAxisScale != scaleWished)
-            ApplyFacingScale();
+        ApplyReadableOverlay();
     }
 
-    private void ApplyFacingScale()
+    private void LateUpdate()
     {
-        int scaleWished = MonsterScale.IsFacingPositive(mainCharacter) ? -1 : 1;
-        this.transform.localScale = new Vector3(
-            MonsterScale.WorldHud,
-            MonsterScale.WorldHud,
-            MonsterScale.WorldHud);
-        lastXAxisScale = scaleWished;
+        ApplyReadableOverlay();
+        NormalizeTextTransforms();
     }
+
+    private void ApplyReadableOverlay()
+    {
+        MonsterScale.ApplyReadableWorldOverlay(transform, MonsterScale.WorldHud, readableWorldRotation);
+        transform.localScale = new Vector3(
+            transform.localScale.x * readableXSign,
+            transform.localScale.y,
+            transform.localScale.z);
+    }
+
+    private void NormalizeTextTransforms()
+    {
+        foreach (TextMeshProUGUI text in GetComponentsInChildren<TextMeshProUGUI>(true))
+            NormalizeTextTransform(text);
+    }
+
+    private void NormalizeTextTransform(TextMeshProUGUI text)
+    {
+        if (text == null)
+            return;
+
+        RectTransform rectTransform = text.rectTransform;
+        Vector3 localScale = rectTransform.localScale;
+        float xSign = rectTransform.parent != null && rectTransform.parent.lossyScale.x < 0f ? -1f : 1f;
+        rectTransform.localScale = new Vector3(
+            xSign * Mathf.Abs(localScale.x),
+            Mathf.Abs(localScale.y),
+            Mathf.Abs(localScale.z));
+        text.isRightToLeftText = false;
+        text.raycastTarget = false;
+    }
+
 }

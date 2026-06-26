@@ -29,6 +29,9 @@ public enum MonsterStatFilter
 
 public class TeamBuilderManager : MonoBehaviour
 {
+    private const string StatsGraphicName = "Stats Monster Graphic";
+    private const string LegacyStatsGraphicName = "Monster";
+
     public GameObject LandsContent;
     public GameObject MonstersContent;
 
@@ -524,7 +527,11 @@ public class TeamBuilderManager : MonoBehaviour
 
     private VanillaMonsterGraphic EnsureStatsGraphic()
     {
-        statsMonsterGraphic = VanillaMonsterGraphic.EnsureCenteredChild(MonsterStatsContainer.transform, statsMonsterGraphic, "Stats Monster Graphic");
+        statsMonsterGraphic = VanillaMonsterGraphic.EnsureExistingChildOrCentered(
+            MonsterStatsContainer.transform,
+            statsMonsterGraphic,
+            StatsGraphicName,
+            LegacyStatsGraphicName);
         return statsMonsterGraphic;
     }
 

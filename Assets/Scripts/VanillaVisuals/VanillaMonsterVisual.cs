@@ -154,10 +154,10 @@ public class VanillaMonsterVisual : MonoBehaviour
                 break;
             case MonsterVisualState.Hover:
                 visualRoot.DOLocalMoveY(baseLocalPosition.y + 0.08f, duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
-                visualRoot.DORotate(new Vector3(0f, 0f, facingPositiveX ? -3f : 3f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+                visualRoot.DOLocalRotate(new Vector3(0f, 0f, facingPositiveX ? -3f : 3f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
             case MonsterVisualState.Grabbed:
-                visualRoot.DORotate(new Vector3(0f, 0f, 7f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+                visualRoot.DOLocalRotate(new Vector3(0f, 0f, 7f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
             case MonsterVisualState.AttackMelee:
                 AnimateMeleeAttack(duration, shouldLoop);
@@ -173,7 +173,7 @@ public class VanillaMonsterVisual : MonoBehaviour
                 break;
             case MonsterVisualState.Victory:
                 visualRoot.DOLocalMoveY(baseLocalPosition.y + 0.18f, duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
-                visualRoot.DORotate(new Vector3(0f, 0f, 5f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
+                visualRoot.DOLocalRotate(new Vector3(0f, 0f, 5f), duration * 0.5f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
                 break;
             case MonsterVisualState.Shrimp:
                 AnimateMeleeAttack(duration, shouldLoop);
@@ -337,7 +337,7 @@ public class VanillaMonsterVisual : MonoBehaviour
         visualRoot.DOLocalMoveY(baseLocalPosition.y + 0.1f, halfStep)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
-        visualRoot.DORotate(new Vector3(0f, 0f, facingPositiveX ? -4f : 4f), halfStep)
+        visualRoot.DOLocalRotate(new Vector3(0f, 0f, facingPositiveX ? -4f : 4f), halfStep)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
 
@@ -363,14 +363,14 @@ public class VanillaMonsterVisual : MonoBehaviour
         float recoilRotation = facingPositiveX ? -6f : 6f;
         Sequence sequence = DOTween.Sequence();
         sequence.Append(visualRoot.DOLocalMoveX(baseLocalPosition.x - forward * 0.08f, duration * 0.16f).SetEase(Ease.OutSine));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, windupRotation), duration * 0.16f).SetEase(Ease.OutSine));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, windupRotation), duration * 0.16f).SetEase(Ease.OutSine));
         sequence.Append(visualRoot.DOLocalMoveX(baseLocalPosition.x + forward * 0.26f, duration * 0.16f).SetEase(Ease.OutQuad));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, strikeRotation), duration * 0.16f).SetEase(Ease.OutQuad));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, strikeRotation), duration * 0.16f).SetEase(Ease.OutQuad));
         sequence.AppendCallback(delegate { PlayAttackFlash(forward, duration, false); });
         sequence.Append(visualRoot.DOLocalMoveX(baseLocalPosition.x - forward * 0.05f, duration * 0.18f).SetEase(Ease.OutBack));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, recoilRotation), duration * 0.18f).SetEase(Ease.OutBack));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, recoilRotation), duration * 0.18f).SetEase(Ease.OutBack));
         sequence.Append(visualRoot.DOLocalMoveX(baseLocalPosition.x, duration * 0.2f).SetEase(Ease.InOutSine));
-        sequence.Join(visualRoot.DORotate(Vector3.zero, duration * 0.2f).SetEase(Ease.InOutSine));
+        sequence.Join(visualRoot.DOLocalRotate(Vector3.zero, duration * 0.2f).SetEase(Ease.InOutSine));
         if (shouldLoop)
         {
             sequence.AppendInterval(duration * 0.18f);
@@ -385,12 +385,12 @@ public class VanillaMonsterVisual : MonoBehaviour
         float castRotation = facingPositiveX ? 12f : -12f;
         Sequence sequence = DOTween.Sequence();
         sequence.Append(visualRoot.DOLocalMoveY(baseLocalPosition.y + 0.12f, duration * 0.2f).SetEase(Ease.OutSine));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, windupRotation), duration * 0.2f).SetEase(Ease.OutSine));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, windupRotation), duration * 0.2f).SetEase(Ease.OutSine));
         sequence.AppendCallback(delegate { PlayAttackFlash(forward, duration, true); });
         sequence.Append(visualRoot.DOLocalMove(new Vector3(baseLocalPosition.x - forward * 0.06f, baseLocalPosition.y - 0.03f, baseLocalPosition.z), duration * 0.18f).SetEase(Ease.OutQuad));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, castRotation), duration * 0.18f).SetEase(Ease.OutQuad));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, castRotation), duration * 0.18f).SetEase(Ease.OutQuad));
         sequence.Append(visualRoot.DOLocalMove(baseLocalPosition, duration * 0.28f).SetEase(Ease.OutBack));
-        sequence.Join(visualRoot.DORotate(Vector3.zero, duration * 0.28f).SetEase(Ease.OutBack));
+        sequence.Join(visualRoot.DOLocalRotate(Vector3.zero, duration * 0.28f).SetEase(Ease.OutBack));
         if (shouldLoop)
         {
             sequence.AppendInterval(duration * 0.2f);
@@ -407,14 +407,14 @@ public class VanillaMonsterVisual : MonoBehaviour
         sequence.Append(visualRoot.DOLocalMove(
             new Vector3(baseLocalPosition.x - forward * 0.03f, baseLocalPosition.y + 0.34f, baseLocalPosition.z),
             duration * 0.28f).SetEase(Ease.OutQuad));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, liftRotation), duration * 0.28f).SetEase(Ease.OutSine));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, liftRotation), duration * 0.28f).SetEase(Ease.OutSine));
         sequence.AppendCallback(delegate { PlayAttackFlash(forward, duration, true); });
         sequence.Append(visualRoot.DOLocalMove(
             new Vector3(baseLocalPosition.x + forward * 0.05f, baseLocalPosition.y + 0.16f, baseLocalPosition.z),
             duration * 0.16f).SetEase(Ease.InOutSine));
-        sequence.Join(visualRoot.DORotate(new Vector3(0f, 0f, castRotation), duration * 0.16f).SetEase(Ease.OutQuad));
+        sequence.Join(visualRoot.DOLocalRotate(new Vector3(0f, 0f, castRotation), duration * 0.16f).SetEase(Ease.OutQuad));
         sequence.Append(visualRoot.DOLocalMove(baseLocalPosition, duration * 0.28f).SetEase(Ease.InQuad));
-        sequence.Join(visualRoot.DORotate(Vector3.zero, duration * 0.28f).SetEase(Ease.InOutSine));
+        sequence.Join(visualRoot.DOLocalRotate(Vector3.zero, duration * 0.28f).SetEase(Ease.InOutSine));
         if (shouldLoop)
         {
             sequence.AppendInterval(duration * 0.18f);

@@ -23,6 +23,9 @@ public class MonsterViewCombo
 
 public class MonstersView : MonoBehaviour
 {
+    private const string StatsGraphicName = "Stats Monster Graphic";
+    private const string LegacyStatsGraphicName = "Monster";
+
     public MonsterBodyPartsManager skillList;
     public List<UIListMonsterForView> monsterList = new List<UIListMonsterForView>();
     public List<MonsterViewCombo> monsterViewCombo;
@@ -444,7 +447,11 @@ public class MonstersView : MonoBehaviour
 
     private VanillaMonsterGraphic EnsureStatsGraphic()
     {
-        statsMonsterGraphic = VanillaMonsterGraphic.EnsureCenteredChild(MonsterStatsContainer.transform, statsMonsterGraphic, "Stats Monster Graphic");
+        statsMonsterGraphic = VanillaMonsterGraphic.EnsureExistingChildOrCentered(
+            MonsterStatsContainer.transform,
+            statsMonsterGraphic,
+            StatsGraphicName,
+            LegacyStatsGraphicName);
         return statsMonsterGraphic;
     }
 }
