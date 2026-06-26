@@ -20,6 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies gain +3 HP stat
+  description: Your mons gain +3 HP stat
   price: 4
   tooltipType: 1c000000

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Shapes;
-using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
@@ -17,7 +16,6 @@ public class StatsManager : MonoBehaviour
     public TextMeshProUGUI shield;
     public GameObject shieldObject;
     public SpriteRenderer Selected;
-    BoneFollower boneFollower;
     private int ManaBars = 1;
     public Rectangle[] ManaBarsList;
     private float ManaBarSpacing = 0.05f;
@@ -36,24 +34,10 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
-        boneFollower = this.gameObject.AddComponent<BoneFollower>();
-
-        if (boneFollower.skeletonRenderer == null)
-            boneFollower.skeletonRenderer = transform.parent.GetComponent<SkeletonRenderer>();
-
-        boneFollower.boneName = "@body";
-        boneFollower.followBoneRotation = false;
-        boneFollower.followXYPosition = true;
-        boneFollower.followZPosition = false;
-        boneFollower.followSkeletonFlip = false;
-        boneFollower.yOffset = 3;
-
-        mainCharacter = transform.parent.parent;
-        int scaleWished = mainCharacter.transform.localScale.x < 0 ? -3 : 3;
-
-        this.transform.localScale =
-            new Vector3(scaleWished, this.transform.localScale.y, this.transform.localScale.z);
-        lastXAxisScale = scaleWished;
+        MonsterController controller = GetComponentInParent<MonsterController>();
+        mainCharacter = controller != null ? controller.transform : transform.root;
+        transform.localPosition = Vector3.zero;
+        ApplyFacingScale();
 
         // Initialize object pool
         InitializeDamagePool();
@@ -177,6 +161,12 @@ public class StatsManager : MonoBehaviour
         sr.sprite = sprite;
     }
 
+    public void SetSR(Sprite sprite, Color color)
+    {
+        sr.sprite = sprite;
+        sr.color = color;
+    }
+
     public void SetMana(float mana)
     {
         try
@@ -268,12 +258,21 @@ public class StatsManager : MonoBehaviour
 
     private void Update()
     {
-        int scaleWished = mainCharacter.transform.localScale.x < 0 ? 3 : -3;
+        if (mainCharacter == null)
+            return;
+
+        int scaleWished = MonsterScale.IsFacingPositive(mainCharacter) ? -1 : 1;
         if (lastXAxisScale != scaleWished)
-        {
-            this.transform.localScale =
-                new Vector3(scaleWished, this.transform.localScale.y, this.transform.localScale.z);
-            lastXAxisScale = scaleWished;
-        }
+            ApplyFacingScale();
+    }
+
+    private void ApplyFacingScale()
+    {
+        int scaleWished = MonsterScale.IsFacingPositive(mainCharacter) ? -1 : 1;
+        this.transform.localScale = new Vector3(
+            MonsterScale.WorldHud,
+            MonsterScale.WorldHud,
+            MonsterScale.WorldHud);
+        lastXAxisScale = scaleWished;
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Shapes;
 using UnityEngine;
@@ -23,7 +23,7 @@ public class FakeOverlayTile : MonoBehaviour
     private Rectangle spriteRenderer;
     public bool beingHovered;
     public bool occupied;
-    internal FakeAxieController currentOccupier;
+    internal FakeMonsterController currentOccupier;
     public Rectangle rectangle;
     private bool untoggleable;
     public MaterialTipColorChanger materialTipColorChanger;

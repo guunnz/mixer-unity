@@ -1,46 +1,47 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static GetAxiesExample;
+using static GetMonstersExample;
 
 [System.Serializable]
-public class AxiePartGraphic
+public class MonsterPartGraphic
 {
     public BodyPart bodyPart;
-    public AxieClass axieClass;
+    public MonsterClass monsterClass;
     public Sprite bodyPartSprite;
 }
 
 [System.Serializable]
-public class AxieClassGraphic
+public class MonsterClassGraphic
 {
-    public AxieClass axieClass;
-    public Sprite axieClassSprite;
+    public MonsterClass monsterClass;
+    public Sprite monsterClassSprite;
 }
 
 public class AbilitiesManager : MonoBehaviour
 {
-    public List<SkeletonGraphic> TeamGraphics = new List<SkeletonGraphic>();
-    public List<AxiePartGraphic> BodyPartGraphics = new List<AxiePartGraphic>();
-    public List<AxieClassGraphic> AxieClassGraphics = new List<AxieClassGraphic>();
-    public SkeletonGraphic SkeletonGraphicCombo;
+    private const string LegacyTeamGraphicName = "SkeletonTeam";
+
+    public List<VanillaMonsterGraphic> TeamGraphics = new List<VanillaMonsterGraphic>();
+    public List<MonsterPartGraphic> BodyPartGraphics = new List<MonsterPartGraphic>();
+    public List<MonsterClassGraphic> MonsterClassGraphics = new List<MonsterClassGraphic>();
+    public VanillaMonsterGraphic MonsterGraphicCombo;
     public TextMeshProUGUI AbilityNameText;
     public TextMeshProUGUI AbilityDescriptionText;
-    public TextMeshProUGUI AxieNameText;
+    public TextMeshProUGUI MonsterNameText;
     public TextMeshProUGUI ShieldAbilityText;
     public TextMeshProUGUI AttackAbilityText;
-    public AxieBodyPartsManager skillList;
+    public MonsterBodyPartsManager skillList;
     public AbilityDescriptionTooltip AbilityDescriptionTooltip;
     public Image HornBodyPart;
     public Image MouthBodyPart;
     public Image BackBodyPart;
     public Image TailBodyPart;
-    public Image axieClassImage;
+    public Image monsterClassImage;
     public GameObject PassiveGO;
 
     public Button ButtonHornBodyPart;
@@ -66,8 +67,8 @@ public class AbilitiesManager : MonoBehaviour
     public TextMeshProUGUI EnergyText;
     public GameObject EnergyObject;
 
-    public AxiesManager axiesManager;
-    private GetAxiesExample.Axie currentSelectedAxie;
+    public MonstersManager monstersManager;
+    private GetMonstersExample.Monster currentSelectedMonster;
     private SelectedComboData data = new SelectedComboData();
     public Sprite SelectedSprite;
     public Sprite DeselectedSprite;
@@ -80,23 +81,22 @@ public class AbilitiesManager : MonoBehaviour
 
     public void LoadUI()
     {
-        for (int i = 0; i < TeamManager.instance.currentTeam.AxieIds.Count; i++)
+        for (int i = 0; i < TeamManager.instance.currentTeam.MonsterIds.Count; i++)
         {
-            string localAxieId = TeamManager.instance.currentTeam.AxieIds[i].id;
-            SkeletonGraphic localGraphic = TeamGraphics[i];
+            string localMonsterId = TeamManager.instance.currentTeam.MonsterIds[i].id;
+            VanillaMonsterGraphic localGraphic = EnsureTeamGraphic(i);
 
-            localGraphic.skeletonDataAsset = TeamManager.instance.currentTeam.AxieIds[i].skeletonDataAsset;
+            localGraphic.SetMonster(TeamManager.instance.currentTeam.MonsterIds[i]);
             localGraphic.startingAnimation = "action/idle/random-0" + Random.Range(1, 5).ToString();
-            localGraphic.material = TeamManager.instance.currentTeam.AxieIds[i].skeletonDataAssetMaterial;
             localGraphic.Initialize(true);
 
             var parent = localGraphic.transform.parent;
             parent.GetComponent<Button>().onClick.RemoveAllListeners();
-            parent.GetComponent<Button>().onClick.AddListener(() => { SelectAxie(localAxieId, parent); });
-            SelectAxie(TeamManager.instance.currentTeam.AxieIds[i].id, TeamGraphics[i].transform.parent);
+            parent.GetComponent<Button>().onClick.AddListener(() => { SelectMonster(localMonsterId, parent); });
+            SelectMonster(TeamManager.instance.currentTeam.MonsterIds[i].id, localGraphic.transform.parent);
 
         }
-        SelectAxie(TeamManager.instance.currentTeam.AxieIds[0].id, TeamGraphics[0].transform.parent);
+        SelectMonster(TeamManager.instance.currentTeam.MonsterIds[0].id, EnsureTeamGraphic(0).transform.parent);
 
         ButtonHornBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Horn); });
         ButtonMouthBodyPart.onClick.AddListener(() => { ChoosePart(BodyPart.Mouth); });
@@ -112,9 +112,9 @@ public class AbilitiesManager : MonoBehaviour
 
     public void BodyPartHover(BodyPart part)
     {
-        GetAxiesExample.Part bodyPartToSelect =
-            currentSelectedAxie.parts.Single(x => x.BodyPart == part);
-        AxieBodyPart ability = skillList.axieBodyParts
+        GetMonstersExample.Part bodyPartToSelect =
+            currentSelectedMonster.parts.Single(x => x.BodyPart == part);
+        MonsterBodyPart ability = skillList.monsterBodyParts
     .Single(x =>
         x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
         x.skillName == bodyPartToSelect.SkillName);
@@ -137,7 +137,7 @@ public class AbilitiesManager : MonoBehaviour
         ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
         EnergyObject.SetActive(!data.passive);
         EnergyText.text = data.energy;
-        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(data.name);
+        AbilityNameText.text = MonsterGeneUtils.SpaceCamelCase(data.name);
         AbilityDescriptionText.text = data.description;
         ShieldAbilityText.text = data.shield;
         AttackAbilityText.text = data.damage;
@@ -154,7 +154,7 @@ public class AbilitiesManager : MonoBehaviour
         ShieldAbilityText.transform.parent.gameObject.SetActive(!data.passive);
         EnergyObject.SetActive(!data.passive);
         EnergyText.text = data.energy;
-        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(data.name);
+        AbilityNameText.text = MonsterGeneUtils.SpaceCamelCase(data.name);
         AbilityDescriptionText.text = data.description;
         ShieldAbilityText.text = data.shield;
         AttackAbilityText.text = data.damage;
@@ -167,25 +167,25 @@ public class AbilitiesManager : MonoBehaviour
     }
     public void ChoosePart(BodyPart part)
     {
-        GetAxiesExample.Part bodyPartToReplace =
-            currentSelectedAxie.parts.Where(y => y.selected).OrderBy(x => x.order).FirstOrDefault();
+        GetMonstersExample.Part bodyPartToReplace =
+            currentSelectedMonster.parts.Where(y => y.selected).OrderBy(x => x.order).FirstOrDefault();
 
-        GetAxiesExample.Part bodyPartToSelect =
-            currentSelectedAxie.parts.Single(x => x.BodyPart == part);
+        GetMonstersExample.Part bodyPartToSelect =
+            currentSelectedMonster.parts.Single(x => x.BodyPart == part);
 
         if (bodyPartToSelect.selected)
         {
             bodyPartToReplace = null;
         }
 
-        if (bodyPartToSelect.order == currentSelectedAxie.maxBodyPartAmount)
+        if (bodyPartToSelect.order == currentSelectedMonster.maxBodyPartAmount)
         {
             return;
         }
 
-        int amountSelected = currentSelectedAxie.parts.Count(x => x.selected);
+        int amountSelected = currentSelectedMonster.parts.Count(x => x.selected);
 
-        if (bodyPartToReplace != null && amountSelected >= currentSelectedAxie.maxBodyPartAmount)
+        if (bodyPartToReplace != null && amountSelected >= currentSelectedMonster.maxBodyPartAmount)
         {
             bodyPartToReplace.order = 1;
             bodyPartToReplace.selected = false;
@@ -198,12 +198,12 @@ public class AbilitiesManager : MonoBehaviour
 
         int passivesAdded = 0;
 
-        foreach (var partObj in currentSelectedAxie.parts.OrderBy(x => x.order).Where(x => x.selected && x != bodyPartToSelect))
+        foreach (var partObj in currentSelectedMonster.parts.OrderBy(x => x.order).Where(x => x.selected && x != bodyPartToSelect))
         {
-            bool isPassive = skillList.axieBodyParts
+            bool isPassive = skillList.monsterBodyParts
             .FirstOrDefault(x => x.skillName == partObj.SkillName).isPassive;
 
-            if (partObj.order != 1 && amountSelected >= currentSelectedAxie.maxBodyPartAmount)
+            if (partObj.order != 1 && amountSelected >= currentSelectedMonster.maxBodyPartAmount)
             {
                 partObj.order -= 1;
             }
@@ -233,14 +233,14 @@ public class AbilitiesManager : MonoBehaviour
         }
 
         // Find the maximum order among selected parts
-        int maxOrder = currentSelectedAxie.parts
+        int maxOrder = currentSelectedMonster.parts
             .Where(x => x.selected)
             .Select(x => (int?)x.order)
             .DefaultIfEmpty(0)
             .Max() ?? 0;
 
-        AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(bodyPartToSelect.name);
-        AxieBodyPart ability = skillList.axieBodyParts
+        AbilityNameText.text = MonsterGeneUtils.SpaceCamelCase(bodyPartToSelect.name);
+        MonsterBodyPart ability = skillList.monsterBodyParts
             .Single(x =>
                 x.bodyPart == part && bodyPartToSelect.partClass == x.bodyPartClass &&
                 x.skillName == bodyPartToSelect.SkillName);
@@ -250,7 +250,7 @@ public class AbilitiesManager : MonoBehaviour
         bodyPartToSelect.selected = true;
         bodyPartToSelect.order = maxOrder + 1;
 
-        bool isPassiveSelect = skillList.axieBodyParts
+        bool isPassiveSelect = skillList.monsterBodyParts
        .FirstOrDefault(x => x.skillName == bodyPartToSelect.SkillName).isPassive;
 
         switch (bodyPartToSelect.BodyPart)
@@ -293,32 +293,32 @@ public class AbilitiesManager : MonoBehaviour
         ShieldAbilityText.text = ability.shield.ToString();
         AttackAbilityText.text = ability.damage.ToString();
 
-        var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
+        var MonsterSelecteds = currentSelectedMonster.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 
-        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController.SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
-                AxieSelecteds.Select(x => x.BodyPart).ToList());
+        monstersManager.monsterControllers.Single(x => x.MonsterId.ToString() == currentSelectedMonster.id).monsterSkillController.SetMonsterSkills(MonsterSelecteds.Select(x => x.SkillName).ToList(),
+                MonsterSelecteds.Select(x => x.BodyPart).ToList());
 
         ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
 
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
         {
             ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
         }
 
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Back))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Back))
         {
             ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
         }
 
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
         {
             ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
         }
 
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
         {
             ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
         }
@@ -346,10 +346,10 @@ public class AbilitiesManager : MonoBehaviour
 
 
         // Iterate over selected parts
-        foreach (var partObj in currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order))
+        foreach (var partObj in currentSelectedMonster.parts.Where(x => x.selected).OrderBy(x => x.order))
         {
             // Check if the part is a passive
-            bool isPassive = skillList.axieBodyParts
+            bool isPassive = skillList.monsterBodyParts
                 .FirstOrDefault(x => x.skillName == partObj.SkillName && x.bodyPart == partObj.BodyPart).isPassive;
 
             // Adjust the order based on passives logic
@@ -380,8 +380,8 @@ public class AbilitiesManager : MonoBehaviour
             if (isPassive) passivesAdded++;
 
             // Update ability details
-            AbilityNameText.text = AxieGeneUtils.SpaceCamelCase(partObj.name);
-            AxieBodyPart ability = skillList.axieBodyParts.Single(x =>
+            AbilityNameText.text = MonsterGeneUtils.SpaceCamelCase(partObj.name);
+            MonsterBodyPart ability = skillList.monsterBodyParts.Single(x =>
                 x.bodyPart == partObj.BodyPart && partObj.partClass == x.bodyPartClass &&
                 x.skillName == partObj.SkillName);
             AbilityDescriptionText.text = ability.description;
@@ -415,40 +415,53 @@ public class AbilitiesManager : MonoBehaviour
         }
 
         // Sort and update the button sprites for the body parts
-        var AxieSelecteds = currentSelectedAxie.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
+        var MonsterSelecteds = currentSelectedMonster.parts.Where(x => x.selected).OrderBy(x => x.order).ToList();
 
-        axiesManager.axieControllers.Single(x => x.AxieId.ToString() == currentSelectedAxie.id).axieSkillController.SetAxieSkills(AxieSelecteds.Select(x => x.SkillName).ToList(),
-                AxieSelecteds.Select(x => x.BodyPart).ToList());
+        monstersManager.monsterControllers.Single(x => x.MonsterId.ToString() == currentSelectedMonster.id).monsterSkillController.SetMonsterSkills(MonsterSelecteds.Select(x => x.SkillName).ToList(),
+                MonsterSelecteds.Select(x => x.BodyPart).ToList());
         ButtonMouthBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonBackBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonHornBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
         ButtonTailBodyPart.GetComponent<Image>().sprite = DeselectedSprite;
 
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Mouth))
             ButtonMouthBodyPart.GetComponent<Image>().sprite = SelectedSprite;
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Back))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Back))
             ButtonBackBodyPart.GetComponent<Image>().sprite = SelectedSprite;
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Tail))
             ButtonTailBodyPart.GetComponent<Image>().sprite = SelectedSprite;
-        if (AxieSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
+        if (MonsterSelecteds.Any(x => x.BodyPart == BodyPart.Horn))
             ButtonHornBodyPart.GetComponent<Image>().sprite = SelectedSprite;
 
-        if (currentSelectedAxie.maxBodyPartAmount > currentSelectedAxie.parts.Count(x => x.selected))
+        if (currentSelectedMonster.maxBodyPartAmount > currentSelectedMonster.parts.Count(x => x.selected))
         {
-            ChoosePart(currentSelectedAxie.parts.FirstOrDefault(x => !x.selected).BodyPart);
+            ChoosePart(currentSelectedMonster.parts.FirstOrDefault(x => !x.selected).BodyPart);
         }
     }
 
-    public Sprite GetSkillSprite(AxieBodyPart skill)
+    public Sprite GetSkillSprite(MonsterBodyPart skill)
     {
-        var skillVar = SkillLauncher.Instance.skillList.axieBodyParts.FirstOrDefault(x => x == skill);
-        return BodyPartGraphics.Single(x => x.axieClass == skill.bodyPartClass && x.bodyPart == skill.bodyPart).bodyPartSprite;
+        return VanillaMonsterIconUtility.GetAbilitySprite(skill);
+    }
+
+    private void ApplyMonsterPartImage(Image image, GetMonstersExample.Monster monster, BodyPart bodyPart)
+    {
+        GetMonstersExample.Part part = monster.parts.Single(x => x.BodyPart == bodyPart);
+        MonsterBodyPart ability = skillList.monsterBodyParts.FirstOrDefault(x =>
+            x.bodyPart == bodyPart &&
+            x.bodyPartClass == part.partClass &&
+            x.skillName == part.SkillName);
+
+        if (ability != null)
+            VanillaMonsterIconUtility.ApplyBodyPart(image, ability);
+        else
+            VanillaMonsterIconUtility.ApplyBodyPart(image, bodyPart, part.partClass);
     }
 
 
-    public void SelectAxie(string axieId, Transform parent)
+    public void SelectMonster(string monsterId, Transform parent)
     {
-        foreach (var skeletonGraphic in TeamGraphics)
+        foreach (var skeletonGraphic in TeamGraphics.Where(x => x != null))
         {
             skeletonGraphic.transform.parent.GetComponent<Image>().sprite = DeselectedSprite;
         }
@@ -457,57 +470,48 @@ public class AbilitiesManager : MonoBehaviour
 
         SFXManager.instance.PlaySFX(SFXType.UIButtonTap, 0.12f, true);
 
-        GetAxiesExample.Axie axie = AccountManager.userAxies.results.Single(x => x.id == axieId);
+        GetMonstersExample.Monster monster = AccountManager.userMonsters.results.Single(x => x.id == monsterId);
 
         if (RunManagerSingleton.instance.goodTeam.GetCharactersAll().Count > 0)
         {
-            AxieController axieFromTeam = RunManagerSingleton.instance.goodTeam.GetCharactersAll().Single(x => x.AxieId.ToString() == axieId);
-            HealthText.text = axieFromTeam.stats.hp.ToString();
-            SpeedText.text = axieFromTeam.stats.speed.ToString();
-            SkillText.text = axieFromTeam.stats.skill.ToString();
-            MoraleText.text = axieFromTeam.stats.morale.ToString();
+            MonsterController monsterFromTeam = RunManagerSingleton.instance.goodTeam.GetCharactersAll().Single(x => x.MonsterId.ToString() == monsterId);
+            HealthText.text = monsterFromTeam.stats.hp.ToString();
+            SpeedText.text = monsterFromTeam.stats.speed.ToString();
+            SkillText.text = monsterFromTeam.stats.skill.ToString();
+            MoraleText.text = monsterFromTeam.stats.morale.ToString();
         }
         else
         {
-            HealthText.text = axie.stats.hp.ToString();
-            SpeedText.text = axie.stats.speed.ToString();
-            SkillText.text = axie.stats.skill.ToString();
-            MoraleText.text = axie.stats.morale.ToString();
+            HealthText.text = monster.stats.hp.ToString();
+            SpeedText.text = monster.stats.speed.ToString();
+            SkillText.text = monster.stats.skill.ToString();
+            MoraleText.text = monster.stats.morale.ToString();
         }
-        axieClassImage.sprite = AxieClassGraphics.Single(x => x.axieClass == axie.axieClass).axieClassSprite;
+        VanillaMonsterIconUtility.ApplyClass(monsterClassImage, monster.monsterClass, MonsterClassGraphics);
 
-        AxieNameText.text = axie.name;
+        MonsterNameText.text = monster.name;
 
-        currentSelectedAxie = axie;
-        AxieClass hornClass = axie.parts.Single(x => x.BodyPart == BodyPart.Horn).partClass;
-        AxieClass backClass = axie.parts.Single(x => x.BodyPart == BodyPart.Back).partClass;
-        AxieClass mouthClass = axie.parts.Single(x => x.BodyPart == BodyPart.Mouth).partClass;
-        AxieClass tailClass = axie.parts.Single(x => x.BodyPart == BodyPart.Tail).partClass;
+        currentSelectedMonster = monster;
+        ApplyMonsterPartImage(HornBodyPart, monster, BodyPart.Horn);
+        ApplyMonsterPartImage(MouthBodyPart, monster, BodyPart.Mouth);
+        ApplyMonsterPartImage(BackBodyPart, monster, BodyPart.Back);
+        ApplyMonsterPartImage(TailBodyPart, monster, BodyPart.Tail);
 
-        HornBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == hornClass && x.bodyPart == BodyPart.Horn)
-            .bodyPartSprite;
-        MouthBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == mouthClass && x.bodyPart == BodyPart.Mouth)
-            .bodyPartSprite;
-        BackBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == backClass && x.bodyPart == BodyPart.Back)
-            .bodyPartSprite;
-        TailBodyPart.sprite = BodyPartGraphics.Single(x => x.axieClass == tailClass && x.bodyPart == BodyPart.Tail)
-            .bodyPartSprite;
+        currentSelectedMonster = monster;
+        VanillaMonsterGraphic comboGraphic = EnsureComboGraphic();
+        comboGraphic.SetMonster(monster);
+        comboGraphic.startingAnimation = "action/idle/normal";
+        comboGraphic.Initialize(true);
 
-        currentSelectedAxie = axie;
-        SkeletonGraphicCombo.skeletonDataAsset = axie.skeletonDataAsset;
-        SkeletonGraphicCombo.material = axie.skeletonDataAssetMaterial;
-        SkeletonGraphicCombo.startingAnimation = "action/idle/normal";
-        SkeletonGraphicCombo.Initialize(true);
-
-        if (axie.parts.Any(x => x.selected))
+        if (monster.parts.Any(x => x.selected))
         {
             ChoosePartOnlyDo();
         }
         else
         {
-            axie.parts = TeamManager.instance.currentTeam.AxieIds.Single(x => x.id == axieId).parts;
+            monster.parts = TeamManager.instance.currentTeam.MonsterIds.Single(x => x.id == monsterId).parts;
 
-            if (axie.parts.Count(x => x.selected) == 0)
+            if (monster.parts.Count(x => x.selected) == 0)
             {
                 ChoosePart(BodyPart.Horn);
                 ChoosePart(BodyPart.Mouth);
@@ -517,5 +521,94 @@ public class AbilitiesManager : MonoBehaviour
                 ChoosePartOnlyDo();
             }
         }
+    }
+
+    private VanillaMonsterGraphic EnsureTeamGraphic(int index)
+    {
+        while (TeamGraphics.Count <= index)
+            TeamGraphics.Add(null);
+
+        if (TeamGraphics[index] != null)
+        {
+            PrepareTeamGraphic(TeamGraphics[index]);
+            return TeamGraphics[index];
+        }
+
+        TeamGraphics[index] = FindLegacyTeamGraphic(index);
+        if (TeamGraphics[index] != null)
+        {
+            PrepareTeamGraphic(TeamGraphics[index]);
+            return TeamGraphics[index];
+        }
+
+        GameObject slot = new GameObject("Team Monster Slot " + (index + 1), typeof(RectTransform), typeof(Image), typeof(Button));
+        RectTransform slotRect = slot.GetComponent<RectTransform>();
+        slotRect.SetParent(transform, false);
+        slotRect.sizeDelta = new Vector2(170f, 130f);
+
+        GameObject graphicGo = new GameObject("Vanilla Monster Graphic", typeof(RectTransform));
+        RectTransform graphicRect = graphicGo.GetComponent<RectTransform>();
+        graphicRect.SetParent(slotRect, false);
+        graphicRect.anchorMin = Vector2.zero;
+        graphicRect.anchorMax = Vector2.one;
+        graphicRect.offsetMin = Vector2.zero;
+        graphicRect.offsetMax = Vector2.zero;
+
+        TeamGraphics[index] = VanillaMonsterGraphic.Ensure(graphicGo);
+        PrepareTeamGraphic(TeamGraphics[index]);
+        return TeamGraphics[index];
+    }
+
+    private VanillaMonsterGraphic FindLegacyTeamGraphic(int index)
+    {
+        GameObject legacyObject = GameObject.Find(LegacyTeamGraphicName + (index + 1));
+        if (legacyObject == null)
+            return null;
+
+        return VanillaMonsterGraphic.Ensure(legacyObject);
+    }
+
+    private void PrepareTeamGraphic(VanillaMonsterGraphic graphic)
+    {
+        if (graphic == null)
+            return;
+
+        RectTransform rect = graphic.GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            rect.SetAsLastSibling();
+            rect.localScale = Vector3.one;
+            rect.localRotation = Quaternion.identity;
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.anchoredPosition = Vector2.zero;
+
+            if (rect.parent is RectTransform parentRect)
+            {
+                Vector2 parentSize = parentRect.rect.size;
+                if (parentSize.x <= 1f || parentSize.y <= 1f)
+                    parentSize = parentRect.sizeDelta;
+                if (parentSize.x <= 1f || parentSize.y <= 1f)
+                    parentSize = new Vector2(90f, 90f);
+
+                rect.sizeDelta = parentSize;
+            }
+        }
+
+        graphic.CenterInParent();
+    }
+
+    private VanillaMonsterGraphic EnsureComboGraphic()
+    {
+        if (MonsterGraphicCombo != null)
+            return MonsterGraphicCombo;
+
+        GameObject graphicGo = new GameObject("Vanilla Combo Monster Graphic", typeof(RectTransform));
+        RectTransform graphicRect = graphicGo.GetComponent<RectTransform>();
+        graphicRect.SetParent(transform, false);
+        graphicRect.sizeDelta = new Vector2(220f, 160f);
+        MonsterGraphicCombo = VanillaMonsterGraphic.Ensure(graphicGo);
+        return MonsterGraphicCombo;
     }
 }

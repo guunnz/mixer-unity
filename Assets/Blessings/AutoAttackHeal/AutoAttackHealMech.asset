@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Mech axies heal 8% of damage dealt by auto attacks
+  description: Your Mech mons heal 8% of damage dealt by auto attacks
   price: 0
   doNotShowShow: 0
   tooltipType: 

@@ -1,5 +1,4 @@
-using Spine.Unity;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -8,19 +7,19 @@ using UnityEngine.UI;
 
 public class TeamCaptainManager : MonoBehaviour
 {
-    public SkeletonGraphic ProfilePicGraphic;
-    public SkeletonGraphic IngameCaptainGraphic;
-    public SkeletonGraphic OpponentCaptainGraphic;
-    public SkeletonGraphic CaptainShowcase;
+    public VanillaMonsterGraphic ProfilePicGraphic;
+    public VanillaMonsterGraphic IngameCaptainGraphic;
+    public VanillaMonsterGraphic OpponentCaptainGraphic;
+    public VanillaMonsterGraphic CaptainShowcase;
     public List<GameObject> EnableOnCaptainSelection;
 
-    public List<UIListAxieForCaptain> axieList = new List<UIListAxieForCaptain>();
+    public List<UIListMonsterForCaptain> monsterList = new List<UIListMonsterForCaptain>();
     public TMP_InputField GeneralFilterInput;
-    public GetAxiesExample.Axie lastAxieChosen;
+    public GetMonstersExample.Monster lastMonsterChosen;
     private int currentPage = 1;
     float PagesAmount = 0;
     int maxPagesAmount = 0;
-    public string selectedAxie;
+    public string selectedMonster;
     public TextMeshProUGUI pageText;
     public GameObject Container;
     public Image myTeamHP;
@@ -35,6 +34,7 @@ public class TeamCaptainManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        EnsureGraphics();
     }
 
     void Update()
@@ -51,7 +51,7 @@ public class TeamCaptainManager : MonoBehaviour
     {
         if (GeneralFilterInput != null)
         {
-            GeneralFilterInput.onEndEdit.AddListener(delegate { SetAxiesUI(); });
+            GeneralFilterInput.onEndEdit.AddListener(delegate { SetMonstersUI(); });
         }
     }
 
@@ -69,6 +69,10 @@ public class TeamCaptainManager : MonoBehaviour
 
     private void UpdateCaptainAnimations()
     {
+        EnsureGraphics();
+        if (myTeamHP == null || opponentHP == null)
+            return;
+
         float myTeamHPFill = myTeamHP.fillAmount * 100f;
         float opponentHPFill = opponentHP.fillAmount * 100f;
         float healthDifference = myTeamHPFill - opponentHPFill;
@@ -133,13 +137,13 @@ public class TeamCaptainManager : MonoBehaviour
         }
         else
         {
-            while (!AccountManager.userAxies.results.Select(x => x.id).Contains(captain))
+            while (!AccountManager.userMonsters.results.Select(x => x.id).Contains(captain))
             {
                 yield return null;
             }
 
          
-            SetAxieSelected(AccountManager.userAxies.results.FirstOrDefault(x => x.id == captain));
+            SetMonsterSelected(AccountManager.userMonsters.results.FirstOrDefault(x => x.id == captain));
             SetProfilePicGraphic();
         }
     }
@@ -148,79 +152,76 @@ public class TeamCaptainManager : MonoBehaviour
     {
         Container.SetActive(true);
         EnableOnCaptainSelection.ForEach(x => x.SetActive(false));
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
-    public List<GetAxiesExample.Axie> GetFilteredList()
+    public List<GetMonstersExample.Monster> GetFilteredList()
     {
     
-        var axiesList = AccountManager.userAxies.results.Where(x => !x.f2p).ToList();
-        if (axiesList.Count() == 0)
+        var monstersList = AccountManager.userMonsters.results.Where(x => !x.f2p).ToList();
+        if (monstersList.Count() == 0)
         {
-            axiesList = AccountManager.userAxies.results.ToList();
+            monstersList = AccountManager.userMonsters.results.ToList();
         }
             string filter = GeneralFilterInput != null ? GeneralFilterInput.text.ToLower() : "";
 
         if (!string.IsNullOrEmpty(filter))
         {
-            axiesList = axiesList.Where(axie =>
-                filter.Contains(axie.id.ToLower()) ||
-                filter.Contains(axie.name.ToLower()) ||
-                filter.Contains(axie.axieClass.ToString().ToLower()) ||
-                (axie.parts != null && axie.parts.Any(part =>
+            monstersList = monstersList.Where(monster =>
+                filter.Contains(monster.id.ToLower()) ||
+                filter.Contains(monster.name.ToLower()) ||
+                filter.Contains(monster.monsterClass.ToString().ToLower()) ||
+                (monster.parts != null && monster.parts.Any(part =>
                     filter.Contains(part.name.ToLower()) ||
                     filter.Contains(part.abilityName.ToLower())))
             ).ToList();
         }
 
-        return axiesList;
+        return monstersList;
     }
 
-    public void SetAxieSelected(GetAxiesExample.Axie axie)
+    public void SetMonsterSelected(GetMonstersExample.Monster monster)
     {
-        selectedAxie = axie.id;
-        foreach (var item in axieList)
+        EnsureGraphics();
+        selectedMonster = monster.id;
+        foreach (var item in monsterList)
         {
             item.Refresh();
         }
 
-        lastAxieChosen = axie;
+        lastMonsterChosen = monster;
 
-        var profilePicSkeleton = lastAxieChosen.skeletonDataAsset;
-        var skeletonMaterial = lastAxieChosen.skeletonDataAssetMaterial;
-
-        CaptainShowcase.UpdateMode = UpdateMode.FullUpdate;
-        CaptainShowcase.enabled = true;
-        CaptainShowcase.skeletonDataAsset = profilePicSkeleton;
-        CaptainShowcase.material = skeletonMaterial;
-        CaptainShowcase.startingAnimation = "action/idle/normal";
-        CaptainShowcase.Initialize(true);
+        VanillaMonsterGraphic showcase = CaptainShowcase;
+        showcase.enabled = true;
+        showcase.SetMonster(lastMonsterChosen);
+        showcase.startingAnimation = "action/idle/normal";
+        showcase.Initialize(true);
     }
 
-    public void SetAxiesUI()
+    public void SetMonstersUI()
     {
-        PagesAmount = AccountManager.userAxies.results.Length / 12f;
+        PagesAmount = AccountManager.userMonsters.results.Length / 12f;
         maxPagesAmount = Mathf.CeilToInt(PagesAmount);
         pageText.text = $"Page {currentPage}-{maxPagesAmount}";
 
-        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList();
+        List<GetMonstersExample.Monster> filteredMonsterList = GetFilteredList();
 
         for (int i = 0; i < 12; i++)
         {
-            axieList[i].axie = null;
+            monsterList[i].monster = null;
 
             int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
-            if (indexToSearch < filteredAxieList.Count)
+            if (indexToSearch < filteredMonsterList.Count)
             {
-                GetAxiesExample.Axie axie = filteredAxieList[indexToSearch];
-                axieList[i].axie = axie;
+                GetMonstersExample.Monster monster = filteredMonsterList[indexToSearch];
+                monsterList[i].monster = monster;
             }
 
-            axieList[i].Refresh(true);
+            monsterList[i].Refresh(true);
         }
 
-        if (string.IsNullOrEmpty(selectedAxie))
-            axieList.FirstOrDefault()?.SelectAxie();
+        if (string.IsNullOrEmpty(selectedMonster))
+            monsterList.FirstOrDefault()?.SelectMonster();
     }
 
     public void GoNextPage()
@@ -232,7 +233,7 @@ public class TeamCaptainManager : MonoBehaviour
             return;
         }
 
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
     public void GoPreviousPage()
@@ -244,34 +245,29 @@ public class TeamCaptainManager : MonoBehaviour
             return;
         }
 
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
     public void ResetPages()
     {
         currentPage = 0;
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
     public void SetProfilePicGraphic()
     {
-        PlayerPrefs.SetString("Captain" + RunManagerSingleton.instance.user_wallet_address, lastAxieChosen.id);
-        var profilePicSkeleton = lastAxieChosen.skeletonDataAsset;
-        var skeletonMaterial = lastAxieChosen.skeletonDataAssetMaterial;
+        EnsureGraphics();
+        PlayerPrefs.SetString("Captain" + RunManagerSingleton.instance.user_wallet_address, lastMonsterChosen.id);
 
-        ProfilePicGraphic.UpdateMode = UpdateMode.FullUpdate;
         ProfilePicGraphic.enabled = true;
-        ProfilePicGraphic.skeletonDataAsset = profilePicSkeleton;
-        ProfilePicGraphic.material = skeletonMaterial;
+        ProfilePicGraphic.SetMonster(lastMonsterChosen);
         ProfilePicGraphic.startingAnimation = "action/idle/normal";
 
         ProfilePicGraphic.Initialize(true);
 
-        IngameCaptainGraphic.UpdateMode = UpdateMode.FullUpdate;
         IngameCaptainGraphic.enabled = true;
-        IngameCaptainGraphic.skeletonDataAsset = profilePicSkeleton;
+        IngameCaptainGraphic.SetMonster(lastMonsterChosen);
         IngameCaptainGraphic.startingAnimation = "action/idle/normal";
-        IngameCaptainGraphic.material = skeletonMaterial;
         IngameCaptainGraphic.Initialize(true);
 
         Container.SetActive(false);
@@ -281,12 +277,32 @@ public class TeamCaptainManager : MonoBehaviour
         }
     }
 
-    public void SetOpponentCaptain(SkeletonDataAsset opponentGraphic, Material opponentMaterial)
+    public void SetOpponentCaptain(MonsterVisualDescriptor opponentGraphic)
     {
-        OpponentCaptainGraphic.UpdateMode = UpdateMode.FullUpdate;
+        EnsureGraphics();
         OpponentCaptainGraphic.enabled = true;
-        OpponentCaptainGraphic.skeletonDataAsset = opponentGraphic;
-        OpponentCaptainGraphic.material = opponentMaterial;
+        OpponentCaptainGraphic.SetDescriptor(opponentGraphic);
         OpponentCaptainGraphic.Initialize(true);
+    }
+
+    private void EnsureGraphics()
+    {
+        ProfilePicGraphic = EnsureGraphic(ProfilePicGraphic, "Profile Captain Graphic");
+        IngameCaptainGraphic = EnsureGraphic(IngameCaptainGraphic, "Ingame Captain Graphic");
+        OpponentCaptainGraphic = EnsureGraphic(OpponentCaptainGraphic, "Opponent Captain Graphic");
+        CaptainShowcase = EnsureGraphic(CaptainShowcase, "Captain Showcase Graphic");
+    }
+
+    private VanillaMonsterGraphic EnsureGraphic(VanillaMonsterGraphic graphic, string name)
+    {
+        if (graphic != null)
+            return graphic;
+
+        Transform parent = Container != null ? Container.transform : transform;
+        GameObject graphicGo = new GameObject(name, typeof(RectTransform));
+        RectTransform graphicRect = graphicGo.GetComponent<RectTransform>();
+        graphicRect.SetParent(parent, false);
+        graphicRect.sizeDelta = new Vector2(180f, 140f);
+        return VanillaMonsterGraphic.Ensure(graphicGo);
     }
 }

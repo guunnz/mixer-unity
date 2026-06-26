@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ public class FakeLandManager : MonoBehaviour
 
     public void InstantiateLandType()
     {
-        GetAxiesExample.Land land = null;
+        GetMonstersExample.Land land = null;
 
         if (currentSpawnedLand == null)
         {
@@ -83,7 +83,7 @@ public class FakeLandManager : MonoBehaviour
 
     public void ChooseFakeLand(string tokenId = null)
     {
-        GetAxiesExample.Land land = null;
+        GetMonstersExample.Land land = null;
 
         if (currentSpawnedLand == null)
         {

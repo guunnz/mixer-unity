@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,21 +11,21 @@ public class BattleDataLoader : MonoBehaviour
     {
         public string user_id;
         public int land_type;
-        public string axie_captain_id;
-        public AxieTeamDatabase axie_team;
+        public string monster_captain_id;
+        public MonsterTeamDatabase monster_team;
     }
 
     [Serializable]
-    public class AxieTeamDatabase
+    public class MonsterTeamDatabase
     {
-        public AxieForBackend[] axies;
+        public MonsterForBackend[] monsters;
         public UpgradeValuesPerRound[] team_upgrades_values_per_round;
     }
 
     [Serializable]
-    public class AxieForBackend
+    public class MonsterForBackend
     {
-        public string axie_id;
+        public string monster_id;
         public Combos[] combos_values_per_round;
         public Position[] position_values_per_round;
         public int[] upgrades_values_per_round;
@@ -54,7 +54,7 @@ public class BattleDataLoader : MonoBehaviour
 
     void Start()
     {
-        jsonContent = LoadJsonFromFile("axielandbattles.runs", true);
+        jsonContent = LoadJsonFromFile("monsterlandbattles.runs", true);
         GetTestRandomOpponent();
     }
 
@@ -77,7 +77,7 @@ public class BattleDataLoader : MonoBehaviour
         List<Opponent> filteredOpponents = new List<Opponent>();
         foreach (var opponent in opponentList.opponents)
         {
-            if (opponent.axie_team.team_upgrades_values_per_round.Length >= score)
+            if (opponent.monster_team.team_upgrades_values_per_round.Length >= score)
             {
                 filteredOpponents.Add(opponent);
                 break;

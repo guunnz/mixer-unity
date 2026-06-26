@@ -1,4 +1,4 @@
-public class PlayerPrefsValues
+﻿public class PlayerPrefsValues
 {
-    public const string AxieTeamSelected = "AxieTeam";
+    public const string MonsterTeamSelected = "MonsterTeam";
 }

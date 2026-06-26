@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,30 +6,30 @@ using UnityEngine;
 
 public class JSONSkills : MonoBehaviour
 {
-    public List<AxieBodyPart> bodyParts;
+    public List<MonsterBodyPart> bodyParts;
 
     private void Start()
     {
 
-        GUIUtility.systemCopyBuffer = GenerateJsonFromAxieBodyParts(bodyParts);
-        Debug.Log(GenerateJsonFromAxieBodyParts(bodyParts));
+        GUIUtility.systemCopyBuffer = GenerateJsonFromMonsterBodyParts(bodyParts);
+        Debug.Log(GenerateJsonFromMonsterBodyParts(bodyParts));
     }
 
-    public static string GenerateJsonFromAxieBodyParts(List<AxieBodyPart> axieBodyParts)
+    public static string GenerateJsonFromMonsterBodyParts(List<MonsterBodyPart> monsterBodyParts)
     {
-        var axieBodyPartsInfo = axieBodyParts.Select(axie => new
+        var monsterBodyPartsInfo = monsterBodyParts.Select(monster => new
         {
-            SkillName = axie.skillName.ToString(),
-            BodyPart = axie.bodyPart.ToString(),
-            BodyPartClass = axie.bodyPartClass.ToString(),
-            Damage = axie.damage,
-            Shield = axie.shield,
-            IsPassive = axie.isPassive,
-            Energy = axie.energy,
-            Description = axie.description
+            SkillName = monster.skillName.ToString(),
+            BodyPart = monster.bodyPart.ToString(),
+            BodyPartClass = monster.bodyPartClass.ToString(),
+            Damage = monster.damage,
+            Shield = monster.shield,
+            IsPassive = monster.isPassive,
+            Energy = monster.energy,
+            Description = monster.description
         }).ToList();
 
-        return JsonConvert.SerializeObject(axieBodyPartsInfo, Formatting.Indented);
+        return JsonConvert.SerializeObject(monsterBodyPartsInfo, Formatting.Indented);
     }
 
 }

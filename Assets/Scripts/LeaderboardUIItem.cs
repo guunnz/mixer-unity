@@ -1,8 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Game;
-using Spine.Unity;
 
 public class LeaderboardUIItem : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class LeaderboardUIItem : MonoBehaviour
     public TextMeshProUGUI avgWinsText;
     public TextMeshProUGUI eloText;
     public TextMeshProUGUI rankText;
-    public SkeletonGraphic Captain;
+    public VanillaMonsterGraphic Captain;
 
     public void SetUsername(string username)
     {
@@ -33,33 +32,36 @@ public class LeaderboardUIItem : MonoBehaviour
 
     public void SetRanking(int rank)
     {
-      
-
         if (rank == 1)
         {
-            rankText.text ="<color=\"yellow\">"+ rank + "°";
+            rankText.text = "<color=\"yellow\">" + rank + ".";
         }
         else if (rank == 2)
         {
-            rankText.text = "<color=#C0C0C0>" + rank + "°";
+            rankText.text = "<color=#C0C0C0>" + rank + ".";
         }
         else if (rank == 3)
         {
-            rankText.text = "<color=#cd7f32>" + rank + "°";
+            rankText.text = "<color=#cd7f32>" + rank + ".";
         }
         else
         {
-            rankText.text = rank + "°";
+            rankText.text = rank + ".";
         }
     }
 
-    public void SetCaptainGraphics(string axieId, string axieCaptainGenes)
+    public void SetCaptainGraphics(string monsterId, string monsterCaptainGenes)
     {
-        var builderResult = AxieSpawner.Instance.SimpleProcessMixer(axieId, axieCaptainGenes, true);
+        MonsterVisualDescriptor descriptor = MonsterSpawner.Instance.SimpleProcessMixer(monsterId, monsterCaptainGenes, false);
+        VanillaMonsterGraphic captain = EnsureCaptain();
+        captain.SetDescriptor(descriptor);
+        captain.startingAnimation = "action/idle/normal";
+        captain.Initialize(true);
+    }
 
-        Captain.skeletonDataAsset = builderResult.skeletonDataAsset;
-        Captain.material = builderResult.sharedGraphicMaterial;
-        Captain.startingAnimation = "action/idle/normal";
-        Captain.Initialize(true);
+    private VanillaMonsterGraphic EnsureCaptain()
+    {
+        Captain = VanillaMonsterGraphic.EnsureCenteredChild(transform, Captain, "Captain Monster Graphic");
+        return Captain;
     }
 }

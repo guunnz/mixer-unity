@@ -1,19 +1,18 @@
-using AxieCore.AxieMixer;
-using Game;
+﻿using Game;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static enemies.GetAxiesEnemies;
-using static GetAxiesExample;
+using static enemies.GetMonstersEnemies;
+using static GetMonstersExample;
 
 [System.Serializable]
 
-public class AxieForTesting
+public class MonsterForTesting
 {
-    public GetAxiesExample.Stats axieStats;
-    public bool UseAxieStats;
+    public GetMonstersExample.Stats monsterStats;
+    public bool UseMonsterStats;
     public List<SkillName> abilitiesToUse;
     public List<BodyPart> specialBodyPartForAbilityIfNeeded = new List<BodyPart>()
     {
@@ -30,8 +29,8 @@ public class TestTool : MonoBehaviour
     public int CoinsAmount = 10;
     public int BattleTimerStartIn = 0;
 
-    public List<AxieForTesting> allyAxiesForTesting = new List<AxieForTesting>();
-    public List<AxieForTesting> enemyAxiesForTesting = new List<AxieForTesting>();
+    public List<MonsterForTesting> allyMonstersForTesting = new List<MonsterForTesting>();
+    public List<MonsterForTesting> enemyMonstersForTesting = new List<MonsterForTesting>();
 
     static public TestTool Instance;
 
@@ -58,84 +57,84 @@ public class TestTool : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            MorphAlliedAxies();
+            MorphAlliedMonsters();
         }
     }
 
-    public List<AxieEnemy> GetEnemyAxies(List<AxieEnemy> axieList)
+    public List<MonsterEnemy> GetEnemyMonsters(List<MonsterEnemy> monsterList)
     {
-        if (enemyAxiesForTesting.Count == 0)
+        if (enemyMonstersForTesting.Count == 0)
         {
-            return axieList;
+            return monsterList;
         }
 
         int index = 0;
-        foreach (var axie in axieList)
+        foreach (var monster in monsterList)
         {
-            if (index >= allyAxiesForTesting.Count)
+            if (index >= allyMonstersForTesting.Count)
             {
                 break;
             }
-            var axieForTesting = enemyAxiesForTesting[index];
+            var monsterForTesting = enemyMonstersForTesting[index];
 
-            if (!axieForTesting.UseAxieStats)
+            if (!monsterForTesting.UseMonsterStats)
             {
-                axie.stats = axieForTesting.axieStats;
+                monster.stats = monsterForTesting.monsterStats;
             }
 
-            var AxieParts = new List<GetAxiesExample.Part>();
-            axie.cursedMeta = new Dictionary<string, string>();
+            var MonsterParts = new List<GetMonstersExample.Part>();
+            monster.cursedMeta = new Dictionary<string, string>();
             int indexAb = 0;
-            foreach (var abilityToUse in axieForTesting.abilitiesToUse)
+            foreach (var abilityToUse in monsterForTesting.abilitiesToUse)
             {
-                string bodyPart = axieForTesting.specialBodyPartForAbilityIfNeeded.Count > indexAb ? axieForTesting.specialBodyPartForAbilityIfNeeded[indexAb].ToString() : "";
+                string bodyPart = monsterForTesting.specialBodyPartForAbilityIfNeeded.Count > indexAb ? monsterForTesting.specialBodyPartForAbilityIfNeeded[indexAb].ToString() : "";
                 if (bodyPart == BodyPart.None.ToString())
                 {
                     bodyPart = "";
                 }
                 Part part = PartFinder.GetOriginalPartIdTesting(abilityToUse.ToString(), bodyPart);
                 string abilityId = string.Join("-", part.ability_id.Split('-').Where((s, i) => i != 1));
-                AxieParts.Add(new GetAxiesExample.Part(part.class_type, part.name, part.part_type, indexAb, true, abilityId));
-                axie.cursedMeta.Add(part.part_type, abilityId);
+                MonsterParts.Add(new GetMonstersExample.Part(part.class_type, part.name, part.part_type, indexAb, true, abilityId));
+                monster.cursedMeta.Add(part.part_type, abilityId);
                 indexAb++;
             }
 
-            axie.Parts = AxieParts;
+            monster.Parts = MonsterParts;
             index++;
         }
 
-        return axieList;
+        return monsterList;
     }
 
-    public void MorphAlliedAxies()
+    public void MorphAlliedMonsters()
     {
-        if (allyAxiesForTesting.Count == 0)
+        if (allyMonstersForTesting.Count == 0)
         {
             return;
         }
 
-        var axieList = goodTeam.GetCharactersAll();
+        var monsterList = goodTeam.GetCharactersAll();
 
         int index = 0;
-        foreach (var axie in axieList)
+        foreach (var monster in monsterList)
         {
-            if (index >= allyAxiesForTesting.Count)
+            if (index >= allyMonstersForTesting.Count)
             {
                 break;
             }
-            var axieForTesting = allyAxiesForTesting[index];
-            if (!axieForTesting.UseAxieStats)
+            var monsterForTesting = allyMonstersForTesting[index];
+            if (!monsterForTesting.UseMonsterStats)
             {
-                axie.stats = axieForTesting.axieStats;
+                monster.stats = monsterForTesting.monsterStats;
             }
-            var AxieParts = new List<GetAxiesExample.Part>();
+            var MonsterParts = new List<GetMonstersExample.Part>();
             Dictionary<string, string> cursedMeta = new Dictionary<string, string>();
             int indexAb = 0;
             List<SkillName> newSkillNames = new List<SkillName>();
             List<BodyPart> newBodyParts = new List<BodyPart>();
-            foreach (var abilityToUse in axieForTesting.abilitiesToUse)
+            foreach (var abilityToUse in monsterForTesting.abilitiesToUse)
             {
-                string bodyPart = axieForTesting.specialBodyPartForAbilityIfNeeded.Count > indexAb ? axieForTesting.specialBodyPartForAbilityIfNeeded[indexAb].ToString() : "";
+                string bodyPart = monsterForTesting.specialBodyPartForAbilityIfNeeded.Count > indexAb ? monsterForTesting.specialBodyPartForAbilityIfNeeded[indexAb].ToString() : "";
 
                 if (bodyPart == BodyPart.None.ToString())
                 {
@@ -143,42 +142,42 @@ public class TestTool : MonoBehaviour
                 }
                 Part part = PartFinder.GetOriginalPartIdTesting(abilityToUse.ToString(), bodyPart);
                 string abilityId = string.Join("-", part.ability_id.Split('-').Where((s, i) => i != 1));
-                AxieParts.Add(new GetAxiesExample.Part(part.class_type, part.name, part.part_type, indexAb, true, abilityId));
+                MonsterParts.Add(new GetMonstersExample.Part(part.class_type, part.name, part.part_type, indexAb, true, abilityId));
                 cursedMeta.Add(part.part_type, abilityId);
                 newSkillNames.Add(abilityToUse);
                 newBodyParts.Add((BodyPart)Enum.Parse(typeof(BodyPart), part.part_type, true));
                 indexAb++;
             }
-            axie.axieSkillController.SetAxieSkills(newSkillNames, newBodyParts);
-            AxieSpawner.Instance.SimpleProcessCursedMixer(axie.AxieId.ToString(), axie.Genes, false, cursedMeta, axie);
+            monster.monsterSkillController.SetMonsterSkills(newSkillNames, newBodyParts);
+            MonsterSpawner.Instance.SimpleProcessCursedMixer(monster.MonsterId.ToString(), monster.Genes, false, cursedMeta, monster);
             index++;
 
-            axie.UpdateStats();
+            monster.UpdateStats();
         }
     }
 
-    public void SetEnemyAxiesStatuses()
+    public void SetEnemyMonstersStatuses()
     {
         int index = 0;
         foreach (var character in enemyTeam.GetCharactersAll())
         {
-            if (enemyAxiesForTesting.Count == 0)
+            if (enemyMonstersForTesting.Count == 0)
                 return;
-            if (index >= enemyAxiesForTesting.Count)
+            if (index >= enemyMonstersForTesting.Count)
             {
                 character.stats.hp = 0;
             }
             character.UpdateStats();
-            Debug.Log(character.axieIngameStats.currentHP);
-            if (enemyTeam.GetCharactersAll().Count <= index || enemyAxiesForTesting.Count <= index)
+            Debug.Log(character.monsterIngameStats.currentHP);
+            if (enemyTeam.GetCharactersAll().Count <= index || enemyMonstersForTesting.Count <= index)
             {
                 continue;
             }
-            var axieForTesting = enemyAxiesForTesting[index];
+            var monsterForTesting = enemyMonstersForTesting[index];
 
-            foreach (var buff in axieForTesting.startsWithBuffDebuff)
+            foreach (var buff in monsterForTesting.startsWithBuffDebuff)
             {
-                character.AddStatusEffect(new SkillEffect { statusEffect = buff, skillDuration = axieForTesting.DebuffsDuration });
+                character.AddStatusEffect(new SkillEffect { statusEffect = buff, skillDuration = monsterForTesting.DebuffsDuration });
             }
             index++;
         }
@@ -186,34 +185,34 @@ public class TestTool : MonoBehaviour
         FightManagerSingleton.Instance.SecondsOfFight = BattleTimerStartIn;
     }
 
-    public void SetAllyAxiesStatuses()
+    public void SetAllyMonstersStatuses()
     {
         int index = 0;
         foreach (var character in goodTeam.GetCharactersAll())
         {
-            if (allyAxiesForTesting.Count == 0)
+            if (allyMonstersForTesting.Count == 0)
                 return;
-            if (index >= allyAxiesForTesting.Count)
+            if (index >= allyMonstersForTesting.Count)
             {
                 character.stats.hp = 0;
             }
             character.UpdateStats();
 
-            Debug.Log(character.axieIngameStats.currentHP);
-            if (goodTeam.GetCharactersAll().Count <= index || allyAxiesForTesting.Count <= index)
+            Debug.Log(character.monsterIngameStats.currentHP);
+            if (goodTeam.GetCharactersAll().Count <= index || allyMonstersForTesting.Count <= index)
             {
                 continue;
             }
-            if (allyAxiesForTesting.Count == 0)
+            if (allyMonstersForTesting.Count == 0)
             {
                 continue;
             }
 
-            var axieForTesting = allyAxiesForTesting[index];
+            var monsterForTesting = allyMonstersForTesting[index];
 
-            foreach (var buff in axieForTesting.startsWithBuffDebuff)
+            foreach (var buff in monsterForTesting.startsWithBuffDebuff)
             {
-                character.AddStatusEffect(new SkillEffect { statusEffect = buff, skillDuration = axieForTesting.DebuffsDuration });
+                character.AddStatusEffect(new SkillEffect { statusEffect = buff, skillDuration = monsterForTesting.DebuffsDuration });
             }
             index++;
         }

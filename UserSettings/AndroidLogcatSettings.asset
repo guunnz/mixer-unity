@@ -1,8 +1,8 @@
-{
+﻿{
     "m_SelectedDeviceId": "ZY227NLT9P",
     "m_SelectedProcess": {
         "deviceId": "ZY227NLT9P",
-        "name": "com.axie.land.battles",
+        "name": "com.monster.land.battles",
         "processId": 16426,
         "exited": false
     },
@@ -16,7 +16,7 @@
         },
         {
             "deviceId": "R92X204BMTP",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 3839,
             "exited": true
         },
@@ -28,37 +28,37 @@
         },
         {
             "deviceId": "R92X204BMTP",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 6535,
             "exited": true
         },
         {
             "deviceId": "R92X204BMTP",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 14542,
             "exited": true
         },
         {
             "deviceId": "R92X204BMTP",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 16165,
             "exited": false
         },
         {
             "deviceId": "ZY227NLT9P",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 12700,
             "exited": true
         },
         {
             "deviceId": "ZY227NLT9P",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 13670,
             "exited": true
         },
         {
             "deviceId": "ZY227NLT9P",
-            "name": "com.axie.land.battles",
+            "name": "com.monster.land.battles",
             "processId": 16426,
             "exited": false
         }

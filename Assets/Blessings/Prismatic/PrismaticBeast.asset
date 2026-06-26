@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Beast axies swap their Morale for Speed. Gain 1 Skill stat per
+  description: Your Beast mons swap their Morale for Speed. Gain 1 Skill stat per
     Speed stat
   price: 0
   doNotShowShow: 0

@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Reptile axies receive 100% more damage of abilities and Reflect
+  description: Your Reptile mons receive 100% more damage of abilities and Reflect
     50% of damage received by abilities
   price: 0
   doNotShowShow: 0

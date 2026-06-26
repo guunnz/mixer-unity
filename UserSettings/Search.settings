@@ -1,4 +1,4 @@
-trackSelection = true
+﻿trackSelection = true
 refreshSearchWindowsInPlayMode = false
 fetchPreview = true
 defaultFlags = 0
@@ -14,7 +14,7 @@ scopes = {
 	"last_search.310DEAF1" = ""
 	"OpenInspectorPreview.310DEAF1" = "0"
 	"currentGroup.310DEAF1" = "all"
-	"last_search.110DEAF1" = "h: ref=\"Assets/axie-hackathon-assets/skeleton-datas/axie-particles/curve-slash-1_SkeletonData.asset\""
+	"last_search.110DEAF1" = "h: ref=\"Assets/monster-hackathon-assets/skeleton-datas/monster-particles/curve-slash-1_SkeletonData.asset\""
 	"OpenInspectorPreview.110DEAF1" = "0"
 	"currentGroup.110DEAF1" = "asset"
 }
@@ -70,7 +70,7 @@ objectSelectors = {
 recentSearches = [
 	""
 	"bubbleex"
-	"h: ref=\"Assets/axie-hackathon-assets/skeleton-datas/axie-particles/curve-slash-1_SkeletonData.asset\""
+	"h: ref=\"Assets/monster-hackathon-assets/skeleton-datas/monster-particles/curve-slash-1_SkeletonData.asset\""
 ]
 searchItemFavorites = [
 ]

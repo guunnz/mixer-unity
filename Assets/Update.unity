@@ -273,7 +273,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This axie is part of the \n<color="green">Weekly free rotation</color>
+  m_text: This monster is part of the \n<color="green">Weekly free rotation</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color="green">Axie Park
+  m_text: <color="green">Monster Park
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected <color="red">Cannot attack</color> or <color="red">generate
+  m_text: Mons affected <color="red">Cannot attack</color> or <color="red">generate
     energy</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
@@ -877,7 +877,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected will suffer \n <color="red">10 damage per Poison stack </color>
+  m_text: Mons affected will suffer \n <color="red">10 damage per Poison stack </color>
     when attacking or attacked
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected will suffer a <color="red">critical strike</color> the next
+  m_text: Mons affected will suffer a <color="red">critical strike</color> the next
     time they get hit by <color="yellow">an ability.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
@@ -1947,7 +1947,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your Current Axie Land Battles Version is Outdated! Please Update!
+  m_text: Your Current Monster Land Battles Version is Outdated! Please Update!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
@@ -3370,7 +3370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected \n<color="red">will not</color> <color="yellow">Generate
+  m_text: Mons affected \n<color="red">will not</color> <color="yellow">Generate
     Energy</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
@@ -3734,7 +3734,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color="yellow">Weekly Axie!
+  m_text: <color="yellow">Weekly Monster!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
@@ -3962,7 +3962,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected will \n<color="red">Receive 50% more damage</color> and
+  m_text: Mons affected will \n<color="red">Receive 50% more damage</color> and
     gain <color="yellow">25% Attack Speed</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
@@ -4420,7 +4420,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your axies gain +1 HP stat
+  m_text: Your mons gain +1 HP stat
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
@@ -4783,8 +4783,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected will \n<color="lightblue">Not Be Targeted</color> unless
-    they are the <color="yellow">Last Axie Alive</color> or the entire team is <color="yellow">Stenched.
+  m_text: Mons affected will \n<color="lightblue">Not Be Targeted</color> unless
+    they are the <color="yellow">Last Monster Alive</color> or the entire team is <color="yellow">Stenched.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
@@ -5147,7 +5147,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Affected Axie \n<color="red">Cannot critical strike
+  m_text: Affected Monster \n<color="red">Cannot critical strike
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
@@ -5357,7 +5357,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Axies affected <color="red">miss all attacks</color>
+  m_text: Mons affected <color="red">miss all attacks</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
   m_sharedMaterial: {fileID: -3299753325116185093, guid: c2d9de55ed4966541b90ccf315f3a088,
@@ -5586,7 +5586,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: <color="lightblue">Stun</color> for <color="yellow">2 seconds</color> the
-    next Axie that targets you with <color="lightblue">Aquatic</color> or <color=#FFC0CB>Bird</color>
+    next Monster that targets you with <color="lightblue">Aquatic</color> or <color=#FFC0CB>Bird</color>
     ability
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c2d9de55ed4966541b90ccf315f3a088, type: 2}
@@ -8348,7 +8348,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: If your Axie combo includes another <color="yellow">active ability</color>
+  m_text: If your Monster combo includes another <color="yellow">active ability</color>
     that is <color="yellow">not a Wombo ability</color>, this ability <color="yellow">costs
     0 energy</color>
   m_isRightToLeft: 0
@@ -12041,7 +12041,7 @@ GameObject:
   - component: {fileID: 2016191535}
   - component: {fileID: 2016191534}
   m_Layer: 5
-  m_Name: TooltipAxiePark
+  m_Name: TooltipMonsterPark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13201,7 +13201,7 @@ GameObject:
   - component: {fileID: 2115387187}
   - component: {fileID: 2115387186}
   m_Layer: 5
-  m_Name: FreeAxie
+  m_Name: FreeMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

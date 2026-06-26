@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using UnityEngine;
 public class TeamSelectorUI : MonoBehaviour
 {
     public GameObject FakeUI;
-    public GameObject RealAxies;
+    public GameObject RealMonsters;
     public GameObject RealLand;
     public GameObject EditButton;
     public TextMeshProUGUI LoadingTeams;
@@ -17,24 +17,24 @@ public class TeamSelectorUI : MonoBehaviour
 
     private void OnEnable()
     {
-        RealAxies.SetActive(false);
+        RealMonsters.SetActive(false);
         RealLand.SetActive(false);
         FakeUI.SetActive(true);
-        StartCoroutine(LoadAxies());
+        StartCoroutine(LoadMonsters());
     }
 
-    IEnumerator LoadAxies()
+    IEnumerator LoadMonsters()
     {
         LoadingTeams.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.1f);
 
         StartCoroutine(LoadingCoroutine());
-        StartCoroutine(CreateAxiesUI());
+        StartCoroutine(CreateMonstersUI());
     }
 
     public void Exit()
     {
-        RealAxies.SetActive(true);
+        RealMonsters.SetActive(true);
         RealLand.SetActive(true);
         FakeUI.SetActive(false);
     }
@@ -45,7 +45,7 @@ public class TeamSelectorUI : MonoBehaviour
         {
             if (i < TeamManager.instance.teams.Count)
             {
-                AxieTeam team = TeamManager.instance.teams[i];
+                MonsterTeam team = TeamManager.instance.teams[i];
 
                 if (team.TeamName == TeamManager.instance.currentTeam.TeamName)
                 {
@@ -59,7 +59,7 @@ public class TeamSelectorUI : MonoBehaviour
         }
     }
     bool removed = false;
-    public IEnumerator CreateAxiesUI()
+    public IEnumerator CreateMonstersUI()
     {
         if (TeamManager.instance.teams.Count == 1)
         {
@@ -70,7 +70,7 @@ public class TeamSelectorUI : MonoBehaviour
         {
             TeamName.text = "";
             EditButton.SetActive(false);
-            FakeAxiesManager.instance.ClearAllAxies();
+            FakeMonstersManager.instance.ClearAllMonsters();
         }
         else
         {
@@ -87,7 +87,7 @@ public class TeamSelectorUI : MonoBehaviour
         {
             if (i < TeamManager.instance.teams.Count)
             {
-                AxieTeam team = TeamManager.instance.teams[i];
+                MonsterTeam team = TeamManager.instance.teams[i];
 
                 if (!AccountManager.userLands.results.Any(x => x.LandTypeEnum == team.landType) || AccountManager.userLands.results.Where(x => x.LandTypeEnum == team.landType).All(x => x.locked))
                 {
@@ -95,27 +95,25 @@ public class TeamSelectorUI : MonoBehaviour
                     continue;
                 }
 
-                bool nullAxie = false;
+                bool nullMonster = false;
 
-                foreach (var axie in team.AxieIds)
+                foreach (var monster in team.MonsterIds)
                 {
-                    while (!AccountManager.userAxies.results.Any(x => x.id == axie.id) && AccountManager.Instance.StartedLoading)
+                    while (!AccountManager.userMonsters.results.Any(x => x.id == monster.id) && AccountManager.Instance.StartedLoading)
                     {
                         yield return null;
                     }
 
-                    while (AccountManager.userAxies.results.Any(x => x.skeletonDataAssetMaterial == null) && !AccountManager.Instance.StartedLoading)
-                    {
-                        yield return null;
-                    }
+                    foreach (var userMonster in AccountManager.userMonsters.results.Where(x => x.visualDescriptor == null))
+                        userMonster.LoadGraphicAssets();
 
-                    if (!AccountManager.userAxies.results.Any(x => x.id == axie.id))
+                    if (!AccountManager.userMonsters.results.Any(x => x.id == monster.id))
                     {
-                        nullAxie = true;
+                        nullMonster = true;
                     }
                 }
 
-                if (nullAxie)
+                if (nullMonster)
                 {
                     continue;
                 }
@@ -169,24 +167,24 @@ public class TeamSelectorUI : MonoBehaviour
         {
             TeamManager.instance.currentTeam = TeamManager.instance.teams[0];
 
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.teams[0].TeamName);
+            PlayerPrefs.SetString(PlayerPrefsValues.MonsterTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.teams[0].TeamName);
         }
         else
         {
             TeamManager.instance.currentTeam = null;
-            PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, "");
+            PlayerPrefs.SetString(PlayerPrefsValues.MonsterTeamSelected + RunManagerSingleton.instance.user_wallet_address, "");
         }
 
         TeamManager.instance.SaveTeams();
 
-        StartCoroutine(CreateAxiesUI());
+        StartCoroutine(CreateMonstersUI());
     }
 
     public void SelectTeam()
     {
         TooltipManagerSingleton.instance.DisableTooltip();
-        PlayerPrefs.SetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.currentTeam?.TeamName);
-        TeamManager.instance.axiesManager.ShowMenuAxies(TeamManager.instance.currentTeam);
+        PlayerPrefs.SetString(PlayerPrefsValues.MonsterTeamSelected + RunManagerSingleton.instance.user_wallet_address, TeamManager.instance.currentTeam?.TeamName);
+        TeamManager.instance.monstersManager.ShowMenuMonsters(TeamManager.instance.currentTeam);
         Exit();
     }
 }

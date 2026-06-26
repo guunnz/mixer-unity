@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,8 +100,8 @@ public class InBattleGraphicsManager : MonoBehaviour
                 {
                     switch (effect)
                     {
-                        case AtiaBlessing.BuffEffect.AxiePark:
-                            blessing = BlessingManager.AxieParkBlessing;
+                        case AtiaBlessing.BuffEffect.MonsterPark:
+                            blessing = BlessingManager.MonsterParkBlessing;
                             break;
                         case AtiaBlessing.BuffEffect.Savannah:
                             blessing = BlessingManager.SavannahBlessing;

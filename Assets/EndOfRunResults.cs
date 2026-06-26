@@ -1,5 +1,4 @@
-using Spine.Unity;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -11,8 +10,7 @@ using UnityEngine.SceneManagement;
 public class MatchData
 {
     public string username;
-    public SkeletonDataAsset skeletonDataAsset;
-    public Material skeletonmaterial;
+    public MonsterVisualDescriptor visualDescriptor;
     public int winIndex;
     public bool Win;
 }
@@ -35,7 +33,7 @@ public class EndOfRunResults : MonoBehaviour
     public Image HP2;
     public Image HP3;
 
-    public SkeletonGraphic SkeletonGraphicCaptain;
+    public VanillaMonsterGraphic CaptainGraphic;
     public TextMeshProUGUI CaptainText;
 
     static public EndOfRunResults Instance = new EndOfRunResults();
@@ -50,10 +48,24 @@ public class EndOfRunResults : MonoBehaviour
         MatchData matchdata = new MatchData();
         matchdata.username = CaptainText.text;
         matchdata.Win = win;
-        matchdata.skeletonDataAsset = SkeletonGraphicCaptain.skeletonDataAsset;
-        matchdata.skeletonmaterial = SkeletonGraphicCaptain.material;
+        matchdata.visualDescriptor = GetCaptainDescriptor();
         matchdata.winIndex = MatchData.Count + 1;
         MatchData.Add(matchdata);
+    }
+
+    private MonsterVisualDescriptor GetCaptainDescriptor()
+    {
+        if (CaptainGraphic != null && CaptainGraphic.Descriptor != null)
+            return CaptainGraphic.Descriptor;
+
+        if (TeamCaptainManager.Instance != null &&
+            TeamCaptainManager.Instance.ProfilePicGraphic != null &&
+            TeamCaptainManager.Instance.ProfilePicGraphic.Descriptor != null)
+        {
+            return TeamCaptainManager.Instance.ProfilePicGraphic.Descriptor;
+        }
+
+        return MonsterVisualDescriptor.Default();
     }
     public IEnumerator Fireworks()
     {
@@ -120,9 +132,8 @@ public class EndOfRunResults : MonoBehaviour
             GoodTeam.GetCharactersAll().ForEach(x =>
         {
 
-            x.mode = AxieMode.Win;
-            x.SkeletonAnim.AnimationName = "activity/victory-pose-back-flip";
-            x.SkeletonAnim.Initialize(true);
+            x.mode = MonsterMode.Win;
+            x.Visual?.Play(MonsterVisualState.Victory, true);
 
         });
             StartCoroutine(Fireworks());

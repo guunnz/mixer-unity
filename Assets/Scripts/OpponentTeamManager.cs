@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ public class OpponentTeamManager : MonoBehaviour
 {
     static public OpponentTeamManager instance;
 
-    public List<GetAxiesExample.Axie> AxieEnemyList = new List<GetAxiesExample.Axie>();
+    public List<GetMonstersExample.Monster> MonsterEnemyList = new List<GetMonstersExample.Monster>();
 
     [FormerlySerializedAs("enemyTeam")] public Team badTeam;
 
@@ -28,9 +28,9 @@ public class OpponentTeamManager : MonoBehaviour
         instance = this;
     }
 
-    public IEnumerator SetupTeam(Opponent opponent, List<GetAxiesExample.Axie> axieEnemyList)
+    public IEnumerator SetupTeam(Opponent opponent, List<GetMonstersExample.Monster> monsterEnemyList)
     {
-        this.AxieEnemyList = axieEnemyList;
+        this.MonsterEnemyList = monsterEnemyList;
 
         while (badTeam.GetCharactersAll().Count < 5)
         {
@@ -41,13 +41,13 @@ public class OpponentTeamManager : MonoBehaviour
 
         InBattleGraphicsManager.Instance.CleanBlessingsOpponent();
 
-        foreach (var teamUpgrades in opponent.axie_team.team_upgrades_values_per_round)
+        foreach (var teamUpgrades in opponent.monster_team.team_upgrades_values_per_round)
         {
             foreach (var upgrades in teamUpgrades.upgrades_ids)
             {
                 InBattleGraphicsManager.Instance.AddUpgrade(upgrades.id);
                 atiaBlessing.AugumentUpgrade((int)upgrades.id,
-                    upgrades.axie_class?.Select(x => (AxieClass)x).ToList(),
+                    upgrades.monster_class?.Select(x => (MonsterClass)x).ToList(),
                     badTeam);
             }
 
@@ -59,15 +59,15 @@ public class OpponentTeamManager : MonoBehaviour
         }
 
         // index = 0;
-        // foreach (var axie in opponent.axie_team.axies)
+        // foreach (var monster in opponent.monster_team.monsters)
         // {
-        //     if (axie.upgrades_values_per_round == null)
+        //     if (monster.upgrades_values_per_round == null)
         //         continue;
-        //     foreach (var upgrade in axie.upgrades_values_per_round)
+        //     foreach (var upgrade in monster.upgrades_values_per_round)
         //     {
         //         foreach (var i in upgrade.upgrades_id)
         //         {
-        //             atiaBlessing.AugumentUpgrade(i, axie.axie_id, badTeam);
+        //             atiaBlessing.AugumentUpgrade(i, monster.monster_id, badTeam);
         //
         //             index++;
         //             if (index >= RunManagerSingleton.instance.score)

@@ -6,12 +6,16 @@ using UnityEngine.EventSystems;
 
 public class FakeDragAndDropCharacter : MonoBehaviour
 {
+    private const float DragLiftHeight = 0.75f;
+
     private Camera mainCamera;
     private GameObject selectedCharacter;
-    public Transform AxiesParent;
+    private Vector3 originalPosition;
+    private FakeOverlayTile originalTile;
+    public Transform MonstersParent;
 
     private List<FakeOverlayTile> allOverlayTiles = new List<FakeOverlayTile>();
-    [SerializeField] private List<FakeAxieController> allCharacters = new List<FakeAxieController>();
+    [SerializeField] private List<FakeMonsterController> allCharacters = new List<FakeMonsterController>();
 
     private float moveDelay = 0.1f;
     void Start()
@@ -26,19 +30,14 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         moveDelay -= Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && moveDelay <= 0)
         {
-            RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit))
+            if (TryGetCharacterUnderPointer(out FakeMonsterController monsterController))
             {
-                if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
-                {
-                    selectedCharacter = hit.collider.gameObject;
-                    FakeAxieController axieController = selectedCharacter.GetComponent<FakeAxieController>();
-                    SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
-                    axieController.Grab(true);
-                    selectedCharacter.transform.SetParent(mainCamera.transform);
-                }
+                selectedCharacter = monsterController.gameObject;
+                SFXManager.instance.PlaySFX(SFXType.GrabMonster, 0.12f);
+                monsterController.Grab(true);
+                originalPosition = selectedCharacter.transform.position;
+                originalTile = monsterController.standingOnTile;
+                selectedCharacter.transform.SetParent(mainCamera.transform);
             }
         }
 
@@ -50,7 +49,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                 mainCamera.WorldToScreenPoint(selectedCharacter.transform.position).z);
             Vector3 newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-            selectedCharacter.transform.position = newPosition;
+            selectedCharacter.transform.position = KeepDraggedCharacterAboveFloor(newPosition);
         }
 
         // Release character and attempt to place on the closest tile
@@ -58,14 +57,14 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         {
             moveDelay = 0.1f;
             selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-            var fakeAxieController = selectedCharacter.GetComponent<FakeAxieController>();
-            fakeAxieController.Grab(false);
+            var fakeMonsterController = selectedCharacter.GetComponent<FakeMonsterController>();
+            fakeMonsterController.Grab(false);
             FakeOverlayTile closestTile = GetClosestTile();
-            SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
+            SFXManager.instance.PlaySFX(SFXType.GrabMonster, 0.12f);
             if (closestTile == null)
             {
-                MoveCharacterToTile(fakeAxieController, fakeAxieController.standingOnTile);
-                selectedCharacter.transform.SetParent(AxiesParent);
+                MoveCharacterToTile(fakeMonsterController, fakeMonsterController.standingOnTile);
+                selectedCharacter.transform.SetParent(MonstersParent);
                 selectedCharacter.GetComponent<BoxCollider>().enabled = true;
                 selectedCharacter = null;
                 return;
@@ -73,16 +72,20 @@ public class FakeDragAndDropCharacter : MonoBehaviour
 
             TryPlaceCharacterOnTile(selectedCharacter, closestTile);
 
-            selectedCharacter.transform.SetParent(AxiesParent); // Unparent the character
+            selectedCharacter.transform.SetParent(MonstersParent); // Unparent the character
             selectedCharacter = null; // Reset the selected character
         }
     }
 
+    private Vector3 KeepDraggedCharacterAboveFloor(Vector3 worldPosition)
+    {
+        float floorHeight = originalTile != null ? originalTile.transform.position.y : originalPosition.y;
+        worldPosition.y = Mathf.Max(worldPosition.y, floorHeight + DragLiftHeight);
+        return worldPosition;
+    }
+
     private FakeOverlayTile GetClosestTile()
     {
-        FakeOverlayTile closestTile = null;
-        float minDistance = float.MaxValue;
-
         if (allOverlayTiles.Count == 0)
         {
             allOverlayTiles = FindObjectsOfType<FakeOverlayTile>().ToList();
@@ -93,30 +96,65 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         return tile;
     }
 
+    private bool TryGetCharacterUnderPointer(out FakeMonsterController controller)
+    {
+        controller = null;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        if (hits == null || hits.Length == 0)
+            return false;
+
+        Vector3 pointerPosition = Input.mousePosition;
+        controller = hits
+            .Where(hit => hit.collider != null && hit.collider.CompareTag("Character"))
+            .Select(hit => new
+            {
+                Hit = hit,
+                Controller = hit.collider.GetComponent<FakeMonsterController>()
+            })
+            .Where(candidate => candidate.Controller != null && candidate.Controller.visible)
+            .OrderBy(candidate => GetPointerDistance(candidate.Controller, pointerPosition))
+            .ThenBy(candidate => candidate.Hit.distance)
+            .Select(candidate => candidate.Controller)
+            .FirstOrDefault();
+
+        return controller != null;
+    }
+
+    private float GetPointerDistance(FakeMonsterController controller, Vector3 pointerPosition)
+    {
+        Vector3 worldPosition = controller.visual != null && controller.visual.BodyAnchor != null
+            ? controller.visual.BodyAnchor.position
+            : controller.transform.position;
+
+        Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+        return Vector2.SqrMagnitude((Vector2)screenPosition - (Vector2)pointerPosition);
+    }
+
     private void TryPlaceCharacterOnTile(GameObject character, FakeOverlayTile targetTile)
     {
-        FakeAxieController selectedAxieController = character.GetComponent<FakeAxieController>();
+        FakeMonsterController selectedMonsterController = character.GetComponent<FakeMonsterController>();
 
         if (targetTile.occupied)
         {
-            FakeAxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
+            FakeMonsterController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
-            if (occupyingCharacter != null && selectedAxieController != occupyingCharacter)
+            if (occupyingCharacter != null && selectedMonsterController != occupyingCharacter)
             {
-                SwapCharacters(selectedAxieController, occupyingCharacter);
+                SwapCharacters(selectedMonsterController, occupyingCharacter);
             }
             else
             {
-                MoveCharacterToTile(selectedAxieController, targetTile);
+                MoveCharacterToTile(selectedMonsterController, targetTile);
             }
         }
         else
         {
-            MoveCharacterToTile(selectedAxieController, targetTile);
+            MoveCharacterToTile(selectedMonsterController, targetTile);
         }
     }
 
-    private void SwapCharacters(FakeAxieController characterA, FakeAxieController characterB)
+    private void SwapCharacters(FakeMonsterController characterA, FakeMonsterController characterB)
     {
         FakeOverlayTile tileA = characterA.standingOnTile;
         FakeOverlayTile tileB = characterB.standingOnTile;
@@ -133,31 +171,27 @@ public class FakeDragAndDropCharacter : MonoBehaviour
 
         if (characterA.standingOnTile.grid2DLocation.x >= 4)
         {
-            characterA.transform.localScale =
-                new Vector3(0.2f, characterA.transform.localScale.y, characterA.transform.localScale.z);
+            MonsterScale.SetFacing(characterA.transform, true);
         }
         else
         {
-            characterA.transform.localScale = new Vector3(-0.2f, characterA.transform.localScale.y,
-                characterA.transform.localScale.z);
+            MonsterScale.SetFacing(characterA.transform, false);
         }
 
         if (characterB.standingOnTile.grid2DLocation.x >= 4)
         {
-            characterB.transform.localScale =
-                new Vector3(0.2f, characterB.transform.localScale.y, characterB.transform.localScale.z);
+            MonsterScale.SetFacing(characterB.transform, true);
         }
         else
         {
-            characterB.transform.localScale = new Vector3(-0.2f, characterB.transform.localScale.y,
-                characterB.transform.localScale.z);
+            MonsterScale.SetFacing(characterB.transform, false);
         }
 
         tileA.currentOccupier = characterB;
         tileB.currentOccupier = characterA;
     }
 
-    IEnumerator MoveCharacter(FakeAxieController character, Vector3 targetPosition)
+    IEnumerator MoveCharacter(FakeMonsterController character, Vector3 targetPosition)
     {
         while (character.transform.position != targetPosition)
         {
@@ -167,7 +201,7 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         }
     }
 
-    private void MoveCharacterToTile(FakeAxieController character, FakeOverlayTile targetTile)
+    private void MoveCharacterToTile(FakeMonsterController character, FakeOverlayTile targetTile)
     {
         character.standingOnTile.occupied = false;
         character.standingOnTile.currentOccupier = null;
@@ -177,16 +211,6 @@ public class FakeDragAndDropCharacter : MonoBehaviour
         character.standingOnTile.currentOccupier = character;
         character.standingOnTile.occupied = true;
 
-        // Adjust local scale based on grid X value
-        if (targetTile.grid2DLocation.x >= 4)
-        {
-            character.transform.localScale =
-                new Vector3(0.2f, character.transform.localScale.y, character.transform.localScale.z);
-        }
-        else
-        {
-            character.transform.localScale =
-                new Vector3(-0.2f, character.transform.localScale.y, character.transform.localScale.z);
-        }
+        MonsterScale.SetFacing(character.transform, targetTile.grid2DLocation.x >= 4);
     }
 }

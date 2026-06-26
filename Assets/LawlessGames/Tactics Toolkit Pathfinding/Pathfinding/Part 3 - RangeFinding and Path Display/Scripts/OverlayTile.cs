@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Shapes;
 using UnityEngine;
@@ -39,12 +39,12 @@ public class OverlayTile : MonoBehaviour
         }
     }
 
-    internal AxieController currentOccupier;
+    internal MonsterController currentOccupier;
     public Rectangle rectangle;
     private bool untoggleable;
     public MaterialTipColorChanger tipColorChanger;
 
-    public static AxieController GetCurrentOccupierByY(int yValue, List<OverlayTile> allTiles)
+    public static MonsterController GetCurrentOccupierByY(int yValue, List<OverlayTile> allTiles)
     {
         return allTiles.FirstOrDefault(tile => tile.grid2DLocation.y == yValue)?.currentOccupier;
     }
@@ -108,7 +108,7 @@ public class OverlayTile : MonoBehaviour
         {
             var allCharacters2 = badTeam.GetAliveCharacters();
             occupied = allCharacters2.Any(character =>
-                character.standingOnTile == this && character.axieBehavior.axieState != AxieState.Killed);
+                character.standingOnTile == this && character.monsterBehavior.monsterState != MonsterState.Killed);
         }
     }
 

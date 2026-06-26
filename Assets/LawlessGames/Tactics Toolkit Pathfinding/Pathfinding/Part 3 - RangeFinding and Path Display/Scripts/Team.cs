@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -18,7 +18,7 @@ public class Team : MonoBehaviour
     public float speed;
     public int movementRange = 300;
 
-    internal Dictionary<AxieController, CharacterState> characters = new Dictionary<AxieController, CharacterState>();
+    internal Dictionary<MonsterController, CharacterState> characters = new Dictionary<MonsterController, CharacterState>();
     private PathFinder pathFinder;
     public Team enemyTeam;
     public bool battleStarted = false;
@@ -28,7 +28,7 @@ public class Team : MonoBehaviour
     public TextMeshProUGUI YouWinLose;
     public TextMeshProUGUI DetailsText;
     public Image DetailsImage;
-    public AxieLandBattleTarget target;
+    public MonsterLandBattleTarget target;
     private float resetTimer;
     internal bool ChimeraSpawned;
     public bool isGoodTeam;
@@ -36,7 +36,20 @@ public class Team : MonoBehaviour
     internal bool battleEnded = false;
     private TeamCaptainManager teamCaptainManager;
     public List<Action> OnBattleStartActions = new List<Action>();
-    internal int AxieAliveAmount => characters.Keys.Count(x => x.axieBehavior.axieState != AxieState.Killed);
+    internal int MonsterAliveAmount
+    {
+        get
+        {
+            int count = 0;
+            foreach (MonsterController character in characters.Keys)
+            {
+                if (IsAlive(character))
+                    count++;
+            }
+
+            return count;
+        }
+    }
 
     public IEnumerator Start()
     {
@@ -49,39 +62,61 @@ public class Team : MonoBehaviour
         }
     }
 
-    public List<AxieController> GetAliveCharacters()
+    public List<MonsterController> GetAliveCharacters()
     {
-        return new List<AxieController>(characters.Keys).Where(x =>
-                x.axieBehavior.axieState != AxieState.Killed)
-            .ToList();
+        List<MonsterController> aliveCharacters = new List<MonsterController>(characters.Count);
+        foreach (MonsterController character in characters.Keys)
+        {
+            if (IsAlive(character))
+                aliveCharacters.Add(character);
+        }
+
+        return aliveCharacters;
     }
 
-    public List<AxieController> GetAliveCharactersByClass(AxieClass @class)
+    public List<MonsterController> GetAliveCharactersByClass(MonsterClass @class)
     {
-        return new List<AxieController>(characters.Keys).Where(x =>
-                x.axieBehavior.axieState != AxieState.Killed).Where(x => x.axieIngameStats.axieClass == @class)
-            .ToList();
+        List<MonsterController> aliveCharacters = new List<MonsterController>(characters.Count);
+        foreach (MonsterController character in characters.Keys)
+        {
+            if (IsAlive(character) && character.monsterIngameStats.monsterClass == @class)
+                aliveCharacters.Add(character);
+        }
+
+        return aliveCharacters;
     }
 
 
-    public List<AxieController> GetCharactersAll()
+    public List<MonsterController> GetCharactersAll()
     {
-        return new List<AxieController>(characters.Keys).ToList();
+        return new List<MonsterController>(characters.Keys).ToList();
     }
 
-    public List<AxieController> GetCharactersAllByClass(AxieClass @class)
+    public List<MonsterController> GetCharactersAllByClass(MonsterClass @class)
     {
-        return new List<AxieController>(characters.Keys).Where(x => x.axieIngameStats.axieClass == @class).ToList();
+        return new List<MonsterController>(characters.Keys).Where(x => x.monsterIngameStats.monsterClass == @class).ToList();
     }
 
-    public CharacterState GetCharacterState(string axieId)
+    public CharacterState GetCharacterState(string monsterId)
     {
-        return characters[
-            GetAliveCharacters().Single(x =>
-                x.axieIngameStats.axieId == axieId && x.axieBehavior.axieState != AxieState.Killed)];
+        foreach (KeyValuePair<MonsterController, CharacterState> pair in characters)
+        {
+            MonsterController character = pair.Key;
+            if (IsAlive(character) && character.monsterIngameStats.monsterId == monsterId)
+                return pair.Value;
+        }
+
+        throw new InvalidOperationException($"No alive monster state found for id {monsterId}.");
     }
 
-    private void RecalculatePath(AxieController character, CharacterState state)
+    private static bool IsAlive(MonsterController character)
+    {
+        return character != null &&
+               character.monsterBehavior != null &&
+               character.monsterBehavior.monsterState != MonsterState.Killed;
+    }
+
+    private void RecalculatePath(MonsterController character, CharacterState state)
     {
         if (character.CurrentTarget != null)
         {
@@ -89,7 +124,7 @@ public class Team : MonoBehaviour
             return;
         }
 
-        AxieController closestCharacter = FindClosestCharacter(character);
+        MonsterController closestCharacter = FindClosestCharacter(character);
         if (closestCharacter != null)
         {
             character.CurrentTarget = closestCharacter;
@@ -106,7 +141,7 @@ public class Team : MonoBehaviour
 
     public void StartBattle()
     {
-        this.GetCharactersAll().ForEach(x => x.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(x.stats) / x.axieSkillController.GetComboCost());
+        this.GetCharactersAll().ForEach(x => x.monsterIngameStats.CurrentEnergy = MonsterStatCalculator.GetMonsterMinEnergy(x.stats) / x.monsterSkillController.GetComboCost());
         int randomMusic = Random.Range(0, 5);
         PostBattleManager.Instance.FillList(this);
         if (isGoodTeam)
@@ -140,9 +175,9 @@ public class Team : MonoBehaviour
             inRangeTile.ToggleRectangle(false);
         }
 
-        foreach (var axieController in GetAliveCharacters())
+        foreach (var monsterController in GetAliveCharacters())
         {
-            axieController.DoOnStart();
+            monsterController.DoOnStart();
         }
 
         foreach (var onBattleStartAction in OnBattleStartActions)
@@ -170,26 +205,26 @@ public class Team : MonoBehaviour
             Destroy(enemyList[i].gameObject);
         }
 
-        enemyTeam.characters = new Dictionary<AxieController, CharacterState>();
+        enemyTeam.characters = new Dictionary<MonsterController, CharacterState>();
 
         foreach (var character in GetCharactersAll())
         {
-            character.axieBehavior.axieState = AxieState.Idle;
+            character.monsterBehavior.monsterState = MonsterState.Idle;
             character.gameObject.SetActive(true);
             Vector2Int gridLocation = new Vector2Int(character.startingRow, character.startingCol);
             character.standingOnTile.occupied = false;
             character.standingOnTile.currentOccupier = null;
             OverlayTile startingTile = MapManager.Instance.map[gridLocation];
-            character.transform.localScale = new Vector3(gridLocation.x < 4 ? -0.2f : 0.2f,
-                0.2f, character.transform.localScale.z);
-            character.axieBehavior.DoAction(AxieState.Idle);
-            character.axieSkillEffectManager.RemoveAllEffects();
-            character.axieIngameStats.currentHP = character.axieIngameStats.maxHP;
-            character.statsManagerUI.SetHP(character.axieIngameStats.currentHP / character.axieIngameStats.maxHP);
-            character.axieIngameStats.CurrentEnergy = AxieStatCalculator.GetAxieMinEnergy(character.stats) / character.axieSkillController.GetComboCost();
-            character.statsManagerUI.SetMana(character.axieIngameStats.CurrentEnergy /
-                                             character.axieSkillController.GetComboCost());
-            character.SkeletonAnim.Initialize(true);
+            character.transform.localScale = Vector3.one;
+            MonsterScale.SetFacing(character.transform, gridLocation.x >= 4);
+            character.monsterBehavior.DoAction(MonsterState.Idle);
+            character.monsterSkillEffectManager.RemoveAllEffects();
+            character.monsterIngameStats.currentHP = character.monsterIngameStats.maxHP;
+            character.statsManagerUI.SetHP(character.monsterIngameStats.currentHP / character.monsterIngameStats.maxHP);
+            character.monsterIngameStats.CurrentEnergy = MonsterStatCalculator.GetMonsterMinEnergy(character.stats) / character.monsterSkillController.GetComboCost();
+            character.statsManagerUI.SetMana(character.monsterIngameStats.CurrentEnergy /
+                                             character.monsterSkillController.GetComboCost());
+            character.Visual?.Initialize(true);
             PositionCharacterOnTile(character, startingTile, true);
         }
     }
@@ -228,7 +263,7 @@ public class Team : MonoBehaviour
                 teamCaptainManager.opponentHP.fillAmount = GetTeamTotalHPBar();
             }
 
-            if (characters.All(x => x.Key.axieBehavior.axieState == AxieState.Killed))
+            if (characters.All(x => x.Key.monsterBehavior.monsterState == MonsterState.Killed))
             {
                 RunManagerSingleton.instance.ShopBlocker.SetActive(true);
                 if (!battleEnded)
@@ -285,10 +320,10 @@ public class Team : MonoBehaviour
                     }
 
                     MapManager.Instance.ToggleRectangles();
-                    foreach (var axieController in RunManagerSingleton.instance.goodTeam.GetCharactersAll())
+                    foreach (var monsterController in RunManagerSingleton.instance.goodTeam.GetCharactersAll())
                     {
-                        axieController.axieIngameStats.currentShield = 0;
-                        axieController.statsManagerUI.SetShield(Mathf.RoundToInt(0));
+                        monsterController.monsterIngameStats.currentShield = 0;
+                        monsterController.statsManagerUI.SetShield(Mathf.RoundToInt(0));
                     }
 
                     if (isGoodTeam)
@@ -322,7 +357,7 @@ public class Team : MonoBehaviour
     {
         var allCharacters = GetCharactersAll();
 
-        return allCharacters.Sum(x => x.axieIngameStats.currentHP) / allCharacters.Sum(x => x.axieIngameStats.maxHP);
+        return allCharacters.Sum(x => x.monsterIngameStats.currentHP) / allCharacters.Sum(x => x.monsterIngameStats.maxHP);
     }
 
     void FixedUpdate()
@@ -333,8 +368,8 @@ public class Team : MonoBehaviour
             {
                 if (character.Key == null)
                     continue;
-                if (character.Key.axieBehavior.axieState == AxieState.Killed ||
-                    character.Key.axieBehavior.axieState == AxieState.Stunned || character.Key.axieBehavior.shrimping)
+                if (character.Key.monsterBehavior.monsterState == MonsterState.Killed ||
+                    character.Key.monsterBehavior.monsterState == MonsterState.Stunned || character.Key.monsterBehavior.shrimping)
                     continue;
                 if (character.Value.isMoving && character.Value.path != null && character.Value.path.Count > 0)
                 {
@@ -362,7 +397,7 @@ public class Team : MonoBehaviour
         }
     }
 
-    public void AddCharacter(AxieController character, Vector2Int? gridLocation = null)
+    public void AddCharacter(MonsterController character, Vector2Int? gridLocation = null)
     {
         OverlayTile startingTile = null;
         if (isGoodTeam)
@@ -379,8 +414,8 @@ public class Team : MonoBehaviour
         }
 
         PositionCharacterOnTile(character, startingTile, true);
-        character.transform.localScale = new Vector3(gridLocation.Value.x < 4 ? -0.2f : 0.2f,
-            0.2f, character.transform.localScale.z);
+        character.transform.localScale = Vector3.one;
+        MonsterScale.SetFacing(character.transform, gridLocation.Value.x >= 4);
 
         character.startingCol = startingTile.grid2DLocation.y;
         character.startingRow = startingTile.grid2DLocation.x;
@@ -393,17 +428,17 @@ public class Team : MonoBehaviour
     }
 
 
-    private bool IsPathPossible(AxieController axieController, AxieController enemy)
+    private bool IsPathPossible(MonsterController monsterController, MonsterController enemy)
     {
-        return pathFinder.FindPath(axieController.standingOnTile, enemy.standingOnTile,
-            GetInRangeTiles(axieController)) != null;
+        return pathFinder.FindPath(monsterController.standingOnTile, enemy.standingOnTile,
+            GetInRangeTiles(monsterController)) != null;
     }
 
-    private void MoveTowardsClosestCharacter(AxieController character)
+    private void MoveTowardsClosestCharacter(MonsterController character)
     {
-        //if (character.axieBehavior.axieState != AxieState.Moving && character.axieBehavior.axieState != AxieState.None && character.axieBehavior.axieState != AxieState.Idle || character.axieBehavior.axieState != AxieState.Casting)
+        //if (character.monsterBehavior.monsterState != MonsterState.Moving && character.monsterBehavior.monsterState != MonsterState.None && character.monsterBehavior.monsterState != MonsterState.Idle || character.monsterBehavior.monsterState != MonsterState.Casting)
         //{
-        //    if (character.CurrentTarget != null && !character.CurrentTarget.axieSkillEffectManager.IsStenched())
+        //    if (character.CurrentTarget != null && !character.CurrentTarget.monsterSkillEffectManager.IsStenched())
         //    {
         //        var step = speed * Time.fixedDeltaTime;
         //        if (Vector3.Distance(character.transform.position, character.standingOnTile.transform.position) > 0.1f)
@@ -426,7 +461,7 @@ public class Team : MonoBehaviour
 
         var state = characters[character];
         if (state.isMoving) return;
-        AxieController closestCharacter = character.CurrentTarget;
+        MonsterController closestCharacter = character.CurrentTarget;
 
 
         if (character.CurrentTarget == null)
@@ -440,9 +475,9 @@ public class Team : MonoBehaviour
                 GetManhattanDistance(character.standingOnTile, closestCharacter.standingOnTile);
 
             character.CurrentTarget = closestCharacter;
-            if (character.axieIngameStats.Range > 1)
+            if (character.monsterIngameStats.Range > 1)
             {
-                if (distanceToClosestCharacterGrid <= (int)character.axieIngameStats.Range)
+                if (distanceToClosestCharacterGrid <= (int)character.monsterIngameStats.Range)
                 {
                     state.path = null;
 
@@ -477,12 +512,12 @@ public class Team : MonoBehaviour
 
             float distanceToClosestCharacterX =
                 Mathf.Abs(character.transform.position.x - closestCharacter.transform.position.x);
-            if (distanceToClosestCharacterGrid > character.axieIngameStats.Range + 1 ||
+            if (distanceToClosestCharacterGrid > character.monsterIngameStats.Range + 1 ||
                 distanceToClosestCharacterGrid >= 1 &&
                 (character.standingOnTile.grid2DLocation.y == closestCharacter.standingOnTile.grid2DLocation.y
-                    ? distanceToClosestCharacterX > character.axieIngameStats.Range
+                    ? distanceToClosestCharacterX > character.monsterIngameStats.Range
                     : distanceToClosestCharacterX > 0.1f ||
-                      distanceToClosestCharacterGrid <= character.axieIngameStats.Range + 1))
+                      distanceToClosestCharacterGrid <= character.monsterIngameStats.Range + 1))
             {
                 MoveAlongPath(character, state);
             }
@@ -505,17 +540,17 @@ public class Team : MonoBehaviour
                Mathf.Abs(tile1.gridLocation.z - tile2.gridLocation.z);
     }
 
-    private AxieController FindClosestCharacter(AxieController character)
+    private MonsterController FindClosestCharacter(MonsterController character)
     {
-        AxieController closestCharacter = null;
+        MonsterController closestCharacter = null;
         int minManhattanDistance = int.MaxValue;
         float minTransformDistance = float.MaxValue;
 
         var characters = enemyTeam.GetAliveCharacters();
-        var stenchCount = characters.Count(x => x.axieSkillEffectManager.IsStenched());
+        var stenchCount = characters.Count(x => x.monsterSkillEffectManager.IsStenched());
         if (stenchCount > 0 && characters.Count != stenchCount)
         {
-            characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
+            characters.RemoveAll(x => x.monsterSkillEffectManager.IsStenched());
         }
 
         foreach (var other in characters)
@@ -524,7 +559,7 @@ public class Team : MonoBehaviour
                 Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                 Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
-            if ((int)character.axieIngameStats.Range == 1)
+            if ((int)character.monsterIngameStats.Range == 1)
             {
                 var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
                     GetInRangeTiles(character));
@@ -546,16 +581,16 @@ public class Team : MonoBehaviour
         return closestCharacter;
     }
 
-    public AxieController FindFurthestCharacter(AxieController character)
+    public MonsterController FindFurthestCharacter(MonsterController character)
     {
-        AxieController furthestCharacter = null;
+        MonsterController furthestCharacter = null;
         int maxManhattanDistance = 0;
         var characters = enemyTeam.GetAliveCharacters();
 
-        var stenchCount = characters.Count(x => x.axieSkillEffectManager.IsStenched());
+        var stenchCount = characters.Count(x => x.monsterSkillEffectManager.IsStenched());
         if (stenchCount > 0 && characters.Count != stenchCount)
         {
-            characters.RemoveAll(x => x.axieSkillEffectManager.IsStenched());
+            characters.RemoveAll(x => x.monsterSkillEffectManager.IsStenched());
         }
         foreach (var other in characters)
         {
@@ -563,7 +598,7 @@ public class Team : MonoBehaviour
                 Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                 Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
-            if ((int)character.axieIngameStats.Range == 1)
+            if ((int)character.monsterIngameStats.Range == 1)
             {
                 var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
                     GetInRangeTiles(character));
@@ -580,9 +615,9 @@ public class Team : MonoBehaviour
         return furthestCharacter;
     }
 
-    public AxieController FindFurthestCharacter(AxieController character, List<AxieController> potentialCharacters)
+    public MonsterController FindFurthestCharacter(MonsterController character, List<MonsterController> potentialCharacters)
     {
-        AxieController furthestCharacter = null;
+        MonsterController furthestCharacter = null;
         int maxManhattanDistance = 0;
 
         foreach (var other in potentialCharacters)
@@ -591,7 +626,7 @@ public class Team : MonoBehaviour
                 Mathf.Abs(character.standingOnTile.gridLocation.x - other.standingOnTile.gridLocation.x) +
                 Mathf.Abs(character.standingOnTile.gridLocation.z - other.standingOnTile.gridLocation.z);
 
-            if ((int)character.axieIngameStats.Range == 1)
+            if ((int)character.monsterIngameStats.Range == 1)
             {
                 var path = pathFinder.FindPath(character.standingOnTile, other.standingOnTile,
                     GetInRangeTiles(character));
@@ -608,7 +643,7 @@ public class Team : MonoBehaviour
         return furthestCharacter;
     }
 
-    private void MoveAlongPath(AxieController character, CharacterState state)
+    private void MoveAlongPath(MonsterController character, CharacterState state)
     {
         var step = speed * Time.fixedDeltaTime;
         if (state.path == null)
@@ -625,9 +660,9 @@ public class Team : MonoBehaviour
 
             distanceToClosestCharacterGrid =
                 GetManhattanDistance(character.standingOnTile, character.CurrentTarget.standingOnTile);
-            if (character.axieIngameStats.Range > 1)
+            if (character.monsterIngameStats.Range > 1)
             {
-                if (distanceToClosestCharacterGrid <= (int)character.axieIngameStats.Range)
+                if (distanceToClosestCharacterGrid <= (int)character.monsterIngameStats.Range)
                 {
                     state.isMoving = false;
                     return;
@@ -672,7 +707,7 @@ public class Team : MonoBehaviour
         }
     }
 
-    private void PositionCharacterOnTile(AxieController character, OverlayTile tile, bool force = false)
+    private void PositionCharacterOnTile(MonsterController character, OverlayTile tile, bool force = false)
     {
         if (!tile.occupied || force)
         {
@@ -687,7 +722,7 @@ public class Team : MonoBehaviour
         }
     }
 
-    public List<OverlayTile> GetInRangeTiles(AxieController character)
+    public List<OverlayTile> GetInRangeTiles(MonsterController character)
     {
         return MapManager.Instance.overlayTiles.Where(t => !t.occupied)
             .ToList();

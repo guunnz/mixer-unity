@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -24,7 +24,7 @@ public enum TooltipType
     Kestrel,
     FishSnack,
     Gecko,
-    AxiePark,
+    MonsterPark,
     Savannah,
     Forest,
     Arctic,
@@ -34,7 +34,7 @@ public enum TooltipType
     Jinx,
     Energy,
     LunaLanding,
-    FreeAxie,
+    FreeMonster,
     HpStat,
     MoraleStat,
     SkillStat,

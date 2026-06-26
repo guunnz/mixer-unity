@@ -1,8 +1,7 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,12 +9,12 @@ using UnityEngine.UI;
 public enum TeamBuilderMenu
 {
     Lands,
-    Axies,
+    Monsters,
     Atia,
     Combo
 }
 
-public enum AxieStatFilter
+public enum MonsterStatFilter
 {
     NoFilter,
     MoreMorale,
@@ -31,12 +30,12 @@ public enum AxieStatFilter
 public class TeamBuilderManager : MonoBehaviour
 {
     public GameObject LandsContent;
-    public GameObject AxiesContent;
+    public GameObject MonstersContent;
 
     public List<UIListLand> landList = new List<UIListLand>();
-    public List<UIListAxie> axieList = new List<UIListAxie>();
+    public List<UIListMonster> monsterList = new List<UIListMonster>();
 
-    public GameObject AxieTeamUIObject;
+    public GameObject MonsterTeamUIObject;
     public GameObject DragToRemoveObject;
     private int currentPage = 1;
     public TextMeshProUGUI pageText;
@@ -47,37 +46,37 @@ public class TeamBuilderManager : MonoBehaviour
     public GameObject TeamLandBuildingUI;
     public GameObject ComboUI;
     public FakeMapManager fakeMap;
-    public FakeAxieComboManager fakeAxieComboManager;
-    public FakeAxiesManager fakeAxiesManager;
+    public FakeMonsterComboManager fakeMonsterComboManager;
+    public FakeMonstersManager fakeMonstersManager;
     public FakeLandManager fakeLandManager;
     public GameObject CanvasTeams;
     public bool creatingNewTeam;
 
     public GameObject Container;
 
-    public GameObject AxieStatsContainer;
-    public TextMeshProUGUI AxieHPText;
-    public TextMeshProUGUI AxieMoraleText;
-    public TextMeshProUGUI AxieSkillText;
-    public TextMeshProUGUI AxieSpeedText;
-    public GetAxiesExample.Axie lastAxieChosen;
-    public SkeletonGraphic statsSkeletonGraphic;
-    public Image AxieClassGraphic;
+    public GameObject MonsterStatsContainer;
+    public TextMeshProUGUI MonsterHPText;
+    public TextMeshProUGUI MonsterMoraleText;
+    public TextMeshProUGUI MonsterSkillText;
+    public TextMeshProUGUI MonsterSpeedText;
+    public GetMonstersExample.Monster lastMonsterChosen;
+    public VanillaMonsterGraphic statsMonsterGraphic;
+    public Image MonsterClassGraphic;
 
-    public List<AxieClass> axieClassFilters = new List<AxieClass>();
-    public List<AxieStatFilter> axieStatsFilters = new List<AxieStatFilter>();
+    public List<MonsterClass> monsterClassFilters = new List<MonsterClass>();
+    public List<MonsterStatFilter> monsterStatsFilters = new List<MonsterStatFilter>();
 
     internal delegate void StatsFilterCleared();
 
     internal event StatsFilterCleared statsfilterClearedEvent;
 
-    internal delegate void ContraryStatsFilterCleared(AxieStatFilter statsFilter);
+    internal delegate void ContraryStatsFilterCleared(MonsterStatFilter statsFilter);
 
     internal event ContraryStatsFilterCleared contraryfilterClearedEvent;
 
-    internal delegate void AxieClassFilterCleared();
+    internal delegate void MonsterClassFilterCleared();
 
-    internal event AxieClassFilterCleared axieClassfilterClearedEvent;
+    internal event MonsterClassFilterCleared monsterClassfilterClearedEvent;
 
     public TMP_InputField GeneralFilter;
 
@@ -96,7 +95,7 @@ public class TeamBuilderManager : MonoBehaviour
     }
     private void OnGeneralFilterChanged()
     {
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
     public void Edit()
@@ -106,7 +105,7 @@ public class TeamBuilderManager : MonoBehaviour
         CanvasTeams.SetActive(false);
         creatingNewTeam = false;
         teamNameInputField.text = TeamManager.instance.currentTeam.TeamName;
-        SetMenu(TeamBuilderMenu.Axies, true);
+        SetMenu(TeamBuilderMenu.Monsters, true);
     }
 
     public void NewTeam()
@@ -117,87 +116,87 @@ public class TeamBuilderManager : MonoBehaviour
         fakeMap.ToggleRectangles();
         Container.SetActive(true);
         creatingNewTeam = true;
-        fakeAxiesManager.ClearAllAxies();
+        fakeMonstersManager.ClearAllMonsters();
         SetMenu(TeamBuilderMenu.Lands, true);
     }
 
-    public void ToggleClassFilter(AxieClass axieClass)
+    public void ToggleClassFilter(MonsterClass monsterClass)
     {
-        if (axieClassFilters.Any(x => x == axieClass))
+        if (monsterClassFilters.Any(x => x == monsterClass))
         {
-            axieClassFilters.RemoveAll(x => x == axieClass);
+            monsterClassFilters.RemoveAll(x => x == monsterClass);
         }
         else
         {
-            axieClassFilters.Add(axieClass);
+            monsterClassFilters.Add(monsterClass);
         }
 
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
     public void RemoveAllClassFilter()
     {
-        axieClassFilters.Clear();
-        axieClassfilterClearedEvent.Invoke();
-        SetAxiesUI();
+        monsterClassFilters.Clear();
+        monsterClassfilterClearedEvent.Invoke();
+        SetMonstersUI();
     }
 
     public void RemoveAllStatsFilter()
     {
-        axieStatsFilters.Clear();
+        monsterStatsFilters.Clear();
         statsfilterClearedEvent.Invoke();
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
-    public void ToggleStatsFilter(AxieStatFilter statFilter)
+    public void ToggleStatsFilter(MonsterStatFilter statFilter)
     {
-        AxieStatFilter contraryFilter = axieStatsFilters.FirstOrDefault(x =>
+        MonsterStatFilter contraryFilter = monsterStatsFilters.FirstOrDefault(x =>
             x != statFilter && statFilter.ToString().Contains(x.ToString().Substring(4)));
 
-        if (contraryFilter != AxieStatFilter.NoFilter)
+        if (contraryFilter != MonsterStatFilter.NoFilter)
         {
-            axieStatsFilters.RemoveAll(x => x == contraryFilter);
+            monsterStatsFilters.RemoveAll(x => x == contraryFilter);
             contraryfilterClearedEvent.Invoke(contraryFilter);
         }
 
-        if (axieStatsFilters.Any(x => x == statFilter && axieStatsFilters.Contains(statFilter)))
+        if (monsterStatsFilters.Any(x => x == statFilter && monsterStatsFilters.Contains(statFilter)))
         {
-            axieStatsFilters.RemoveAll(x => x == statFilter);
+            monsterStatsFilters.RemoveAll(x => x == statFilter);
         }
         else
         {
-            axieStatsFilters.Add(statFilter);
+            monsterStatsFilters.Add(statFilter);
         }
 
-        SetAxiesUI();
+        SetMonstersUI();
     }
 
-    public List<GetAxiesExample.Axie> GetFilteredList(string generalFilter = null)
+    public List<GetMonstersExample.Monster> GetFilteredList(string generalFilter = null)
     {
-        List<GetAxiesExample.Axie> axiesList = AccountManager.userAxies.results.ToList();
+        List<GetMonstersExample.Monster> monstersList = AccountManager.userMonsters.results.ToList();
 
         // Apply existing class and stats filters
-        if (axieClassFilters.Count != 0)
+        if (monsterClassFilters.Count != 0)
         {
-            axiesList = axiesList.Where(x => axieClassFilters.Contains(x.axieClass)).ToList();
+            monstersList = monstersList.Where(x => monsterClassFilters.Contains(x.monsterClass)).ToList();
         }
 
-        if (axieStatsFilters.Count != 0)
+        if (monsterStatsFilters.Count != 0)
         {
-            var query = SortAxies(axiesList, axieStatsFilters);
-            axiesList = query.ToList();
+            var query = SortMonsters(monstersList, monsterStatsFilters);
+            monstersList = query.ToList();
         }
 
         // New filtering based on the GeneralFilter
         if (!string.IsNullOrEmpty(generalFilter))
         {
             var filters = generalFilter.ToLower().Split(',').Select(f => f.Trim()).ToList();
-            axiesList = axiesList.Where(axie =>
+            monstersList = monstersList.Where(monster =>
                 filters.Any(filter =>
-                    (axie.id?.ToLower() == filter) ||
-                    (axie.axieClass.ToString().ToLower() == filter) ||
-                    (axie.bodyShape.ToString().ToLower() == filter) ||
-                    (axie.parts != null && axie.parts.Any(part =>
+                    (monster.id?.ToLower() == filter) ||
+                    (monster.monsterClass.ToString().ToLower() == filter) ||
+                    (monster.bodyShape.ToString().ToLower() == filter) ||
+                    (monster.parts != null && monster.parts.Any(part =>
                         part != null && (
                             part.id?.ToLower() == filter ||
                             part.name?.ToLower() == filter ||
@@ -213,14 +212,14 @@ public class TeamBuilderManager : MonoBehaviour
             ).ToList();
         }
 
-        return axiesList;
+        return monstersList;
     }
 
 
-    private IOrderedEnumerable<GetAxiesExample.Axie> SortAxies(List<GetAxiesExample.Axie> axiesList, List<AxieStatFilter> axieStatsFilters)
+    private IOrderedEnumerable<GetMonstersExample.Monster> SortMonsters(List<GetMonstersExample.Monster> monstersList, List<MonsterStatFilter> monsterStatsFilters)
     {
-        IOrderedEnumerable<GetAxiesExample.Axie> query = axiesList.OrderBy(x => 0);
-        AxieStatFilter firstFilter = axieStatsFilters.First();
+        IOrderedEnumerable<GetMonstersExample.Monster> query = monstersList.OrderBy(x => 0);
+        MonsterStatFilter firstFilter = monsterStatsFilters.First();
         if (firstFilter.ToString().Contains("More"))
         {
             query = query.OrderByDescending(x => GetFieldValue(x.stats, firstFilter));
@@ -230,9 +229,9 @@ public class TeamBuilderManager : MonoBehaviour
             query = query.OrderBy(x => GetFieldValue(x.stats, firstFilter));
         }
 
-        for (int i = 1; i < axieStatsFilters.Count; i++)
+        for (int i = 1; i < monsterStatsFilters.Count; i++)
         {
-            AxieStatFilter filter = axieStatsFilters[i];
+            MonsterStatFilter filter = monsterStatsFilters[i];
             if (filter.ToString().Contains("More"))
             {
                 query = query.ThenByDescending(x => GetFieldValue(x.stats, filter));
@@ -246,19 +245,19 @@ public class TeamBuilderManager : MonoBehaviour
         return query;
     }
 
-    int GetFieldValue(GetAxiesExample.Stats axieStats, AxieStatFilter filter)
+    int GetFieldValue(GetMonstersExample.Stats monsterStats, MonsterStatFilter filter)
     {
         // Get the filter property value
         switch (filter.ToString().Substring(4).ToLower())
         {
             case "morale":
-                return axieStats.morale;
+                return monsterStats.morale;
             case "skill":
-                return axieStats.skill;
+                return monsterStats.skill;
             case "hp":
-                return axieStats.hp;
+                return monsterStats.hp;
             case "speed":
-                return axieStats.speed;
+                return monsterStats.speed;
         }
 
         return 0;
@@ -277,11 +276,11 @@ public class TeamBuilderManager : MonoBehaviour
             case TeamBuilderMenu.Atia:
                 SetAtiaUI();
                 break;
-            case TeamBuilderMenu.Axies:
-                PagesAmount = AccountManager.userAxies.results.Length / 12f;
+            case TeamBuilderMenu.Monsters:
+                PagesAmount = AccountManager.userMonsters.results.Length / 12f;
                 maxPagesAmount = Mathf.CeilToInt(PagesAmount);
                 pageText.text = $"Page {currentPage}-{maxPagesAmount}";
-                SetAxiesUI();
+                SetMonstersUI();
                 break;
             case TeamBuilderMenu.Combo:
                 SetComboUI();
@@ -299,83 +298,88 @@ public class TeamBuilderManager : MonoBehaviour
     {
         TeamLandBuildingUI.SetActive(false);
         ComboUI.SetActive(true);
-        fakeAxieComboManager.LoadUI();
+        fakeMonsterComboManager.LoadUI();
     }
 
     public void SetAtiaUI()
     {
     }
 
-    public void SetAxieSelected(GetAxiesExample.Axie axie, Sprite classSprite)
+    public void SetMonsterSelected(GetMonstersExample.Monster monster, MonsterClass monsterClass)
     {
-        AxieClassGraphic.sprite = classSprite;
-        statsSkeletonGraphic.skeletonDataAsset = axie.skeletonDataAsset;
-        statsSkeletonGraphic.material = axie.skeletonDataAssetMaterial;
-        statsSkeletonGraphic.Initialize(true);
-        lastAxieChosen = axie;
+        VanillaMonsterIconUtility.ApplyClass(MonsterClassGraphic, monsterClass, GetMonsterClassGraphics());
+        SetStatsGraphic(monster);
+        lastMonsterChosen = monster;
     }
 
-    public void SetAxieStats(GetAxiesExample.Axie Axie)
+    public void SetMonsterStats(GetMonstersExample.Monster Monster)
     {
-        AxieStatsContainer.SetActive(false);
+        MonsterStatsContainer.SetActive(false);
 
-        AxieHPText.text = Axie.stats.hp.ToString();
-        AxieSkillText.text = Axie.stats.skill.ToString();
-        AxieMoraleText.text = Axie.stats.morale.ToString();
-        AxieSpeedText.text = Axie.stats.speed.ToString();
-        statsSkeletonGraphic.skeletonDataAsset = Axie.skeletonDataAsset;
-        statsSkeletonGraphic.material = Axie.skeletonDataAssetMaterial;
-        statsSkeletonGraphic.Initialize(true);
-        AxieStatsContainer.SetActive(true);
+        MonsterHPText.text = Monster.stats.hp.ToString();
+        MonsterSkillText.text = Monster.stats.skill.ToString();
+        MonsterMoraleText.text = Monster.stats.morale.ToString();
+        MonsterSpeedText.text = Monster.stats.speed.ToString();
+        SetStatsGraphic(Monster);
+        MonsterStatsContainer.SetActive(true);
     }
 
-    public void DisableAxieStats()
+    public void DisableMonsterStats()
     {
-        AxieStatsContainer.SetActive(false);
+        MonsterStatsContainer.SetActive(false);
     }
 
-    public void SetAxiesUI()
+    private List<MonsterClassGraphic> GetMonsterClassGraphics()
+    {
+        foreach (UIListMonster item in monsterList)
+        {
+            if (item != null && item.monsterClassGraphics != null && item.monsterClassGraphics.Count > 0)
+                return item.monsterClassGraphics;
+        }
+
+        return null;
+    }
+
+    public void SetMonstersUI()
     {
         TeamLandBuildingUI.SetActive(true);
         ComboUI.SetActive(false);
         LandsContent.SetActive(false);
-        AxiesContent.SetActive(true);
-        if (lastAxieChosen == null)
+        MonstersContent.SetActive(true);
+        if (lastMonsterChosen == null)
         {
             if (TeamManager.instance.currentTeam != null)
             {
-                lastAxieChosen = TeamManager.instance.currentTeam.AxieIds[0];
+                lastMonsterChosen = TeamManager.instance.currentTeam.MonsterIds[0];
             }
         }
 
-        AxieStatsContainer.SetActive(false);
+        MonsterStatsContainer.SetActive(false);
 
-        List<GetAxiesExample.Axie> filteredAxieList = GetFilteredList(GeneralFilter.text);
+        List<GetMonstersExample.Monster> filteredMonsterList = GetFilteredList(GeneralFilter.text);
 
         for (int i = 0; i < 12; i++)
         {
-            axieList[i].axie = null;
+            monsterList[i].monster = null;
 
             int indexToSearch = Mathf.RoundToInt(i + (12 * (currentPage - 1)));
-            if (indexToSearch < filteredAxieList.Count)
+            if (indexToSearch < filteredMonsterList.Count)
             {
-                GetAxiesExample.Axie axie = filteredAxieList[indexToSearch];
+                GetMonstersExample.Monster monster = filteredMonsterList[indexToSearch];
 
-                axieList[i].axie = axie;
-                if (lastAxieChosen != null && axie.id == lastAxieChosen.id)
+                monsterList[i].monster = monster;
+                if (lastMonsterChosen != null && monster.id == lastMonsterChosen.id)
                 {
-                    AxieHPText.text = axie.stats.hp.ToString();
-                    AxieSkillText.text = axie.stats.skill.ToString();
-                    AxieMoraleText.text = axie.stats.morale.ToString();
-                    AxieSpeedText.text = axie.stats.speed.ToString();
-                    statsSkeletonGraphic.skeletonDataAsset = axieList[i].axie.skeletonDataAsset;
-                    statsSkeletonGraphic.material = axieList[i].axie.skeletonDataAssetMaterial;
-                    statsSkeletonGraphic.Initialize(true);
-                    AxieStatsContainer.SetActive(true);
+                    MonsterHPText.text = monster.stats.hp.ToString();
+                    MonsterSkillText.text = monster.stats.skill.ToString();
+                    MonsterMoraleText.text = monster.stats.morale.ToString();
+                    MonsterSpeedText.text = monster.stats.speed.ToString();
+                    SetStatsGraphic(monsterList[i].monster);
+                    MonsterStatsContainer.SetActive(true);
                 }
             }
 
-            axieList[i].Refresh();
+            monsterList[i].Refresh();
         }
     }
 
@@ -384,14 +388,14 @@ public class TeamBuilderManager : MonoBehaviour
         TeamLandBuildingUI.SetActive(true);
         ComboUI.SetActive(false);
         LandsContent.SetActive(true);
-        AxiesContent.SetActive(false);
+        MonstersContent.SetActive(false);
         for (int i = 0; i < 12; i++)
         {
             landList[i].land = null;
 
             if (i < AccountManager.userLands.results.Length)
             {
-                GetAxiesExample.Land land = AccountManager.userLands.results[Mathf.RoundToInt(i * currentPage)];
+                GetMonstersExample.Land land = AccountManager.userLands.results[Mathf.RoundToInt(i * currentPage)];
 
                 landList[i].land = land;
             }
@@ -426,9 +430,9 @@ public class TeamBuilderManager : MonoBehaviour
         SetMenu(currentTeamBuilderMenu, false);
     }
 
-    public void SetAxiesMenu()
+    public void SetMonstersMenu()
     {
-        SetMenu(TeamBuilderMenu.Axies, true);
+        SetMenu(TeamBuilderMenu.Monsters, true);
     }
 
     public void SetLandsMenu()
@@ -438,11 +442,11 @@ public class TeamBuilderManager : MonoBehaviour
 
     public void SetComboMenu()
     {
-        if (fakeAxiesManager.instantiatedAxies.Count(x => x.renderer.enabled) == 5)
+        if (fakeMonstersManager.instantiatedMonsters.Count(x => x.visible) == 5)
             SetMenu(TeamBuilderMenu.Combo, false);
         else
         {
-            NotificationErrorManager.instance.DoNotification("Please select 5 axies first");
+            NotificationErrorManager.instance.DoNotification("Please select 5 mons first");
         }
     }
 
@@ -469,33 +473,33 @@ public class TeamBuilderManager : MonoBehaviour
             return;
         }
 
-        AxieTeam newTeam = new AxieTeam();
-        List<FakeAxieController> fakeAxieControllers = fakeAxiesManager.instantiatedAxies;
+        MonsterTeam newTeam = new MonsterTeam();
+        List<FakeMonsterController> fakeMonsterControllers = fakeMonstersManager.instantiatedMonsters;
         newTeam.TeamName = teamNameInputField.text;
-        newTeam.AxieIds = fakeAxieControllers.Select(x => new GetAxiesExample.Axie(x.axie)).ToList();
+        newTeam.MonsterIds = fakeMonsterControllers.Select(x => new GetMonstersExample.Monster(x.monster)).ToList();
 
-        foreach (var axie in newTeam.AxieIds)
+        foreach (var monster in newTeam.MonsterIds)
         {
-            FakeAxieController axieController = fakeAxieControllers.Single(x => x.axie.id == axie.id);
+            FakeMonsterController monsterController = fakeMonsterControllers.Single(x => x.monster.id == monster.id);
             newTeam.combos.Add(
                 new Combos()
-                { combos_id = axie.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
+                { combos_id = monster.parts.Where(x => x.selected).Select(x => (int)x.SkillName).ToArray() }
             );
             Position pos = new Position();
 
             pos =
                 new Position()
                 {
-                    col = axieController.standingOnTile.grid2DLocation.y,
-                    row = axieController.standingOnTile.grid2DLocation.x
+                    col = monsterController.standingOnTile.grid2DLocation.y,
+                    row = monsterController.standingOnTile.grid2DLocation.x
                 }
                 ;
 
             newTeam.position.Add(pos);
         }
 
-        newTeam.landTokenId = fakeAxiesManager.fakeLandManager.currentSelectedLandId;
-        newTeam.landType = fakeAxiesManager.fakeLandManager.currentLandType;
+        newTeam.landTokenId = fakeMonstersManager.fakeLandManager.currentSelectedLandId;
+        newTeam.landType = fakeMonstersManager.fakeLandManager.currentLandType;
         if (!creatingNewTeam)
         {
             TeamManager.instance.teams
@@ -509,6 +513,19 @@ public class TeamBuilderManager : MonoBehaviour
 
         TeamManager.instance.SaveTeams();
         Exit();
+    }
+
+    private void SetStatsGraphic(GetMonstersExample.Monster monster)
+    {
+        VanillaMonsterGraphic graphic = EnsureStatsGraphic();
+        graphic.SetMonster(monster);
+        graphic.Initialize(true);
+    }
+
+    private VanillaMonsterGraphic EnsureStatsGraphic()
+    {
+        statsMonsterGraphic = VanillaMonsterGraphic.EnsureCenteredChild(MonsterStatsContainer.transform, statsMonsterGraphic, "Stats Monster Graphic");
+        return statsMonsterGraphic;
     }
 
 }

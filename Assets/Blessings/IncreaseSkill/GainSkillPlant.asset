@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Plant Axies Gain 10% Skill
+  description: Your Plant Mons Gain 10% Skill
   price: 0
   doNotShowShow: 0
   tooltipType: 

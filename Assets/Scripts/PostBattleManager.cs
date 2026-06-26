@@ -1,5 +1,4 @@
-using Spine.Unity;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,25 +6,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AxieForPostBattle
+public class MonsterForPostBattle
 {
     public float Healing;
     public float Damage;
-    public SkeletonDataAsset skeletonDataAsset;
-    public Material skeletonMaterial;
-    public string axieId;
-    public List<AxieBodyPart> axieParts;
+    public MonsterVisualDescriptor visualDescriptor;
+    public string monsterId;
+    public List<MonsterBodyPart> monsterParts;
 }
 
 public class PostBattleManager : MonoBehaviour
 {
-    public List<AxieForPostBattle> AlliedAxieForPostBattles = new List<AxieForPostBattle>();
-    public List<AxieForPostBattle> EnemyAxieForPostBattles = new List<AxieForPostBattle>();
+    public List<MonsterForPostBattle> AlliedMonsterForPostBattles = new List<MonsterForPostBattle>();
+    public List<MonsterForPostBattle> EnemyMonsterForPostBattles = new List<MonsterForPostBattle>();
     public TextMeshProUGUI ToggleText;
     public bool DamageMode;
     public Color colorToUse = Color.red;
-    public List<PostBattleAxie> AlliedPostBattleAxies = new List<PostBattleAxie>();
-    public List<PostBattleAxie> EnemyPostBattleAxies = new List<PostBattleAxie>();
+    public List<PostBattleMonster> AlliedPostBattleMonsters = new List<PostBattleMonster>();
+    public List<PostBattleMonster> EnemyPostBattleMonsters = new List<PostBattleMonster>();
     static public PostBattleManager Instance;
     public GameObject Container;
 
@@ -33,7 +31,7 @@ public class PostBattleManager : MonoBehaviour
     {
         TooltipManagerSingleton.instance.DisableTooltip();
         Container.SetActive(true);
-        LoadPostBattleAxies();
+        LoadPostBattleMonsters();
     }
 
     private void Awake()
@@ -54,20 +52,20 @@ public class PostBattleManager : MonoBehaviour
             colorToUse = Color.green;
             ToggleText.text = "Change to Damage Stats";
         }
-        LoadPostBattleAxies();
+        LoadPostBattleMonsters();
     }
 
-    public void SumDamage(string AxieId, float damage, bool good)
+    public void SumDamage(string MonsterId, float damage, bool good)
     {
         try
         {
             if (good)
             {
-                AlliedAxieForPostBattles.FirstOrDefault(x => x.axieId == AxieId).Damage += damage;
+                AlliedMonsterForPostBattles.FirstOrDefault(x => x.monsterId == MonsterId).Damage += damage;
             }
             else
             {
-                EnemyAxieForPostBattles.FirstOrDefault(x => x.axieId == AxieId).Damage += damage;
+                EnemyMonsterForPostBattles.FirstOrDefault(x => x.monsterId == MonsterId).Damage += damage;
             }
         }
         catch (Exception e)
@@ -77,36 +75,36 @@ public class PostBattleManager : MonoBehaviour
 
     }
 
-    public void SumHealing(string AxieId, float healing, bool good)
+    public void SumHealing(string MonsterId, float healing, bool good)
     {
         if (good)
         {
-            AlliedAxieForPostBattles.FirstOrDefault(x => x.axieId == AxieId).Healing += healing;
+            AlliedMonsterForPostBattles.FirstOrDefault(x => x.monsterId == MonsterId).Healing += healing;
         }
         else
         {
-            EnemyAxieForPostBattles.FirstOrDefault(x => x.axieId == AxieId).Healing += healing;
+            EnemyMonsterForPostBattles.FirstOrDefault(x => x.monsterId == MonsterId).Healing += healing;
         }
     }
 
-    public void LoadPostBattleAxies()
+    public void LoadPostBattleMonsters()
     {
-        var alliedAxieOrderedList = AlliedAxieForPostBattles.OrderByDescending(x => DamageMode ? x.Damage : x.Healing).ToList();
-        var enemyAxiesOrderedList = EnemyAxieForPostBattles.OrderByDescending(x => DamageMode ? x.Damage : x.Healing).ToList();
+        var alliedMonsterOrderedList = AlliedMonsterForPostBattles.OrderByDescending(x => DamageMode ? x.Damage : x.Healing).ToList();
+        var enemyMonstersOrderedList = EnemyMonsterForPostBattles.OrderByDescending(x => DamageMode ? x.Damage : x.Healing).ToList();
 
-        var combinedList = new List<AxieForPostBattle>();
+        var combinedList = new List<MonsterForPostBattle>();
 
-        combinedList.AddRange(alliedAxieOrderedList);
-        combinedList.AddRange(enemyAxiesOrderedList);
+        combinedList.AddRange(alliedMonsterOrderedList);
+        combinedList.AddRange(enemyMonstersOrderedList);
 
-        float maxFillAmount = enemyAxiesOrderedList.Max(x => DamageMode ? x.Damage : x.Healing);
+        float maxFillAmount = enemyMonstersOrderedList.Max(x => DamageMode ? x.Damage : x.Healing);
 
         for (int i = 0; i < 5; i++)
         {
-            var alliedAxieData = alliedAxieOrderedList[i];
-            var enemyAxieData = enemyAxiesOrderedList[i];
-            AlliedPostBattleAxies[i].SetPostBattleAxie(alliedAxieData.skeletonDataAsset, alliedAxieData.skeletonMaterial, colorToUse, DamageMode ? alliedAxieData.Damage / maxFillAmount : alliedAxieData.Healing / maxFillAmount, DamageMode ? alliedAxieData.Damage : alliedAxieData.Healing, alliedAxieData.axieParts);
-            EnemyPostBattleAxies[i].SetPostBattleAxie(enemyAxieData.skeletonDataAsset, enemyAxieData.skeletonMaterial, colorToUse, DamageMode ? enemyAxieData.Damage / maxFillAmount : enemyAxieData.Healing / maxFillAmount, DamageMode ? enemyAxieData.Damage : enemyAxieData.Healing, enemyAxieData.axieParts);
+            var alliedMonsterData = alliedMonsterOrderedList[i];
+            var enemyMonsterData = enemyMonstersOrderedList[i];
+            AlliedPostBattleMonsters[i].SetPostBattleMonster(alliedMonsterData.visualDescriptor, colorToUse, DamageMode ? alliedMonsterData.Damage / maxFillAmount : alliedMonsterData.Healing / maxFillAmount, DamageMode ? alliedMonsterData.Damage : alliedMonsterData.Healing, alliedMonsterData.monsterParts);
+            EnemyPostBattleMonsters[i].SetPostBattleMonster(enemyMonsterData.visualDescriptor, colorToUse, DamageMode ? enemyMonsterData.Damage / maxFillAmount : enemyMonsterData.Healing / maxFillAmount, DamageMode ? enemyMonsterData.Damage : enemyMonsterData.Healing, enemyMonsterData.monsterParts);
         }
     }
 
@@ -114,30 +112,28 @@ public class PostBattleManager : MonoBehaviour
     {
         if (team.isGoodTeam)
         {
-            AlliedAxieForPostBattles.Clear();
-            foreach (var axie in team.GetCharactersAll())
+            AlliedMonsterForPostBattles.Clear();
+            foreach (var monster in team.GetCharactersAll())
             {
-                AlliedAxieForPostBattles.Add(new AxieForPostBattle()
+                AlliedMonsterForPostBattles.Add(new MonsterForPostBattle()
                 {
-                    axieId = axie.AxieId.ToString(),
-                    skeletonDataAsset = axie.skeletonDataAsset,
-                    skeletonMaterial = axie.skeletonMaterial,
-                    axieParts = axie.axieSkillController.skillListNoRepeat.Select(x => x.bodyPartSO).ToList()
+                    monsterId = monster.MonsterId.ToString(),
+                    visualDescriptor = monster.visualDescriptor,
+                    monsterParts = monster.monsterSkillController.skillListNoRepeat.Select(x => x.bodyPartSO).ToList()
                 });
             }
             return;
         }
 
-        EnemyAxieForPostBattles.Clear();
+        EnemyMonsterForPostBattles.Clear();
 
-        foreach (var axie in team.GetCharactersAll())
+        foreach (var monster in team.GetCharactersAll())
         {
-            EnemyAxieForPostBattles.Add(new AxieForPostBattle()
+            EnemyMonsterForPostBattles.Add(new MonsterForPostBattle()
             {
-                axieId = axie.AxieId.ToString(),
-                skeletonDataAsset = axie.skeletonDataAsset,
-                skeletonMaterial = axie.skeletonMaterial,
-                axieParts = axie.axieSkillController.skillListNoRepeat.Select(x => x.bodyPartSO).ToList()
+                monsterId = monster.MonsterId.ToString(),
+                visualDescriptor = monster.visualDescriptor,
+                monsterParts = monster.monsterSkillController.skillListNoRepeat.Select(x => x.bodyPartSO).ToList()
             });
         }
     }

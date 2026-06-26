@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Bird axies are now melee. They have 200%  more HP
+  description: Your Bird mons are now melee. They have 200%  more HP
   price: 0
   doNotShowShow: 0
   tooltipType: 

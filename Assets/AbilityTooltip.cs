@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +9,7 @@ public class AbilityTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        TooltipManagerSingleton.instance.EnableTooltip(TooltipType.OnlyTitle, AxieGeneUtils.SpaceCamelCase(skillNameTooltip.ToString()));
+        TooltipManagerSingleton.instance.EnableTooltip(TooltipType.OnlyTitle, MonsterGeneUtils.SpaceCamelCase(skillNameTooltip.ToString()));
     }
 
     public void OnPointerExit(PointerEventData eventData)

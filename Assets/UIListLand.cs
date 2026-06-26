@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ public class SpriteLand
 public class UIListLand : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public List<SpriteLand> spriteLandList = new List<SpriteLand>();
-    public GetAxiesExample.Land land;
+    public GetMonstersExample.Land land;
     public TeamBuilderManager teamBuilderManager;
     public Image landImage;
     public Image selectedImage;

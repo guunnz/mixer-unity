@@ -1,4 +1,4 @@
-[
+﻿[
   {"part_id": "eyes-zeal", "part_type": "eyes", "part_value": 2, "part_skin": 0, "class": "beast", "special_genes": null, "type": "eyes", "name": "Zeal", "ability_id": "beast-eyes-02"},
   {
     "part_id": "eyes-calico-zeal",
@@ -189,7 +189,7 @@
   },
   {"part_id": "mouth-goda", "part_type": "mouth", "part_value": 4, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Goda", "ability_id": "beast-mouth-04"},
   {
-    "part_id": "mouth-axie-kiss", "part_type": "mouth", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Axie Kiss", "ability_id": "beast-mouth-08"
+    "part_id": "mouth-monster-kiss", "part_type": "mouth", "part_value": 8, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Monster Kiss", "ability_id": "beast-mouth-08"
   },
   {
     "part_id": "mouth-confident", "part_type": "mouth", "part_value": 10, "part_skin": 0, "class": "beast", "special_genes": null, "type": "mouth", "name": "Confident", "ability_id": "beast-mouth-10"

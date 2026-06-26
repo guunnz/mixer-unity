@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -81,7 +81,7 @@ public class ShopManager : MonoBehaviour
         {
             Potions.ToList().ForEach(x => x.gameObject.SetActive(false));
         }
-        else if (RunManagerSingleton.instance.landType == LandType.axiepark && RunManagerSingleton.instance.score == 0)
+        else if (RunManagerSingleton.instance.landType == LandType.monsterpark && RunManagerSingleton.instance.score == 0)
         {
             var itemListCustom = ItemList.ToList();
             var itemToBuy = ItemList.Single(x => x.ItemEffectName == AtiaBlessing.BuffEffect.Ruby).CreateClone();

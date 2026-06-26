@@ -21,7 +21,7 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your ranged axies abilities always critical strike
+  description: Your ranged mons abilities always critical strike
   price: 7
   doNotShowShow: 0
   tooltipType: 

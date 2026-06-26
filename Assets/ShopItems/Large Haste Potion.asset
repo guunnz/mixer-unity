@@ -20,6 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: Your axies gain +6 speed
+  description: Your mons gain +6 speed
   price: 6
   tooltipType: 1f000000

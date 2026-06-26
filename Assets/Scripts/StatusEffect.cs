@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Serialization;
 using System;
@@ -69,20 +69,20 @@ public class SkillEffect : ICloneable
     public bool PotatoLeaf;
     public int ReduceDamagePercentage;
     [Header("Special Interactions")] public bool UseSpecialsAsTrigger;
-    public List<SpecialActivationAgainstAxieClass> specialActivationAgainstAxiesList;
-    public List<SpecialComboWithAxieCard> specialActivationIfComboedWithList;
+    public List<SpecialActivationAgainstMonsterClass> specialActivationAgainstMonstersList;
+    public List<SpecialComboWithMonsterCard> specialActivationIfComboedWithList;
     public List<SpecialActivationWithBodyPart> specialActivationWithBodyParts;
-    public List<SpecialComboWithAxiesInBattle> specialActivationBasedOnAxiesInBattle;
+    public List<SpecialComboWithMonstersInBattle> specialActivationBasedOnMonstersInBattle;
     public List<SpecialActivactionWhenReceiveDamage> specialActivactionWhenReceiveDamage;
     internal int timesSet;
-    internal bool hasSpecialActivationBasedOnTargetAxieClass => specialActivationAgainstAxiesList.Count > 0;
+    internal bool hasSpecialActivationBasedOnTargetMonsterClass => specialActivationAgainstMonstersList.Count > 0;
 
     [Header("Targeting")] public bool lowestHP;
     public bool FurthestTarget;
     public bool targetHighestEnergy;
     public bool targetHighestSpeed;
-    public bool targetAxieClass;
-    public AxieClass axieClassToTarget;
+    public bool targetMonsterClass;
+    public MonsterClass monsterClassToTarget;
 
     internal bool Prioritize => Backdoor;
 
@@ -93,8 +93,8 @@ public class SkillEffect : ICloneable
 
     public int HPTresholdPercentage;
     public int ComboAmount;
-    public bool LastAxieAliveTeam;
-    public bool LastAxieAliveOpponent;
+    public bool LastMonsterAliveTeam;
+    public bool LastMonsterAliveOpponent;
     public bool Shielded;
     public bool OnShieldBreak;
     public bool TargetIsDebuff;
@@ -109,8 +109,8 @@ public class SkillEffect : ICloneable
                                          ||
                                          HPTresholdPercentage > 0
                                          || ComboAmount > 0
-                                         || LastAxieAliveOpponent
-                                         || LastAxieAliveTeam
+                                         || LastMonsterAliveOpponent
+                                         || LastMonsterAliveTeam
                                          || Shielded
                                          || OnShieldBreak
                                          || TargetIsDebuff
@@ -160,38 +160,38 @@ public class SkillEffect : ICloneable
 }
 
 [System.Serializable]
-public class SpecialActivationAgainstAxieClass
+public class SpecialActivationAgainstMonsterClass
 {
-    public AxieClass axieClass;
+    public MonsterClass monsterClass;
     public int ExtraDamage;
     public int ExtraTimesStatusEffectApplied;
 }
 
 [System.Serializable]
-public class SpecialComboWithAxieCard
+public class SpecialComboWithMonsterCard
 {
-    public AxieClass axieClassCard;
+    public MonsterClass monsterClassCard;
     public bool OnlyCareAboutClassCard;
-    public SkillName axieCard;
+    public SkillName monsterCard;
     public int ExtraDamage;
     public int ExtraTimesAbilityCast;
     public int ExtraTimesStatusEffectApplied;
 }
 
 [System.Serializable]
-public class SpecialComboWithAxiesInBattle
+public class SpecialComboWithMonstersInBattle
 {
-    public AxieClass axieClass;
-    public int ExtraTimesStatusEffectAppliedPerAxie;
-    public int ExtraDamageAppliedPerAxie;
+    public MonsterClass monsterClass;
+    public int ExtraTimesStatusEffectAppliedPerMonster;
+    public int ExtraDamageAppliedPerMonster;
 }
 
 [System.Serializable]
 public class SpecialActivationWithBodyPart
 {
-    public AxieClass axieClassCard;
+    public MonsterClass monsterClassCard;
     public bool OnlyCareAboutClassCard;
-    public SkillName axieCard;
+    public SkillName monsterCard;
     public int ExtraDamage;
     public int ExtraTimesStatusEffectApplied;
 }
@@ -200,5 +200,5 @@ public class SpecialActivationWithBodyPart
 public class SpecialActivactionWhenReceiveDamage
 {
     public bool onlyAbilities;
-    public AxieClass axieClass;
+    public MonsterClass monsterClass;
 }

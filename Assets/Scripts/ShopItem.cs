@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,7 +14,7 @@ public enum ShowValue
     smoothPotions
 }
 
-[CreateAssetMenu(fileName = "ShopItem", menuName = "Axie/ShopItem")]
+[CreateAssetMenu(fileName = "ShopItem", menuName = "Monster/ShopItem")]
 public class ShopItem : ScriptableObject
 {
     public string ShopItemName;

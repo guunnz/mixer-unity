@@ -1,8 +1,8 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SkillEffectsManager", menuName = "Axie/SkillEffectSO")]
+[CreateAssetMenu(fileName = "SkillEffectsManager", menuName = "Monster/SkillEffectSO")]
 public class SkillEffectSO : ScriptableObject
 {
     public List<StatusEffectGraphics> statusEffectGraphicsList;

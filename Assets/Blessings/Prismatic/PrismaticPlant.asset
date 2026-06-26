@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Plant axies gain twice the armor from Abilities
+  description: Your Plant mons gain twice the armor from Abilities
   price: 0
   doNotShowShow: 0
   tooltipType: 

@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 
 public class DragAndDropCharacter : MonoBehaviour
 {
+    private const float DragLiftHeight = 0.75f;
+
     private Camera mainCamera;
     private GameObject selectedCharacter;
     private Vector3 originalPosition;
@@ -17,13 +19,16 @@ public class DragAndDropCharacter : MonoBehaviour
     private float moveDelay = 0.1f;
     private float holdAux = 0.13f;
     private float hold = 0f;
-    public AxieStatsTooltip statsToolitp;
+    public MonsterStatsTooltip statsToolitp;
     private Vector3 mousePos;
     bool swappingChar1 = false;
     bool swappingChar2 = false;
     void Start()
     {
         mainCamera = Camera.main; // Assuming the main camera is tagged as "MainCamera"
+        if (statsToolitp == null)
+            statsToolitp = FindObjectOfType<MonsterStatsTooltip>(true);
+
         team = FindObjectsByType<Team>(FindObjectsSortMode.None)
             .Single(x => x.isGoodTeam); // Get the MouseController instance
     }
@@ -40,7 +45,7 @@ public class DragAndDropCharacter : MonoBehaviour
             return;
         }
 
-        if (EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null || swappingChar1 || swappingChar2)
+        if ((EventSystem.current != null && EventSystem.current.IsPointerOverGameObject() && selectedCharacter == null) || swappingChar1 || swappingChar2)
             return;
 
         moveDelay -= Time.deltaTime;
@@ -52,27 +57,20 @@ public class DragAndDropCharacter : MonoBehaviour
             hold += Time.deltaTime;
             if (moveDelay <= 0 && selectedCharacter == null && (hold >= holdAux || mousePos != Input.mousePosition))
             {
-                RaycastHit hit;
-                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out hit))
+                if (TryGetCharacterUnderPointer(out MonsterController monsterController))
                 {
-                    if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
+                    selectedCharacter = monsterController.gameObject;
+                    if (monsterController.mode == MonsterMode.Menu)
                     {
-                        selectedCharacter = hit.collider.gameObject;
-                        AxieController axieController = selectedCharacter.GetComponent<AxieController>();
-                        if (axieController.mode == AxieMode.Menu)
-                        {
-                            selectedCharacter = null;
-                            return;
-                        }
-
-                        SFXManager.instance.PlaySFX(SFXType.GrabAxie);
-                        axieController.axieBehavior.DoAction(AxieState.Grabbed);
-                        originalPosition = selectedCharacter.transform.position;
-                        originalTile = selectedCharacter.GetComponent<AxieController>().standingOnTile;
-                        selectedCharacter.transform.SetParent(mainCamera.transform);
+                        selectedCharacter = null;
+                        return;
                     }
+
+                    SFXManager.instance.PlaySFX(SFXType.GrabMonster);
+                    monsterController.monsterBehavior.DoAction(MonsterState.Grabbed);
+                    originalPosition = selectedCharacter.transform.position;
+                    originalTile = monsterController.standingOnTile;
+                    selectedCharacter.transform.SetParent(mainCamera.transform);
                 }
             }
             mousePos = Input.mousePosition;
@@ -87,7 +85,7 @@ public class DragAndDropCharacter : MonoBehaviour
             Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y,
                 mainCamera.WorldToScreenPoint(selectedCharacter.transform.position).z);
             Vector3 newPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-            selectedCharacter.transform.position = newPosition;
+            selectedCharacter.transform.position = KeepDraggedCharacterAboveFloor(newPosition);
         }
 
         // Release character and attempt to place on the closest tile
@@ -104,16 +102,16 @@ public class DragAndDropCharacter : MonoBehaviour
                 {
                     moveDelay = 0.1f;
                     selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-                    selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
+                    selectedCharacter.GetComponent<MonsterController>().monsterBehavior.DoAction(MonsterState.None);
                     OverlayTile closestTile = GetClosestTile(selectedCharacter.transform.position);
 
-                    SFXManager.instance.PlaySFX(SFXType.GrabAxie, 0.12f);
+                    SFXManager.instance.PlaySFX(SFXType.GrabMonster, 0.12f);
                     if (closestTile == null)
                     {
                         selectedCharacter.GetComponent<BoxCollider>().enabled = true;
-                        selectedCharacter.GetComponent<AxieController>().axieBehavior.DoAction(AxieState.None);
-                        MoveCharacterToTile(selectedCharacter.GetComponent<AxieController>(),
-                            selectedCharacter.GetComponent<AxieController>().standingOnTile);
+                        selectedCharacter.GetComponent<MonsterController>().monsterBehavior.DoAction(MonsterState.None);
+                        MoveCharacterToTile(selectedCharacter.GetComponent<MonsterController>(),
+                            selectedCharacter.GetComponent<MonsterController>().standingOnTile);
                         return;
                     }
 
@@ -127,31 +125,74 @@ public class DragAndDropCharacter : MonoBehaviour
         }
     }
 
+    private Vector3 KeepDraggedCharacterAboveFloor(Vector3 worldPosition)
+    {
+        float floorHeight = originalTile != null ? originalTile.transform.position.y : originalPosition.y;
+        worldPosition.y = Mathf.Max(worldPosition.y, floorHeight + DragLiftHeight);
+        return worldPosition;
+    }
+
     public void DoStats()
     {
-        RaycastHit hit;
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
+        if (mainCamera == null)
+            return;
+
+        if (statsToolitp == null)
+            statsToolitp = FindObjectOfType<MonsterStatsTooltip>(true);
+
+        if (statsToolitp == null)
+            return;
+
+        if (!TryGetCharacterUnderPointer(out MonsterController monsterController))
+            return;
+
+        if (monsterController.mode == MonsterMode.Menu)
+            return;
+
+        SFXManager.instance.PlaySFX(SFXType.UIButtonTap);
+        statsToolitp.Enable(monsterController);
+    }
+
+    private bool TryGetCharacterUnderPointer(out MonsterController controller)
+    {
+        controller = null;
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        if (hits == null || hits.Length == 0)
+            return false;
 
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (hit.collider != null && hit.collider.gameObject.CompareTag("Character"))
+        Vector3 pointerPosition = Input.mousePosition;
+        controller = hits
+            .Where(hit => hit.collider != null && hit.collider.CompareTag("Character"))
+            .Select(hit => new
             {
-                var tappedChar = hit.collider.gameObject;
-                AxieController axieController = tappedChar.GetComponent<AxieController>();
-                if (axieController.mode == AxieMode.Menu)
-                    return;
-                SFXManager.instance.PlaySFX(SFXType.UIButtonTap);
+                Hit = hit,
+                Controller = hit.collider.GetComponent<MonsterController>()
+            })
+            .Where(candidate => candidate.Controller != null && candidate.Controller.mode != MonsterMode.Menu)
+            .OrderBy(candidate => GetPointerDistance(candidate.Controller, pointerPosition))
+            .ThenBy(candidate => candidate.Hit.distance)
+            .Select(candidate => candidate.Controller)
+            .FirstOrDefault();
 
-                statsToolitp.Enable(axieController);
-            }
-        }
+        return controller != null;
+    }
+
+    private float GetPointerDistance(MonsterController controller, Vector3 pointerPosition)
+    {
+        Vector3 worldPosition = controller.Visual != null && controller.Visual.BodyAnchor != null
+            ? controller.Visual.BodyAnchor.position
+            : controller.transform.position;
+
+        Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+        return Vector2.SqrMagnitude((Vector2)screenPosition - (Vector2)pointerPosition);
     }
 
     private OverlayTile GetClosestTile(Vector3 position)
     {
-        OverlayTile closestTile = null;
-        float minDistance = float.MaxValue;
-
         if (allOverlayTiles == null || allOverlayTiles.Count == 0)
         {
             allOverlayTiles = FindObjectsOfType<OverlayTile>().ToList();
@@ -160,7 +201,7 @@ public class DragAndDropCharacter : MonoBehaviour
         OverlayTile tile = allOverlayTiles.FirstOrDefault(x => x.beingHovered);
         if (tile == null)
         {
-            tile = team.GetAliveCharacters().FirstOrDefault(x => x.axieBehavior.axieState == AxieState.Hovered)
+            tile = team.GetAliveCharacters().FirstOrDefault(x => x.monsterBehavior.monsterState == MonsterState.Hovered)
                 ?.standingOnTile;
         }
 
@@ -169,37 +210,37 @@ public class DragAndDropCharacter : MonoBehaviour
 
     private void TryPlaceCharacterOnTile(GameObject character, OverlayTile targetTile)
     {
-        AxieController selectedAxieController = character.GetComponent<AxieController>();
+        MonsterController selectedMonsterController = character.GetComponent<MonsterController>();
 
         if (targetTile.occupied)
         {
             var allCharacters = team.GetAliveCharacters();
-            AxieController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
+            MonsterController occupyingCharacter = allCharacters.FirstOrDefault(c => c.standingOnTile == targetTile);
 
             if (occupyingCharacter != null)
             {
-                SwapCharacters(selectedAxieController, occupyingCharacter);
+                SwapCharacters(selectedMonsterController, occupyingCharacter);
                 occupyingCharacter.startingCol = occupyingCharacter.standingOnTile.grid2DLocation.y;
                 occupyingCharacter.startingRow = occupyingCharacter.standingOnTile.grid2DLocation.x;
             }
             else
             {
-                MoveCharacterToTile(selectedAxieController, targetTile);
+                MoveCharacterToTile(selectedMonsterController, targetTile);
             }
 
-            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
-            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
+            selectedMonsterController.startingCol = selectedMonsterController.standingOnTile.grid2DLocation.y;
+            selectedMonsterController.startingRow = selectedMonsterController.standingOnTile.grid2DLocation.x;
         }
         else
         {
-            targetTile.currentOccupier = selectedAxieController;
-            MoveCharacterToTile(selectedAxieController, targetTile);
-            selectedAxieController.startingCol = selectedAxieController.standingOnTile.grid2DLocation.y;
-            selectedAxieController.startingRow = selectedAxieController.standingOnTile.grid2DLocation.x;
+            targetTile.currentOccupier = selectedMonsterController;
+            MoveCharacterToTile(selectedMonsterController, targetTile);
+            selectedMonsterController.startingCol = selectedMonsterController.standingOnTile.grid2DLocation.y;
+            selectedMonsterController.startingRow = selectedMonsterController.standingOnTile.grid2DLocation.x;
         }
     }
 
-    private void SwapCharacters(AxieController characterA, AxieController characterB)
+    private void SwapCharacters(MonsterController characterA, MonsterController characterB)
     {
         OverlayTile tileA = characterA.standingOnTile;
         OverlayTile tileB = characterB.standingOnTile;
@@ -219,28 +260,24 @@ public class DragAndDropCharacter : MonoBehaviour
 
         if (characterA.standingOnTile.grid2DLocation.x >= 4)
         {
-            characterA.transform.localScale =
-                new Vector3(0.2f, characterA.transform.localScale.y, characterA.transform.localScale.z);
+            MonsterScale.SetFacing(characterA.transform, true);
         }
         else
         {
-            characterA.transform.localScale = new Vector3(-0.2f, characterA.transform.localScale.y,
-                characterA.transform.localScale.z);
+            MonsterScale.SetFacing(characterA.transform, false);
         }
 
         if (characterB.standingOnTile.grid2DLocation.x >= 4)
         {
-            characterB.transform.localScale =
-                new Vector3(0.2f, characterB.transform.localScale.y, characterB.transform.localScale.z);
+            MonsterScale.SetFacing(characterB.transform, true);
         }
         else
         {
-            characterB.transform.localScale = new Vector3(-0.2f, characterB.transform.localScale.y,
-                characterB.transform.localScale.z);
+            MonsterScale.SetFacing(characterB.transform, false);
         }
     }
 
-    IEnumerator MoveCharacter(AxieController character, Vector3 targetPosition)
+    IEnumerator MoveCharacter(MonsterController character, Vector3 targetPosition)
     {
         float timeMoving = 0;
         while (character.transform.position != targetPosition && timeMoving < 1)
@@ -263,22 +300,12 @@ public class DragAndDropCharacter : MonoBehaviour
         character.transform.position = targetPosition;
     }
 
-    private void MoveCharacterToTile(AxieController character, OverlayTile targetTile)
+    private void MoveCharacterToTile(MonsterController character, OverlayTile targetTile)
     {
         character.transform.position = targetTile.transform.position;
         character.standingOnTile.occupied = false;
         character.standingOnTile = targetTile;
         character.standingOnTile.occupied = true;
-        // Adjust local scale based on grid X value
-        if (targetTile.grid2DLocation.x >= 4)
-        {
-            character.transform.localScale =
-                new Vector3(0.2f, character.transform.localScale.y, character.transform.localScale.z);
-        }
-        else
-        {
-            character.transform.localScale =
-                new Vector3(-0.2f, character.transform.localScale.y, character.transform.localScale.z);
-        }
+        MonsterScale.SetFacing(character.transform, targetTile.grid2DLocation.x >= 4);
     }
 }

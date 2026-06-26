@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Reptile axies gain 2 Attack buff after 10 seconds of fight
+  description: Your Reptile mons gain 2 Attack buff after 10 seconds of fight
   price: 0
   doNotShowShow: 0
   tooltipType: 

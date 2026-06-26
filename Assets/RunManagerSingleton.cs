@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static AtiaBlessing;
 
-public class AxieUpgrade
+public class MonsterUpgrade
 {
-    public string axieId;
+    public string monsterId;
     public AtiaBlessing.BuffEffect upgrade;
 }
 
@@ -117,10 +117,10 @@ public class RunManagerSingleton : MonoBehaviour
             string skills = "";
             for (int i = 0; i < characters.Count; i++)
             {
-                var skillsAxie = characters[i].axieSkillController.GetAxieSkills();
-                for (int s = 0; s < skillsAxie.Count; s++)
+                var skillsMonster = characters[i].monsterSkillController.GetMonsterSkills();
+                for (int s = 0; s < skillsMonster.Count; s++)
                 {
-                    skills += skillsAxie[s].skillName.ToString() + ",";
+                    skills += skillsMonster[s].skillName.ToString() + ",";
                 }
             }
             skillsDict["abilities"] = skills;
@@ -130,8 +130,8 @@ public class RunManagerSingleton : MonoBehaviour
         {
             if (roundsPassives.ExtraTeamHPPerRound != 0)
             {
-                var axies = goodTeam.GetCharactersAll();
-                axies.ForEach(axie => { axie.stats.hp += roundsPassives.ExtraTeamHPPerRound; });
+                var monsters = goodTeam.GetCharactersAll();
+                monsters.ForEach(monster => { monster.stats.hp += roundsPassives.ExtraTeamHPPerRound; });
             }
 
             if (wins >= 12)
@@ -197,11 +197,11 @@ public class RunManagerSingleton : MonoBehaviour
             SceneManager.LoadScene(0);
         }
         itemDict["land-selected"] = this.landType.ToString();
-        itemDict["axie1class"] = characters[0].axieIngameStats.axieClass.ToString();
-        itemDict["axie2class"] = characters[1].axieIngameStats.axieClass.ToString();
-        itemDict["axie3class"] = characters[2].axieIngameStats.axieClass.ToString();
-        itemDict["axie4class"] = characters[3].axieIngameStats.axieClass.ToString();
-        itemDict["axie5class"] = characters[4].axieIngameStats.axieClass.ToString();
+        itemDict["monster1class"] = characters[0].monsterIngameStats.monsterClass.ToString();
+        itemDict["monster2class"] = characters[1].monsterIngameStats.monsterClass.ToString();
+        itemDict["monster3class"] = characters[2].monsterIngameStats.monsterClass.ToString();
+        itemDict["monster4class"] = characters[3].monsterIngameStats.monsterClass.ToString();
+        itemDict["monster5class"] = characters[4].monsterIngameStats.monsterClass.ToString();
 
         MavisTracking.Instance.TrackAction("start-run", itemDict);
     }
@@ -323,9 +323,9 @@ public class RunManagerSingleton : MonoBehaviour
 
         BuffsManager.instance.DoUpgrade(upgrade.ItemEffectName, goodTeam);
 
-        foreach (var axieController in goodTeam.GetCharactersAll())
+        foreach (var monsterController in goodTeam.GetCharactersAll())
         {
-            axieController.UpdateStats();
+            monsterController.UpdateStats();
         }
 
         return true;

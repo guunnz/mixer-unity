@@ -21,35 +21,37 @@ public class AutoAttackMaNAGER : MonoBehaviour
         instance = this;
     }
 
-    public void SpawnProjectile(Transform fromPos, Transform targetPos, AxieClass @class)
+    public void SpawnProjectile(Transform fromPos, Transform targetPos, MonsterClass @class)
     {
         ProjectileMover projectileMover =
             Instantiate(ProjectileBird, new Vector3(fromPos.transform.position.x, fromPos.transform.position.y, fromPos.transform.position.z), ProjectileBird.transform.rotation, fromPos)
                 .GetComponent<ProjectileMover>();
-        projectileMover.transform.localPosition = new Vector3(-2, 2, 0);
-        projectileMover.transform.localScale *= 5;
+        projectileMover.transform.localPosition = new Vector3(-0.35f, 0.45f, 0);
+        MonsterVfxLimiter.NormalizeSpawned(projectileMover.gameObject, false, 0.56f);
         projectileMover.GetComponent<ProjectileColor>().SetColor(@class);
         projectileMover.MoveToTarget(targetPos, 0.56f);
         StartCoroutine(SpawnAttackCoroutine(targetPos, @class));
 
     }
 
-    public IEnumerator SpawnAttackCoroutine(Transform targetPos, AxieClass @class)
+    public IEnumerator SpawnAttackCoroutine(Transform targetPos, MonsterClass @class)
     {
         yield return new WaitForSeconds(0.56f);
 
         MeleeAttack attack = Instantiate(MeleeAttack, new Vector3(targetPos.position.x, targetPos.position.y, targetPos.position.z), Quaternion.identity, targetPos)
                 .GetComponent<MeleeAttack>();
-        attack.transform.localPosition = new Vector3(0, 5, 0);
+        attack.transform.localPosition = new Vector3(0, 0.65f, 0);
+        MonsterVfxLimiter.NormalizeSpawned(attack.gameObject, false, 0.5f);
 
         attack.gameObject.GetComponent<ProjectileColor>().SetColor(@class);
     }
 
 
-    public void SpawnAttack(Transform targetPos, AxieClass @class)
+    public void SpawnAttack(Transform targetPos, MonsterClass @class)
     {
         MeleeAttack attack = Instantiate(MeleeAttack, targetPos.transform.position, Quaternion.identity, null)
                 .GetComponent<MeleeAttack>();
+        MonsterVfxLimiter.NormalizeSpawned(attack.gameObject, false, 0.5f);
 
         attack.gameObject.GetComponent<ProjectileColor>().SetColor(@class);
     }

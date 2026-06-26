@@ -45,6 +45,9 @@ public class MavisTracking : MonoBehaviour
 
     public void InitializeTracking(SkyMavisLogin.UserInfo userInfo)
     {
+        if (LocalGameSession.IsActive)
+            return;
+
         this.roninAddress = userInfo.addr;
         sessionID = string.IsNullOrEmpty(GetSessionIdFromCommandLineArgs()) ? System.Guid.NewGuid().ToString() : GetSessionIdFromCommandLineArgs();
         userId = userInfo.user_id;
@@ -101,6 +104,9 @@ public class MavisTracking : MonoBehaviour
 
     private IEnumerator TrackEvent(string eventType, Dictionary<string, object> eventData)
     {
+        if (LocalGameSession.IsActive)
+            yield break;
+
         string uuid = System.Guid.NewGuid().ToString();
         string timestamp = System.DateTime.UtcNow.ToString("o");
         if (string.IsNullOrEmpty(PlayerPrefs.GetString("useridtest")))
@@ -172,6 +178,9 @@ public class MavisTracking : MonoBehaviour
 
     public void TrackIdentify(Dictionary<string, string> userProperties)
     {
+        if (LocalGameSession.IsActive)
+            return;
+
         StartCoroutine(TrackEvent("identify", new Dictionary<string, object>
         {
             { "user_properties", userProperties }
@@ -180,6 +189,9 @@ public class MavisTracking : MonoBehaviour
 
     public void TrackScreen(string screenName)
     {
+        if (LocalGameSession.IsActive)
+            return;
+
         StartCoroutine(TrackEvent("screen", new Dictionary<string, object>
         {
             { "screen", screenName }
@@ -188,6 +200,9 @@ public class MavisTracking : MonoBehaviour
 
     public void TrackAction(string action, Dictionary<string, string> actionProperties = null)
     {
+        if (LocalGameSession.IsActive)
+            return;
+
         var data = new Dictionary<string, object>
         {
             { "action", action }

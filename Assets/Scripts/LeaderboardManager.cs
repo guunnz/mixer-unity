@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
@@ -12,8 +12,8 @@ public class LeaderboardDTO
     public string username;
     public float avg_wins;
     public int elo;
-    public string axie_captain_genes;
-    public string axie_captain_id;
+    public string monster_captain_genes;
+    public string monster_captain_id;
     public string user_wallet_address;
 }
 
@@ -30,7 +30,7 @@ public class LeaderboardManager : MonoBehaviour
     public TextMeshProUGUI loading;
     public Transform leaderboardContainer;
     private List<LeaderboardDTO> leaderboardData = new List<LeaderboardDTO>();
-    private string leaderboardEndpoint = "https://leaderboard.api.axielandbattles.com/api/v1/leaderboard";
+    private string leaderboardEndpoint = "https://leaderboard.api.monsterlandbattles.com/api/v1/leaderboard";
     public LeaderboardUIItem myData;
     private bool isLoading;
 
@@ -47,6 +47,12 @@ public class LeaderboardManager : MonoBehaviour
 
     public IEnumerator GetLeaderboard(int retries = 5)
     {
+        if (LocalGameSession.IsActive)
+        {
+            PopulateLeaderboard(LocalGameSession.GetLeaderboardJson());
+            yield break;
+        }
+
         using (UnityWebRequest www = new UnityWebRequest(leaderboardEndpoint, "GET"))
         {
             Debug.Log("REQ LINK: " + leaderboardEndpoint);
@@ -94,7 +100,7 @@ public class LeaderboardManager : MonoBehaviour
             myData.SetAvgWins(entryMine.avg_wins);
             myData.SetElo(entryMine.elo);
             myData.SetRanking(leaderboardData.IndexOf(entryMine) + 1);
-            myData.SetCaptainGraphics(entryMine.axie_captain_id, entryMine.axie_captain_genes);
+            myData.SetCaptainGraphics(entryMine.monster_captain_id, entryMine.monster_captain_genes);
         }
 
 
@@ -139,7 +145,7 @@ public class LeaderboardManager : MonoBehaviour
             uiItem.SetAvgWins(entry.avg_wins);
             uiItem.SetElo(entry.elo);
             uiItem.SetRanking(index);
-            uiItem.SetCaptainGraphics(entry.axie_captain_id, entry.axie_captain_genes);
+            uiItem.SetCaptainGraphics(entry.monster_captain_id, entry.monster_captain_genes);
         }
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +18,7 @@ public enum StatusApplyType
     ApplyAdjacentTargetAndTarget,
     ApplyTeam,
     ApplyEnemyTeam,
-    AllAxies,
+    AllMonsters,
     ApplyAllied,
     ApplyAdjacentSelf,
 }
@@ -41,7 +41,7 @@ public class StatusManager : MonoBehaviour
         Instance = this;
     }
 
-    public void SetStatus(SkillEffect effect, AxieController target, bool remove, string skillerId)
+    public void SetStatus(SkillEffect effect, MonsterController target, bool remove, string skillerId)
     {
         if (remove)
         {

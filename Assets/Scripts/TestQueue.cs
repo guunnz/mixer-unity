@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,10 +22,10 @@ public class TestQueue : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(AxieSkillCoroutine());
+        StartCoroutine(MonsterSkillCoroutine());
     }
 
-    public IEnumerator AxieSkillCoroutine()
+    public IEnumerator MonsterSkillCoroutine()
     {
         float timer = 0;
         while (skillActionsList.Count > 0)

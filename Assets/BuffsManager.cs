@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using UnityEngine;
-using static GetAxiesExample;
+using static GetMonstersExample;
 
 public class BuffsManager : MonoBehaviour
 {
@@ -41,8 +41,8 @@ public class BuffsManager : MonoBehaviour
 
     public void Backdoor(Team team)
     {
-        var axies = team.GetCharactersAll();
-        axies.ForEach(x => x.ShrimpOnStart = true);
+        var monsters = team.GetCharactersAll();
+        monsters.ForEach(x => x.ShrimpOnStart = true);
     }
 
     public void Topaz(Team team)
@@ -55,88 +55,88 @@ public class BuffsManager : MonoBehaviour
 
     public void ThreeWondersShoes(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie =>
+        monsters.ForEach(monster =>
         {
-            axie.stats.skill += 1;
-            axie.stats.hp += 1;
-            axie.stats.morale += 1;
-            axie.stats.speed += 1;
+            monster.stats.skill += 1;
+            monster.stats.hp += 1;
+            monster.stats.morale += 1;
+            monster.stats.speed += 1;
         });
     }
 
     public void KingsBoots(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie =>
+        monsters.ForEach(monster =>
         {
-            axie.stats.skill += 3;
-            axie.stats.hp += 3;
-            axie.stats.morale += 3;
-            axie.stats.speed += 3;
+            monster.stats.skill += 3;
+            monster.stats.hp += 3;
+            monster.stats.morale += 3;
+            monster.stats.speed += 3;
         });
     }
 
     public void SteelShield(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie =>
+        monsters.ForEach(monster =>
         {
-            axie.axieSkillController.passives.AbilityReflectDamageAmount += 8;
-            axie.axieSkillController.passives.MeleeReflectDamageAmount += 8;
+            monster.monsterSkillController.passives.AbilityReflectDamageAmount += 8;
+            monster.monsterSkillController.passives.MeleeReflectDamageAmount += 8;
         });
     }
 
     public void IronShield(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie =>
+        monsters.ForEach(monster =>
         {
-            axie.axieSkillController.passives.AbilityReflectDamageAmount += 4;
-            axie.axieSkillController.passives.MeleeReflectDamageAmount += 4;
+            monster.monsterSkillController.passives.AbilityReflectDamageAmount += 4;
+            monster.monsterSkillController.passives.MeleeReflectDamageAmount += 4;
         });
     }
 
     public void SteelHelmet(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.ExtraArmorHelmet += 100; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.ExtraArmorHelmet += 100; });
     }
 
     public void IronHelmet(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.ExtraArmorHelmet += 50; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.ExtraArmorHelmet += 50; });
     }
 
     public void HoneyRoastedChicken(Team team)
     {
 
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        int maxHp = axies.Max(x => x.stats.hp);
-        axies.ForEach(axie => { axie.stats.hp = maxHp; });
+        int maxHp = monsters.Max(x => x.stats.hp);
+        monsters.ForEach(monster => { monster.stats.hp = maxHp; });
     }
 
     public void IronChainmail(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 5; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.MeleeReflectDamageAmount += 5; });
     }
 
     public void SteelChainmail(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.MeleeReflectDamageAmount += 10; });
-        axies.ForEach(axie => { axie.axieSkillController.passives.AbilityReflectDamageAmount += 10; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.MeleeReflectDamageAmount += 10; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.AbilityReflectDamageAmount += 10; });
     }
 
     public void SteelSword(Team team)
@@ -144,10 +144,10 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.GetCharactersAll();
-            foreach (var axieController in axies)
+            var monsters = team.GetCharactersAll();
+            foreach (var monsterController in monsters)
             {
-                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
                 { statusEffect = StatusEffectEnum.AttackPositive, Attack = 1, skillDuration = 99999 });
             }
         };
@@ -157,110 +157,110 @@ public class BuffsManager : MonoBehaviour
 
     public void SteelHammer(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.morale += 3; });
+        monsters.ForEach(monster => { monster.stats.morale += 3; });
     }
 
     public void SteelBoots(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.speed += 3; });
+        monsters.ForEach(monster => { monster.stats.speed += 3; });
     }
 
     public void SteelArrow(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.rangedAlwaysCritical = true; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.rangedAlwaysCritical = true; });
     }
 
     public void SteakNFries(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.hp += 1; });
+        monsters.ForEach(monster => { monster.stats.hp += 1; });
     }
 
     public void SilverTopazBracelet(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Beast || x.axieIngameStats.axieClass == AxieClass.Mech ||
-            x.axieIngameStats.axieClass == AxieClass.Bug).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Beast || x.monsterIngameStats.monsterClass == MonsterClass.Mech ||
+            x.monsterIngameStats.monsterClass == MonsterClass.Bug).ToList();
 
-        axies.ForEach(axie => { axie.stats.skill += 3; });
+        monsters.ForEach(monster => { monster.stats.skill += 3; });
     }
 
     public void SilverRubyBracelet(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Aquatic || x.axieIngameStats.axieClass == AxieClass.Bird ||
-            x.axieIngameStats.axieClass == AxieClass.Dawn).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Aquatic || x.monsterIngameStats.monsterClass == MonsterClass.Bird ||
+            x.monsterIngameStats.monsterClass == MonsterClass.Dawn).ToList();
 
-        axies.ForEach(axie => { axie.stats.skill += 3; });
+        monsters.ForEach(monster => { monster.stats.skill += 3; });
     }
 
     public void SilverEmeraldBracelet(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Plant || x.axieIngameStats.axieClass == AxieClass.Dusk ||
-            x.axieIngameStats.axieClass == AxieClass.Reptile).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Plant || x.monsterIngameStats.monsterClass == MonsterClass.Dusk ||
+            x.monsterIngameStats.monsterClass == MonsterClass.Reptile).ToList();
 
-        axies.ForEach(axie => { axie.stats.skill += 3; });
+        monsters.ForEach(monster => { monster.stats.skill += 3; });
     }
 
     public void SilverDiamondBracelet(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.skill += 5; });
+        monsters.ForEach(monster => { monster.stats.skill += 5; });
     }
 
     public void SilverAmethystBracelet(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.skill += 2; });
+        monsters.ForEach(monster => { monster.stats.skill += 2; });
     }
 
     public void Ramen(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.skill += 1; });
+        monsters.ForEach(monster => { monster.stats.skill += 1; });
     }
 
     public void PlatinumLantern(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        int maxSkill = axies.Max(x => x.stats.skill);
-        axies.ForEach(axie => { axie.stats.skill = maxSkill; });
+        int maxSkill = monsters.Max(x => x.stats.skill);
+        monsters.ForEach(monster => { monster.stats.skill = maxSkill; });
     }
 
     public void GoldenSphere(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie =>
+        monsters.ForEach(monster =>
         {
-            int skillHalved = Mathf.RoundToInt(axie.stats.skill / 2f);
-            axie.stats.skill = skillHalved;
+            int skillHalved = Mathf.RoundToInt(monster.stats.skill / 2f);
+            monster.stats.skill = skillHalved;
 
             int pointsToAddToStats = Mathf.RoundToInt(skillHalved / 3f);
 
-            axie.stats.hp += pointsToAddToStats;
-            axie.stats.speed += pointsToAddToStats;
-            axie.stats.morale += pointsToAddToStats;
+            monster.stats.hp += pointsToAddToStats;
+            monster.stats.speed += pointsToAddToStats;
+            monster.stats.morale += pointsToAddToStats;
         });
     }
 
     public void HoneyCarrotSoup(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 3; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 3; });
     }
 
     public void GrilledLambChop(Team team)
@@ -275,21 +275,21 @@ public class BuffsManager : MonoBehaviour
 
     public IEnumerator GrilledLambChopAfterSeconds(Team team)
     {
-        var axies = team.GetAliveCharacters();
+        var monsters = team.GetAliveCharacters();
         yield return new WaitForSeconds(15);
 
-        foreach (var axieController in axies)
+        foreach (var monsterController in monsters)
         {
-            axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.AttackPositive, Attack = 3 });
         }
     }
 
     public void PumpkinPie(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.hp += 2; });
+        monsters.ForEach(monster => { monster.stats.hp += 2; });
     }
 
     public void ShellOfStun(Team team)
@@ -297,10 +297,10 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll();
-            foreach (var axieController in axies)
+            var monsters = team.enemyTeam.GetCharactersAll();
+            foreach (var monsterController in monsters)
             {
-                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
                 { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 2 });
             }
         };
@@ -313,10 +313,10 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll();
-            foreach (var axieController in axies)
+            var monsters = team.enemyTeam.GetCharactersAll();
+            foreach (var monsterController in monsters)
             {
-                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
                 { statusEffect = StatusEffectEnum.Jinx });
             }
         };
@@ -329,10 +329,10 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll();
-            foreach (var axieController in axies)
+            var monsters = team.enemyTeam.GetCharactersAll();
+            foreach (var monsterController in monsters)
             {
-                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
                 { statusEffect = StatusEffectEnum.None, ApplyRandomEffect = true, skillDuration = 1 });
             }
         };
@@ -345,8 +345,8 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.maxHP);
-            axies.First().axieIngameStats.currentHP *= 0.5f;
+            var monsters = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.monsterIngameStats.maxHP);
+            monsters.First().monsterIngameStats.currentHP *= 0.5f;
         };
 
         team.OnBattleStartActions.Add(action);
@@ -357,15 +357,15 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.GetCharactersAll();
+            var monsters = team.GetCharactersAll();
             if (team.landType == LandType.lunalanding)
             {
-                axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
+                monsters.ForEach(x => x.monsterIngameStats.currentShield += 100f);
             }
             else
             {
 
-                axies.ForEach(x => x.axieIngameStats.currentShield += 50f);
+                monsters.ForEach(x => x.monsterIngameStats.currentShield += 50f);
             }
 
         };
@@ -379,14 +379,14 @@ public class BuffsManager : MonoBehaviour
         Action action = () =>
         {
 
-            var axies = team.GetCharactersAll();
+            var monsters = team.GetCharactersAll();
             if (team.landType == LandType.lunalanding)
             {
-                axies.ForEach(x => x.stats.speed += 6);
+                monsters.ForEach(x => x.stats.speed += 6);
             }
             else
             {
-                axies.ForEach(x => x.stats.speed += 3);
+                monsters.ForEach(x => x.stats.speed += 3);
 
             }
         };
@@ -400,15 +400,15 @@ public class BuffsManager : MonoBehaviour
         Action action = () =>
         {
 
-            var axies = team.GetCharactersAll();
+            var monsters = team.GetCharactersAll();
             if (team.landType == LandType.lunalanding)
             {
-                axies.ForEach(x => x.stats.speed += 12);
+                monsters.ForEach(x => x.stats.speed += 12);
             }
             else
             {
 
-                axies.ForEach(x => x.stats.speed += 6);
+                monsters.ForEach(x => x.stats.speed += 6);
             }
         };
 
@@ -421,15 +421,15 @@ public class BuffsManager : MonoBehaviour
         Action action = () =>
         {
 
-            var axies = team.GetCharactersAll();
+            var monsters = team.GetCharactersAll();
             if (team.landType == LandType.lunalanding)
             {
-                axies.ForEach(x => x.stats.skill += 12);
+                monsters.ForEach(x => x.stats.skill += 12);
             }
             else
             {
 
-                axies.ForEach(x => x.stats.skill += 6);
+                monsters.ForEach(x => x.stats.skill += 6);
             }
         };
 
@@ -442,14 +442,14 @@ public class BuffsManager : MonoBehaviour
         Action action = () =>
         {
 
-            var axies = team.GetCharactersAll();
+            var monsters = team.GetCharactersAll();
             if (team.landType == LandType.lunalanding)
             {
-                axies.ForEach(x => x.axieIngameStats.currentShield += 200f);
+                monsters.ForEach(x => x.monsterIngameStats.currentShield += 200f);
             }
             else
             {
-                axies.ForEach(x => x.axieIngameStats.currentShield += 100f);
+                monsters.ForEach(x => x.monsterIngameStats.currentShield += 100f);
             }
         };
 
@@ -458,36 +458,36 @@ public class BuffsManager : MonoBehaviour
 
     public void LargePotionOfResistance(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
         if (team.landType == LandType.lunalanding)
         {
-            axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 30);
+            monsters.ForEach(x => x.monsterSkillController.passives.DamageReductionAmount += 30);
         }
         else
         {
 
-            axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 15);
+            monsters.ForEach(x => x.monsterSkillController.passives.DamageReductionAmount += 15);
         }
     }
 
 
     public void SteelArmor(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(x => x.axieSkillController.passives.AbilityReflectDamageAmount += 15);
+        monsters.ForEach(x => x.monsterSkillController.passives.AbilityReflectDamageAmount += 15);
     }
     public void IronArmor(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(x => x.axieSkillController.passives.AbilityReflectDamageAmount += 10);
+        monsters.ForEach(x => x.monsterSkillController.passives.AbilityReflectDamageAmount += 10);
     }
     public void MeatPie(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(x => x.stats.hp += 3);
+        monsters.ForEach(x => x.stats.hp += 3);
     }
 
     public void ShellOfMediumAreaDamage(Team team)
@@ -497,8 +497,8 @@ public class BuffsManager : MonoBehaviour
         Action action = () =>
         {
 
-            var axies = team.enemyTeam.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.currentHP *= .9f);
+            var monsters = team.enemyTeam.GetCharactersAll();
+            monsters.ForEach(x => x.monsterIngameStats.currentHP *= .9f);
         };
 
         team.OnBattleStartActions.Add(action);
@@ -509,9 +509,9 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.axieIngameStats.maxHP);
+            var monsters = team.enemyTeam.GetCharactersAll().OrderByDescending(x => x.monsterIngameStats.maxHP);
 
-            axies.First().axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            monsters.First().monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.Stench, Stench = true });
         };
 
@@ -522,8 +522,8 @@ public class BuffsManager : MonoBehaviour
     {
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll();
-            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            var monsters = team.enemyTeam.GetCharactersAll();
+            monsters.ForEach(x => x.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.Poison, Poison = true, PoisonStack = 1 }));
         };
 
@@ -535,8 +535,8 @@ public class BuffsManager : MonoBehaviour
     {
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll();
-            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            var monsters = team.enemyTeam.GetCharactersAll();
+            monsters.ForEach(x => x.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.Fear }));
         };
 
@@ -549,10 +549,10 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.enemyTeam.GetCharactersAll();
-            foreach (var axieController in axies)
+            var monsters = team.enemyTeam.GetCharactersAll();
+            foreach (var monsterController in monsters)
             {
-                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
                 { statusEffect = StatusEffectEnum.SpeedNegative });
             }
         };
@@ -567,8 +567,8 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            var monsters = team.GetCharactersAll();
+            monsters.ForEach(x => x.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.None, RandomEffectIsBuff = true, skillDuration = 1 }));
         };
 
@@ -580,8 +580,8 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.CurrentEnergy += x.axieIngameStats.MaxEnergy * .3f);
+            var monsters = team.GetCharactersAll();
+            monsters.ForEach(x => x.monsterIngameStats.CurrentEnergy += x.monsterIngameStats.MaxEnergy * .3f);
         };
 
 
@@ -590,44 +590,44 @@ public class BuffsManager : MonoBehaviour
 
     public void GoldTopazNecklace(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Beast || x.axieIngameStats.axieClass == AxieClass.Mech ||
-            x.axieIngameStats.axieClass == AxieClass.Bug).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Beast || x.monsterIngameStats.monsterClass == MonsterClass.Mech ||
+            x.monsterIngameStats.monsterClass == MonsterClass.Bug).ToList();
 
-        axies.ForEach(axie => { axie.stats.morale += 3; });
+        monsters.ForEach(monster => { monster.stats.morale += 3; });
     }
 
     public void GoldRubyNecklace(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Aquatic || x.axieIngameStats.axieClass == AxieClass.Bird ||
-            x.axieIngameStats.axieClass == AxieClass.Dawn).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Aquatic || x.monsterIngameStats.monsterClass == MonsterClass.Bird ||
+            x.monsterIngameStats.monsterClass == MonsterClass.Dawn).ToList();
 
-        axies.ForEach(axie => { axie.stats.morale += 3; });
+        monsters.ForEach(monster => { monster.stats.morale += 3; });
     }
 
     public void FruitNVegetablesSalad(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Plant).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Plant).ToList();
 
-        axies.ForEach(axie => { axie.stats.hp *= 2; });
+        monsters.ForEach(monster => { monster.stats.hp *= 2; });
     }
 
     public void DeluxeRamen(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Bird).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Bird).ToList();
 
-        axies.ForEach(axie => { axie.stats.speed *= 2; });
+        monsters.ForEach(monster => { monster.stats.speed *= 2; });
     }
 
     public void DeluxeFriedRice(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Beast).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Beast).ToList();
 
-        axies.ForEach(axie => { axie.stats.morale *= 2; });
+        monsters.ForEach(monster => { monster.stats.morale *= 2; });
     }
 
     public void Amethyst(Team team)
@@ -639,104 +639,104 @@ public class BuffsManager : MonoBehaviour
 
     public void CompositeBow(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
 
-        axies.ForEach(axie => { axie.Range += 2; axie.axieIngameStats.Range += 5; });
+        monsters.ForEach(monster => { monster.Range += 2; monster.monsterIngameStats.Range += 5; });
     }
 
     public void GoldEmeraldNecklace(Team team)
     {
-        var axies = team.GetCharactersAll().Where(x =>
-            x.axieIngameStats.axieClass == AxieClass.Plant || x.axieIngameStats.axieClass == AxieClass.Dusk ||
-            x.axieIngameStats.axieClass == AxieClass.Reptile).ToList();
+        var monsters = team.GetCharactersAll().Where(x =>
+            x.monsterIngameStats.monsterClass == MonsterClass.Plant || x.monsterIngameStats.monsterClass == MonsterClass.Dusk ||
+            x.monsterIngameStats.monsterClass == MonsterClass.Reptile).ToList();
 
-        axies.ForEach(axie => { axie.stats.morale += 3; });
+        monsters.ForEach(monster => { monster.stats.morale += 3; });
     }
 
     public void GoldDiamondNecklace(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.morale += 5; });
+        monsters.ForEach(monster => { monster.stats.morale += 5; });
     }
 
     public void GoldAmethystNecklace(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        axies.ForEach(axie => { axie.stats.morale += 2; });
+        monsters.ForEach(monster => { monster.stats.morale += 2; });
     }
 
     public void Increase_HP_Bug(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
         if (team.landType == LandType.lunalanding)
         {
 
-            axies.ForEach(axie => { axie.stats.hp += 2; });
+            monsters.ForEach(monster => { monster.stats.hp += 2; });
         }
         else
         {
 
-            axies.ForEach(axie => { axie.stats.hp += 1; });
+            monsters.ForEach(monster => { monster.stats.hp += 1; });
         }
     }
 
     public void Increase_HP(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
         if (team.landType == LandType.lunalanding)
         {
 
-            axies.ForEach(axie => { axie.stats.hp += 2; });
+            monsters.ForEach(monster => { monster.stats.hp += 2; });
         }
         else
         {
-            axies.ForEach(axie => { axie.stats.hp += 1; });
+            monsters.ForEach(monster => { monster.stats.hp += 1; });
         }
     }
 
     public void Increase_Morale(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
         if (team.landType == LandType.lunalanding)
         {
 
-            axies.ForEach(axie => { axie.stats.morale += 2; });
+            monsters.ForEach(monster => { monster.stats.morale += 2; });
         }
         else
         {
-            axies.ForEach(axie => { axie.stats.morale += 1; });
+            monsters.ForEach(monster => { monster.stats.morale += 1; });
         }
     }
 
     public void Increase_Skill(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
         if (team.landType == LandType.lunalanding)
         {
 
-            axies.ForEach(axie => { axie.stats.skill += 2; });
+            monsters.ForEach(monster => { monster.stats.skill += 2; });
         }
         else
         {
-            axies.ForEach(axie => { axie.stats.skill += 1; });
+            monsters.ForEach(monster => { monster.stats.skill += 1; });
         }
 
     }
 
     public void Increase_Speed(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
         if (team.landType == LandType.lunalanding)
         {
 
-            axies.ForEach(axie => { axie.stats.speed += 2; });
+            monsters.ForEach(monster => { monster.stats.speed += 2; });
         }
         else
         {
-            axies.ForEach(axie => { axie.stats.speed += 1; });
+            monsters.ForEach(monster => { monster.stats.speed += 1; });
         }
 
     }
@@ -753,8 +753,8 @@ public class BuffsManager : MonoBehaviour
 
         Action action = () =>
         {
-            var axies = team.GetCharactersAll();
-            axies.ForEach(x => x.axieIngameStats.CurrentEnergy += x.axieIngameStats.MaxEnergy * .5f);
+            var monsters = team.GetCharactersAll();
+            monsters.ForEach(x => x.monsterIngameStats.CurrentEnergy += x.monsterIngameStats.MaxEnergy * .5f);
         };
 
 
@@ -786,11 +786,11 @@ public class BuffsManager : MonoBehaviour
 
     public void RosyHarp(Team team)
     {
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        foreach (var axieController in axies.Where(x => x.Range < 2))
+        foreach (var monsterController in monsters.Where(x => x.Range < 2))
         {
-            axieController.Range += 3;
+            monsterController.Range += 3;
         }
     }
 
@@ -802,612 +802,612 @@ public class BuffsManager : MonoBehaviour
 
     public void GainHPAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
     public void GainHPReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.hp * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.hp * 1.1f); });
     }
 
     public void GainSpeedAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
     public void GainSpeedReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.speed * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.speed * 1.1f); });
     }
 
     public void GainSkillAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
     public void GainSkillReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.skill * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.skill * 1.1f); });
     }
 
     public void GainMoraleAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoralePlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
     public void GainMoraleReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        axies.ForEach(axie => { Mathf.RoundToInt(axie.stats.morale * 1.1f); });
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        monsters.ForEach(monster => { Mathf.RoundToInt(monster.stats.morale * 1.1f); });
     }
 
-    public IEnumerator AttackBuffAfterSeconds(Team team, AxieClass axieClass)
+    public IEnumerator AttackBuffAfterSeconds(Team team, MonsterClass monsterClass)
     {
-        var axies = team.GetAliveCharactersByClass(axieClass);
+        var monsters = team.GetAliveCharactersByClass(monsterClass);
         yield return new WaitForSeconds(10);
 
-        foreach (var axieController in axies)
+        foreach (var monsterController in monsters)
         {
-            axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.AttackPositive, Attack = 2 });
         }
     }
 
-    public IEnumerator SpeedBuffAfterSeconds(Team team, AxieClass axieClass)
+    public IEnumerator SpeedBuffAfterSeconds(Team team, MonsterClass monsterClass)
     {
-        var axies = team.GetAliveCharactersByClass(axieClass);
+        var monsters = team.GetAliveCharactersByClass(monsterClass);
         yield return new WaitForSeconds(10);
 
-        foreach (var axieController in axies)
+        foreach (var monsterController in monsters)
         {
-            axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.SpeedPositive, Speed = 2 });
         }
     }
 
-    public IEnumerator MoraleBuffAfterSeconds(Team team, AxieClass axieClass)
+    public IEnumerator MoraleBuffAfterSeconds(Team team, MonsterClass monsterClass)
     {
-        var axies = team.GetAliveCharactersByClass(axieClass);
+        var monsters = team.GetAliveCharactersByClass(monsterClass);
         yield return new WaitForSeconds(10);
 
-        foreach (var axieController in axies)
+        foreach (var monsterController in monsters)
         {
-            axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+            monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
             { statusEffect = StatusEffectEnum.MoralePositive, Morale = 2 });
         }
     }
 
     public void MoraleBuffAfterSecondsAqua(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Aquatic)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Aquatic)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsBird(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Bird)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Bird)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsDawn(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Dawn)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Dawn)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsBeast(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Beast)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Beast)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsBug(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Bug)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Bug)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsMech(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Mech)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Mech)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsPlant(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Plant)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Plant)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsDusk(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Dusk)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Dusk)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void MoraleBuffAfterSecondsReptile(Team team)
     {
-        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, AxieClass.Reptile)); };
+        Action action = () => { StartCoroutine(MoraleBuffAfterSeconds(team: team, MonsterClass.Reptile)); };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void SpeedBuffAfterSecondsAqua(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Aquatic)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Aquatic)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsBird(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Bird)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Bird)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsDawn(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Dawn)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Dawn)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsBeast(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Beast)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Beast)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsBug(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Bug)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Bug)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsMech(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Mech)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Mech)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsPlant(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Plant)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Plant)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsDusk(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Dusk)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Dusk)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void SpeedBuffAfterSecondsReptile(Team team)
     {
-        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, AxieClass.Reptile)); };
+        Action action = () => { StartCoroutine(SpeedBuffAfterSeconds(team: team, MonsterClass.Reptile)); };
 
         team.OnBattleStartActions.Add(action);
     }
 
     public void AttackBuffAfterSecondsAqua(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Aquatic)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Aquatic)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsBird(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Bird)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Bird)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsDawn(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Dawn)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Dawn)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsBeast(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Beast)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Beast)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsBug(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Bug)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Bug)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsMech(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Mech)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Mech)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsPlant(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Plant)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Plant)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsDusk(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Dusk)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Dusk)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AttackBuffAfterSecondsReptile(Team team)
     {
-        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, AxieClass.Reptile)); };
+        Action action = () => { StartCoroutine(AttackBuffAfterSeconds(team: team, MonsterClass.Reptile)); };
 
         team.OnBattleStartActions.Add(action);
     }
     public void AutoAttackHealAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
     public void AutoAttackHealReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
 
-        axies.ForEach(axie => { axie.axieSkillController.passives.HealOnDamageDealt += 8; });
+        monsters.ForEach(monster => { monster.monsterSkillController.passives.HealOnDamageDealt += 8; });
     }
 
     public void ExtraAbilitySlotAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
     public void ExtraAbilitySlotReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        if (monsters.Count == 0)
             return;
-        var mostHPAxie = axies.OrderByDescending(x => x.axieIngameStats.maxHP).First();
-        var accountAxie = AccountManager.userAxies.results.FirstOrDefault(x => x.id == mostHPAxie.AxieId.ToString());
-        if (accountAxie.maxBodyPartAmount < 4)
-            accountAxie.maxBodyPartAmount++;
+        var mostHPMonster = monsters.OrderByDescending(x => x.monsterIngameStats.maxHP).First();
+        var accountMonster = AccountManager.userMonsters.results.FirstOrDefault(x => x.id == mostHPMonster.MonsterId.ToString());
+        if (accountMonster.maxBodyPartAmount < 4)
+            accountMonster.maxBodyPartAmount++;
     }
 
     public void BackdoorAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
+        if (monsters.Count == 0)
             return;
-        var mostSpeedAqua = axies.OrderByDescending(x => x.stats.speed).First();
+        var mostSpeedAqua = monsters.OrderByDescending(x => x.stats.speed).First();
         mostSpeedAqua.ShrimpOnStart = true;
     }
     public void BackdoorBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
+        if (monsters.Count == 0)
             return;
-        var lessHPBird = axies.OrderBy(x => x.stats.hp).First();
+        var lessHPBird = monsters.OrderBy(x => x.stats.hp).First();
         lessHPBird.ShrimpOnStart = true;
     }
     public void BackdoorDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        if (monsters.Count == 0)
             return;
-        var mostHPDawn = axies.OrderByDescending(x => x.stats.hp).First();
+        var mostHPDawn = monsters.OrderByDescending(x => x.stats.hp).First();
         mostHPDawn.ShrimpOnStart = true;
     }
     public void BackdoorBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        if (monsters.Count == 0)
             return;
-        var mostMoraleBeast = axies.OrderByDescending(x => x.stats.morale).First();
+        var mostMoraleBeast = monsters.OrderByDescending(x => x.stats.morale).First();
         mostMoraleBeast.ShrimpOnStart = true;
     }
     public void BackdoorBug(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bug);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bug);
+        if (monsters.Count == 0)
             return;
-        var lessSpeedBug = axies.OrderBy(x => x.stats.speed).First();
+        var lessSpeedBug = monsters.OrderBy(x => x.stats.speed).First();
         lessSpeedBug.ShrimpOnStart = true;
     }
     public void BackdoorMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        if (monsters.Count == 0)
             return;
-        var leastMoraleMech = axies.OrderBy(x => x.stats.morale).First();
+        var leastMoraleMech = monsters.OrderBy(x => x.stats.morale).First();
         leastMoraleMech.ShrimpOnStart = true;
     }
     public void BackdoorPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        if (monsters.Count == 0)
             return;
-        var mostHPPlant = axies.OrderByDescending(x => x.stats.hp).First();
+        var mostHPPlant = monsters.OrderByDescending(x => x.stats.hp).First();
         mostHPPlant.ShrimpOnStart = true;
     }
     public void BackdoorDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        if (monsters.Count == 0)
             return;
-        var mostSpeedDusk = axies.OrderByDescending(x => x.stats.speed).First();
+        var mostSpeedDusk = monsters.OrderByDescending(x => x.stats.speed).First();
         mostSpeedDusk.ShrimpOnStart = true;
     }
     public void BackdoorReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        if (monsters.Count == 0)
             return;
-        var lessHPReptile = axies.OrderBy(x => x.stats.hp).First();
+        var lessHPReptile = monsters.OrderBy(x => x.stats.hp).First();
         lessHPReptile.ShrimpOnStart = true;
     }
 
     public void PrismaticAqua(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Aquatic);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Aquatic);
 
-        axies.ForEach(x =>
+        monsters.ForEach(x =>
         {
             var speed = x.stats.speed;
             var morale = x.stats.morale;
@@ -1421,12 +1421,12 @@ public class BuffsManager : MonoBehaviour
     }
     public void PrismaticBird(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Bird);
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Bird);
 
-        if (axies.Count == 0)
+        if (monsters.Count == 0)
             return;
 
-        axies.ForEach(x =>
+        monsters.ForEach(x =>
         {
             x.stats.hp *= 2;
             x.UpdateStats();
@@ -1435,16 +1435,16 @@ public class BuffsManager : MonoBehaviour
     }
     public void PrismaticDawn(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+        if (monsters.Count == 0)
             return;
-        axies.ForEach(x => x.axieSkillController.passives.DamageReductionAmount += 25);
+        monsters.ForEach(x => x.monsterSkillController.passives.DamageReductionAmount += 25);
         Action action = () =>
         {
-            var axies = team.GetCharactersAllByClass(AxieClass.Dawn);
-            foreach (var axieController in axies)
+            var monsters = team.GetCharactersAllByClass(MonsterClass.Dawn);
+            foreach (var monsterController in monsters)
             {
-                axieController.axieSkillEffectManager.AddStatusEffect(new SkillEffect()
+                monsterController.monsterSkillEffectManager.AddStatusEffect(new SkillEffect()
                 { statusEffect = StatusEffectEnum.Aroma, Aroma = true, skillDuration = 99999 });
             }
         };
@@ -1453,10 +1453,10 @@ public class BuffsManager : MonoBehaviour
     }
     public void PrismaticBeast(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Beast);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Beast);
+        if (monsters.Count == 0)
             return;
-        axies.ForEach(x =>
+        monsters.ForEach(x =>
         {
             var speed = x.stats.speed;
             var morale = x.stats.morale;
@@ -1470,24 +1470,24 @@ public class BuffsManager : MonoBehaviour
     }
     public void PrismaticBug(Team team)
     {
-        var axies = team.GetCharactersAll();
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAll();
+        if (monsters.Count == 0)
             return;
-        var axie = axies.FirstOrDefault(x => x.axieIngameStats.axieClass == AxieClass.Bug);
+        var monster = monsters.FirstOrDefault(x => x.monsterIngameStats.monsterClass == MonsterClass.Bug);
 
-        if (axie != null)
+        if (monster != null)
         {
-            var hpFromBug = axie.stats.hp;
-            var speedFromBug = axie.stats.speed;
-            var moraleFromBug = axie.stats.morale;
-            var skillFromBug = axie.stats.skill;
+            var hpFromBug = monster.stats.hp;
+            var speedFromBug = monster.stats.speed;
+            var moraleFromBug = monster.stats.morale;
+            var skillFromBug = monster.stats.skill;
 
-            axie.stats.speed = 1;
-            axie.stats.morale = 1;
-            axie.stats.skill = 1;
+            monster.stats.speed = 1;
+            monster.stats.morale = 1;
+            monster.stats.skill = 1;
 
-            axies.Remove(axie);
-            foreach (var item in axies)
+            monsters.Remove(monster);
+            foreach (var item in monsters)
             {
                 item.stats.hp += hpFromBug / 3;
                 item.stats.speed += speedFromBug / 3;
@@ -1498,57 +1498,57 @@ public class BuffsManager : MonoBehaviour
     }
     public void PrismaticMech(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Mech);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Mech);
+        if (monsters.Count == 0)
             return;
-        var mostMoraleAxie = axies.OrderByDescending(x => x.stats.morale).First();
+        var mostMoraleMonster = monsters.OrderByDescending(x => x.stats.morale).First();
 
-        mostMoraleAxie.stats.hp *= 2;
-        mostMoraleAxie.stats.speed *= 2;
-        mostMoraleAxie.stats.skill *= 2;
-        mostMoraleAxie.stats.morale *= 2;
-        mostMoraleAxie.UpdateStats();
+        mostMoraleMonster.stats.hp *= 2;
+        mostMoraleMonster.stats.speed *= 2;
+        mostMoraleMonster.stats.skill *= 2;
+        mostMoraleMonster.stats.morale *= 2;
+        mostMoraleMonster.UpdateStats();
     }
 
     public void PrismaticPlant(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Plant);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Plant);
+        if (monsters.Count == 0)
             return;
-        foreach (var item in axies)
+        foreach (var item in monsters)
         {
-            item.axieSkillController.passives.ExtraShieldGained = 100;
+            item.monsterSkillController.passives.ExtraShieldGained = 100;
         }
     }
     public void PrismaticDusk(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Dusk);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Dusk);
+        if (monsters.Count == 0)
             return;
-        foreach (var item in axies)
+        foreach (var item in monsters)
         {
-            item.axieSkillController.passives.bloodmoonImmune = true;
+            item.monsterSkillController.passives.bloodmoonImmune = true;
         }
     }
     public void PrismaticReptile(Team team)
     {
-        var axies = team.GetCharactersAllByClass(AxieClass.Reptile);
-        if (axies.Count == 0)
+        var monsters = team.GetCharactersAllByClass(MonsterClass.Reptile);
+        if (monsters.Count == 0)
             return;
-        foreach (var item in axies)
+        foreach (var item in monsters)
         {
-            item.axieSkillController.passives.AbilityReflectDamageAmount = 50;
-            item.axieSkillController.passives.ExtraDamageReceivedByAbilitiesAmount = 100;
+            item.monsterSkillController.passives.AbilityReflectDamageAmount = 50;
+            item.monsterSkillController.passives.ExtraDamageReceivedByAbilitiesAmount = 100;
         }
     }
-    public void AxiePark(Team team)
+    public void MonsterPark(Team team)
     {
         if (!team.isGoodTeam)
             return;
 
-        var axies = team.GetCharactersAll();
+        var monsters = team.GetCharactersAll();
 
-        foreach (var item in axies)
+        foreach (var item in monsters)
         {
             float amountImprovement = item.stats.hp * 1.03f;
 

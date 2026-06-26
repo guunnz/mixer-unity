@@ -1,31 +1,29 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using finished3;
-using Spine;
-using Spine.Unity;
 using Unity.Mathematics;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class DamagePair
 {
-    public AxieController axieController;
+    public MonsterController monsterController;
     public int damage;
 }
 
 public class SpecialEffectExtras
 {
-    public AxieController axieController;
+    public MonsterController monsterController;
     public int extraDamage;
     public int multiplyStatusEffect = 1;
 }
 
 public class SkillLauncher : MonoBehaviour
 {
-    public AxieBodyPartsManager skillList;
+    public MonsterBodyPartsManager skillList;
 
     static public SkillLauncher Instance;
 
@@ -40,8 +38,8 @@ public class SkillLauncher : MonoBehaviour
         Instance = this;
     }
 
-    public IEnumerator ThrowSkill(List<AxieSkill> skills, SkeletonAnimation skeletonAnimation, AxieController target,
-        AxieController self)
+    public IEnumerator ThrowSkill(List<MonsterSkill> skills, VanillaMonsterVisual visual, MonsterController target,
+        MonsterController self)
     {
         List<SkillAction> skillActions = new List<SkillAction>();
         float TotalDuration = 0;
@@ -49,26 +47,26 @@ public class SkillLauncher : MonoBehaviour
         {
             Skill skill = Instantiate(skills[i].bodyPartSO.prefab).GetComponent<Skill>();
 
-            skill.axieBodyPart = skills[i].bodyPartSO;
-            if (self.axieSkillEffectManager.IsKestreled() && skill.axieBodyPart.bodyPart == BodyPart.Horn)
+            skill.monsterBodyPart = skills[i].bodyPartSO;
+            if (self.monsterSkillEffectManager.IsKestreled() && skill.monsterBodyPart.bodyPart == BodyPart.Horn)
             {
                 continue;
             }
-            else if (self.axieSkillEffectManager.IsHotbutted() && skill.axieBodyPart.bodyPart == BodyPart.Mouth)
+            else if (self.monsterSkillEffectManager.IsHotbutted() && skill.monsterBodyPart.bodyPart == BodyPart.Mouth)
             {
                 continue;
             }
             skill.self = self;
             skill.origin = self.transform;
             skill.@class = skills[i].bodyPartSO.bodyPartClass;
-            skill.skeletonAnimation = skeletonAnimation;
+            skill.visual = visual;
             skill.ExtraTimerCast += (0.55f * i);
             //Debug.Log("Skill performed: " + skills[i].skillName);
             for (int b = 0; b < skills[i].bodyPartSO.skillEffects.Count(); b++)
             {
                 if (Backdoor(skills[i].bodyPartSO.skillEffects[b], self))
                 {
-                    yield return StartCoroutine(self.axieBehavior.GoBackdoorTarget());
+                    yield return StartCoroutine(self.monsterBehavior.GoBackdoorTarget());
                 }
             }
 
@@ -83,14 +81,14 @@ public class SkillLauncher : MonoBehaviour
     }
 
 
-    private bool Backdoor(SkillEffect skillEffect, AxieController self)
+    private bool Backdoor(SkillEffect skillEffect, MonsterController self)
     {
         if (skillEffect.Prioritize)
         {
             var target = self.CurrentTarget;
             if (skillEffect.lowestHP)
             {
-                AxieController newTarget = self.enemyTeam.GetAliveCharacters().OrderBy(x => x.axieIngameStats.currentHP)
+                MonsterController newTarget = self.enemyTeam.GetAliveCharacters().OrderBy(x => x.monsterIngameStats.currentHP)
                     .First();
 
                 self.CurrentTarget = newTarget;
@@ -100,7 +98,7 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.FurthestTarget)
             {
-                AxieController newTarget = self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetAliveCharacters());
+                MonsterController newTarget = self.myTeam.FindFurthestCharacter(self, self.enemyTeam.GetAliveCharacters());
                 if (newTarget != null)
                 {
                     self.CurrentTarget = newTarget;
@@ -112,8 +110,8 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.targetHighestEnergy)
             {
-                AxieController newTarget = self.enemyTeam.GetAliveCharacters()
-                    .OrderBy(x => x.axieIngameStats.CurrentEnergy)
+                MonsterController newTarget = self.enemyTeam.GetAliveCharacters()
+                    .OrderBy(x => x.monsterIngameStats.CurrentEnergy)
                     .FirstOrDefault();
                 if (newTarget != null)
                 {
@@ -129,8 +127,8 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.targetHighestSpeed)
             {
-                AxieController newTarget = self.enemyTeam.GetAliveCharacters().OrderBy(x =>
-                        AxieStatCalculator.GetRealSpeed(x.stats.speed, x.axieSkillEffectManager.GetSpeedBuff()))
+                MonsterController newTarget = self.enemyTeam.GetAliveCharacters().OrderBy(x =>
+                        MonsterStatCalculator.GetRealSpeed(x.stats.speed, x.monsterSkillEffectManager.GetSpeedBuff()))
                     .FirstOrDefault();
                 if (newTarget != null)
                 {
@@ -144,13 +142,13 @@ public class SkillLauncher : MonoBehaviour
 
             }
 
-            if (skillEffect.targetAxieClass)
+            if (skillEffect.targetMonsterClass)
             {
                 if (target.myTeam.GetAliveCharacters().Any(y =>
-                        y.axieIngameStats.axieClass == skillEffect.axieClassToTarget))
+                        y.monsterIngameStats.monsterClass == skillEffect.monsterClassToTarget))
                 {
-                    AxieController newTarget = target.myTeam.GetAliveCharacters().FirstOrDefault(y =>
-                        y.axieIngameStats.axieClass == skillEffect.axieClassToTarget);
+                    MonsterController newTarget = target.myTeam.GetAliveCharacters().FirstOrDefault(y =>
+                        y.monsterIngameStats.monsterClass == skillEffect.monsterClassToTarget);
                     if (newTarget != null)
                     {
                         if (!skillEffect.RangeAbility)
@@ -167,8 +165,8 @@ public class SkillLauncher : MonoBehaviour
         return false;
     }
 
-    public IEnumerator ThrowPassive(AxieSkill passive, SkeletonAnimation skeletonAnimation, AxieController target,
-        AxieController self)
+    public IEnumerator ThrowPassive(MonsterSkill passive, VanillaMonsterVisual visual, MonsterController target,
+        MonsterController self)
     {
         List<SkillAction> skillActions = new List<SkillAction>();
 
@@ -191,15 +189,15 @@ public class SkillLauncher : MonoBehaviour
         {
             if (Backdoor(passive.bodyPartSO.skillEffects[b], self))
             {
-                yield return StartCoroutine(self.axieBehavior.GoBackdoorTarget());
+                yield return StartCoroutine(self.monsterBehavior.GoBackdoorTarget());
             }
         }
 
-        skill.axieBodyPart = passive.bodyPartSO;
+        skill.monsterBodyPart = passive.bodyPartSO;
         skill.self = self;
         skill.origin = self.transform;
         skill.@class = passive.bodyPartSO.bodyPartClass;
-        skill.skeletonAnimation = skeletonAnimation;
+        skill.visual = visual;
         skill.ExtraTimerCast++;
         skillActions.AddRange(PerformPassive(passive, skill, self, target));
 
@@ -226,19 +224,19 @@ public class SkillLauncher : MonoBehaviour
         }
     }
 
-    private SpecialEffectExtras HandleSpecialEffects(SkillEffect skillEffect, AxieController target, AxieSkill skill,
-        AxieController self)
+    private SpecialEffectExtras HandleSpecialEffects(SkillEffect skillEffect, MonsterController target, MonsterSkill skill,
+        MonsterController self)
     {
         SpecialEffectExtras effectExtras = new SpecialEffectExtras();
 
-        if (skillEffect.specialActivationAgainstAxiesList.Count > 0)
+        if (skillEffect.specialActivationAgainstMonstersList.Count > 0)
         {
-            var specialActivationAgainstAxieClass = skillEffect.specialActivationAgainstAxiesList.FirstOrDefault(x =>
-                x.axieClass == target.axieIngameStats.axieClass);
-            if (specialActivationAgainstAxieClass != null)
+            var specialActivationAgainstMonsterClass = skillEffect.specialActivationAgainstMonstersList.FirstOrDefault(x =>
+                x.monsterClass == target.monsterIngameStats.monsterClass);
+            if (specialActivationAgainstMonsterClass != null)
             {
-                effectExtras.extraDamage += specialActivationAgainstAxieClass.ExtraDamage;
-                effectExtras.multiplyStatusEffect += specialActivationAgainstAxieClass.ExtraTimesStatusEffectApplied;
+                effectExtras.extraDamage += specialActivationAgainstMonsterClass.ExtraDamage;
+                effectExtras.multiplyStatusEffect += specialActivationAgainstMonsterClass.ExtraTimesStatusEffectApplied;
             }
         }
 
@@ -249,13 +247,13 @@ public class SkillLauncher : MonoBehaviour
             {
                 if (skillToComboWith.OnlyCareAboutClassCard)
                 {
-                    if (self.axieSkillController.IsClassSkillInAxie(skillToComboWith.axieClassCard, skill))
+                    if (self.monsterSkillController.IsClassSkillInMonster(skillToComboWith.monsterClassCard, skill))
                     {
                         effectExtras.extraDamage += skillToComboWith.ExtraDamage;
                         effectExtras.multiplyStatusEffect += skillToComboWith.ExtraTimesStatusEffectApplied;
                     }
                 }
-                else if (self.axieSkillController.IsSkillSelectedInAxie(skillToComboWith.axieCard, skill))
+                else if (self.monsterSkillController.IsSkillSelectedInMonster(skillToComboWith.monsterCard, skill))
                 {
                     effectExtras.extraDamage += skillToComboWith.ExtraDamage;
                     effectExtras.multiplyStatusEffect += skillToComboWith.ExtraTimesStatusEffectApplied;
@@ -263,16 +261,16 @@ public class SkillLauncher : MonoBehaviour
             }
         }
 
-        if (skillEffect.specialActivationBasedOnAxiesInBattle.Count > 0)
+        if (skillEffect.specialActivationBasedOnMonstersInBattle.Count > 0)
         {
-            foreach (var bodyPart in skillEffect.specialActivationBasedOnAxiesInBattle)
+            foreach (var bodyPart in skillEffect.specialActivationBasedOnMonstersInBattle)
             {
-                int axieTypeMultiplier =
-                    self.badTeam.GetAliveCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass) + self
-                        .goodTeam.GetAliveCharacters().Count(x => x.axieIngameStats.axieClass == bodyPart.axieClass);
+                int monsterTypeMultiplier =
+                    self.badTeam.GetAliveCharacters().Count(x => x.monsterIngameStats.monsterClass == bodyPart.monsterClass) + self
+                        .goodTeam.GetAliveCharacters().Count(x => x.monsterIngameStats.monsterClass == bodyPart.monsterClass);
 
-                effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectAppliedPerAxie * axieTypeMultiplier;
-                effectExtras.extraDamage += bodyPart.ExtraDamageAppliedPerAxie * axieTypeMultiplier;
+                effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectAppliedPerMonster * monsterTypeMultiplier;
+                effectExtras.extraDamage += bodyPart.ExtraDamageAppliedPerMonster * monsterTypeMultiplier;
             }
         }
 
@@ -282,13 +280,13 @@ public class SkillLauncher : MonoBehaviour
             {
                 if (bodyPart.OnlyCareAboutClassCard)
                 {
-                    if (self.axieBodyParts.Contains(bodyPart.axieCard))
+                    if (self.monsterBodyParts.Contains(bodyPart.monsterCard))
                     {
                         effectExtras.extraDamage += bodyPart.ExtraDamage;
                         effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectApplied;
                     }
                 }
-                else if (self.axieSkillController.IsSkillSelectedInAxie(bodyPart.axieCard, skill))
+                else if (self.monsterSkillController.IsSkillSelectedInMonster(bodyPart.monsterCard, skill))
                 {
                     effectExtras.extraDamage += bodyPart.ExtraDamage;
                     effectExtras.multiplyStatusEffect += bodyPart.ExtraTimesStatusEffectApplied;
@@ -299,17 +297,17 @@ public class SkillLauncher : MonoBehaviour
         return effectExtras;
     }
 
-    private bool FulfillsTriggerCondition(AxieSkill skill, Skill skillInstance, AxieController self,
-        AxieController target, SkillEffect skillEffect)
+    private bool FulfillsTriggerCondition(MonsterSkill skill, Skill skillInstance, MonsterController self,
+        MonsterController target, SkillEffect skillEffect)
     {
-        IngameStats myAxieData = self.axieIngameStats;
+        IngameStats myMonsterData = self.monsterIngameStats;
 
         if (skillEffect.UseSpecialsAsTrigger)
         {
-            if (skillEffect.specialActivationAgainstAxiesList.Count > 0)
+            if (skillEffect.specialActivationAgainstMonstersList.Count > 0)
             {
-                if (skillEffect.specialActivationAgainstAxiesList.Any(x =>
-                        x.axieClass == target.axieIngameStats.axieClass) == false)
+                if (skillEffect.specialActivationAgainstMonstersList.Any(x =>
+                        x.monsterClass == target.monsterIngameStats.monsterClass) == false)
                 {
                     return false;
                 }
@@ -322,13 +320,13 @@ public class SkillLauncher : MonoBehaviour
                 {
                     if (skillToComboWith.OnlyCareAboutClassCard)
                     {
-                        if (self.axieSkillController.IsClassSkillInAxie(skillToComboWith.axieClassCard, skill))
+                        if (self.monsterSkillController.IsClassSkillInMonster(skillToComboWith.monsterClassCard, skill))
                         {
                             comboed = true;
                             break;
                         }
                     }
-                    else if (self.axieSkillController.IsSkillSelectedInAxie(skillToComboWith.axieCard, skill))
+                    else if (self.monsterSkillController.IsSkillSelectedInMonster(skillToComboWith.monsterCard, skill))
                     {
                         comboed = true;
                         break;
@@ -346,13 +344,13 @@ public class SkillLauncher : MonoBehaviour
                 {
                     if (bodyPart.OnlyCareAboutClassCard)
                     {
-                        if (self.axieBodyParts.Contains(bodyPart.axieCard))
+                        if (self.monsterBodyParts.Contains(bodyPart.monsterCard))
                         {
                             activated = true;
                             break;
                         }
                     }
-                    else if (self.axieSkillController.IsSkillSelectedInAxie(bodyPart.axieCard, skill))
+                    else if (self.monsterSkillController.IsSkillSelectedInMonster(bodyPart.monsterCard, skill))
                     {
                         activated = true;
                         break;
@@ -365,14 +363,14 @@ public class SkillLauncher : MonoBehaviour
                 }
             }
 
-            if (skillEffect.specialActivationBasedOnAxiesInBattle.Count > 0)
+            if (skillEffect.specialActivationBasedOnMonstersInBattle.Count > 0)
             {
                 bool activated = false;
-                foreach (var specialActivation in skillEffect.specialActivationBasedOnAxiesInBattle)
+                foreach (var specialActivation in skillEffect.specialActivationBasedOnMonstersInBattle)
                 {
                     if (self.goodTeam.GetAliveCharacters()
-                            .Any(x => x.axieIngameStats.axieClass == specialActivation.axieClass) || self.badTeam
-                            .GetAliveCharacters().Any(x => x.axieIngameStats.axieClass == specialActivation.axieClass))
+                            .Any(x => x.monsterIngameStats.monsterClass == specialActivation.monsterClass) || self.badTeam
+                            .GetAliveCharacters().Any(x => x.monsterIngameStats.monsterClass == specialActivation.monsterClass))
                     {
                         activated = true;
                         break;
@@ -391,8 +389,8 @@ public class SkillLauncher : MonoBehaviour
         if (skillEffect.HPTresholdPercentage > 0)
         {
             if (!skillEffect.LessThan
-                    ? myAxieData.currentHP < myAxieData.maxHP * (skillEffect.HPTresholdPercentage / 100f)
-                    : myAxieData.currentHP > myAxieData.maxHP * (skillEffect.HPTresholdPercentage / 100f))
+                    ? myMonsterData.currentHP < myMonsterData.maxHP * (skillEffect.HPTresholdPercentage / 100f)
+                    : myMonsterData.currentHP > myMonsterData.maxHP * (skillEffect.HPTresholdPercentage / 100f))
             {
                 return false;
             }
@@ -401,7 +399,7 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.OnShieldBreak)
         {
-            if (target.axieIngameStats.currentShield != 0)
+            if (target.monsterIngameStats.currentShield != 0)
             {
                 return false;
             }
@@ -409,23 +407,23 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.ComboAmount > 0)
         {
-            if (self.axieSkillController.GetComboAmount() < skillEffect.ComboAmount)
+            if (self.monsterSkillController.GetComboAmount() < skillEffect.ComboAmount)
             {
                 return false;
             }
         }
 
-        if (skillEffect.LastAxieAliveTeam)
+        if (skillEffect.LastMonsterAliveTeam)
         {
-            if (self.goodTeam.AxieAliveAmount != 1)
+            if (self.goodTeam.MonsterAliveAmount != 1)
             {
                 return false;
             }
         }
 
-        if (skillEffect.LastAxieAliveOpponent)
+        if (skillEffect.LastMonsterAliveOpponent)
         {
-            if (self.badTeam.AxieAliveAmount != 1)
+            if (self.badTeam.MonsterAliveAmount != 1)
             {
                 return false;
             }
@@ -433,7 +431,7 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.Shielded)
         {
-            if (target.axieIngameStats.currentShield <= 0)
+            if (target.monsterIngameStats.currentShield <= 0)
             {
                 return false;
             }
@@ -441,7 +439,7 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.TargetIsDebuff)
         {
-            if (!target.axieSkillEffectManager.IsDebuff())
+            if (!target.monsterSkillEffectManager.IsDebuff())
             {
                 return false;
             }
@@ -449,7 +447,7 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.SelfIsDebuff)
         {
-            if (!self.axieSkillEffectManager.IsDebuff())
+            if (!self.monsterSkillEffectManager.IsDebuff())
             {
                 return false;
             }
@@ -457,7 +455,7 @@ public class SkillLauncher : MonoBehaviour
 
         if (skillEffect.TargetIsPoisoned)
         {
-            if (!target.axieSkillEffectManager.IsPoisoned())
+            if (!target.monsterSkillEffectManager.IsPoisoned())
             {
                 return false;
             }
@@ -484,7 +482,7 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.AttackStatDifference != 0)
             {
                 int realAttack =
-                    AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff(), self.axieSkillEffectManager.GetMoraleBuff(), self.axieSkillEffectManager.GetSpeedBuff());
+                    MonsterStatCalculator.GetRealAttack(self.stats, self.monsterSkillEffectManager.GetAttackBuff(), self.monsterSkillEffectManager.GetMoraleBuff(), self.monsterSkillEffectManager.GetSpeedBuff());
                 if ((skillEffect.AttackStatDifference < 0 && realAttack >= 0) ||
                     (skillEffect.AttackStatDifference > 0 && realAttack <= 0))
                 {
@@ -496,7 +494,7 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.SpeedStatDifference != 0)
             {
                 int realSpeed =
-                    AxieStatCalculator.GetRealSpeed(self.stats.speed, self.axieSkillEffectManager.GetSpeedBuff());
+                    MonsterStatCalculator.GetRealSpeed(self.stats.speed, self.monsterSkillEffectManager.GetSpeedBuff());
                 if ((skillEffect.SpeedStatDifference < 0 && realSpeed >= 0) ||
                     (skillEffect.SpeedStatDifference > 0 && realSpeed <= 0))
                 {
@@ -507,7 +505,7 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.MoraleStatDifference != 0)
             {
                 int realMorale =
-                    AxieStatCalculator.GetRealMorale(self.stats.morale, self.axieSkillEffectManager.GetMoraleBuff());
+                    MonsterStatCalculator.GetRealMorale(self.stats.morale, self.monsterSkillEffectManager.GetMoraleBuff());
                 if ((skillEffect.MoraleStatDifference < 0 && realMorale >= 0) ||
                     (skillEffect.MoraleStatDifference > 0 && realMorale <= 0))
                 {
@@ -518,9 +516,9 @@ public class SkillLauncher : MonoBehaviour
             if (skillEffect.CurrentHPStatDifference != 0)
             {
                 if ((skillEffect.CurrentHPStatDifference < 0 &&
-                     self.axieIngameStats.currentHP >= target.axieIngameStats.currentHP) ||
+                     self.monsterIngameStats.currentHP >= target.monsterIngameStats.currentHP) ||
                     (skillEffect.CurrentHPStatDifference >= 0 &&
-                     self.axieIngameStats.currentHP <= target.axieIngameStats.currentHP))
+                     self.monsterIngameStats.currentHP <= target.monsterIngameStats.currentHP))
                 {
                     return false;
                 }
@@ -530,13 +528,13 @@ public class SkillLauncher : MonoBehaviour
         return true;
     }
 
-    private List<AxieController> DoSkillEffect(AxieController self,
-        AxieController target, SkillEffect skillEffect, Skill skillInstance, SpecialEffectExtras specialEffectExtras)
+    private List<MonsterController> DoSkillEffect(MonsterController self,
+        MonsterController target, SkillEffect skillEffect, Skill skillInstance, SpecialEffectExtras specialEffectExtras)
     {
         try
         {
-            List<AxieController> statusEffectTargetList = new List<AxieController>();
-            List<AxieController> targetList = new List<AxieController>();
+            List<MonsterController> statusEffectTargetList = new List<MonsterController>();
+            List<MonsterController> targetList = new List<MonsterController>();
 
             bool remove = false;
             bool steal = false;
@@ -544,7 +542,7 @@ public class SkillLauncher : MonoBehaviour
 
             switch (skillEffect.statusApplyType)
             {
-                case StatusApplyType.AllAxies:
+                case StatusApplyType.AllMonsters:
                     statusEffectTargetList.AddRange(self.goodTeam.GetAliveCharacters());
                     statusEffectTargetList.AddRange(self.badTeam.GetAliveCharacters());
                     break;
@@ -622,29 +620,29 @@ public class SkillLauncher : MonoBehaviour
                     {
                         for (int i = 0; i < specialEffectExtras.multiplyStatusEffect; i++)
                         {
-                            skillInstance.AddStatusEffectTargetPair(x.AxieId, new[] { skillEffect }, remove);
+                            skillInstance.AddStatusEffectTargetPair(x.MonsterId, new[] { skillEffect }, remove);
                         }
                     });
                 }
                 else
                 {
-                    AxieController stealer = statusEffectTargetList[0];
-                    AxieController gotStolen = statusEffectTargetList[1];
+                    MonsterController stealer = statusEffectTargetList[0];
+                    MonsterController gotStolen = statusEffectTargetList[1];
 
-                    List<SkillEffect> skillsToSteal = gotStolen.axieSkillEffectManager.GetAllBuffs();
+                    List<SkillEffect> skillsToSteal = gotStolen.monsterSkillEffectManager.GetAllBuffs();
 
-                    skillInstance.AddStatusEffectTargetPair(gotStolen.AxieId, skillsToSteal.ToArray(), true);
-                    skillInstance.AddStatusEffectTargetPair(stealer.AxieId, skillsToSteal.ToArray(), false);
+                    skillInstance.AddStatusEffectTargetPair(gotStolen.MonsterId, skillsToSteal.ToArray(), true);
+                    skillInstance.AddStatusEffectTargetPair(stealer.MonsterId, skillsToSteal.ToArray(), false);
                 }
 
-                if (target.axieSkillEffectManager.IsFishSnacked() && target.myTeam != self.myTeam)
+                if (target.monsterSkillEffectManager.IsFishSnacked() && target.myTeam != self.myTeam)
                 {
-                    if (skillInstance.axieBodyPart.bodyPartClass == AxieClass.Bird || skillInstance.axieBodyPart.bodyPartClass == AxieClass.Aquatic)
+                    if (skillInstance.monsterBodyPart.bodyPartClass == MonsterClass.Bird || skillInstance.monsterBodyPart.bodyPartClass == MonsterClass.Aquatic)
                     {
-                        skillInstance.AddStatusEffectTargetPair(self.AxieId, new[] {new SkillEffect()
+                        skillInstance.AddStatusEffectTargetPair(self.MonsterId, new[] {new SkillEffect()
                 { statusEffect = StatusEffectEnum.Stun, Stun = true, skillDuration = 2 }  });
 
-                        skillInstance.AddStatusEffectTargetPair(target.AxieId, new[] {new SkillEffect()
+                        skillInstance.AddStatusEffectTargetPair(target.MonsterId, new[] {new SkillEffect()
                 { statusEffect = StatusEffectEnum.FishSnack,}  }, remove: true);
                     }
                 }
@@ -652,59 +650,59 @@ public class SkillLauncher : MonoBehaviour
 
             if (skillEffect.StealEnergyPercentage > 0)
             {
-                float energyToTransfer = target.axieIngameStats.CurrentEnergy *
+                float energyToTransfer = target.monsterIngameStats.CurrentEnergy *
                                          (skillEffect.StealEnergyPercentage * 0.01f) *
                                          specialEffectExtras.multiplyStatusEffect;
 
-                target.axieIngameStats.CurrentEnergy -= energyToTransfer;
-                self.axieIngameStats.CurrentEnergy += energyToTransfer;
+                target.monsterIngameStats.CurrentEnergy -= energyToTransfer;
+                self.monsterIngameStats.CurrentEnergy += energyToTransfer;
             }
 
             if (skillEffect.GainEnergy > 0)
             {
                 targetList.ForEach(x =>
                 {
-                    x.axieIngameStats.CurrentEnergy += (x.axieIngameStats.MaxEnergy * skillEffect.GainEnergy);
+                    x.monsterIngameStats.CurrentEnergy += (x.monsterIngameStats.MaxEnergy * skillEffect.GainEnergy);
                 });
             }
 
 
-            if (skillInstance.axieBodyPart.bodyPart == BodyPart.Horn)
+            if (skillInstance.monsterBodyPart.bodyPart == BodyPart.Horn)
             {
-                self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield *
-                                                      ((self.axieSkillController.passives.ExtraArmorHelmet / 100f) == 0 ? 1 : (self.axieSkillController.passives.ExtraArmorHelmet / 100f));
+                self.monsterIngameStats.currentShield += skillInstance.monsterBodyPart.shield *
+                                                      ((self.monsterSkillController.passives.ExtraArmorHelmet / 100f) == 0 ? 1 : (self.monsterSkillController.passives.ExtraArmorHelmet / 100f));
             }
             else
             {
-                self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield;
+                self.monsterIngameStats.currentShield += skillInstance.monsterBodyPart.shield;
             }
 
             if (skillEffect.GainShield > 0)
             {
                 if (skillEffect.lowestHP)
                 {
-                    var axie = self.myTeam.GetCharactersAll().OrderBy(x => x.axieIngameStats.currentHP).First();
-                    axie.axieIngameStats.currentShield += (skillEffect.GainShield);
+                    var monster = self.myTeam.GetCharactersAll().OrderBy(x => x.monsterIngameStats.currentHP).First();
+                    monster.monsterIngameStats.currentShield += (skillEffect.GainShield);
                 }
                 else
                 {
-                    self.axieIngameStats.currentShield += skillEffect.GainShield;
+                    self.monsterIngameStats.currentShield += skillEffect.GainShield;
                 }
             }
-            if (self.axieSkillController.passives.ExtraShieldGained > 0)
+            if (self.monsterSkillController.passives.ExtraShieldGained > 0)
             {
-                self.axieIngameStats.currentShield += skillInstance.axieBodyPart.shield * (self.axieSkillController.passives.ExtraShieldGained / 100f);
+                self.monsterIngameStats.currentShield += skillInstance.monsterBodyPart.shield * (self.monsterSkillController.passives.ExtraShieldGained / 100f);
 
             }
 
-            if (self.axieIngameStats.currentShield > 10000)
+            if (self.monsterIngameStats.currentShield > 10000)
             {
-                Debug.LogError("EXTRA SHIELD GAIN : " + self.axieSkillController.passives.ExtraShieldGained);
-                Debug.LogError("EXTRA SHIELD HELMET : " + self.axieSkillController.passives.ExtraArmorHelmet);
-                Debug.LogError("MATH1 : " + skillInstance.axieBodyPart.shield * (self.axieSkillController.passives.ExtraArmorHelmet / 100f));
-                Debug.LogError("MATH2 : " + 1 + (self.axieSkillController.passives.ExtraShieldGained / 100f));
-                Debug.LogError("SHIELD SKILL: " + skillInstance.axieBodyPart.shield);
-                self.axieIngameStats.currentShield = 1000;
+                Debug.LogError("EXTRA SHIELD GAIN : " + self.monsterSkillController.passives.ExtraShieldGained);
+                Debug.LogError("EXTRA SHIELD HELMET : " + self.monsterSkillController.passives.ExtraArmorHelmet);
+                Debug.LogError("MATH1 : " + skillInstance.monsterBodyPart.shield * (self.monsterSkillController.passives.ExtraArmorHelmet / 100f));
+                Debug.LogError("MATH2 : " + 1 + (self.monsterSkillController.passives.ExtraShieldGained / 100f));
+                Debug.LogError("SHIELD SKILL: " + skillInstance.monsterBodyPart.shield);
+                self.monsterIngameStats.currentShield = 1000;
             }
             if (skillEffect.GainHPPercentage > 0)
             {
@@ -712,8 +710,8 @@ public class SkillLauncher : MonoBehaviour
                 {
                     if (skillEffect.lowestHP)
                     {
-                        var axie = self.myTeam.GetCharactersAll().OrderBy(x => x.axieIngameStats.currentHP).First();
-                        skillInstance.AddHealTargetPair(axie.AxieId, (axie.axieIngameStats.maxHP *
+                        var monster = self.myTeam.GetCharactersAll().OrderBy(x => x.monsterIngameStats.currentHP).First();
+                        skillInstance.AddHealTargetPair(monster.MonsterId, (monster.monsterIngameStats.maxHP *
                                                                                    (skillEffect.GainHPPercentage *
                                                                                        0.01f)) *
                                                                                specialEffectExtras
@@ -721,9 +719,9 @@ public class SkillLauncher : MonoBehaviour
                     }
                     else
                     {
-                        foreach (var axieController in statusEffectTargetList)
+                        foreach (var monsterController in statusEffectTargetList)
                         {
-                            skillInstance.AddHealTargetPair(axieController.AxieId, (axieController.axieIngameStats.maxHP *
+                            skillInstance.AddHealTargetPair(monsterController.MonsterId, (monsterController.monsterIngameStats.maxHP *
                                                                                        (skillEffect.GainHPPercentage *
                                                                                            0.01f)) *
                                                                                    specialEffectExtras
@@ -743,8 +741,8 @@ public class SkillLauncher : MonoBehaviour
         }
     }
 
-    private List<DamagePair> DamageCalculation(AxieSkill skill, Skill skillInstance, AxieController self,
-        List<AxieController> targets, SkillEffect skillEffect, AxieController originalTarget,
+    private List<DamagePair> DamageCalculation(MonsterSkill skill, Skill skillInstance, MonsterController self,
+        List<MonsterController> targets, SkillEffect skillEffect, MonsterController originalTarget,
         SpecialEffectExtras specialEffectExtras, bool multiCasted = false)
     {
         List<DamagePair> damagePairList = new List<DamagePair>();
@@ -753,8 +751,8 @@ public class SkillLauncher : MonoBehaviour
             try
             {
                 DamagePair dmgPair = new DamagePair();
-                int damageReduction = target.axieSkillController.passives.DamageReductionAmount + (target.axieSkillEffectManager.GeckoStacks() * 10);
-                dmgPair.axieController = target;
+                int damageReduction = target.monsterSkillController.passives.DamageReductionAmount + (target.monsterSkillEffectManager.GeckoStacks() * 10);
+                dmgPair.monsterController = target;
                 dmgPair.damage = Mathf.RoundToInt(skill.bodyPartSO.damage);
 
 
@@ -762,7 +760,7 @@ public class SkillLauncher : MonoBehaviour
                 if (skillEffect.DamageEqualsBasicAttack)
                 {
                     dmgPair.damage =
-                        AxieStatCalculator.GetRealAttack(self.stats, self.axieSkillEffectManager.GetAttackBuff(), self.axieSkillEffectManager.GetMoraleBuff(), self.axieSkillEffectManager.GetSpeedBuff());
+                        MonsterStatCalculator.GetRealAttack(self.stats, self.monsterSkillEffectManager.GetAttackBuff(), self.monsterSkillEffectManager.GetMoraleBuff(), self.monsterSkillEffectManager.GetSpeedBuff());
                 }
 
                 if (skillEffect.ExtraDamagePercentage > 0)
@@ -772,7 +770,7 @@ public class SkillLauncher : MonoBehaviour
 
                 if (skillEffect.HPBaseOnDamage)
                 {
-                    skillInstance.AddHealTargetPair(self.AxieId,
+                    skillInstance.AddHealTargetPair(self.MonsterId,
                         dmgPair.damage * (skillEffect.GainHPPercentage * 0.01f *
                          specialEffectExtras.multiplyStatusEffect == 0 ? 1 : specialEffectExtras.multiplyStatusEffect));
                 }
@@ -781,7 +779,7 @@ public class SkillLauncher : MonoBehaviour
 
                 if (skillEffect.ShieldAsDamagePercentage > 0)
                 {
-                    var shield = self.axieIngameStats.currentShield;
+                    var shield = self.monsterIngameStats.currentShield;
                     shield *= skillEffect.ShieldAsDamagePercentage * .01f;
                     dmgPair.damage += Mathf.RoundToInt(shield);
                 }
@@ -790,10 +788,10 @@ public class SkillLauncher : MonoBehaviour
 
                 if (skill.bodyPartSO.skillEffects.Any(x => x.Lunge))
                 {
-                    int lungeAmount = self.axieSkillEffectManager.LungeAmount();
+                    int lungeAmount = self.monsterSkillEffectManager.LungeAmount();
                     if (lungeAmount > 0)
                     {
-                        dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(lungeAmount * AxieStatCalculator.LungePercentage);
+                        dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(lungeAmount * MonsterStatCalculator.LungePercentage);
                     }
                 }
 
@@ -801,17 +799,17 @@ public class SkillLauncher : MonoBehaviour
                 {
                     int economyAmount = self.imGood ? RunManagerSingleton.instance.netWorth : RunManagerSingleton.instance.eNetWorth;
 
-                    dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(economyAmount * AxieStatCalculator.LungePercentage);
+                    dmgPair.damage += dmgPair.damage * (int)Math.Ceiling(economyAmount * MonsterStatCalculator.LungePercentage);
                 }
 
-                var extraDamageByAbilities = target.axieSkillController.passives.ExtraDamageReceivedByAbilitiesAmount;
+                var extraDamageByAbilities = target.monsterSkillController.passives.ExtraDamageReceivedByAbilitiesAmount;
 
                 if (extraDamageByAbilities > 0)
                 {
                     dmgPair.damage *= Mathf.RoundToInt((extraDamageByAbilities / 100f) + 1f);
                 }
 
-                if (target.axieSkillEffectManager.IsAromad())
+                if (target.monsterSkillEffectManager.IsAromad())
                 {
                     damageReduction -= 50;
                 }
@@ -821,9 +819,9 @@ public class SkillLauncher : MonoBehaviour
 
                 if (skill.bodyPartSO.OnlyDamageShields)
                 {
-                    if (dmgPair.damage > Mathf.RoundToInt(target.axieIngameStats.currentShield))
+                    if (dmgPair.damage > Mathf.RoundToInt(target.monsterIngameStats.currentShield))
                     {
-                        dmgPair.damage = Mathf.RoundToInt(target.axieIngameStats.currentShield);
+                        dmgPair.damage = Mathf.RoundToInt(target.monsterIngameStats.currentShield);
                     }
                 }
 
@@ -835,33 +833,33 @@ public class SkillLauncher : MonoBehaviour
             }
         }
 
-        if (self.axieSkillEffectManager.IsJinxed())
+        if (self.monsterSkillEffectManager.IsJinxed())
             return damagePairList;
 
         //Calculate crits
         foreach (var damagePair in damagePairList)
         {
-            if (damagePair.axieController.axieSkillController.passives.ImmuneToCriticals)
+            if (damagePair.monsterController.monsterSkillController.passives.ImmuneToCriticals)
             {
                 Debug.Log("Immune to crits.");
                 continue;
             }
-            var moraleBuff = self.axieSkillEffectManager.GetMoraleBuff();
+            var moraleBuff = self.monsterSkillEffectManager.GetMoraleBuff();
 
             if (skillEffect.AlwaysCritical)
             {
-                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
+                damagePair.damage *= Mathf.RoundToInt(MonsterStatCalculator.GetCritDamage(self.stats, moraleBuff));
             }
-            else if (self.Range >= 2 && self.axieSkillController.passives.rangedAlwaysCritical)
+            else if (self.Range >= 2 && self.monsterSkillController.passives.rangedAlwaysCritical)
             {
-                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
+                damagePair.damage *= Mathf.RoundToInt(MonsterStatCalculator.GetCritDamage(self.stats, moraleBuff));
             }
 
-            if (damagePair.axieController.axieSkillEffectManager.IsLethal() || UnityEngine.Random.Range(0, 1f) <= AxieStatCalculator.GetCritChance(self.stats, moraleBuff))
+            if (damagePair.monsterController.monsterSkillEffectManager.IsLethal() || UnityEngine.Random.Range(0, 1f) <= MonsterStatCalculator.GetCritChance(self.stats, moraleBuff))
             {
-                damagePair.damage *= Mathf.RoundToInt(AxieStatCalculator.GetCritDamage(self.stats, moraleBuff));
-                damagePair.axieController.statsManagerUI.SetCritical();
-                damagePair.axieController.axieSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);
+                damagePair.damage *= Mathf.RoundToInt(MonsterStatCalculator.GetCritDamage(self.stats, moraleBuff));
+                damagePair.monsterController.statsManagerUI.SetCritical();
+                damagePair.monsterController.monsterSkillEffectManager.RemoveStatusEffect(StatusEffectEnum.Lethal);
             }
         }
 
@@ -886,9 +884,9 @@ public class SkillLauncher : MonoBehaviour
             skillActions.Add(skillInstance.GetStatusEffectAction());
         }
 
-        if (skillInstance.GetAxieAnimationAction() != null)
+        if (skillInstance.GetMonsterAnimationAction() != null)
         {
-            skillActions.Add(skillInstance.GetAxieAnimationAction());
+            skillActions.Add(skillInstance.GetMonsterAnimationAction());
         }
 
         if (skillInstance.GetAllVFXActions() != null)
@@ -903,13 +901,13 @@ public class SkillLauncher : MonoBehaviour
     {
         foreach (var damagePair in damagePairs)
         {
-            skillInstance.AddDamageTargetPair(damagePair.axieController.AxieId, damagePair.damage,
+            skillInstance.AddDamageTargetPair(damagePair.monsterController.MonsterId, damagePair.damage,
                 onlyShield: skillEffect.Fragile);
         }
     }
 
-    private List<SkillAction> PerformPassive(AxieSkill skill, Skill skillInstance, AxieController self,
-        AxieController target, bool multiCasted = false)
+    private List<SkillAction> PerformPassive(MonsterSkill skill, Skill skillInstance, MonsterController self,
+        MonsterController target, bool multiCasted = false)
     {
         List<SkillAction> skillActions = new List<SkillAction>();
         List<DamagePair> damagePairs = new List<DamagePair>();
@@ -917,7 +915,7 @@ public class SkillLauncher : MonoBehaviour
         {
             SpecialEffectExtras specialEffectExtras = HandleSpecialEffects(skillEffect, target, skill, self);
 
-            List<AxieController> targets = new List<AxieController>();
+            List<MonsterController> targets = new List<MonsterController>();
             if (skillEffect.hasTriggerCondition)
             {
                 if (FulfillsTriggerCondition(skill, skillInstance, self, target, skillEffect))
@@ -975,8 +973,8 @@ public class SkillLauncher : MonoBehaviour
         return skillActions;
     }
 
-    private List<SkillAction> PerformSkill(AxieSkill skill, Skill skillInstance, AxieController self,
-        AxieController target, bool multiCasted = false)
+    private List<SkillAction> PerformSkill(MonsterSkill skill, Skill skillInstance, MonsterController self,
+        MonsterController target, bool multiCasted = false)
     {
         List<SkillAction> skillActions = new List<SkillAction>();
         List<DamagePair> damagePairs = new List<DamagePair>();
@@ -988,7 +986,7 @@ public class SkillLauncher : MonoBehaviour
                 continue;
             SpecialEffectExtras specialEffectExtras = HandleSpecialEffects(skillEffect, target, skill, self);
 
-            List<AxieController> targets = new List<AxieController>();
+            List<MonsterController> targets = new List<MonsterController>();
 
             if (skillEffect.hasTriggerCondition)
             {

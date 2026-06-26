@@ -1,52 +1,54 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using Spine.Unity;
 using UnityEngine;
 
 public class VFXClassSelector : MonoBehaviour
 {
     public string skinName;
-    private SkeletonAnimation skeletonGraphic;
     public bool AquaticIsAqua = false;
 
-    public void SetAnimation(AxieClass axieClass)
+    public void SetAnimation(MonsterClass monsterClass)
     {
-        skeletonGraphic = GetComponent<SkeletonAnimation>();
-
-        if (axieClass == AxieClass.Dusk)
+        if (monsterClass == MonsterClass.Dusk)
         {
-            axieClass = AxieClass.Reptile;
+            monsterClass = MonsterClass.Reptile;
         }
-        else if (axieClass == AxieClass.Mech)
+        else if (monsterClass == MonsterClass.Mech)
         {
-            axieClass = AxieClass.Beast;
+            monsterClass = MonsterClass.Beast;
         }
-        else if (axieClass == AxieClass.Dawn)
+        else if (monsterClass == MonsterClass.Dawn)
         {
-            axieClass = AxieClass.Bird;
+            monsterClass = MonsterClass.Bird;
         }
 
-        string skinNameString = axieClass.ToString().ToLower() + skinName;
+        string skinNameString = monsterClass.ToString().ToLower() + skinName;
         if (AquaticIsAqua)
         {
             skinNameString = skinNameString.Replace("aquatic", "aqua");
         }
 
-        switch (axieClass)
+        switch (monsterClass)
         {
-            case AxieClass.Dusk:
-                skinNameString = AxieClass.Reptile.ToString().ToLower() + skinName;
+            case MonsterClass.Dusk:
+                skinNameString = MonsterClass.Reptile.ToString().ToLower() + skinName;
                 break;
-            case AxieClass.Dawn:
-                skinNameString = AxieClass.Bird.ToString().ToLower() + skinName;
+            case MonsterClass.Dawn:
+                skinNameString = MonsterClass.Bird.ToString().ToLower() + skinName;
                 break;
-            case AxieClass.Mech:
-                skinNameString = AxieClass.Beast.ToString().ToLower() + skinName;
+            case MonsterClass.Mech:
+                skinNameString = MonsterClass.Beast.ToString().ToLower() + skinName;
                 break;
         }
 
-        skeletonGraphic.initialSkinName = skinNameString;
+        Color color = MonsterClassPalette.Main(monsterClass);
+        foreach (SpriteRenderer spriteRenderer in GetComponentsInChildren<SpriteRenderer>(true))
+            spriteRenderer.color = color;
 
-        skeletonGraphic.Initialize(true);
+        foreach (ParticleSystem particleSystem in GetComponentsInChildren<ParticleSystem>(true))
+        {
+            ParticleSystem.MainModule main = particleSystem.main;
+            main.startColor = color;
+        }
     }
 }

@@ -188,185 +188,185 @@ MonoBehaviour:
   - {fileID: 1180408870}
   blessingAugument:
   - id: 1
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 2
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 3
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 4
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 5
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 1
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 2
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 3
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 4
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 5
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 1
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 2
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 3
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 4
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 5
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 1
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 2
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 3
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 4
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 5
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 1
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 2
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 3
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 4
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 5
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 1
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 2
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 3
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 4
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 5
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 1
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 2
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 3
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 4
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 5
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 1
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 2
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 3
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 4
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 5
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 1
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 2
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 3
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 4
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 5
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 1
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 2
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 3
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 4
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 5
-    axie_class: 00000000
+    monster_class: 00000000
   - id: 1
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 2
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 3
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 4
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 5
-    axie_class: 01000000
+    monster_class: 01000000
   - id: 1
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 2
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 3
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 4
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 5
-    axie_class: 02000000
+    monster_class: 02000000
   - id: 1
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 2
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 3
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 4
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 5
-    axie_class: 03000000
+    monster_class: 03000000
   - id: 1
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 2
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 3
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 4
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 5
-    axie_class: 04000000
+    monster_class: 04000000
   - id: 1
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 2
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 3
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 4
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 5
-    axie_class: 05000000
+    monster_class: 05000000
   - id: 1
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 2
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 3
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 4
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 5
-    axie_class: 06000000
+    monster_class: 06000000
   - id: 1
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 2
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 3
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 4
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 5
-    axie_class: 07000000
+    monster_class: 07000000
   - id: 1
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 2
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 3
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 4
-    axie_class: 08000000
+    monster_class: 08000000
   - id: 5
-    axie_class: 08000000
+    monster_class: 08000000
   AugumentSelect: {fileID: 1598086031}
 --- !u!114 &139057772
 MonoBehaviour:
@@ -825,12 +825,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 2589203553085977120, guid: ea3f2984ad593af4693c5c664129d520,
-        type: 3}
-      propertyPath: skeletonDataAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 7d1ef9104d38443a4b39cf8906cc277d,
-        type: 2}
     - target: {fileID: 4895269661359792852, guid: ea3f2984ad593af4693c5c664129d520,
         type: 3}
       propertyPath: m_SortingOrder
@@ -1593,7 +1587,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Increase your Aquatic axies morale by 10
+  m_text: Increase your Aquatic mons morale by 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
@@ -1708,12 +1702,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 2589203553085977120, guid: ea3f2984ad593af4693c5c664129d520,
-        type: 3}
-      propertyPath: skeletonDataAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 7d1ef9104d38443a4b39cf8906cc277d,
-        type: 2}
     - target: {fileID: 4895269661359792852, guid: ea3f2984ad593af4693c5c664129d520,
         type: 3}
       propertyPath: m_SortingOrder
@@ -2541,7 +2529,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Increase your Aquatic axies morale by 10
+  m_text: Increase your Aquatic mons morale by 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
@@ -2826,7 +2814,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Increase your Aquatic axies morale by 10
+  m_text: Increase your Aquatic mons morale by 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0cbc891fd75c1e244b5f089b83e4fd20, type: 2}
   m_sharedMaterial: {fileID: 1271320305712018221, guid: 0cbc891fd75c1e244b5f089b83e4fd20,
@@ -4539,12 +4527,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 2589203553085977120, guid: ea3f2984ad593af4693c5c664129d520,
-        type: 3}
-      propertyPath: skeletonDataAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 7d1ef9104d38443a4b39cf8906cc277d,
-        type: 2}
     - target: {fileID: 4895269661359792852, guid: ea3f2984ad593af4693c5c664129d520,
         type: 3}
       propertyPath: m_SortingOrder
@@ -5002,12 +4984,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 2589203553085977120, guid: ea3f2984ad593af4693c5c664129d520,
-        type: 3}
-      propertyPath: skeletonDataAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 7d1ef9104d38443a4b39cf8906cc277d,
-        type: 2}
     - target: {fileID: 4895269661359792852, guid: ea3f2984ad593af4693c5c664129d520,
         type: 3}
       propertyPath: m_SortingOrder

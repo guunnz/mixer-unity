@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class StatsFilter : MonoBehaviour
 {
-    public AxieStatFilter filter;
+    public MonsterStatFilter filter;
     public TeamBuilderManager teamBuilderManager;
-    public AxiesView axiesView;
+    public MonstersView monstersView;
     private Button button;
     public TextMeshProUGUI ClassText;
     public Image ClassImage;
@@ -28,8 +28,8 @@ public class StatsFilter : MonoBehaviour
         }
         else
         {
-            axiesView.statsfilterClearedEvent += DoDisabledGraphics;
-            axiesView.contraryfilterClearedEvent += DoDisabledGraphicsContrary;
+            monstersView.statsfilterClearedEvent += DoDisabledGraphics;
+            monstersView.contraryfilterClearedEvent += DoDisabledGraphicsContrary;
         }
     }
 
@@ -42,12 +42,12 @@ public class StatsFilter : MonoBehaviour
         }
         else
         {
-            axiesView.statsfilterClearedEvent -= DoDisabledGraphics;
-            axiesView.contraryfilterClearedEvent -= DoDisabledGraphicsContrary;
+            monstersView.statsfilterClearedEvent -= DoDisabledGraphics;
+            monstersView.contraryfilterClearedEvent -= DoDisabledGraphicsContrary;
         }
     }
 
-    private void DoDisabledGraphicsContrary(AxieStatFilter filter)
+    private void DoDisabledGraphicsContrary(MonsterStatFilter filter)
     {
         if (filter == this.filter)
         {
@@ -71,7 +71,7 @@ public class StatsFilter : MonoBehaviour
         }
         else
         {
-            axiesView.ToggleStatsFilter(filter);
+            monstersView.ToggleStatsFilter(filter);
         }
         if (selected)
         {

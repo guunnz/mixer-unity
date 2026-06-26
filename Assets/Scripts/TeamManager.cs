@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -13,10 +13,10 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [System.Serializable]
-public class AxieTeam
+public class MonsterTeam
 {
     public string TeamName;
-    public List<GetAxiesExample.Axie> AxieIds;
+    public List<GetMonstersExample.Monster> MonsterIds;
     public List<Combos> combos = new List<Combos>();
     public List<Position> position = new List<Position>();
     public string landTokenId;
@@ -24,17 +24,17 @@ public class AxieTeam
 }
 
 [System.Serializable]
-public class SaveableAxieTeamsWrapper
+public class SaveableMonsterTeamsWrapper
 {
-    public AxieTeam[] axieTeams;
+    public MonsterTeam[] monsterTeams;
 }
 
 public class TeamManager : MonoBehaviour
 {
     private string teamsFilePath;
-    public List<AxieTeam> teams = new List<AxieTeam>();
-    public AxieTeam currentTeam;
-    public AxiesManager axiesManager;
+    public List<MonsterTeam> teams = new List<MonsterTeam>();
+    public MonsterTeam currentTeam;
+    public MonstersManager monstersManager;
     static public TeamManager instance;
 
     private void Awake()
@@ -53,59 +53,59 @@ public class TeamManager : MonoBehaviour
     public void SaveTeams()
     {
         TooltipManagerSingleton.instance.DisableTooltip();
-        string json = JsonUtility.ToJson(new SaveableAxieTeamsWrapper() { axieTeams = teams.ToArray() }, true);
+        string json = JsonUtility.ToJson(new SaveableMonsterTeamsWrapper() { monsterTeams = teams.ToArray() }, true);
 
         teamsFilePath = Path.Combine(Application.persistentDataPath,
-            RunManagerSingleton.instance.user_wallet_address + "axieTeams3.json");
+            RunManagerSingleton.instance.user_wallet_address + "monsterTeams3.json");
 
         File.WriteAllText(teamsFilePath, json);
     }
 
-    public void LoadLastAccountAxies()
+    public void LoadLastAccountMonsters()
     {
         StartCoroutine(ILoadTeam());
     }
 
-    private List<GetAxiesExample.Axie> axiesIdNotLoaded = new List<GetAxiesExample.Axie>();
-    private List<AxieTeam> teamsNotLoaded = new List<AxieTeam>();
+    private List<GetMonstersExample.Monster> monstersIdNotLoaded = new List<GetMonstersExample.Monster>();
+    private List<MonsterTeam> teamsNotLoaded = new List<MonsterTeam>();
 
     IEnumerator ILoadTeam()
     {
         teamsFilePath = Path.Combine(Application.persistentDataPath,
-    RunManagerSingleton.instance.user_wallet_address + "axieTeams3.json");
+    RunManagerSingleton.instance.user_wallet_address + "monsterTeams3.json");
         teams = LoadTeams();
         if (teams == null)
         {
             Loading.instance.DisableLoading();
-            teams = new List<AxieTeam>();
+            teams = new List<MonsterTeam>();
 
             yield break;
         }
 
         for (int i = 0; i < teams.Count; i++)
         {
-            var axieTeam = teams[i];
-            foreach (var axieTeamAxieId in axieTeam.AxieIds)
+            var monsterTeam = teams[i];
+            foreach (var monsterTeamMonsterId in monsterTeam.MonsterIds)
             {
-                if (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieTeamAxieId.id) == null)
+                if (AccountManager.userMonsters.results.FirstOrDefault(x => x.id == monsterTeamMonsterId.id) == null)
                 {
                     if (AccountManager.Instance.StartedLoading)
                     {
-                        axiesIdNotLoaded.Add(axieTeamAxieId);
-                        teamsNotLoaded.Add(axieTeam);
+                        monstersIdNotLoaded.Add(monsterTeamMonsterId);
+                        teamsNotLoaded.Add(monsterTeam);
                     }
                     else
                     {
                         removed = true;
-                        teams.Remove(axieTeam);
+                        teams.Remove(monsterTeam);
                     }
                     continue;
                 }
-                axieTeamAxieId.LoadGraphicAssets();
+                monsterTeamMonsterId.LoadGraphicAssets();
             }
         }
 
-        string selectedTeamName = PlayerPrefs.GetString(PlayerPrefsValues.AxieTeamSelected + RunManagerSingleton.instance.user_wallet_address);
+        string selectedTeamName = PlayerPrefs.GetString(PlayerPrefsValues.MonsterTeamSelected + RunManagerSingleton.instance.user_wallet_address);
 
         if (!string.IsNullOrEmpty(selectedTeamName))
         {
@@ -116,35 +116,35 @@ public class TeamManager : MonoBehaviour
                 StartCoroutine(TryToLoadAsync());
                 if (removed)
                 {
-                    NotificationErrorManager.instance.DoNotification("Some axies that you had on one of your teams are not longer available. Teams will be deleted");
+                    NotificationErrorManager.instance.DoNotification("Some mons that you had on one of your teams are not longer available. Teams will be deleted");
                 }
                 yield break;
             }
 
-            foreach (var axie in currentTeam.AxieIds)
+            foreach (var monster in currentTeam.MonsterIds)
             {
-                while (!AccountManager.userAxies.results.Select(y => y.id).Contains(axie.id) && AccountManager.Instance.StartedLoading)
+                while (!AccountManager.userMonsters.results.Select(y => y.id).Contains(monster.id) && AccountManager.Instance.StartedLoading)
                 {
                     yield return null;
                 }
 
-                if (!AccountManager.userAxies.results.Select(y => y.id).Contains(axie.id))
+                if (!AccountManager.userMonsters.results.Select(y => y.id).Contains(monster.id))
                 {
                     Loading.instance.DisableLoading();
                     StartCoroutine(TryToLoadAsync());
                     if (removed)
                     {
-                        NotificationErrorManager.instance.DoNotification("Some axies that you had on one of your teams are not longer available. Teams will be deleted");
+                        NotificationErrorManager.instance.DoNotification("Some mons that you had on one of your teams are not longer available. Teams will be deleted");
                     }
                     yield break;
                 }
             }
-            axiesManager.ShowMenuAxies(currentTeam);
+            monstersManager.ShowMenuMonsters(currentTeam);
         }
 
         if (removed)
         {
-            NotificationErrorManager.instance.DoNotification("Some axies that you had on one of your teams are not longer available. Teams will be deleted");
+            NotificationErrorManager.instance.DoNotification("Some mons that you had on one of your teams are not longer available. Teams will be deleted");
         }
 
         Loading.instance.DisableLoading();
@@ -158,30 +158,30 @@ public class TeamManager : MonoBehaviour
             yield return null;
         }
 
-        foreach (var axieNotLoaded in axiesIdNotLoaded)
+        foreach (var monsterNotLoaded in monstersIdNotLoaded)
         {
-            if (AccountManager.userAxies.results.FirstOrDefault(x => x.id == axieNotLoaded.id) == null)
+            if (AccountManager.userMonsters.results.FirstOrDefault(x => x.id == monsterNotLoaded.id) == null)
             {
-                teams.RemoveAll(x => x.AxieIds.Select(y => y.id).Contains(axieNotLoaded.id));
+                teams.RemoveAll(x => x.MonsterIds.Select(y => y.id).Contains(monsterNotLoaded.id));
                 continue;
             }
 
-            axieNotLoaded.LoadGraphicAssets();
+            monsterNotLoaded.LoadGraphicAssets();
         }
     }
 
-    private List<AxieTeam> LoadTeams()
+    private List<MonsterTeam> LoadTeams()
     {
         try
         {
             if (File.Exists(teamsFilePath))
             {
                 string json = File.ReadAllText(teamsFilePath);
-                return JsonUtility.FromJson<SaveableAxieTeamsWrapper>(json).axieTeams.ToList();
+                return JsonUtility.FromJson<SaveableMonsterTeamsWrapper>(json).monsterTeams.ToList();
             }
             else
             {
-                return new List<AxieTeam>();
+                return new List<MonsterTeam>();
             }
         }
         catch

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -39,16 +39,16 @@ public class BloodmoonBehavior : MonoBehaviour
         {
             GoodTeam.GetAliveCharacters().ForEach(x =>
             {
-                if (!x.axieSkillController.passives.bloodmoonImmune)
+                if (!x.monsterSkillController.passives.bloodmoonImmune)
                 {
-                    x.axieIngameStats.currentHP -= x.axieIngameStats.maxHP * percentage;
+                    x.monsterIngameStats.currentHP -= x.monsterIngameStats.maxHP * percentage;
                 }
             });
             BadTeam.GetAliveCharacters().ForEach(x =>
             {
-                if (!x.axieSkillController.passives.bloodmoonImmune)
+                if (!x.monsterSkillController.passives.bloodmoonImmune)
                 {
-                    x.axieIngameStats.currentHP -= x.axieIngameStats.maxHP * percentage;
+                    x.monsterIngameStats.currentHP -= x.monsterIngameStats.maxHP * percentage;
                 }
             });
             percentage *= 1.5f;

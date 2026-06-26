@@ -20,6 +20,6 @@ MonoBehaviour:
     OnBattleStart: 0
   shopPrefab: {fileID: 5910399187504550379, guid: ecdd20aeee4b32e41888572e6b426593,
     type: 3}
-  description: After 15 seconds your axies gain 3 attack buff
+  description: After 15 seconds your mons gain 3 attack buff
   price: 6
   tooltipType: 

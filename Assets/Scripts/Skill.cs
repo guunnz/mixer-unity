@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using finished3;
-using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Serialization;
 using DG.Tweening;
@@ -83,7 +82,7 @@ public enum SkillName
     CuteBunny,
     Goda,
     SquareTeeth,
-    AxieKiss,
+    MonsterKiss,
     Serious,
     PeaceMaker,
     Imp,
@@ -255,14 +254,14 @@ public enum StatusEffectEnum
 
 public class DamageTargetPair
 {
-    public int axieId;
+    public int monsterId;
     public float Value;
     public bool onlyShield;
-    public AxieClass DamageType;
+    public MonsterClass DamageType;
 
-    public DamageTargetPair(int axieId, float value, AxieClass DamageType, bool onlyShield = false)
+    public DamageTargetPair(int monsterId, float value, MonsterClass DamageType, bool onlyShield = false)
     {
-        this.axieId = axieId;
+        this.monsterId = monsterId;
         Value = value;
         this.onlyShield = onlyShield;
         this.DamageType = DamageType;
@@ -271,25 +270,25 @@ public class DamageTargetPair
 
 public class HealTargetPair
 {
-    public int axieId;
+    public int monsterId;
     public float Value;
 
-    public HealTargetPair(int axieId, float value)
+    public HealTargetPair(int monsterId, float value)
     {
-        this.axieId = axieId;
+        this.monsterId = monsterId;
         Value = value;
     }
 }
 
 public class StatusEffectTargetPair
 {
-    public int axieId;
+    public int monsterId;
     public SkillEffect[] skillEffects;
     public bool remove;
 
-    public StatusEffectTargetPair(int axieId, SkillEffect[] value, bool remove = false)
+    public StatusEffectTargetPair(int monsterId, SkillEffect[] value, bool remove = false)
     {
-        this.axieId = axieId;
+        this.monsterId = monsterId;
         skillEffects = value;
         this.remove = remove;
     }
@@ -298,16 +297,16 @@ public class StatusEffectTargetPair
 public class Skill : MonoBehaviour
 {
     public List<SkillVFX> vfxToThrow = new List<SkillVFX>();
-    public AxieAnimation animationToPlay;
-    internal AxieClass @class;
+    public MonsterAnimation animationToPlay;
+    internal MonsterClass @class;
     internal Transform origin;
     internal Transform target;
-    internal SkeletonAnimation skeletonAnimation;
-    internal AxieController self;
-    internal List<AxieController> targetList = new List<AxieController>();
-    internal List<AxieController> statusEffectTargetList = new List<AxieController>();
-    internal AxieBodyPart axieBodyPart;
-    [SerializeField] private float axieAnimationTiming;
+    internal VanillaMonsterVisual visual;
+    internal MonsterController self;
+    internal List<MonsterController> targetList = new List<MonsterController>();
+    internal List<MonsterController> statusEffectTargetList = new List<MonsterController>();
+    internal MonsterBodyPart monsterBodyPart;
+    [SerializeField] private float monsterAnimationTiming;
     [SerializeField] private float statusEffectsTiming;
 
     private List<DamageTargetPair> damageTargetPairs = new List<DamageTargetPair>();
@@ -320,24 +319,35 @@ public class Skill : MonoBehaviour
     internal bool debug;
     public bool DontPlayAnimation;
 
-    public void AddDamageTargetPair(int axieId, float damage, bool onlyShield = false)
+    public void AddDamageTargetPair(int monsterId, float damage, bool onlyShield = false)
     {
-        damageTargetPairs.Add(new DamageTargetPair(axieId, damage, this.axieBodyPart.bodyPartClass, onlyShield));
+        damageTargetPairs.Add(new DamageTargetPair(monsterId, damage, this.monsterBodyPart.bodyPartClass, onlyShield));
     }
 
-    public void AddHealTargetPair(int axieId, float heal)
+    public void AddHealTargetPair(int monsterId, float heal)
     {
-        healTargetPairs.Add(new HealTargetPair(axieId, heal));
+        healTargetPairs.Add(new HealTargetPair(monsterId, heal));
     }
 
-    public void AddStatusEffectTargetPair(int axieId, SkillEffect[] skillEffects, bool remove = false)
+    private bool OriginFacesPositive()
     {
-        statusEffectTargetPair.Add(new StatusEffectTargetPair(axieId, skillEffects, remove));
+        if (self != null)
+            return MonsterScale.IsFacingPositive(self.transform);
+
+        if (visual != null)
+            return visual.FacingPositiveX;
+
+        return MonsterScale.IsFacingPositive(origin);
     }
 
-    public SkillAction GetAxieAnimationAction()
+    public void AddStatusEffectTargetPair(int monsterId, SkillEffect[] skillEffects, bool remove = false)
     {
-        return new SkillAction(PlayAxieAnimation, axieAnimationTiming + ExtraTimerCast);
+        statusEffectTargetPair.Add(new StatusEffectTargetPair(monsterId, skillEffects, remove));
+    }
+
+    public SkillAction GetMonsterAnimationAction()
+    {
+        return new SkillAction(PlayMonsterAnimation, monsterAnimationTiming + ExtraTimerCast);
     }
 
     public SkillAction GetDealDamageAction()
@@ -357,7 +367,12 @@ public class Skill : MonoBehaviour
     {
         List<SkillAction> skillActions = new List<SkillAction>();
         if (vfxToThrow.Count == 0)
-            return null;
+        {
+            skillActions.Add(new SkillAction(delegate { LaunchFallbackVFX(null); },
+                Mathf.Max(0.05f, damageOrHealTiming * 0.5f) + ExtraTimerCast));
+            return skillActions;
+        }
+
         foreach (var vfx in vfxToThrow)
         {
             skillActions.Add(new SkillAction(delegate { LaunchVFX(vfx); }, vfx.ActivateTiming + ExtraTimerCast));
@@ -381,41 +396,41 @@ public class Skill : MonoBehaviour
 
     private void DoDamage()
     {
-        var AttackBuff = self.axieSkillEffectManager.GetAttackBuff();
+        var AttackBuff = self.monsterSkillEffectManager.GetAttackBuff();
         foreach (var target in targetList)
         {
-            DamageTargetPair pair = damageTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
+            DamageTargetPair pair = damageTargetPairs.FirstOrDefault(x => x.monsterId == target.MonsterId);
 
             if (pair == null)
                 return;
 
-            if (target.axieSkillController.passives.PotatoLeaf && pair.DamageType == AxieClass.Aquatic)
+            if (target.monsterSkillController.passives.PotatoLeaf && pair.DamageType == MonsterClass.Aquatic)
                 pair.Value = 0;
 
             if (pair.onlyShield)
             {
-                var dmg = pair.Value > target.axieIngameStats.currentShield ? target.axieIngameStats.currentShield : pair.Value;
-                target.axieIngameStats.currentShield -= dmg;
+                var dmg = pair.Value > target.monsterIngameStats.currentShield ? target.monsterIngameStats.currentShield : pair.Value;
+                target.monsterIngameStats.currentShield -= dmg;
 
-                target.axieSkillController.DamageReceived(@class, dmg, self, true);
+                target.monsterSkillController.DamageReceived(@class, dmg, self, true);
             }
             else
             {
                 var dmg = pair.Value;
-                dmg = AxieStatCalculator.GetSkillDamage(dmg, self.stats, AttackBuff, self.axieSkillController.skillList.Count);
-                float shieldDamage = dmg - target.axieIngameStats.currentShield;
+                dmg = MonsterStatCalculator.GetSkillDamage(dmg, self.stats, AttackBuff, self.monsterSkillController.skillList.Count);
+                float shieldDamage = dmg - target.monsterIngameStats.currentShield;
 
                 if (shieldDamage < 0)
                 {
-                    target.axieIngameStats.currentShield -= dmg;
+                    target.monsterIngameStats.currentShield -= dmg;
                 }
                 else
                 {
-                    target.axieIngameStats.currentShield = 0;
+                    target.monsterIngameStats.currentShield = 0;
 
-                    target.axieIngameStats.currentHP -= shieldDamage;
-                    target.statsManagerUI.SetHP(target.axieIngameStats.currentHP / target.axieIngameStats.maxHP);
-                    target.axieSkillController.DamageReceived(@class, dmg, self, true);
+                    target.monsterIngameStats.currentHP -= shieldDamage;
+                    target.statsManagerUI.SetHP(target.monsterIngameStats.currentHP / target.monsterIngameStats.maxHP);
+                    target.monsterSkillController.DamageReceived(@class, dmg, self, true);
                 }
             }
         }
@@ -427,11 +442,11 @@ public class Skill : MonoBehaviour
         {
             foreach (var target in statusEffectTargetList)
             {
-                var axieTargetHealingPair = healTargetPairs.FirstOrDefault(x => x.axieId == target.AxieId);
-                if (axieTargetHealingPair == null)
+                var monsterTargetHealingPair = healTargetPairs.FirstOrDefault(x => x.monsterId == target.MonsterId);
+                if (monsterTargetHealingPair == null)
                     continue;
 
-                target.DoHeal(axieTargetHealingPair.Value, self.AxieId.ToString());
+                target.DoHeal(monsterTargetHealingPair.Value, self.MonsterId.ToString());
             }
         }
         catch (Exception ex)
@@ -441,56 +456,37 @@ public class Skill : MonoBehaviour
 
     }
 
-    private void PlayAxieAnimation()
+    private void PlayMonsterAnimation()
     {
         if (DontPlayAnimation)
             return;
 
-        string animationName = animationToPlay.ToString();
-
-        // Find the last underscore and replace it with a hyphen
-        int lastUnderscoreIndex = animationName.LastIndexOf('_');
-
-        if (lastUnderscoreIndex != -1)
-        {
-            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
-                            animationName.Substring(lastUnderscoreIndex + 1);
-        }
-
-        // Replace the remaining underscores with slashes
-        animationName = animationName.Replace("_", "/");
-        if (animationName.Contains("shrimp"))
-        {
-            animationName = animationName.Replace("-", "/");
-        }
-
-        if (animationName.Contains("tail/multi"))
-        {
-            animationName = animationName.Replace("tail/multi", "tail-multi");
-        }
-
         float attackSpeedMulti = 1;
 
-        if (self.axieSkillEffectManager.IsAromad())
+        if (self.monsterSkillEffectManager.IsAromad())
         {
             attackSpeedMulti = 0.75f;
         }
-        self.SkeletonAnim.timeScale =
-            self.SkeletonAnim.AnimationState.GetCurrent(0).AnimationEnd / (self.axieBehavior.AttackSpeed * attackSpeedMulti);
 
-        skeletonAnimation.AnimationName = animationName;
+        MonsterVisualState state = MonsterVisualStateMapper.FromMonsterAnimation(animationToPlay);
+        float speed = visual != null
+            ? visual.GetDuration(state) / (self.monsterBehavior.AttackSpeed * attackSpeedMulti)
+            : 1f;
+        visual?.Play(state, false, speed);
     }
 
     private void LaunchVFX(SkillVFX skill)
     {
         try
         {
-            self.axieIngameStats.CurrentEnergy -= this.axieBodyPart.energy / self.axieIngameStats.totalComboCost;
-            self.SetEnergy();
-            if (self.axieIngameStats.CurrentEnergy < 0)
+            if (skill == null || skill.VFXPrefab == null)
             {
-                self.axieIngameStats.CurrentEnergy = 0;
+                LaunchFallbackVFX(skill);
+                return;
             }
+
+            SpendSkillEnergy();
+
             foreach (var target in targetList)
             {
                 Vector3 pos = skill.VFXPrefab.transform.localPosition;
@@ -498,6 +494,7 @@ public class Skill : MonoBehaviour
                     skill.StartFromOrigin ? self.GetPartPosition(BodyPart.Horn) : target.GetPartPosition(BodyPart.Horn),
                     skill.VFXPrefab.transform.rotation,
                     this.transform);
+                MonsterVfxLimiter.NormalizeSpawned(vfxSpawned, false, skill.SkillDuration);
 
 
 
@@ -525,20 +522,21 @@ public class Skill : MonoBehaviour
 
                 if (classSelector != null)
                 {
-                    classSelector.SetAnimation(self.axieIngameStats.axieClass);
+                    classSelector.SetAnimation(self.monsterIngameStats.monsterClass);
                 }
 
                 if (skill.StartFromOrigin)
                 {
                     ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
+                    bool originFacesPositive = OriginFacesPositive();
                     vfxSpawned.transform.localScale = new Vector3(
-                        origin.transform.localScale.x < 0
+                        !originFacesPositive
                             ? -vfxSpawned.transform.localScale.x
                             : vfxSpawned.transform.localScale.x,
                         vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
 
-                    if (origin.transform.localScale.x > 0)
+                    if (originFacesPositive)
                     {
                         vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
                     }
@@ -550,40 +548,62 @@ public class Skill : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message + this.axieBodyPart.skillName);
+            Debug.LogError(e.Message + this.monsterBodyPart.skillName);
         }
+    }
+
+    private void LaunchFallbackVFX(SkillVFX skill, bool small = false)
+    {
+        SpendSkillEnergy();
+
+        BodyPart bodyPart = monsterBodyPart != null ? monsterBodyPart.bodyPart : BodyPart.Horn;
+        Vector3 originPosition = self != null
+            ? self.GetPartPosition(bodyPart)
+            : origin != null ? origin.position : transform.position;
+
+        List<Vector3> fallbackTargets = new List<Vector3>();
+        if (targetList != null && targetList.Count > 0)
+        {
+            fallbackTargets.AddRange(targetList.Select(x => x != null ? x.GetPartPosition(BodyPart.Horn) : originPosition));
+        }
+        else if (target != null)
+        {
+            fallbackTargets.Add(target.position);
+        }
+        else
+        {
+            fallbackTargets.Add(originPosition + transform.right);
+        }
+
+        MonsterVisualState state = MonsterVisualStateMapper.FromMonsterAnimation(animationToPlay);
+        if (skill != null && skill.StartFromOrigin)
+            state = MonsterVisualState.AttackRanged;
+
+        float duration = skill != null && skill.SkillDuration > 0f
+            ? skill.SkillDuration
+            : Mathf.Clamp(totalDuration > 0f ? totalDuration * 0.35f : 0.45f, 0.25f, 0.8f);
+
+        foreach (Vector3 targetPosition in fallbackTargets)
+            VanillaSkillVfx.Play(transform, originPosition, targetPosition, @class, state, duration, small);
+    }
+
+    private void SpendSkillEnergy()
+    {
+        if (self == null || monsterBodyPart == null || self.monsterIngameStats.totalComboCost <= 0)
+            return;
+
+        self.monsterIngameStats.CurrentEnergy -= monsterBodyPart.energy / self.monsterIngameStats.totalComboCost;
+        if (self.monsterIngameStats.CurrentEnergy < 0)
+            self.monsterIngameStats.CurrentEnergy = 0;
+
+        self.SetEnergy();
     }
 
     public IEnumerator LaunchSkillTest(bool loop)
     {
-        string animationName = animationToPlay.ToString();
-
         StartCoroutine(Destroy());
 
-        // Find the last underscore and replace it with a hyphen
-        int lastUnderscoreIndex = animationName.LastIndexOf('_');
-
-        if (lastUnderscoreIndex != -1)
-        {
-            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
-                            animationName.Substring(lastUnderscoreIndex + 1);
-        }
-
-        // Replace the remaining underscores with slashes
-        animationName = animationName.Replace("_", "/");
-        if (animationName.Contains("shrimp"))
-        {
-            animationName = animationName.Replace("-", "/");
-        }
-
-        if (animationName.Contains("tail/multi"))
-        {
-            animationName = animationName.Replace("tail/multi", "tail-multi");
-        }
-
-        skeletonAnimation.AnimationName = animationName;
-        skeletonAnimation.loop = false;
-        skeletonAnimation.Initialize(true);
+        visual?.Play(MonsterVisualStateMapper.FromMonsterAnimation(animationToPlay), false);
         List<SkillVFX> VFXLIST = new List<SkillVFX>();
         VFXLIST.AddRange(vfxToThrow);
         float timer = 0;
@@ -594,13 +614,18 @@ public class Skill : MonoBehaviour
                 if (timer >= skill.ActivateTiming)
                 {
 
-                    if (skill == null || this == null)
-                        yield break;
+                    if (skill == null || skill.VFXPrefab == null || this == null)
+                    {
+                        LaunchFallbackVFX(skill);
+                        continue;
+                    }
+
                     Vector3 pos = skill.VFXPrefab.transform.localPosition;
                     GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                         skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                         skill.VFXPrefab.transform.rotation,
                         this.transform);
+                    MonsterVfxLimiter.NormalizeSpawned(vfxSpawned, false, skill.SkillDuration);
 
 
 
@@ -636,13 +661,14 @@ public class Skill : MonoBehaviour
                     {
                         ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
+                        bool originFacesPositive = OriginFacesPositive();
                         vfxSpawned.transform.localScale = new Vector3(
-                            origin.transform.localScale.x < 0
+                            !originFacesPositive
                                 ? -vfxSpawned.transform.localScale.x
                                 : vfxSpawned.transform.localScale.x,
                             vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
 
-                        if (origin.transform.localScale.x > 0)
+                        if (originFacesPositive)
                         {
                             vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
                         }
@@ -664,41 +690,13 @@ public class Skill : MonoBehaviour
         else
         {
 
-            skeletonAnimation.AnimationName = "action/idle/normal";
-            skeletonAnimation.loop = true;
+            visual?.Play(MonsterVisualState.Idle, true);
         }
     }
 
     public IEnumerator LaunchSkillTestSmall(bool loop)
     {
-        string animationName = animationToPlay.ToString();
-
-        //StartCoroutine(Destroy());
-
-        // Find the last underscore and replace it with a hyphen
-        int lastUnderscoreIndex = animationName.LastIndexOf('_');
-
-        if (lastUnderscoreIndex != -1)
-        {
-            animationName = animationName.Substring(0, lastUnderscoreIndex) + "-" +
-                            animationName.Substring(lastUnderscoreIndex + 1);
-        }
-
-        // Replace the remaining underscores with slashes
-        animationName = animationName.Replace("_", "/");
-        if (animationName.Contains("shrimp"))
-        {
-            animationName = animationName.Replace("-", "/");
-        }
-
-        if (animationName.Contains("tail/multi"))
-        {
-            animationName = animationName.Replace("tail/multi", "tail-multi");
-        }
-
-        skeletonAnimation.AnimationName = animationName;
-        skeletonAnimation.loop = false;
-        skeletonAnimation.Initialize(true);
+        visual?.Play(MonsterVisualStateMapper.FromMonsterAnimation(animationToPlay), false);
         List<SkillVFX> VFXLIST = new List<SkillVFX>();
         VFXLIST.AddRange(vfxToThrow);
         float timer = 0;
@@ -708,15 +706,18 @@ public class Skill : MonoBehaviour
             {
                 if (timer >= skill.ActivateTiming)
                 {
+                    if (skill == null || skill.VFXPrefab == null)
+                    {
+                        LaunchFallbackVFX(skill, true);
+                        continue;
+                    }
 
                     Vector3 pos = skill.VFXPrefab.transform.localPosition;
                     GameObject vfxSpawned = Instantiate(skill.VFXPrefab,
                         skill.StartFromOrigin ? origin.transform.position : target.transform.position,
                         skill.VFXPrefab.transform.rotation,
                         this.transform);
-
-
-                    vfxSpawned.transform.localScale /= 8;
+                    MonsterVfxLimiter.NormalizeSpawned(vfxSpawned, true, skill.SkillDuration);
 
                     vfxSpawned.transform.localPosition = new Vector3(vfxSpawned.transform.localPosition.x +
                                                                      pos.x, vfxSpawned.transform.localPosition.y +
@@ -749,13 +750,14 @@ public class Skill : MonoBehaviour
                     {
                         ProjectileMover projectileMover = vfxSpawned.GetComponent<ProjectileMover>();
 
+                        bool originFacesPositive = OriginFacesPositive();
                         vfxSpawned.transform.localScale = new Vector3(
-                            origin.transform.localScale.x < 0
+                            !originFacesPositive
                                 ? -vfxSpawned.transform.localScale.x
                                 : vfxSpawned.transform.localScale.x,
                             vfxSpawned.transform.localScale.y, vfxSpawned.transform.localScale.z);
 
-                        if (origin.transform.localScale.x > 0)
+                        if (originFacesPositive)
                         {
                             vfxSpawned.transform.localPosition -= new Vector3(pos.x * 2f, 0, 0);
                         }
@@ -777,8 +779,7 @@ public class Skill : MonoBehaviour
         else
         {
 
-            skeletonAnimation.AnimationName = "action/idle/normal";
-            skeletonAnimation.loop = true;
+            visual?.Play(MonsterVisualState.Idle, true);
         }
     }
     private IEnumerator Destroy()
@@ -792,14 +793,14 @@ public class Skill : MonoBehaviour
     {
         foreach (var target in statusEffectTargetList)
         {
-            var pair = statusEffectTargetPair.FirstOrDefault(x => x.axieId == target.AxieId);
+            var pair = statusEffectTargetPair.FirstOrDefault(x => x.monsterId == target.MonsterId);
             var skillEffects = pair?.skillEffects;
 
             if (skillEffects != null)
             {
                 foreach (var skillEffect in skillEffects)
                 {
-                    StatusManager.Instance.SetStatus(skillEffect, target, pair.remove, self.AxieId.ToString());
+                    StatusManager.Instance.SetStatus(skillEffect, target, pair.remove, self.MonsterId.ToString());
                 }
             }
         }

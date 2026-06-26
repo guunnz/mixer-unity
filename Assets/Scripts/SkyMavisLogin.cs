@@ -1,5 +1,4 @@
-using AxieCore.SimpleJSON;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -15,18 +14,18 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.Video;
-using static GetAxiesExample;
+using static GetMonstersExample;
 using static SkyMavisLogin;
 
 public class SkyMavisLogin : MonoBehaviour
 {
     private string redirectUri = "http://localhost:3000/login/callback/"; // Used only for Desktop
-    private string authorizationEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/url";
-    private string userInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/login";
-    private string refreshUserInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/auth/refresh";
-    private string NFTsUserInfoEndpoint = "https://skynet.api.axielandbattles.com/api/v1/user/nfts";
+    private string authorizationEndpoint = "https://skynet.api.monsterlandbattles.com/api/v1/auth/url";
+    private string userInfoEndpoint = "https://skynet.api.monsterlandbattles.com/api/v1/auth/login";
+    private string refreshUserInfoEndpoint = "https://skynet.api.monsterlandbattles.com/api/v1/auth/refresh";
+    private string NFTsUserInfoEndpoint = "https://skynet.api.monsterlandbattles.com/api/v1/user/nfts";
     private string buildVersion = "https://melodic-voice-423218-s4.ue.r.appspot.com/api/v1/unity/buildversion";
-    private string graphQL = "https://skynet.api.axielandbattles.com/api/v1/user/graphql-nfts";
+    private string graphQL = "https://skynet.api.monsterlandbattles.com/api/v1/user/graphql-nfts";
 
     public AuthToken authToken;
     public Button loginButton;
@@ -44,19 +43,20 @@ public class SkyMavisLogin : MonoBehaviour
     public VideoClip SecondTimeIntroVideoclip;
     public AudioSource mainMenuSong;
     public GameObject cursor;
+    [SerializeField] private bool useLocalGameSession = true;
 
 
     [System.Serializable]
     public class CacheValidator
     {
         public LandResult lands;
-        public AxieResult axies;
+        public MonsterResult monsters;
     }
 
     [System.Serializable]
-    public class AxieResult
+    public class MonsterResult
     {
-        public List<AxieCache> results;
+        public List<MonsterCache> results;
     }
 
     [System.Serializable]
@@ -66,7 +66,7 @@ public class SkyMavisLogin : MonoBehaviour
     }
 
     [System.Serializable]
-    public class AxieCache
+    public class MonsterCache
     {
         public string id;
     }
@@ -135,6 +135,13 @@ public class SkyMavisLogin : MonoBehaviour
         //    yield return null;
         //}
         PartFinder.LoadFromResources();
+
+        if (useLocalGameSession)
+        {
+            StartLocalGameSession();
+            yield break;
+        }
+
         if (!string.IsNullOrEmpty(PlayerPrefs.GetString(Loading.instance.WalletUsed)))
         {
             SkyMavisLogin.Root userInfoPrev = JsonUtility.FromJson<SkyMavisLogin.Root>(PlayerPrefs.GetString(Loading.instance.WalletUsed));
@@ -167,11 +174,11 @@ public class SkyMavisLogin : MonoBehaviour
                             Newtonsoft.Json.JsonConvert.DeserializeObject<CacheValidator>(www.downloadHandler.text);
 
 
-                        foreach (var prevAxie in userInfoPrev.axies.ResultObject.items)
+                        foreach (var prevMonster in userInfoPrev.monsters.ResultObject.items)
                         {
-                            if (!usernfts.axies.results.Select(x => x.id).ToList().Contains(prevAxie.token_id))
+                            if (!usernfts.monsters.results.Select(x => x.id).ToList().Contains(prevMonster.token_id))
                             {
-                                if (prevAxie.f2p)
+                                if (prevMonster.f2p)
                                     continue;
                                 doRealLogin = true;
                                 break;
@@ -260,6 +267,28 @@ public class SkyMavisLogin : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    private void StartLocalGameSession()
+    {
+        if (loginButton != null)
+            loginButton.gameObject.SetActive(false);
+
+        Loading.instance.EnableLoading();
+        Loading.instance.GameOpened = true;
+
+        if (mainMenuSong != null)
+            mainMenuSong.enabled = true;
+
+        if (introVideoPlayer != null)
+            introVideoPlayer.Stop();
+
+        PlayerPrefs.SetString("Auth", "");
+        authToken = new AuthToken { AccessToken = "", RefreshToken = "", ExpiresIn = int.MaxValue };
+
+        Root localRoot = LocalGameSession.CreatePlayerRoot();
+        Loading.instance.WalletUsed = localRoot.userInfo.addr;
+        accountManager.LoginAccount(localRoot);
     }
 
     private void OnLoginButtonClicked()
@@ -439,7 +468,7 @@ public class SkyMavisLogin : MonoBehaviour
         var query = System.Web.HttpUtility.ParseQueryString(uriBuilder.Query);
 
         // Replace the redirect_uri parameter with your mobile deep link
-        query.Set("redirect_uri", "axielandbattles://auth");
+        query.Set("redirect_uri", "monsterlandbattles://auth");
 
         // Add the response_mode parameter to use fragment
         query.Set("response_mode", "fragment");
@@ -460,7 +489,7 @@ public class SkyMavisLogin : MonoBehaviour
     private void HandleDeepLink(string url)
     {
         Debug.Log("DeepLink activated: " + url);
-        if (url.StartsWith("axielandbattles://auth"))
+        if (url.StartsWith("monsterlandbattles://auth"))
         {
             Uri uri = new Uri(url);
 
@@ -617,9 +646,9 @@ public class SkyMavisLogin : MonoBehaviour
 
                 SkyMavisLogin.Root userInfoObj = JsonUtility.FromJson<SkyMavisLogin.Root>(userInfo);
 
-                if (!string.IsNullOrEmpty(userInfoObj.axies.cursor))
+                if (!string.IsNullOrEmpty(userInfoObj.monsters.cursor))
                 {
-                    StartCoroutine(GetNFTS(5, userInfoObj.axies.cursor));
+                    StartCoroutine(GetNFTS(5, userInfoObj.monsters.cursor));
                 }
             }
             else
@@ -638,9 +667,9 @@ public class SkyMavisLogin : MonoBehaviour
                 MavisTracking.Instance.InitializeTracking(userInfoObj.userInfo);
 
 
-                if (!string.IsNullOrEmpty(userInfoObj.axies.cursor))
+                if (!string.IsNullOrEmpty(userInfoObj.monsters.cursor))
                 {
-                    StartCoroutine(GetNFTS(5, userInfoObj.axies.cursor));
+                    StartCoroutine(GetNFTS(5, userInfoObj.monsters.cursor));
                 }
             }
         }
@@ -754,7 +783,7 @@ public class SkyMavisLogin : MonoBehaviour
     [System.Serializable]
     public struct Properties
     {
-        public long axie_id;
+        public long monster_id;
         public string back_id;
         public long birthdate;
         public string bodyshape;
@@ -829,7 +858,7 @@ public class SkyMavisLogin : MonoBehaviour
     {
         public UserInfo userInfo;
         public NftsResponse lands;
-        public NftsResponse axies;
+        public NftsResponse monsters;
     }
 
     private string GetTokenFromCommandLineArgs()

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +22,7 @@ public enum SFXType
     UIButtonCancel,
     UIButtonTap,
     UIButtonConfirm,
-    GrabAxie,
+    GrabMonster,
     ThreeTwoOne,
     Olek
     // Add more SFX types as needed

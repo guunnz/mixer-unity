@@ -214,7 +214,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 23.79, y: 23.79}
+  m_Size: {x: 1.71, y: 1.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -722,10 +722,14 @@ MonoBehaviour:
   itemImage: {fileID: 5566935104409387384}
   Sold: {fileID: 4320348663876146128}
   shopItem: {fileID: 0}
+  shopItemPurchase: {fileID: 0}
   sold: 0
   Frozen: 0
   FreezeGraphics: {fileID: 3649322789799370121}
   PreventSetOnStart: 0
+  isPotion: 0
+  tooltips: 
+  otherTitles: []
 --- !u!1 &7884864740163041051
 GameObject:
   m_ObjectHideFlags: 0

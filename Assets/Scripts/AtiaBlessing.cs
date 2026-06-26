@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 public class UpgradeAugument
 {
     public int id;
-    public List<int> axie_class;
+    public List<int> monster_class;
 }
 
 public class AtiaBlessing : MonoBehaviour
@@ -198,7 +198,7 @@ public class AtiaBlessing : MonoBehaviour
         PrismaticPlant,
         PrismaticDusk,
         PrismaticReptile,
-        AxiePark,
+        MonsterPark,
         Savannah,
         Forest,
         Arctic,
@@ -235,7 +235,7 @@ public class AtiaBlessing : MonoBehaviour
 
     public ShopItem[] blessingsList;
 
-    public ShopItem AxieParkBlessing;
+    public ShopItem MonsterParkBlessing;
     public ShopItem SavannahBlessing;
     public ShopItem ForestBlessing;
     public ShopItem ArcticBlessing;
@@ -249,8 +249,8 @@ public class AtiaBlessing : MonoBehaviour
         {
             switch (RunManagerSingleton.instance.landType)
             {
-                case LandType.axiepark:
-                    return AxieParkBlessing;
+                case LandType.monsterpark:
+                    return MonsterParkBlessing;
                 case LandType.savannah:
                     return SavannahBlessing;
                 case LandType.forest:
@@ -442,7 +442,7 @@ public class AtiaBlessing : MonoBehaviour
         ThirdRollNumberText.text = rollThird.ToString();
     }
 
-    public void AugumentUpgrade(int indexAugument, List<AxieClass> axieClasses, Team team)
+    public void AugumentUpgrade(int indexAugument, List<MonsterClass> monsterClasses, Team team)
     {
         try
         {

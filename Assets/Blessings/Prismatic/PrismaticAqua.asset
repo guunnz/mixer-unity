@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Aqua axies swap their Speed for Morale. Gain 1 HP stat per Morale
+  description: Your Aqua mons swap their Speed for Morale. Gain 1 HP stat per Morale
     stat
   price: 0
   doNotShowShow: 0

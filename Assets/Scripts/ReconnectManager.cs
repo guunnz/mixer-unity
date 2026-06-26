@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,11 +33,11 @@ public class ReconnectManager : MonoBehaviour
     {
         Reconnecting.SetActive(true);
         var runManager = RunManagerSingleton.instance;
-        foreach (var axie in runManager.goodTeam.GetCharactersAll())
+        foreach (var monster in runManager.goodTeam.GetCharactersAll())
         {
-            var axiePos = reconnection.run.axie_team.axies.FirstOrDefault(x => x.axie_id == axie.AxieId.ToString()).position_values_per_round[reconnection.run.win_loss_record.Count()];
+            var monsterPos = reconnection.run.monster_team.monsters.FirstOrDefault(x => x.monster_id == monster.MonsterId.ToString()).position_values_per_round[reconnection.run.win_loss_record.Count()];
 
-            //Move Axie
+            //Move Monster
         }
 
         shopManager.SetManualShopItems(reconnection.potionsEffects1, reconnection.potionsEffects2, reconnection.shopItem1Effect, reconnection.shopItem2Effect);

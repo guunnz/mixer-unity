@@ -1,4 +1,4 @@
-using finished3;
+﻿using finished3;
 using System;
 using UnityEngine;
 using DG.Tweening;
@@ -11,7 +11,7 @@ public enum LandType
     arctic,
     mystic,
     genesis,
-    axiepark,
+    monsterpark,
     lunalanding
 }
 
@@ -97,7 +97,7 @@ public class MaterialTipColorChanger : MonoBehaviour
                         RandomRange(arcticColorMin.z, arcticColorMax.z));
                     break;
                 case LandType.forest:
-                case LandType.axiepark:
+                case LandType.monsterpark:
                     color = new Color(RandomRange(forestColorMin.x, forestColorMax.x),
                         RandomRange(forestColorMin.y, forestColorMax.y),
                         RandomRange(forestColorMin.z, forestColorMax.z));

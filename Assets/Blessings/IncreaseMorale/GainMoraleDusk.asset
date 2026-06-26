@@ -20,7 +20,7 @@ MonoBehaviour:
     SecondsOfFight: 0
     OnBattleStart: 0
   shopPrefab: {fileID: 0}
-  description: Your Dusk Axies Gain 10% Morale
+  description: Your Dusk Mons Gain 10% Morale
   price: 0
   doNotShowShow: 0
   tooltipType: 
